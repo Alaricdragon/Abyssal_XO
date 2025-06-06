@@ -1,12 +1,14 @@
-package Abyssal_XO.data.scripts.threat;
+package Abyssal_XO.data.scripts.threat.skills;
 
-import Abyssal_XO.data.scripts.listiners.NanoThief_BattleListener;
+import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
+import Abyssal_XO.data.scripts.threat.listiners.NanoThief_BattleListener;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
+import org.apache.log4j.Logger;
 import second_in_command.SCData;
 
 public class NanoThief_Base extends Nano_Thief_SKill_Base {
@@ -64,6 +66,64 @@ public class NanoThief_Base extends Nano_Thief_SKill_Base {
                 }
             }
         }*/
+    }
+
+
+    public void changeReclaimStats(ShipAPI ship,int quality){
+        //changes the stats of the reclaim swarm
+    }
+    public void changeCombatSwarmStats(ShipAPI ship,int quality){
+        applyBaseQualityChange(ship, quality);
+        //changes the stats of the combat swarm
+    }
+    public void changeDefenderSwarmStats(ShipAPI ship,int quality){
+        applyBaseQualityChange(ship, quality);
+        //changes the stats of the defense swarm.
+    }
+    private static String source = "Abyssal_XO_Nano_Theif_Stats";
+    private void applyBaseQualityChange(ShipAPI ship,int quality){
+        //quality = 10;
+        log.info("attempting to apply base quality upgrade with a quality of "+quality);
+        if (quality < 0){
+            log.info("quality is in fact, decreasing...");
+            float multi = 1;
+            while (quality < 0) {
+                multi *= 0.9;
+                quality++;
+            }
+            log.info("got total quality modifier as: "+multi);
+
+            ship.getMutableStats().getHullBonus().modifyMult(source,multi);
+
+            ship.getMutableStats().getMaxSpeed().modifyMult(source,multi);
+            ship.getMutableStats().getAcceleration().modifyMult(source,multi);
+
+            ship.getMutableStats().getEnergyAmmoRegenMult().modifyMult(source,multi);
+            ship.getMutableStats().getBallisticAmmoRegenMult().modifyMult(source,multi);
+            ship.getMutableStats().getMissileAmmoRegenMult().modifyMult(source,multi);
+
+            ship.getMutableStats().getBallisticRoFMult().modifyMult(source,multi);
+            ship.getMutableStats().getEnergyRoFMult().modifyMult(source,multi);
+            ship.getMutableStats().getMissileRoFMult().modifyMult(source,multi);
+
+        }else if (quality > 0){
+            log.info("quality is in fact, increasing...");
+            float multi = (quality*0.1f) + 1;
+            log.info("got total quality modifier as: "+multi);
+            //ship.getMutableStats().getTimeMult();
+            ship.getMutableStats().getHullBonus().modifyMult(source,multi);
+
+            ship.getMutableStats().getMaxSpeed().modifyMult(source,multi);
+            ship.getMutableStats().getAcceleration().modifyMult(source,multi);
+
+            ship.getMutableStats().getEnergyAmmoRegenMult().modifyMult(source,multi);
+            ship.getMutableStats().getBallisticAmmoRegenMult().modifyMult(source,multi);
+            ship.getMutableStats().getMissileAmmoRegenMult().modifyMult(source,multi);
+
+            ship.getMutableStats().getBallisticRoFMult().modifyMult(source,multi);
+            ship.getMutableStats().getEnergyRoFMult().modifyMult(source,multi);
+            ship.getMutableStats().getMissileRoFMult().modifyMult(source,multi);
+        }
     }
 
 

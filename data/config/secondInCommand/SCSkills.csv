@@ -1,14 +1,13 @@
 id,name,iconPath,npcSpawnWeight,plugin
 ,,,,
 #NanoThief,,,,
-SiC_NanoThief_NanoThiefBase,Active Aqusistion,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.NanoThief_Base
-sotf_voidwalking,Voidwalking,graphics/secondInCommand/witchcraft/voidwalking.png,1,data.scripts.campaign.secondInCommand.Voidwalking
-sotf_accelerando,Accelerando,graphics/secondInCommand/witchcraft/accelerando.png,1,data.scripts.campaign.secondInCommand.Accelerando
-sotf_the_withering_hex,The Withering Hex,graphics/secondInCommand/witchcraft/the_withering_hex.png,1,data.scripts.campaign.secondInCommand.TheWitheringHex
-sotf_seal_of_abjuration,Seal of Abjuration,graphics/secondInCommand/witchcraft/seal_of_abjuration.png,1,data.scripts.campaign.secondInCommand.SealOfAbjuration
-sotf_dance_with_me,Dance With Me!,graphics/secondInCommand/witchcraft/dance_with_me.png,1,data.scripts.campaign.secondInCommand.DanceWithMe
-sotf_tend_to_our_garden,Tend To Our Garden,graphics/secondInCommand/witchcraft/tend_to_our_garden.png,1,data.scripts.campaign.secondInCommand.TendToOurGarden
-sotf_agony_encore,Agony's Encore,graphics/secondInCommand/witchcraft/agony_encore.png,1,data.scripts.campaign.secondInCommand.AgonyEncore
-sotf_spirit_ward,Spirit Ward,graphics/secondInCommand/witchcraft/spirit_ward.png,1,data.scripts.campaign.secondInCommand.SpiritWard
-sotf_one_witch_waltz,One-Witch Waltz,graphics/secondInCommand/witchcraft/one_witch_waltz.png,1,data.scripts.campaign.secondInCommand.OneWitchWaltz
-,,,,
+SiC_NanoThief_NanoThiefBase,Active Aqusistion,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_Base
+SiC_NanoThief_skill_1,Wave Deployment,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_1
+SiC_NanoThief_skill_2,Mass Manufacturing,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_2
+SiC_NanoThief_skill_3,Longevity,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_3
+SiC_NanoThief_skill_4,Condensing,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_4
+SiC_NanoThief_skill_5,Quality Checks,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_5
+SiC_NanoThief_skill_6,Centralized Logistics,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_6
+SiC_NanoThief_skill_7,Material Analyses,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_7
+SiC_NanoThief_skill_8,Desperate Measures,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_8
+SiC_NanoThief_skill_9,Efficient Production,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_9

@@ -1,7 +1,8 @@
 package Abyssal_XO.data.scripts.threat;
 
-import Abyssal_XO.data.scripts.listiners.NanoThief_RecreationScript;
+import Abyssal_XO.data.scripts.threat.listiners.NanoThief_RecreationScript;
 import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_Reclaim;
+import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_SKill_Base;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.combat.*;
@@ -23,7 +24,7 @@ import java.util.HashMap;
 
 public class Nano_Thief_Stats {
     private float swarmCost = 100;
-    private float swarmQuality = 1;
+    private float swarmQuality = 0;
     private static Logger log = Global.getLogger(Nano_Thief_Stats.class);
     @Getter
     private CampaignFleetAPI fleet;
@@ -35,13 +36,14 @@ public class Nano_Thief_Stats {
     public Nano_Thief_Stats(CampaignFleetAPI fleet, SCOfficer officer){
         this.fleet = fleet;
         this.officer = officer;
-        officer.getSkillPlugins();
         float SC_add = 0;
         float SC_muti = 1;
         float SQ_add = 0;
         float SQ_muti = 1;
-        for (SCBaseSkillPlugin a : officer.getSkillPlugins()){
+        log.info("creating commander data for a new commander with "+officer.getActiveSkillPlugins().size()+" skills");
+        for (SCBaseSkillPlugin a : officer.getActiveSkillPlugins()){
             Nano_Thief_SKill_Base b = (Nano_Thief_SKill_Base) a;
+            log.info("  adding skill to commander of: "+b.getName());
             skills.add(b);
             SC_muti *= b.swarmCostMulti;
             SC_add += b.swarmCostAdd;
@@ -247,7 +249,7 @@ public class Nano_Thief_Stats {
         swarm.getParams().baseMembersToMaintain = 50;
 
         for (Nano_Thief_SKill_Base a : skills){
-            a.changeReclaimStats(primary,getModifiedQuality(null));
+            a.changeReclaimStats(fighter,getModifiedQuality(null));
         }
         return fighter;
     }
@@ -332,7 +334,7 @@ public class Nano_Thief_Stats {
         //return fighter;
 
         for (Nano_Thief_SKill_Base a : skills){
-            a.changeCombatSwarmStats(primary,quality);
+            a.changeCombatSwarmStats(fighter,quality);
         }
 
     }

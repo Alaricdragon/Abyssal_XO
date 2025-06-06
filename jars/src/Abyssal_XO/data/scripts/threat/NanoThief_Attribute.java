@@ -17,13 +17,23 @@ public class NanoThief_Attribute extends SCBaseAptitudePlugin {
      *           SwarmLauncherEffect.SWARM_RADIUS() for IDK. maybe how far out the swarms things go?
      *           SwarmLauncherEffect.FRAGMENT_NUM() for IDK. maybe how many fragments the swarm has in it?
      *
-     * how does the AI work?
-     *  -ThreatSwarmAI class in starsector core????
-     * so for now, I will go with a few stages:
-     * 1) create a battle plugin that spawns 'attack_swarm_wing' when a hostile ship dies. (for now.)
+     *  ...
+     * ok, so this is -working- here i what I still need to do:
+     * 1) add in the new 'what reclaim targets' script.
+     *  -need the hullmod 'Central Fabracater' for this.
+     * 2) add in the new stat changes based on skills.
+     * 3) add in the interface, so the player can see what on earth is even going on.
+     *  -note: might need to change reclaim storge location to make this easyer.
+     * 4) make it so Wave Deployment works (with interface)
+     * 5) make it so Desprate Messures works
+     * 6) make it so 'defenders' can spawn.
+     *  -need to learn how to make my own ship
+     *  -need to edit the swarm AI for this ship, making it hang out around its ship when in defense mode, and go act like an attack swarm when attacking.
+     * 7) need to make a way to get this SiC officer
+     *  -add in a battle script, count the number of fabricates killed. after 5 give this upgrade.
+     * 8) version checker support, because its easier
      *
-     *
-     *
+     * 1) find a way to add a custom fighter that will act as defenders. defenders will go defend, untill they no longer need to.
      * notes ok skills:
      * second in command atrubtue
 systems:
@@ -54,26 +64,32 @@ for each ponit of quality, gain the following:
 
 skills:
 base: spawns a reclaim package worth 100/200/400/800 reclaim from destroyed ships. reclaim packages will then go to the nearest ship in the fleet. any packages that make it to there target ship will be converted into reclaim.
-for every 100 reclaim gained, spawn a attack swarm.
-*
+for every 100 reclaim gained, spawn a attack swarm. each spawned swarm has a base quality of 1.
+for every point of quality a swarm has gain the following stats:
+10% hull
+10% max speed and manoeuvrability
+10% attack speed on all weapons with no increase in flux cost.
+10% increased charge gain speed
+//-10% flux cost for all wepons
 
-1) Centralized Logistics: when the first reclaim package is created, the largest, highest mass ship in your fleet is marked as the 'Central Fabricator'. Reclaim Packages will always attempt to move to the Central Fabricator, provided it exists.
+
+1) Wave Deployment: swarms will no longer be deployed immanently, but instead be deployed every 45 seconds. this timer is shared between all ships. swarms cost 10% less.
+2) Mass Manufacturing: swarms lose 1 quality, but cost 33% less.
+3) Longevity: swarms loss 1 quality, and gain 50% more HP
+4) Condensing: swarms gain 1 quality, and have 25% less hp.
+5) Quality Checks: swarms gain 1 quality, and cost 25% more.
+
+6) Centralized Logistics: when the first reclaim package is created, the largest, highest mass ship in your fleet is marked as the 'Central Fabricator'. Reclaim Packages will always attempt to move to the Central Fabricator, provided it exists.
    IF the Central Fabricator no longer exists, the swarms will attempt to move to the closest largest ship in your fleet.
    The Central Fabricator produces swarms for 33% less cost.
    swarm quality is increases by 0/0/1/2 depending on the hullsize of the ship that created it.
    gain the 'Central Fabricator' hullmod, allowing you to chose your Central Fabricator
-2) Mass Manufacturing: swarms lose 1 quality, but cost 33% less.
-3) longevity: swarms loss 1 quality, and gain 50% more HP
-4) Condenced swarms: swarms gain 1 quality, and have 25% less hp.
-5) Powerfull swarms: swarms gain 1 quality, and cost 25% more.
-
-6) wave deployment: swarms will no longer be deployed immanently, but instead be deployed every 45 seconds. this timer is shared between all ships. swarms cost 33% less.
 or
-7) quality checks: swarms cost 25% more. swarms gain 1(40%),2(35%),3(25%) points of quality.
+7) Material Analyses: swarms cost 25% more. swarms gain 1(15%),2(20%),3(30%),4(35%) points of quality.
 
-8) desperate measures: for every 100 reclame gained, restore 0.5 CR, 10 seconds of PP time, and 1% of hull.
+8) Desperate Measures: for every 100 reclame gained, restore 0.5 CR, 10 seconds of PP time, and 1% of hull.
 or
-9) Efficient production: for every swarm created, a defense swarm of the same quality is created. defense swarms will go to the nearest living friendly ship and protect it. they will target fighters and missles first, and are armed with lazzars?
+9) Efficient Production: for every swarm created, a defense swarm of the same quality is created. defense swarms will go to the nearest living friendly ship and protect it. they will target fighters and missles first, and are armed with lazzars?
     * */
     @Override
     public String getOriginSkillId() {
@@ -83,21 +99,21 @@ or
     @Override
     public void createSections() {
         SCAptitudeSection section1 = new SCAptitudeSection(true, 0, "technology1");
-        section1.addSkill("sotf_voidwalking");
-        section1.addSkill("sotf_accelerando");
-        section1.addSkill("sotf_the_withering_hex");
-        section1.addSkill("sotf_seal_of_abjuration");
-        section1.addSkill("sotf_dance_with_me");
+        section1.addSkill("SiC_NanoThief_skill_1");
+        section1.addSkill("SiC_NanoThief_skill_2");
+        section1.addSkill("SiC_NanoThief_skill_3");
+        section1.addSkill("SiC_NanoThief_skill_4");
+        section1.addSkill("SiC_NanoThief_skill_5");
         addSection(section1);
 
         SCAptitudeSection section2 = new SCAptitudeSection(false, 3, "technology2");
-        section2.addSkill("sotf_tend_to_our_garden");
-        section2.addSkill("sotf_agony_encore");
+        section2.addSkill("SiC_NanoThief_skill_6");
+        section2.addSkill("SiC_NanoThief_skill_7");
         addSection(section2);
 
         SCAptitudeSection section3 = new SCAptitudeSection(false, 4, "technology4");
-        section3.addSkill("sotf_spirit_ward");
-        section3.addSkill("sotf_one_witch_waltz");
+        section3.addSkill("SiC_NanoThief_skill_8");
+        section3.addSkill("SiC_NanoThief_skill_9");
         addSection(section3);
     }
 
