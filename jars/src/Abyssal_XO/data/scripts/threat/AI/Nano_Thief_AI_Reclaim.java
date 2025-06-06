@@ -474,55 +474,33 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 		allData.add(flockingData_s2);
 		allData.add(flockingData_s1);
 		allData.add(flockingData_s0);
-		for (ShipAPI curr : engine.getShips()) {
-			if (curr == ship) continue;
-			if (curr.isFighter() && (!curr.isWingLeader() || curr.getOwner() == owner)) continue;
+		while(true){//please dont ask why.
+			if (fabricator == null) break;
+			if (fabricator == ship) break;
+			if (fabricator.isFighter() && (!fabricator.isWingLeader() || fabricator.getOwner() == owner)) break;
 
-			if (curr.isHulk() || curr.getOwner() == 100) continue;
+			if (fabricator.isHulk() || fabricator.getOwner() == 100) break;
 
 			// return to Fabricator Units, ignore other ships
 			//NOTE: here is were I can filter what possible targets I want.
-			if (curr.getOwner() != owner) continue;
-			if (!stats.isValidReclaimTarget(curr)) continue;
-			if (!curr.equals(fabricator)) continue;
-			float currRadius = curr.getCollisionRadius() * 0.5f;
+			if (fabricator.getOwner() != owner) break;
+			if (!stats.isValidReclaimTarget(fabricator)) break;
+			if (!fabricator.equals(fabricator)) break;
+			float fabricatorRadius = fabricator.getCollisionRadius() * 0.5f;
 			FlockingData data = new FlockingData();
-			data.facing = curr.getFacing();
-			data.loc = curr.getLocation();
-			data.vel = curr.getVelocity();
-			data.attractWeight = getShipWeight(curr) * stats.getReclaimTargetPriority(ship);
+			data.facing = fabricator.getFacing();
+			data.loc = fabricator.getLocation();
+			data.vel = fabricator.getVelocity();
+			data.attractWeight = getShipWeight(fabricator) * stats.getReclaimTargetPriority(ship);
 			data.repelWeight = data.attractWeight * 10f;
-			data.minA = radius + currRadius;
+			data.minA = radius + fabricatorRadius;
 			data.maxA = 1000000f;
-			data.minR = radius + currRadius;
-			data.maxR = radius + currRadius + 100f;
+			data.minR = radius + fabricatorRadius;
+			data.maxR = radius + fabricatorRadius + 100f;
 			data.repelAtAngleDist = (data.maxR - data.minR) * 0.5f;
-			if (stats.isClosest()){
-				flockingData.add(data);
-				continue;
-			}
-			switch (curr.getHullSize()){
-				case CAPITAL_SHIP:
-					flockingData_s3.add(data);
-					break;
-				case CRUISER:
-					flockingData_s2.add(data);
-					break;
-				case DESTROYER:
-					flockingData_s1.add(data);
-					break;
-				case DEFAULT:
-					flockingData_s0.add(data);
-					break;
-			}
+			flockingData.add(data);
+			break;
 		}
-		for (ArrayList<FlockingData> a : allData){
-			if (!a.isEmpty()) {
-				flockingData.addAll(a);
-				break;
-			}
-		}
-
 		if (target != null) {
 			flags.setFlag(ShipwideAIFlags.AIFlags.MANEUVER_TARGET, 3f, target);
 		} else {

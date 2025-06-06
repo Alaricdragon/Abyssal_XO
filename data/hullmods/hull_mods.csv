@@ -1,0 +1,2 @@
+name,id,tier,rarity,tech/manufacturer,tags,uiTags,base value,unlocked,hidden,hiddenEverywhere,cost_frigate,cost_dest,cost_cruiser,cost_capital,script,desc,short,sprite
+Central Fabricator,Abyssal_XO_CF,99,,Common,,Special,100,FALSE,TRUE,FALSE,0,0,0,0,Abyssal_XO.data.scripts.hullmods.CentralFabricator,"Overrides the 'Central Fabricator' skill, forcing this ship to be the Central Fabricator. Will do nothing if the Central Fabricator has already been selected",,

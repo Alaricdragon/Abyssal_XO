@@ -1,5 +1,8 @@
 package Abyssal_XO.data.scripts.threat.skills;
 
+import Abyssal_XO.data.scripts.Settings;
+import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
@@ -11,7 +14,7 @@ public class NanoThief_6 extends Nano_Thief_SKill_Base{
     public String getAffectsString() {
         return "every ship destroyed in combat";
     }
-
+    String aaa = "Overrides the 'Central Fabricator' skill, forcing this ship to be the Central Fabricator. Will do nothing if the Central Fabricator has already been selected";
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
         //this is effectivly template data. for now.
@@ -36,4 +39,13 @@ public class NanoThief_6 extends Nano_Thief_SKill_Base{
     @Override
     public void advanceInCombat(SCData data, ShipAPI ship, Float amount) {
     }
+
+    @Override
+    public void onActivation(SCData data) {
+        FactionAPI faction = Global.getSector().getPlayerFaction();
+        if (!faction.getKnownHullMods().contains(Settings.HULLMOD_CENTRAL_FAB)) {
+            faction.addKnownHullMod(Settings.HULLMOD_CENTRAL_FAB);
+        }
+    }
+
 }
