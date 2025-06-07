@@ -2,6 +2,7 @@ package Abyssal_XO.data.scripts.threat.skills;
 
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_BattleListener;
+import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
@@ -35,9 +36,6 @@ public class NanoThief_Base extends Nano_Thief_SKill_Base {
     }
     @Override
     public void applyEffectsAfterShipCreation(SCData data, ShipAPI ship, ShipVariantAPI variant, String id) {
-        /*if (!ship.hasListenerOfClass(NanoThief_SwarmCreater.class)) {
-            ship.addListener(NanoThief_SwarmCreater(ship));
-        }*/
     }
 
     @Override

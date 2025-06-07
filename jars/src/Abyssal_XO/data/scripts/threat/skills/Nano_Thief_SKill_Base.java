@@ -19,6 +19,9 @@ public class Nano_Thief_SKill_Base extends SCBaseSkillPlugin {
     public float qualityChange(float reclaim,ShipAPI target){
         return reclaim;
     }
+    public float costChange(float cost,ShipAPI target){
+        return cost;
+    }
     public void ApplyChangeOnReclaim(ShipAPI ship,ShipAPI reclaim, float reclaimValue){
         //runs code whenever reclaim is collected.
     }

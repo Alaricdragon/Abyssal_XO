@@ -21,13 +21,14 @@ public class NanoThief_Attribute extends SCBaseAptitudePlugin {
      * ok, so this is -working- here i what I still need to do:
      * 1)(DONE, untested) add in the new 'what reclaim targets' script.
      *  -need the hullmod 'Central Fabracater' for this.
+     *  -note: not fully working. issues:
+     *      combat swarms are always spawning on the same ship, for some reason???? more data required.
      *
      * 2) add in the new stat changes based on skills.
-     * 3) add in the interface, so the player can see what on earth is even going on.
-     *  -note: might need to change reclaim storge location to make this easyer.
-     * 4) make it so Wave Deployment works (with interface)
+     * 3) (working. need icons.)add in the interface, so the player can see what on earth is even going on.
+     * 4) (NO LONGER REQUIRED)make it so Wave Deployment works (with interface)
      * 5) make it so Desprate Messures works
-     * 6) make it so 'defenders' can spawn.
+     * 6) (not required anymore.)make it so 'defenders' can spawn.
      *  -need to learn how to make my own ship
      *  -need to edit the swarm AI for this ship, making it hang out around its ship when in defense mode, and go act like an attack swarm when attacking.
      * 7) need to make a way to get this SiC officer
@@ -64,8 +65,10 @@ for each ponit of quality, gain the following:
 +10% max acseration.
 
 skills:
-base: spawns a reclaim package worth 100/200/400/800 reclaim from destroyed ships. reclaim packages will then go to the nearest ship in the fleet. any packages that reaches there target will be converted into reclaim.
-for every 100 reclaim gained, spawn a attack swarm. each spawned swarm has a base quality of 1.
+base: spawns a reclaim package worth 1000/2000/4000/8000 reclaim from destroyed ships. reclaim packages will then go to the nearest ship in the fleet. any packages that reaches there target will be converted into reclaim.
+gain the ability to control reclaim / 1000 Attack Swarms.
+if less Attack Swarms are deployed then you can control, create a single Attack Swarm.
+attack swarms cost 100 reclaim to create. each swarm spawned has a base quality of 1.
 for every point of quality a swarm has gain the following stats:
 10% hull
 10% max speed and manoeuvrability
@@ -73,10 +76,10 @@ for every point of quality a swarm has gain the following stats:
 10% increased weapon charge gain speed
 
 
-1) Wave Deployment: swarms will no longer be deployed immanently, but instead be deployed every 45 seconds. this timer is shared between all ships. swarms cost 10% less.
-2) Mass Manufacturing: swarms lose 1 quality, but cost 33% less.
+1) ???: swarms loss one quality, and gain 30% increased damage.
+2) Mass Manufacturing: swarms lose 1 quality, and cost 33% less.
 3) Longevity: swarms loss 1 quality, and gain 50% maximum hull
-4) Condensing: swarms gain 1 quality, and lose 25% maximum hull.
+4) Condensing: swarms gain 1 quality, and lose 10% maximum hull.
 5) Quality Checks: swarms gain 1 quality, and cost 25% more.
 
 6) Centralized Logistics: when the first reclaim package is created, the largest, highest mass ship in your fleet is marked as the 'Central Fabricator'. Reclaim Packages will always attempt to move to the Central Fabricator, provided it exists.
@@ -89,7 +92,7 @@ or
 
 8) Desperate Measures: for every 100 reclaim gained, restore 0.5 CR, 10 seconds of PP time, and 1% of hull.
 or
-9) Efficient Production: for every swarm created, a defense swarm of the same quality is created. defense swarms will go to the nearest living friendly ship and protect it. they will target fighters and missles first, and are armed with lazzars or something.?
+9) Efficient Production: swarm cost is reduced by 50%. Ships can control 100% more swarms.
     * */
     @Override
     public String getOriginSkillId() {
