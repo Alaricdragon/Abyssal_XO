@@ -7,6 +7,7 @@ import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.combat.BaseEveryFrameCombatPlugin;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
+import com.fs.starfarer.api.impl.combat.threat.ThreatCombatStrategyAI;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.mission.FleetSide;
 import com.fs.starfarer.api.util.Misc;
@@ -23,8 +24,8 @@ import static Abyssal_XO.data.scripts.Settings.TAG_HASRECLAMED;
 
 public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
     private static Logger log = Global.getLogger(NanoThief_BattleListener.class);
-    private HashMap<CampaignFleetAPI,Nano_Thief_Stats> friendlyCaptions;
-    private HashMap<CampaignFleetAPI,Nano_Thief_Stats> hostileCaptions;
+    private HashMap<String,Nano_Thief_Stats> friendlyCaptions;
+    private HashMap<String,Nano_Thief_Stats> hostileCaptions;
 
 
     public NanoThief_BattleListener(){
@@ -36,7 +37,7 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
         //SCUtils.getFleetData()
         //startup data....
     }
-    private HashMap<CampaignFleetAPI,Nano_Thief_Stats> getPlayerForce(CombatEngineAPI engine){
+    /*private HashMap<CampaignFleetAPI,Nano_Thief_Stats> getPlayerForce(CombatEngineAPI engine){
         HashMap<CampaignFleetAPI,Nano_Thief_Stats> output = new HashMap<>();
         log.info("attempting to add player SiC to force...");
         if (Global.getSector() == null) return output;
@@ -49,9 +50,9 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
             break;
         }
         return output;
-    }
-    private HashMap<CampaignFleetAPI,Nano_Thief_Stats> getCommanders(java.util.List<com.fs.starfarer.api.characters.PersonAPI> commanders){
-        HashMap<CampaignFleetAPI,Nano_Thief_Stats> output = new HashMap<>();
+    }*/
+    private HashMap<String,Nano_Thief_Stats> getCommanders(java.util.List<com.fs.starfarer.api.characters.PersonAPI> commanders){
+        HashMap<String,Nano_Thief_Stats> output = new HashMap<>();
         CombatEngineAPI engine = Global.getCombatEngine();
         for (PersonAPI a : commanders){
             if (a == null) continue;
@@ -67,8 +68,8 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
             for (SCOfficer b : SCUtils.getFleetData(fleet).getActiveOfficers()){
                 log.info("      checking SiC officer of atrubuteID: "+b.getAptitudeId());
                 if (!b.getAptitudeId().equals("Abyssal_NanoThief")) continue;
-                log.info("      added Sic officer to list of commanders....");
-                output.put(a.getFleet(),new Nano_Thief_Stats(fleet,b));//a.getFleet() is required.
+                log.info("      added Sic officer from fleet "+a.getId()+" to list of commanders....");
+                output.put(a.getId(),new Nano_Thief_Stats(a.getId(),b));//a.getFleet() is required.
                 break;
             }
             log.info("  finished check for commander");
@@ -89,6 +90,7 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
         if (target.isFighter()) return;
         if (!target.isHulk()) return;
         if (target.hasTag(TAG_HASRECLAMED)) return;
+        if (ThreatCombatStrategyAI.isFabricator(target)) return;
         //if (!ship.isHulk() || ship.hasTag(TAG_HASRECLAMED)) return;
         //if (ThreatCombatStrategyAI.isFabricator(ship)) return;
 
@@ -126,7 +128,7 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
 
     }
 
-    public Pair<Nano_Thief_Stats,Integer> getPreferredCommander(ShipAPI target,HashMap<CampaignFleetAPI,Nano_Thief_Stats> commanders){
+    public Pair<Nano_Thief_Stats,Integer> getPreferredCommander(ShipAPI target,HashMap<String,Nano_Thief_Stats> commanders){
         Pair<Nano_Thief_Stats,Integer> output = new Pair<Nano_Thief_Stats,Integer>();
         float distance = Float.MAX_VALUE;
         CombatEngineAPI engine = Global.getCombatEngine();
@@ -136,19 +138,24 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
             if (curr == null) continue;
             if (curr.isHulk()) continue;
             if (curr.equals(target)) continue;
-            if (curr.getFleetMember() == null) continue;
-            log.info("  has fleetmember");
+            if (curr.getFleetCommander() == null) continue;
+            if (curr.isFighter()) continue;
+            log.info("  has fleet commander");
+            if (!commanders.containsKey(curr.getFleetCommander().getId())) continue;
+            log.info("  has valid fleet commander");
+            /*log.info("  has fleetmember");
             if (curr.getFleetMember().getFleetData() == null) continue;
             log.info("  has fleetdata");
             if (curr.getFleetMember().getFleetData().getFleet() == null) continue;
             log.info("  has fleet");
-            if (!commanders.containsKey(curr.getFleetCommander().getFleet())) continue;
+            if (!commanders.containsKey(curr.getFleetMember().getFleetData().getCommander().getFleet())) continue;*/
+            log.info("  has commander");
             Vector2f pointB = curr.getLocation();
             float c = Misc.getDistance(pointA,pointB);
             if (c < distance){
-                log.info("got valid position. setting commander....");
+                log.info("got valid target. setting possible target as: "+curr.getFleetCommander().getId());
                 distance = c;
-                output.one = commanders.get(curr.getFleetCommander().getFleet());
+                output.one = commanders.get(curr.getFleetCommander().getId());
                 output.two = curr.getOriginalOwner();
             }
         }

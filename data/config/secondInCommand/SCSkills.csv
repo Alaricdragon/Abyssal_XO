@@ -1,8 +1,8 @@
 id,name,iconPath,npcSpawnWeight,plugin
 ,,,,
 #NanoThief,,,,
-SiC_NanoThief_NanoThiefBase,Active Aqusistion,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_Base
-SiC_NanoThief_skill_1,Wave Deployment,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_1
+SiC_NanoThief_NanoThiefBase,Active Acquisition,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_Base
+SiC_NanoThief_skill_1,Overcharged,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_1
 SiC_NanoThief_skill_2,Mass Manufacturing,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_2
 SiC_NanoThief_skill_3,Longevity,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_3
 SiC_NanoThief_skill_4,Condensing,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_4

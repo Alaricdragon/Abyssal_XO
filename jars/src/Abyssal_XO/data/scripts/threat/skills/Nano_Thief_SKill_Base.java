@@ -10,36 +10,38 @@ import second_in_command.specs.SCBaseSkillPlugin;
 
 public class Nano_Thief_SKill_Base extends SCBaseSkillPlugin {
     protected static Logger log = Global.getLogger(Nano_Thief_SKill_Base.class);
-    public float swarmCostMulti = 1;
+    /*public float swarmCostMulti = 1;
     public float swarmCostAdd = 0;
 
     public float qualityMulti = 1;
-    public float qualityAdd = 0;
+    public float qualityAdd = 0;*/
 
-    public float qualityChange(float reclaim,ShipAPI target){
+    public float qualityChange(float reclaim, ShipAPI target, Nano_Thief_Stats stats){
         return reclaim;
     }
-    public float costChange(float cost,ShipAPI target){
+    public float costChange(float cost,ShipAPI target, Nano_Thief_Stats stats){
         return cost;
     }
-    public void ApplyChangeOnReclaim(ShipAPI ship,ShipAPI reclaim, float reclaimValue){
+    public float manufactureTimeChange(float time, ShipAPI target, Nano_Thief_Stats stats){
+        return time;
+    }
+    public void ApplyChangeOnReclaim(ShipAPI ship,ShipAPI reclaim, float reclaimValue, Nano_Thief_Stats stats){
         //runs code whenever reclaim is collected.
     }
-    public void changeReclaimStats(ShipAPI ship,int quality){
+    public void changeReclaimStats(ShipAPI ship,int quality, Nano_Thief_Stats stats){
         //changes the stats of the reclaim swarm
     }
-    public void changeCombatSwarmStats(ShipAPI ship,int quality){
+    public void changeCombatSwarmStats(ShipAPI ship,int quality, Nano_Thief_Stats stats){
         //changes the stats of the combat swarm
     }
-    public void changeDefenderSwarmStats(ShipAPI ship,int quality){
+    public void changeDefenderSwarmStats(ShipAPI ship,int quality, Nano_Thief_Stats stats){
         //changes the stats of the defense swarm.
     }
 
     @Override
     public String getAffectsString() {
-        return "";
+        return "all Swarms in fleet";
     }
-
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltipMakerAPI) {
 

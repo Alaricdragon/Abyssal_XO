@@ -23,11 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Nano_Thief_Stats {
+    private float productionTime = 1;
     private float swarmCost = 100;
     private float swarmQuality = 0;
     private static Logger log = Global.getLogger(Nano_Thief_Stats.class);
-    @Getter
-    private CampaignFleetAPI fleet;
+    private String commanderID;
     private SCOfficer officer;
     private boolean closest = true;
     ShipAPI centralFab = null;
@@ -36,8 +36,8 @@ public class Nano_Thief_Stats {
 
     @Getter
     private float getReclaimPerControl = 1000;
-    public Nano_Thief_Stats(CampaignFleetAPI fleet, SCOfficer officer){
-        this.fleet = fleet;
+    public Nano_Thief_Stats(String commanderID, SCOfficer officer){
+        this.commanderID = commanderID;
         this.officer = officer;
         float SC_add = 0;
         float SC_muti = 1;
@@ -48,11 +48,11 @@ public class Nano_Thief_Stats {
             Nano_Thief_SKill_Base b = (Nano_Thief_SKill_Base) a;
             log.info("  adding skill to commander of: "+b.getName());
             skills.add(b);
-            SC_muti *= b.swarmCostMulti;
-            SC_add += b.swarmCostAdd;
+            //SC_muti *= b.swarmCostMulti;
+            //SC_add += b.swarmCostAdd;
 
-            SQ_muti *= b.qualityMulti;
-            SQ_add += b.qualityAdd;
+            //SQ_muti *= b.qualityMulti;
+            //SQ_add += b.qualityAdd;
             if (b.getId().equals("SiC_NanoThief_skill_6")){
                 closest = true;
             }
@@ -75,8 +75,8 @@ public class Nano_Thief_Stats {
     public float getReclaimTargetDistanceMulti(ShipAPI ship){
         float out = 1;
         ShipVariantAPI variant = ship.getVariant();
-        if (variant.hasHullMod("dweller_hullmod") || variant.hasHullMod("shrouded_mantle") || variant.hasHullMod("shrouded_thunderhead") || variant.hasHullMod("shrouded_lens")) out *= 4;
-        if (variant.hasHullMod("fragment_swarm") || /*variant.hasHullMod("fragment_coordinator") || variant.hasHullMod("secondary_fabricator") || */variant.hasHullMod("threat_hullmod")) out *= 0.5f;
+        if (variant.hasHullMod("dweller_hullmod") || variant.hasHullMod("shrouded_mantle") || variant.hasHullMod("shrouded_thunderhead") || variant.hasHullMod("shrouded_lens")) out *= 1.1f;
+        if (variant.hasHullMod("fragment_swarm") || /*variant.hasHullMod("fragment_coordinator") || variant.hasHullMod("secondary_fabricator") || */variant.hasHullMod("threat_hullmod")) out *= 0.9f;
         return out;
     }
     public float getReclaimTargetPriority(ShipAPI ship){
@@ -85,11 +85,11 @@ public class Nano_Thief_Stats {
             case CAPITAL_SHIP:
                 break;
             case CRUISER:
-                out *= 0.75f;
-                break;
+                //out *= 0.75f;
+                //break;
             case DESTROYER:
-                out *= 0.5f;
-                break;
+                //out *= 0.5f;
+                //break;
             case FRIGATE:
             case DEFAULT:
                 out *= 0.25f;
@@ -107,20 +107,27 @@ public class Nano_Thief_Stats {
         Vector2f pointA = reclaim.getLocation();
         float distance = Float.MAX_VALUE;
         for (ShipAPI curr : engine.getShips()) {
-            if (curr == null) continue;
+            /*if (curr == null) continue;
             if (curr.isHulk()) continue;
             if (curr.equals(reclaim)) continue;
             if (curr.getFleetMember() == null) continue;
-            log.info("  has fleetmember");
+            //log.info("  has fleetmember");
             if (curr.getFleetMember().getFleetData() == null) continue;
-            log.info("  has fleetdata");
+            //log.info("  has fleetdata");
             if (curr.getFleetMember().getFleetData().getFleet() == null) continue;
-            log.info("  has fleet");
+            //log.info("  has fleet");
             if (!curr.getFleetMember().getFleetData().getFleet().equals(fleet)) continue;
-            log.info("  has right commander...");
-            if (!isValidReclaimTarget(curr)) continue;
+            //log.info("  has right commander...");
+            if (!isValidReclaimTarget(curr)) continue;*/
+            if (curr == null) continue;
+            if (curr.isHulk()) continue;
+            if (curr.equals(reclaim)) continue;
+            if (curr.getFleetCommander() == null) continue;
+            log.info("  has fleet commander");
+            if (!curr.getFleetCommander().getId().equals(this.commanderID)) continue;
+            log.info("  has valid fleet commander");
 
-            log.info("  got valid reclaim target. comparing position....");
+            //log.info("  got valid reclaim target. comparing position....");
             Vector2f pointB = curr.getLocation();
             float c = Misc.getDistance(pointA,pointB);
             /*float a = pointA.x - pointB.x;
@@ -128,12 +135,12 @@ public class Nano_Thief_Stats {
             float c = (float) Math.sqrt( a*a + b*b);*/
             c *= getReclaimTargetDistanceMulti(curr);
             if (c < distance){
-                log.info("  getting a new valid reclaim target of distance "+c);
+                //log.info("  getting a new valid reclaim target of distance "+c);
                 distance = c;
                 output = curr;
             }
         }
-        if (output != null) log.info("reclaim target has been chosen as "+output.toString());
+        //if (output != null) log.info("reclaim target has been chosen as "+output.toString());
         return output;
     }
     private ShipAPI getPriorityClosest(ShipAPI reclaim, CombatEngineAPI engine){
@@ -141,7 +148,7 @@ public class Nano_Thief_Stats {
             float priority = 0;
             float mass = 0;
             for (ShipAPI curr : engine.getShips()) {
-                if (curr == null) continue;
+                /*if (curr == null) continue;
                 if (curr.isHulk()) continue;
                 if (curr.equals(reclaim)) continue;
                 if (curr.getFleetMember() == null) continue;
@@ -152,7 +159,15 @@ public class Nano_Thief_Stats {
                 //log.info("  has fleet");
                 if (!curr.getFleetMember().getFleetData().getFleet().equals(fleet)) continue;
                 //log.info("  has right commander...");
-                if (!isValidReclaimTarget(curr)) continue;
+                if (!isValidReclaimTarget(curr)) continue;*/
+                if (curr == null) continue;
+                if (curr.isHulk()) continue;
+                if (curr.equals(reclaim)) continue;
+                if (curr.isFighter()) continue;
+                if (curr.getFleetCommander() == null) continue;
+                log.info("  has fleet commander");
+                if (!curr.getFleetCommander().getId().equals(this.commanderID)) continue;
+                log.info("  has valid fleet commander");
                 if (curr.getVariant().hasHullMod(Settings.HULLMOD_CENTRAL_FAB)){
                     centralFab = curr;
                     break;
@@ -174,22 +189,29 @@ public class Nano_Thief_Stats {
         float reclaimPriority = 0;
         float distance = Float.MAX_VALUE;
         for (ShipAPI curr : engine.getShips()) {
-            if (curr == null) continue;
+            /*if (curr == null) continue;
             if (curr.isHulk()) continue;
             if (curr.equals(reclaim)) continue;
             if (curr.getFleetMember() == null) continue;
-            log.info("  has fleetmember");
+            //log.info("  has fleetmember");
             if (curr.getFleetMember().getFleetData() == null) continue;
-            log.info("  has fleetdata");
+            //log.info("  has fleetdata");
             if (curr.getFleetMember().getFleetData().getFleet() == null) continue;
-            log.info("  has fleet");
+            //log.info("  has fleet");
             if (!curr.getFleetMember().getFleetData().getFleet().equals(fleet)) continue;
-            log.info("  has right commander...");
-            if (!isValidReclaimTarget(curr)) continue;
+            //log.info("  has right commander...");
+            if (!isValidReclaimTarget(curr)) continue;*/
+            if (curr == null) continue;
+            if (curr.isHulk()) continue;
+            if (curr.equals(reclaim)) continue;
+            if (curr.getFleetCommander() == null) continue;
+            log.info("  has fleet commander");
+            if (!curr.getFleetCommander().getId().equals(this.commanderID)) continue;
+            log.info("  has valid fleet commander");
 
             float priority = getReclaimTargetPriority(curr);
             if (priority < reclaimPriority) continue;
-            log.info("  got valid reclaim target. comparing position....");
+            //log.info("  got valid reclaim target. comparing position....");
             Vector2f pointB = curr.getLocation();
             float c = Misc.getDistance(pointA,pointB);
             /*float a = pointA.x - pointB.x;
@@ -197,7 +219,7 @@ public class Nano_Thief_Stats {
             float c = (float) Math.sqrt( a*a + b*b);*/
             c *= getReclaimTargetDistanceMulti(curr);
             if (c < distance){
-                log.info("  getting a new valid reclaim target of distance "+c);
+                //log.info("  getting a new valid reclaim target of distance "+c);
                 distance = c;
                 output = curr;
                 reclaimPriority = priority;
@@ -223,16 +245,20 @@ public class Nano_Thief_Stats {
 
     private static final String NanoThiefStorgeKey = "$NanoThief_StoredReclaim_Base";
     //private HashMap<ShipAPI,Integer> reclaimGathered = new HashMap<>();
+    public int randomIntTemp = 0;
     public void applyEffectsWhenAbsorbed(ShipAPI target,ShipAPI reclaim,int reclaimValue){
         NanoThief_ShipStats listiner = null;
         if (!target.hasListenerOfClass(NanoThief_ShipStats.class)) {
             listiner = new NanoThief_ShipStats(target,this);
             target.addListener(listiner);
+            randomIntTemp++;
+            //log.info("adding listener for ship of: "+target.getName());
         }else{
             List<NanoThief_ShipStats> a = target.getListenerManager().getListeners(NanoThief_ShipStats.class);
             listiner = a.get(0);
+            //log.info("got listener for ship of: "+listiner.getShip().getName());
         }
-        log.info("adding reclaim to ship");
+        //log.info("adding reclaim to ship");
         //int currentReclaim = reclaimValue;
         listiner.addReclaim(reclaimValue);
         /*float cost = swarmCost;
@@ -261,23 +287,30 @@ public class Nano_Thief_Stats {
         }*/
 
         for (Nano_Thief_SKill_Base a : skills){
-            a.ApplyChangeOnReclaim(target,reclaim,reclaimValue);
+            a.ApplyChangeOnReclaim(target,reclaim,reclaimValue,this);
         }
     }
     public int getModifiedQuality(ShipAPI target){
         float quality = this.swarmQuality;
         for (Nano_Thief_SKill_Base a : skills){
-            quality = a.qualityChange(quality,target);
+            quality = a.qualityChange(quality,target,this);
         }
         return (int)quality;
     }
     public float getModifiedCost(ShipAPI target){
         float quality = this.swarmCost;
         for (Nano_Thief_SKill_Base a : skills){
-            quality = a.costChange(quality,target);
+            quality = a.costChange(quality,target,this);
         }
         return (int)quality;
 
+    }
+    public float getModifedProductionTime(ShipAPI target){
+        float prod = productionTime;
+        for (Nano_Thief_SKill_Base a : skills){
+            prod = a.manufactureTimeChange(prod,target,this);
+        }
+        return prod;
     }
     public ShipAPI createReclaim(ShipAPI primary,int forceID){
         String wingId = SwarmLauncherEffect.RECLAMATION_SWARM_WING;//"attack_swarm_wing";SwarmLauncherEffect.RECLAMATION_SWARM_WING;//"attack_swarm_wing"
@@ -351,7 +384,7 @@ public class Nano_Thief_Stats {
         swarm.getParams().baseMembersToMaintain = 40;
 
         for (Nano_Thief_SKill_Base a : skills){
-            a.changeReclaimStats(fighter,getModifiedQuality(null));
+            a.changeReclaimStats(fighter,getModifiedQuality(null),this);
         }
         return fighter;
     }
@@ -359,6 +392,7 @@ public class Nano_Thief_Stats {
         return createCombatSwarm(primary,getModifiedQuality(primary));
     }
     public ShipAPI createCombatSwarm(ShipAPI primary,int quality){
+
         String wingId = "attack_swarm_wing";//SwarmLauncherEffect.RECLAMATION_SWARM_WING;//"attack_swarm_wing"
 
         CombatEngineAPI engine = Global.getCombatEngine();
@@ -367,7 +401,7 @@ public class Nano_Thief_Stats {
 
         Vector2f loc = primary.getLocation();
         float facing = (float) Math.random() * 360f;
-
+        //log.info("attempting to create a attack swarm at "+loc.x+", "+loc.y+" at ship of "+primary.getName()+" who's location is "+primary.getLocation().x+", "+primary.getLocation().y);
         ShipAPI fighter = manager.spawnShipOrWing(wingId, loc, facing, 0f, null);
         fighter.getWing().setSourceShip(primary);
         //fighter.removeTag(Tags.THREAT_SWARM_AI);
@@ -382,7 +416,7 @@ public class Nano_Thief_Stats {
 
         manager.setSuppressDeploymentMessages(false);
 
-        fighter.getMutableStats().getMaxSpeed().modifyMult("construction_swarm", NanoThief_RecreationScript.RECLAMATION_SWARM_SPEED_MULT);
+        //fighter.getMutableStats().getMaxSpeed().modifyMult("construction_swarm", NanoThief_RecreationScript.RECLAMATION_SWARM_SPEED_MULT);
 
         Vector2f takeoffVel = Misc.getUnitVectorAtDegreeAngle(facing);
         takeoffVel.scale(fighter.getMaxSpeed() * 1f);
@@ -438,7 +472,7 @@ public class Nano_Thief_Stats {
 
 
         for (Nano_Thief_SKill_Base a : skills){
-            a.changeCombatSwarmStats(fighter,quality);
+            a.changeCombatSwarmStats(fighter,quality,this);
         }
         return fighter;
     }

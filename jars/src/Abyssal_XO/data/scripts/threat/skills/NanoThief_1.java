@@ -1,39 +1,41 @@
 package Abyssal_XO.data.scripts.threat.skills;
 
-import com.fs.starfarer.api.combat.MutableShipStatsAPI;
+import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import com.fs.starfarer.api.combat.ShipAPI;
-import com.fs.starfarer.api.combat.ShipVariantAPI;
+import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import second_in_command.SCData;
 
 public class NanoThief_1 extends Nano_Thief_SKill_Base{
-    public String getAffectsString() {
-        return "every ship destroyed in combat";
-    }
-
+    private static final String sourceKey = "NanoThief_1";
+    private static final int quality = 1;
+    private static final int damageIncrease = 20;
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
-        //this is effectivly template data. for now.
-        tooltip.addPara("Halves the speed at which combat readiness degrades after peak performance time runs out", 0f, Misc.getHighlightColor(), Misc.getHighlightColor());
-        tooltip.addPara("Powers up imprints from the \"Dance between Realms\" skill", 0f, Misc.getHighlightColor(), Misc.getHighlightColor());
-        tooltip.addPara("   - Turns Helmsmanship, Field Modulation and Systems Expertise Elite", 0f, Misc.getTextColor(), Misc.getHighlightColor(), "Helmsmanship", "Field Modulation", "Systems Expertise");
-        tooltip.addPara("   - Provides imprints with non-elite Energy Weapon Mastery and Gunnery Implants", 0f, Misc.getTextColor(), Misc.getHighlightColor(), "Energy Weapon Mastery", "Gunnery Implants");
+        tooltip.addPara("Gain %s increased damage",0f,Misc.getHighlightColor(), Misc.getHighlightColor(),damageIncrease+"%");
+        tooltip.addPara("Lose %s quality", 0f,Misc.getNegativeHighlightColor(), Misc.getNegativeHighlightColor(), ""+quality);
 
         tooltip.addSpacer(10f);
 
-        var label = tooltip.addPara("\"Me's a crowd.\"", Misc.getHighlightColor(), 0f);
+        LabelAPI label = tooltip.addPara("\"Yes, its unstable. Hell, its practicly destroys itself when it fires! but dam if its not fun well it lasts\"", Misc.getTextColor(), 0f);
+        tooltip.addPara(" - unknown", Misc.getTextColor(), 0f);
+
         label.italicize();
 
     }
+
     @Override
-    public void applyEffectsAfterShipCreation(SCData data, ShipAPI ship, ShipVariantAPI variant, String id) {
+    public float qualityChange(float reclaim, ShipAPI target, Nano_Thief_Stats stats) {
+        return reclaim-quality;
     }
 
     @Override
-    public void applyEffectsBeforeShipCreation(SCData data, MutableShipStatsAPI stats, ShipVariantAPI variant, ShipAPI.HullSize hullSize, String id) {
-    }
-    @Override
-    public void advanceInCombat(SCData data, ShipAPI ship, Float amount) {
+    public void changeCombatSwarmStats(ShipAPI ship, int quality, Nano_Thief_Stats stats) {
+        float multi = 1 + ((float)damageIncrease / 100);
+        ship.getMutableStats().getEnergyWeaponDamageMult().modifyMult(sourceKey,multi);
+        ship.getMutableStats().getMissileWeaponDamageMult().modifyMult(sourceKey,multi);
+        ship.getMutableStats().getBeamWeaponDamageMult().modifyMult(sourceKey,multi);
+        ship.getMutableStats().getBallisticWeaponDamageMult().modifyMult(sourceKey,multi);
     }
 }

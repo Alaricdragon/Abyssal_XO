@@ -1,6 +1,8 @@
 package Abyssal_XO.data.scripts.shroudDweller;
 
 public class ShruoudDrweeler_Attribute {
+    /*addition hints:
+    * 1) ship.isSelectableInWarroom(). maybe this is if I can give this ship comamnds?*/
     /*notes on how this works:
     * all ships in your fleet
     * at the start of combat, manifests one 'Shrouded Incursion' on your side of the map. It cannot move, and if it is destroyed it will lose all 'Abyssal Charges' and respawn in 60 seconds.
