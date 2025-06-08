@@ -6,7 +6,6 @@ import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_Reclaim;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
 import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_SKill_Base;
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.impl.combat.threat.FragmentSwarmHullmod;
 import com.fs.starfarer.api.impl.combat.threat.RoilingSwarmEffect;
@@ -30,12 +29,12 @@ public class Nano_Thief_Stats {
     private String commanderID;
     private SCOfficer officer;
     private boolean closest = true;
+    @Getter
     ShipAPI centralFab = null;
 
     ArrayList<Nano_Thief_SKill_Base> skills = new ArrayList<>();
 
-    @Getter
-    private float getReclaimPerControl = 1000;
+    private float reclaimPerControl = 1000;
     public Nano_Thief_Stats(String commanderID, SCOfficer officer){
         this.commanderID = commanderID;
         this.officer = officer;
@@ -312,6 +311,15 @@ public class Nano_Thief_Stats {
         }
         return prod;
     }
+    public float getModifedReclaimPerControl(ShipAPI target){
+        float prod = reclaimPerControl;
+        for (Nano_Thief_SKill_Base a : skills){
+            prod = a.reclaimPerControlChange(prod,target,this);
+        }
+        return prod;
+
+    }
+
     public ShipAPI createReclaim(ShipAPI primary,int forceID){
         String wingId = SwarmLauncherEffect.RECLAMATION_SWARM_WING;//"attack_swarm_wing";SwarmLauncherEffect.RECLAMATION_SWARM_WING;//"attack_swarm_wing"
 

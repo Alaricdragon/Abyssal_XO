@@ -25,6 +25,10 @@ public class Nano_Thief_SKill_Base extends SCBaseSkillPlugin {
     public float manufactureTimeChange(float time, ShipAPI target, Nano_Thief_Stats stats){
         return time;
     }
+    public float reclaimPerControlChange(float reclaim, ShipAPI target, Nano_Thief_Stats stats){
+        return reclaim;
+    }
+
     public void ApplyChangeOnReclaim(ShipAPI ship,ShipAPI reclaim, float reclaimValue, Nano_Thief_Stats stats){
         //runs code whenever reclaim is collected.
     }

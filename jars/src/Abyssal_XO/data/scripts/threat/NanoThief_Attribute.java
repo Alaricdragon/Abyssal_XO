@@ -45,7 +45,10 @@ quality: how powerfull a given swarm is.
 quality should effect the following:
 	(possable qualitys): 0,1,2,3,4,5,6 (1 by defalt)
 
-	HP	flux	defesnes	wepons		hullmods
+
+
+
+HP	flux	defesnes	wepons		hullmods
 0:	0.7X	0.8X	none		tatical lazer	na
 1:	1X	1X	shield?
 2:	1.25X		shield?
@@ -78,7 +81,7 @@ for every point of quality a swarm has gain the following stats:
 2) Mass Manufacturing: lose 1 quality, and cost 33% less.
 3) Longevity: loss 1 quality, and gain 50% maximum hull
 4) Condensing: gain 1 quality, and lose 10% maximum hull.
-5) Quality Checks: gain 1 quality, and cost 25% more.
+5) Quality Checks: gain 1 quality, and cost 10% more.
 
 6) Centralized Logistics: when the first reclaim package is created, the largest, highest mass ship in your fleet is marked as the 'Central Fabricator'. Reclaim Packages will always attempt to move to the Central Fabricator, provided it exists.
    The Central Fabricator produces swarms for 33% less cost.

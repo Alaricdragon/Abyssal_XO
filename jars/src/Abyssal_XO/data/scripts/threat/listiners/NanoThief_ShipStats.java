@@ -24,7 +24,7 @@ public class NanoThief_ShipStats implements AdvanceableListener {
     public NanoThief_ShipStats(ShipAPI ship,Nano_Thief_Stats stats){
         this.ship = ship;
         this.stats = stats;
-        this.rpc = stats.getGetReclaimPerControl();
+        this.rpc = stats.getModifedReclaimPerControl(ship);
         this.cost = stats.getModifiedCost(ship);
         this.creationTime = stats.getModifedProductionTime(ship);
         //log.info("created swarm controller for ship of "+this.ship.getName());
