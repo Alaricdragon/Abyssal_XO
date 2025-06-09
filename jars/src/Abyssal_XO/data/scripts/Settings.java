@@ -7,6 +7,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 
 public class Settings {
+    public static final String NANO_THIEF_BASEWING = "attack_swarm_wing";//"broadsword_wing";
     public static final String DISPLAYID_NANOTHIEF = "Abyssal_XO_DisplayKey";
     public static final String HULLMOD_CENTRAL_FAB = "";
     public static final String TAG_HASRECLAMED = "Abyssal_XO_NanoThief_HasReclamed";

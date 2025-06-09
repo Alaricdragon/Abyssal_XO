@@ -1,15 +1,12 @@
 package Abyssal_XO.data.scripts.threat.skills;
 
-import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_BattleListener;
-import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import org.apache.log4j.Logger;
 import second_in_command.SCData;
 
 public class NanoThief_Base extends Nano_Thief_SKill_Base {
@@ -45,6 +42,7 @@ public class NanoThief_Base extends Nano_Thief_SKill_Base {
     public void advanceInCombat(SCData data, ShipAPI ship, Float amount) {
         if (!Global.getCombatEngine().hasPluginOfClass(NanoThief_BattleListener.class)) {
             Global.getCombatEngine().addPlugin(new NanoThief_BattleListener());
+            //Global.getCombatEngine().addPlugin(new NanoThief_CustomSwarmHPController());
         }
 
         /*IntervalUtil interval = (IntervalUtil) Global.getCombatEngine().getCustomData().get("Sic_NanoFief_NanoFief_Waiter");

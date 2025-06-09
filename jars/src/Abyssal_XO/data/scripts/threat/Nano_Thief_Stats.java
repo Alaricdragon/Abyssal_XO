@@ -1,6 +1,8 @@
 package Abyssal_XO.data.scripts.threat;
 
 import Abyssal_XO.data.scripts.Settings;
+import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_CustomSwarm_Shell;
+import Abyssal_XO.data.scripts.threat.listiners.NanoThief_OnAttackListener;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_RecreationScript;
 import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_Reclaim;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
@@ -184,22 +186,11 @@ public class Nano_Thief_Stats {
             return centralFab;
         }
         ShipAPI output = null;
-        Vector2f pointA = reclaim.getLocation();
+        return getTargetClosest(reclaim,engine);
+        /*Vector2f pointA = reclaim.getLocation();
         float reclaimPriority = 0;
         float distance = Float.MAX_VALUE;
         for (ShipAPI curr : engine.getShips()) {
-            /*if (curr == null) continue;
-            if (curr.isHulk()) continue;
-            if (curr.equals(reclaim)) continue;
-            if (curr.getFleetMember() == null) continue;
-            //log.info("  has fleetmember");
-            if (curr.getFleetMember().getFleetData() == null) continue;
-            //log.info("  has fleetdata");
-            if (curr.getFleetMember().getFleetData().getFleet() == null) continue;
-            //log.info("  has fleet");
-            if (!curr.getFleetMember().getFleetData().getFleet().equals(fleet)) continue;
-            //log.info("  has right commander...");
-            if (!isValidReclaimTarget(curr)) continue;*/
             if (curr == null) continue;
             if (curr.isHulk()) continue;
             if (curr.equals(reclaim)) continue;
@@ -213,9 +204,6 @@ public class Nano_Thief_Stats {
             //log.info("  got valid reclaim target. comparing position....");
             Vector2f pointB = curr.getLocation();
             float c = Misc.getDistance(pointA,pointB);
-            /*float a = pointA.x - pointB.x;
-            float b = pointA.y - pointB.y;
-            float c = (float) Math.sqrt( a*a + b*b);*/
             c *= getReclaimTargetDistanceMulti(curr);
             if (c < distance){
                 //log.info("  getting a new valid reclaim target of distance "+c);
@@ -225,7 +213,7 @@ public class Nano_Thief_Stats {
             }
         }
         if (output != null) log.info("reclaim target has been chosen as "+output.toString());
-        return output;
+        return output;*/
 
     }
 
@@ -401,8 +389,8 @@ public class Nano_Thief_Stats {
     }
     public ShipAPI createCombatSwarm(ShipAPI primary,int quality){
 
-        String wingId = "attack_swarm_wing";//SwarmLauncherEffect.RECLAMATION_SWARM_WING;//"attack_swarm_wing"
-
+        String wingId = Settings.NANO_THIEF_BASEWING;//SwarmLauncherEffect.RECLAMATION_SWARM_WING;//"attack_swarm_wing"
+        wingId = "thunder_wing";//"dagger_wing";//"broadsword_wing";
         CombatEngineAPI engine = Global.getCombatEngine();
         CombatFleetManagerAPI manager = engine.getFleetManager(primary.getOriginalOwner());
         manager.setSuppressDeploymentMessages(true);
@@ -411,78 +399,83 @@ public class Nano_Thief_Stats {
         float facing = (float) Math.random() * 360f;
         //log.info("attempting to create a attack swarm at "+loc.x+", "+loc.y+" at ship of "+primary.getName()+" who's location is "+primary.getLocation().x+", "+primary.getLocation().y);
         ShipAPI fighter = manager.spawnShipOrWing(wingId, loc, facing, 0f, null);
-        fighter.getWing().setSourceShip(primary);
-        //fighter.removeTag(Tags.THREAT_SWARM_AI);
-        /*int amount = 100;
-        switch (primary.getHullSize()){
-            case CAPITAL_SHIP -> amount *= 8;
-            case CRUISER -> amount *= 4;
-            case DESTROYER -> amount *= 2;
-        }
-        fighter.setShipAI(new Nano_Thief_AI_Reclaim(fighter,this,amount));//todo: learn if this is even doing anything I guess????
-        */
+        fighter.getWing().setSourceShip(primary);//sets to ifself to prevent min ingagment rage from triggering. might remove if i build a custom AI for the ships.
 
         manager.setSuppressDeploymentMessages(false);
 
-        //fighter.getMutableStats().getMaxSpeed().modifyMult("construction_swarm", NanoThief_RecreationScript.RECLAMATION_SWARM_SPEED_MULT);
 
         Vector2f takeoffVel = Misc.getUnitVectorAtDegreeAngle(facing);
         takeoffVel.scale(fighter.getMaxSpeed() * 1f);
 
+        if (wingId.equals(Settings.NANO_THIEF_BASEWING)){
+            modifiyBaseShip(fighter);
+        }else{
+            modifiyCustomShip(fighter);
+        }
+
+        Vector2f.add(fighter.getVelocity(), takeoffVel, fighter.getVelocity());
+
+
+
+        /*for (Nano_Thief_SKill_Base a : skills){
+        }*/
+        return fighter;
+    }
+    public void modifiyBaseShip(ShipAPI fighter){
         fighter.setDoNotRender(true);
         fighter.setExplosionScale(0f);
         fighter.setHulkChanceOverride(0f);
         fighter.setImpactVolumeMult(SwarmLauncherEffect.IMPACT_VOLUME_MULT);
         fighter.getArmorGrid().clearComponentMap(); // no damage to weapons/engines
-        Vector2f.add(fighter.getVelocity(), takeoffVel, fighter.getVelocity());
-
         RoilingSwarmEffect swarm = FragmentSwarmHullmod.createSwarmFor(fighter);
-
-        /*
-        RoilingSwarmEffect.getFlockingMap().remove(swarm.getParams().flockingClass, swarm);
-        swarm.getParams().flockingClass = FragmentSwarmHullmod.RECLAMATION_SWARM_FLOCKING_CLASS;
-        RoilingSwarmEffect.getFlockingMap().add(swarm.getParams().flockingClass, swarm);
-        swarm.getParams().memberExchangeClass = FragmentSwarmHullmod.RECLAMATION_SWARM_EXCHANGE_CLASS;
-
-
-        //swarm.params.flashFringeColor = VoltaicDischargeOnFireEffect.EMP_FRINGE_COLOR;
-        swarm.getParams().flashFrequency = 5f;
-        swarm.getParams().flashProbability = 1f;
-
-        // brownish/rusty
-        //swarm.params.flashFringeColor = new Color(255,95,50,50);
-
-        swarm.getParams().flashFringeColor = new Color(255,70,30,50);
-        swarm.getParams().flashCoreRadiusMult = 0f;
-
-        swarm.getParams().springStretchMult = 1f;
-
-        //swarm.params.baseSpriteSize *= RECLAMATION_SWARM_FRAGMENT_SIZE_MULT;
-        //swarm.params.flashFringeColor = VoltaicDischargeOnFireEffect.EMP_FRINGE_COLOR;
-
-        float collisionMult = NanoThief_RecreationScript.RECLAMATION_SWARM_COLLISION_MULT;
-        float hpMult = NanoThief_RecreationScript.RECLAMATION_SWARM_HP_MULT;
-
-        for (BoundsAPI.SegmentAPI s : fighter.getExactBounds().getOrigSegments()) {
-            s.getP1().scale(collisionMult);
-            s.getP2().scale(collisionMult);
-            s.set(s.getP1().x, s.getP1().y, s.getP2().x, s.getP2().y);
+        for (ShipAPI a : fighter.getWing().getWingMembers()){
+            //a.getMutableStats().getHullBonus().modifyFlat("death itself",999999999);
+            //a.getMutableStats().getEnergyRoFMult().modifyFlat("death itself",99999);
+            for (Nano_Thief_SKill_Base b : skills) {
+                b.changeCombatSwarmStats(fighter,999,this);
+            }
         }
-        fighter.setCollisionRadius(fighter.getCollisionRadius() * collisionMult);
+    }
+    public void modifiyCustomShip(ShipAPI fighter){
+        fighter.getWing();
+        fighter.getMutableStats();
+        fighter.setShipAI(new Nano_Thief_AI_CustomSwarm_Shell(fighter,this,120));
+        fighter.getWing().setSourceShip(fighter);
 
-        fighter.setMaxHitpoints(fighter.getMaxHitpoints() * hpMult);
-        fighter.setHitpoints(fighter.getHitpoints() * hpMult);
-
-        swarm.getParams().maxOffset *= NanoThief_RecreationScript.RECLAMATION_SWARM_RADIUS_MULT;
-
-        swarm.getParams().initialMembers = 0;
-        swarm.getParams().baseMembersToMaintain = 50;*/
-
-
-        for (Nano_Thief_SKill_Base a : skills){
-            a.changeCombatSwarmStats(fighter,quality,this);
+        for (ShipAPI a : fighter.getWing().getWingMembers()){
+            a.getAllWeapons().get(0).setMaxAmmo(0);//ok, this could work:
+            a.getAllWeapons().get(0).setAmmo(0);//
+            a.getAllWeapons().get(0).getAmmoTracker().setAmmo(0);//?????
+            a.getAllWeapons().get(0).getAmmoTracker();
+            /*ok. ok so:
+            * if the alex cant get a on wepon fire listiner for me, I do have a single option:
+            * what I can do, is make it so each wepon has ether 1 amow, or infinit amow, and then track that? so like...
+            * I can do something. I enjaksdad
+            * ok, so heres how it works:
+            * for weapons without charges: give them say, 1000000k cahrges. no regen. I can read the lost charges to view how many I have lost.
+            * BUT WHAT ABOUT THE FUCKING CHANGES TO EVERYTHING ARG
+            * NO NO NO THIS WILL INTERFEAR WITH ANYTHING THAT MODIFIES THE NUMBER OF CHARGES OR WHATEVER.
+            * no wati, I can directly set the number of charges.
+            * so: no chage wepons:
+            *   give many charges. check every fram for how many charges were uses.
+            * ...
+            * what the hell am I doing? why am I so desprate for this.
+            * heres what needs to happen: (if alex cant help me)
+            * for ships with limited charge wepons, and no regen on any of them, the ship needs to take massive damage after its out of charges. I will need to track such ships.
+            * for all other ships, I will use my current 'in engagment range' thing. this should help (in theory).
+            * */
+            //the plan: create a system were each wepon is marked.
+            //Global.getCombatEngine().createFakeWeapon(a,"jackhammer");
+            a.addTag("swarm_fighter");//hopefully, this helps. but it might not be. or maybe I should be puting this on the figher? mmm...
+            //MagicSubsystemsManager.addSubsystemToShip(a, new DamageOverTime_System(a, 30));
+            for (Nano_Thief_SKill_Base b : skills) {
+                b.changeCombatSwarmStats(fighter,999,this);
+            }
         }
-        return fighter;
+        //new NanoThief_CustomSwarmHP_item(fighter,this,30);
+        //fighter.getListenerManager().addListener(new NanoThief_CustomSwarmHPController(fighter,this,30));
+
+        //I dont know what to do arg.
     }
     public ShipAPI createDefenseSwarm(ShipAPI primary,int quality){
         /*for (Nano_Thief_SKill_Base a : skills){

@@ -18,6 +18,7 @@ import second_in_command.SCUtils;
 import second_in_command.specs.SCOfficer;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import static Abyssal_XO.data.scripts.Settings.TAG_HASRECLAMED;
@@ -26,7 +27,6 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
     private static Logger log = Global.getLogger(NanoThief_BattleListener.class);
     private HashMap<String,Nano_Thief_Stats> friendlyCaptions;
     private HashMap<String,Nano_Thief_Stats> hostileCaptions;
-
 
     public NanoThief_BattleListener(){
         CombatEngineAPI engine = Global.getCombatEngine();
