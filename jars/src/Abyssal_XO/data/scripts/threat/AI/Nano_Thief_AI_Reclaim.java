@@ -583,6 +583,7 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 	}
 
 	protected boolean canGather(){
+		if (fabricator.isPhased()) return false;
 		Vector2f pointA = fabricator.getLocation();
 		Vector2f pointB = ship.getLocation();
 		float c = Misc.getDistance(pointA,pointB);

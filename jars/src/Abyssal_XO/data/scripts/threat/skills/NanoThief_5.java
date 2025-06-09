@@ -24,11 +24,6 @@ public class NanoThief_5 extends Nano_Thief_SKill_Base{
         return cost * costChange;
     }
     @Override
-    public float qualityChange(float reclaim, ShipAPI target, Nano_Thief_Stats stats) {
-        return reclaim+quality;
-    }
-
-    @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
         int costReduction = (int) ((costChange-1)*100);
         int timeReduction = (int) ((1-(1/timeChange))*100);

@@ -9,6 +9,7 @@ import com.fs.starfarer.api.combat.WeaponAPI;
 import org.apache.log4j.Logger;
 
 public class NanoThief_OnAttackListener implements OnFireEffectPlugin {
+    //THIS IS NOT IN USE
     private static Logger log = Global.getLogger(NanoThief_OnAttackListener.class);
 
     @Override

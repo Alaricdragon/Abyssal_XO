@@ -20,6 +20,9 @@ public class NanoThief_ShipStats implements AdvanceableListener {
     private float time = 0;
     private float cost;
     private float creationTime;
+    private float progress = 0;
+    private static final float interval = 1;
+    private int control;
     private static Logger log = Global.getLogger(NanoThief_ShipStats.class);
     public NanoThief_ShipStats(ShipAPI ship,Nano_Thief_Stats stats){
         this.ship = ship;
@@ -37,13 +40,16 @@ public class NanoThief_ShipStats implements AdvanceableListener {
     public void advance(float amount) {
         attemptToDisplayStats();
         time+=amount;
-        if (time < creationTime) return;
+        if (time <= interval) return;
         if (ship.isHulk() || !ship.isAlive()){
             ship.getListenerManager().removeListener(this);
         }
+        if (ship.getFluxTracker().isOverloadedOrVenting()) {
+            time = 0;
+            return;
+        }
+        progress+=time;
         time = 0;
-
-        if (ship.isPhased() || ship.getFluxTracker().isOverloadedOrVenting()) return;
         //log.info("running swarm controler for ship of: "+ship.getName());
         for (int a = swarms.size()-1; a >= 0; a--){
             ShipAPI swarm = swarms.get(a);
@@ -51,10 +57,18 @@ public class NanoThief_ShipStats implements AdvanceableListener {
                 swarms.remove(a);
             }
         }
-        int control = controlAmount();
+        control = controlAmount();
         if (swarms.size() < control && reclaim >= cost){
-            swarms.add(stats.createCombatSwarm(ship));
-            reclaim-=cost;
+            if (ship.isPhased()) return;
+            if (progress >= creationTime){
+                swarms.add(stats.createCombatSwarm(ship));
+                reclaim-=cost;
+                this.creationTime = stats.getModifedProductionTime(ship);
+                log.info("creating time for next swarm gotten as: "+this.creationTime);
+                progress = 0;
+            }
+        }else{
+            progress = 0;
         }
     }
     private int controlAmount(){
@@ -62,6 +76,15 @@ public class NanoThief_ShipStats implements AdvanceableListener {
     }
     private void attemptToDisplayStats(){
         if (!ship.equals(Global.getCombatEngine().getPlayerShip())) return;
+        if (control > swarms.size()) {
+            if (progress >= creationTime) {
+                Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_2", "graphics/icons/hullsys/temporal_shell.png",
+                        "Production Status", "Ready to launch fighter wing", false);
+            } else {
+                Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_2", "graphics/icons/hullsys/temporal_shell.png",
+                        "Production Status", "Fighter wing "+(int)((progress / creationTime) * 100)+"% complete", false);
+            }
+        }
         Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF+"_1", "graphics/icons/hullsys/temporal_shell.png",
                 "Stored Reclaim", (int)reclaim+" reclaim available", false);
         int control = controlAmount();

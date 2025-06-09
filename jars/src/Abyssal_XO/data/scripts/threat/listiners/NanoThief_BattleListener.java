@@ -1,5 +1,6 @@
 package Abyssal_XO.data.scripts.threat.listiners;
 
+import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
@@ -56,11 +57,18 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
         CombatEngineAPI engine = Global.getCombatEngine();
         for (PersonAPI a : commanders){
             if (a == null) continue;
+            String customFighter = null;
             log.info("  checking commander "+a.getId());
             CampaignFleetAPI fleet;
             if (a.isPlayer()){
                 fleet = Global.getSector().getPlayerFleet();
+                if(Global.getSector().getPlayerPerson().getMemoryWithoutUpdate().contains(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY)) {
+                    customFighter = Global.getSector().getPlayerPerson().getMemoryWithoutUpdate().getString(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY);
+                }
             }else{
+                if(a.getMemoryWithoutUpdate().contains(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY)) {
+                    customFighter = a.getMemoryWithoutUpdate().getString(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY);
+                }
                 fleet = a.getFleet();
             }
             if (fleet == null) continue;
@@ -69,7 +77,7 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
                 log.info("      checking SiC officer of atrubuteID: "+b.getAptitudeId());
                 if (!b.getAptitudeId().equals("Abyssal_NanoThief")) continue;
                 log.info("      added Sic officer from fleet "+a.getId()+" to list of commanders....");
-                output.put(a.getId(),new Nano_Thief_Stats(a.getId(),b));//a.getFleet() is required.
+                output.put(a.getId(),new Nano_Thief_Stats(a.getId(),b,customFighter));//a.getFleet() is required.
                 break;
             }
             log.info("  finished check for commander");

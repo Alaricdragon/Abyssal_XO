@@ -16,9 +16,9 @@ public class Nano_Thief_AI_CustomSwarm_Shell implements ShipAIPlugin {
     private float dotRange;
     private ShipAPI ship;
     public boolean isInCombat = false;
-    float HPLossPerSecond;
+    //float HPLossPerSecond;
 
-    public Nano_Thief_AI_CustomSwarm_Shell(ShipAPI ship, Nano_Thief_Stats stats,int ttl){
+    public Nano_Thief_AI_CustomSwarm_Shell(ShipAPI ship, Nano_Thief_Stats stats){
         this.ship = ship;
         this.stats = stats;
         ShipAIPlugin combatAI = ship.getShipAI();
@@ -30,7 +30,7 @@ public class Nano_Thief_AI_CustomSwarm_Shell implements ShipAIPlugin {
         //combatTags = ship.getAIFlags();
 
         range = ship.getWing().getSpec().getAttackRunRange();
-        HPLossPerSecond = ship.getHitpoints() / ttl;
+        //HPLossPerSecond = ship.getHitpoints() / ttl;
     }
     private void getWeaponStats(){
         /*LOOK. heres the deal: there might very well be a mush better way to do this.
@@ -38,13 +38,13 @@ public class Nano_Thief_AI_CustomSwarm_Shell implements ShipAIPlugin {
         * I spent all day on this. I need to god dam chill.*/
     }
     private float time;
-    private static final float infinitival = 4;
+    private static final float infinitival = 5;
     @Override
     public void advance(float amount) {
         currAI.advance(amount);
         time+=amount;
         if (time >= infinitival){
-            applyHpLossIfRequired(time);
+            //applyHpLossIfRequired(time);
             time = 0;
             if (currTarget != null && currTarget.isAlive() && isInEngagementRange(currTarget)) return;
             if (!isInCombat && shouldBeFighter()){//sets relevant data in class.
@@ -75,7 +75,7 @@ public class Nano_Thief_AI_CustomSwarm_Shell implements ShipAIPlugin {
         }
         return false;
     }
-    public void applyHpLossIfRequired(float time){
+    /*public void applyHpLossIfRequired(float time){
         if (isInCombat){
             for (ShipAPI a : ship.getWing().getWingMembers()){
                 a.setHitpoints(a.getHitpoints() - (HPLossPerSecond * time));
@@ -86,7 +86,7 @@ public class Nano_Thief_AI_CustomSwarm_Shell implements ShipAIPlugin {
                 }
             }
         }
-    }
+    }*/
     private void activateCombatAI(ShipAPI target){
         currTarget = target;
         currAI = combatAI;

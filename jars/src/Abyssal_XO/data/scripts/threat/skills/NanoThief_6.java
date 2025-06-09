@@ -21,13 +21,6 @@ public class NanoThief_6 extends Nano_Thief_SKill_Base{
         return cost;
     }
     @Override
-    public float qualityChange(float reclaim, ShipAPI target, Nano_Thief_Stats stats) {
-        if (target.equals(stats.getCentralFab())) return reclaim + fabQuality;
-        if (target.getHullSize().equals(ShipAPI.HullSize.CAPITAL_SHIP)) return reclaim + capitalQuality;
-        return reclaim;
-    }
-
-    @Override
     public float reclaimPerControlChange(float reclaim, ShipAPI target, Nano_Thief_Stats stats) {
         if (target.equals(stats.getCentralFab())) return reclaim * fabControl;
         return reclaim;

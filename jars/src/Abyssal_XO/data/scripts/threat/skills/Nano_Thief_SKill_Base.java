@@ -2,6 +2,7 @@ package Abyssal_XO.data.scripts.threat.skills;
 
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.combat.FighterWingAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import org.apache.log4j.Logger;
@@ -16,9 +17,6 @@ public class Nano_Thief_SKill_Base extends SCBaseSkillPlugin {
     public float qualityMulti = 1;
     public float qualityAdd = 0;*/
 
-    public float qualityChange(float reclaim, ShipAPI target, Nano_Thief_Stats stats){
-        return reclaim;
-    }
     public float costChange(float cost,ShipAPI target, Nano_Thief_Stats stats){
         return cost;
     }
@@ -28,17 +26,24 @@ public class Nano_Thief_SKill_Base extends SCBaseSkillPlugin {
     public float reclaimPerControlChange(float reclaim, ShipAPI target, Nano_Thief_Stats stats){
         return reclaim;
     }
+    public float timeToLiveChange(float time, ShipAPI target, Nano_Thief_Stats stats){
+        return time;
+    }
 
     public void ApplyChangeOnReclaim(ShipAPI ship,ShipAPI reclaim, float reclaimValue, Nano_Thief_Stats stats){
         //runs code whenever reclaim is collected.
     }
-    public void changeReclaimStats(ShipAPI ship,int quality, Nano_Thief_Stats stats){
+    public void changeReclaimStats(ShipAPI ship, Nano_Thief_Stats stats){
         //changes the stats of the reclaim swarm
     }
-    public void changeCombatSwarmStats(ShipAPI ship,int quality, Nano_Thief_Stats stats){
+    public void changeCombatSwarmStats(ShipAPI ship, Nano_Thief_Stats stats){
         //changes the stats of the combat swarm
     }
-    public void changeDefenderSwarmStats(ShipAPI ship,int quality, Nano_Thief_Stats stats){
+    public void changeCombatSwarmStats(FighterWingAPI wing, Nano_Thief_Stats stats){
+        //some things just want to modifiy the intier fighter wing.
+        //changes the stats of the combat swarm
+    }
+    public void changeDefenderSwarmStats(ShipAPI ship, Nano_Thief_Stats stats){
         //changes the stats of the defense swarm.
     }
 

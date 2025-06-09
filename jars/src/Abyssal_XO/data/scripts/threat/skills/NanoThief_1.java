@@ -24,14 +24,8 @@ public class NanoThief_1 extends Nano_Thief_SKill_Base{
         label.italicize();
 
     }
-
     @Override
-    public float qualityChange(float reclaim, ShipAPI target, Nano_Thief_Stats stats) {
-        return reclaim-quality;
-    }
-
-    @Override
-    public void changeCombatSwarmStats(ShipAPI ship, int quality, Nano_Thief_Stats stats) {
+    public void changeCombatSwarmStats(ShipAPI ship, Nano_Thief_Stats stats) {
         float multi = 1 + ((float)damageIncrease / 100);
         ship.getMutableStats().getEnergyWeaponDamageMult().modifyMult(sourceKey,multi);
         ship.getMutableStats().getMissileWeaponDamageMult().modifyMult(sourceKey,multi);

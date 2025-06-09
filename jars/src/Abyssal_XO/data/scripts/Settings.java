@@ -7,9 +7,19 @@ import org.json.JSONException;
 import java.util.ArrayList;
 
 public class Settings {
+    public static final int NANO_THIEF_BASESWARM_COST = 125;
+    public static final int NANO_THIEF_BASESWARM_BUILDTIME = 5;
+    public static final int NANO_THIEF_BASESWARM_TTL = 120;//swrams get exstea base TTL because they already die from shoting wepons.
+
+
+    public static final float NANO_THIEF_CustomSwarm_COST_PEROP = 10;//swarms cost 100 at 10 op, 200 at 20, 300 at 30.
+    public static final float NANO_THIEF_CustomSwarm_BUILDTIME_PREREFIT = 0.3f;//swarms build 3 times faster then they should
+    public static final int NANO_THIEF_CustomSwarm_TTL = 60;//swrams get exstea base TTL because they already die from shoting wepons.
+
+    public static final String NANO_THIEF_CUSTOM_WING_MEMORY_KEY = "$Abyssal_XO_NANO_THIEF_CUSTOMWING";
     public static final String NANO_THIEF_BASEWING = "attack_swarm_wing";//"broadsword_wing";
     public static final String DISPLAYID_NANOTHIEF = "Abyssal_XO_DisplayKey";
-    public static final String HULLMOD_CENTRAL_FAB = "";
+    public static final String HULLMOD_CENTRAL_FAB = "Abyssal_XO_CF";
     public static final String TAG_HASRECLAMED = "Abyssal_XO_NanoThief_HasReclamed";
     public static ArrayList<String> NanoThief_Users = new ArrayList<>();
     public static void init() throws JSONException {

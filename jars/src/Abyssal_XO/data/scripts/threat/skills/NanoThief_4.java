@@ -12,11 +12,6 @@ public class NanoThief_4 extends Nano_Thief_SKill_Base{
     private static float hullChange = 0.9f;
     private static int quality = 1;
     @Override
-    public float qualityChange(float reclaim, ShipAPI target, Nano_Thief_Stats stats) {
-        return reclaim+quality;
-    }
-
-    @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
         int costReduction = (int) (100*(1-hullChange));
         tooltip.addPara("Gain %s quality", 0f,Misc.getHighlightColor(), Misc.getHighlightColor(), ""+quality);
@@ -31,7 +26,7 @@ public class NanoThief_4 extends Nano_Thief_SKill_Base{
 
     }
     @Override
-    public void changeCombatSwarmStats(ShipAPI ship, int quality, Nano_Thief_Stats stats) {
+    public void changeCombatSwarmStats(ShipAPI ship, Nano_Thief_Stats stats) {
         ship.getMutableStats().getHullBonus().modifyMult(sourceKey,hullChange);
     }
 }
