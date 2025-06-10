@@ -88,11 +88,11 @@ public class Nano_Thief_Stats {
             case CAPITAL_SHIP:
                 break;
             case CRUISER:
-                //out *= 0.75f;
-                //break;
+                out *= 0.75f;
+                break;
             case DESTROYER:
-                //out *= 0.5f;
-                //break;
+                out *= 0.5f;
+                break;
             case FRIGATE:
             case DEFAULT:
                 out *= 0.25f;
@@ -126,9 +126,9 @@ public class Nano_Thief_Stats {
             if (curr.isHulk()) continue;
             if (curr.equals(reclaim)) continue;
             if (curr.getFleetCommander() == null) continue;
-            log.info("  has fleet commander");
+            //log.info("  has fleet commander");
             if (!curr.getFleetCommander().getId().equals(this.commanderID)) continue;
-            log.info("  has valid fleet commander");
+            //log.info("  has valid fleet commander");
 
             //log.info("  got valid reclaim target. comparing position....");
             Vector2f pointB = curr.getLocation();
@@ -168,9 +168,9 @@ public class Nano_Thief_Stats {
                 if (curr.equals(reclaim)) continue;
                 if (curr.isFighter()) continue;
                 if (curr.getFleetCommander() == null) continue;
-                log.info("  has fleet commander");
+                //log.info("  has fleet commander");
                 if (!curr.getFleetCommander().getId().equals(this.commanderID)) continue;
-                log.info("  has valid fleet commander");
+                //log.info("  has valid fleet commander");
                 if (curr.getVariant().hasHullMod(Settings.HULLMOD_CENTRAL_FAB)){
                     centralFab = curr;
                     break;

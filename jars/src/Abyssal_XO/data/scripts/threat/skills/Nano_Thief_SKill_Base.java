@@ -49,7 +49,7 @@ public class Nano_Thief_SKill_Base extends SCBaseSkillPlugin {
 
     @Override
     public String getAffectsString() {
-        return "all Swarms in fleet";
+        return "Simulacrum Fighter Wings produced by your fleet";
     }
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltipMakerAPI) {

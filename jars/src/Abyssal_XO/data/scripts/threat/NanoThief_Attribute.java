@@ -8,34 +8,123 @@ import second_in_command.specs.SCBaseAptitudePlugin;
 
 public class NanoThief_Attribute extends SCBaseAptitudePlugin {
     /*so relevent data:
-    * ThreatHullmod.advanceInCombat is responsable to adding a script. to only adds the script to dead ships. when a ship is dead, and is not yet taged as reclame, it runs adds the following script:
-    * ThreatShipReclamationScript with a 3 delay on the killed ship. this then proceeds to wait a time, then spawn particals and swarms for reclame.
-    *   this script does not deside on how the newly created swarm will act.
-    *   'ThreatShipReclamationScript.launchSwarm() {'swarm.params.flockingClass', 'swarm.params.memberExchangeClass'} does determin how the swarm is able to do things like share fragments though.
-    * the sawrm isself i created in 'FragmentSwarmHullmod.createSwarmFor'. it should just work?????
-     *       -dont look to deep into this. a lot of things look like they require perset data to work, but most things are just checking if the ship is real. the following are important though:
-     *           SwarmLauncherEffect.SWARM_RADIUS() for IDK. maybe how far out the swarms things go?
-     *           SwarmLauncherEffect.FRAGMENT_NUM() for IDK. maybe how many fragments the swarm has in it?
-     *
-     *  ...
-     * ok, so this is -working- here i what I still need to do:
-     * 1)(DONE, untested) add in the new 'what reclaim targets' script.
-     *  -need the hullmod 'Central Fabracater' for this.
-     *
-     * 2) add in the new stat changes based on skills.
-     * 3) (working. need icons.)add in the interface, so the player can see what on earth is even going on.
-     * 4) (NO LONGER REQUIRED)make it so Wave Deployment works (with interface)
-     * 5) make it so Desprate Messures works
-     * 6) (not required anymore.)make it so 'defenders' can spawn.
-     *  -need to learn how to make my own ship
-     *  -need to edit the swarm AI for this ship, making it hang out around its ship when in defense mode, and go act like an attack swarm when attacking.
-     * 7) need to make a way to get this SiC officer
-     *  -add in a battle script, count the number of fabricates killed. after 5 give this upgrade.
-     * 8) version checker support, because its easier
-     *
-     * 1) find a way to add a custom fighter that will act as defenders. defenders will go defend, untill they no longer need to.
-     * notes ok skills:
-     * second in command atrubtue
+    to do list:
+        1) rebalance the 9 skills to not use the quality system.
+            -1.a) rebalance skills
+            -1.b) implement skills.
+        2) add in the new icons for the systems
+        3) add in a json file setting for custom fighter wings for player (temp solution for now.)
+        4) add in the system that lets me sellect a fighter for the player fleet.
+        5) make it so the fighters acsualy lanch from the ship.
+
+skills:
+0) base:
+    base:
+    When any ship is destroyed, harvest a Reclaim Package worth 1000/2000/4000/8000 reclaim, depending on hullsize. reclaim packages will then go to the nearest ship in the fleet. any packages that reaches there target will be converted into reclaim.
+    for every 1000 reclaim in a ship, gain 1 control.
+    for every control, gain the ability to control one more Simulacrum Fighter Wings.
+    Each Simulacrum Fighter Wing costs OP cost * ?? reclaim to produce, and can takes refit time * wing size * ?? seconds to produce.
+    Simulacrum Fighters dont benefit from fighter modifiers, and rapidly decay, only being able to stay in combat for 60 seconds before being destroyed.
+    Simulacrum Fighters have infinite engagement range.
+
+    Reclaim packages cannot be collected well a ship is in phase.
+    Simulacrum Fighters cannot be deployed well a ship is in phase.
+
+1) Overcharged:
+    Gain the 'Overcharged' sub system, wish increases precived time flow by 200% for 30 seconds with a very long cooldown.
+    lose 30% time to live, 50% hp, and shields take 100% more damage.
+    or
+    Increased damage by 20%. increase speed and acceleration by 100%. Increase weapon fire and ammunition recharge rate by 500%
+    lose 80% hp, 80% time to live, shields take 500% more damage
+2) Mass Manufacturing:
+    cost 33% less
+    take 20% less time to build
+    use 10% less control
+    10% less HP
+    10% less speed
+    10% less damage
+3) Longevity:
+    gain 20% maximum hull
+    shields take 20% less damage
+    gain 100% Time To Live
+4) advanced installation:
+    gain the 'phase teleport' sub system?
+5) Quality Checks:
+    cost 20% more
+    take 10% more time to build
+    gains 10% Time To Live
+    gains 20% max hp
+    shields take 20% less damage
+    gains 10% higher fire rate for all weapons
+    gain 10% recharge rate for all weapons
+    gain 10% flux dissipation
+6) Centralized Logistics: when the first reclaim package is created, the largest, highest mass ship in your fleet is marked as the 'Central Fabricator'. Reclaim Packages will always attempt to move to the Central Fabricator, provided it exists.
+   for every 1000 Reclaim the Central Fabricator has:
+    produce Simulacrum Fighter Wings 10% faster.
+   Simulacrum Fighter Wings produced by the Central Fabricator:
+    cost 33% less.
+    cost 50% less control
+    gain 10% max hp
+    shields take 10% less damage.
+    gain 20% time to live
+    gain 5% damage
+   Simulacrum Fighter Wings produced by any ship that is NOT the Central Fabricator:
+    cost 50% more
+    take 25% more time to build
+    lose 20% max hp
+    shields take 20% more damage.
+    lose 20% time to live
+    lose 5% damage
+   After the Central Fabricator is assigned, it cannot be changed for the inter combat, even if it is destroyed or retreats.
+   gain the 'Central Fabricator' hullmod, allowing you to chose your Central Fabricator
+7) Material Analyses:
+    //note: I dont know how to feel about this... giving ships stats seems strange... maybe instead:
+    40% chance of:
+    25% chance of:
+    15% chance of:
+    15% chance of:
+    5% chance of:
+
+    40% chance of:
+        gain 10% time to live
+        gain 5% max hp
+        shields take 5% less damage
+    25% chance of:
+        gain 20% time to live
+        gain 10% max hp
+        shields take 10% less damage
+    15% chance of:
+        gain 50% speed and acceleration
+        engines take 50% less damage
+    15% chance of:
+        lose 10% hp
+        gain 10% increased damage
+        gain 20% increased weapon range
+    5% chance of:
+        gain 50% max hp
+        shields take 50% less damage
+        gain 30% max speed
+        gain 30% rate of fire for all weapons
+        gain 30% ammo regeneration
+        gain 30% increased flux dissipation
+        gain 20% increased damage
+
+    cost 25% more
+    take 100% more time to produce
+
+8) Desperate Measures:
+    for every 1000 reclaim gained
+        restore 0.5 CR
+        gain 10 seconds of PP time
+        gain and 1% of hull, regenerated over 10 seconds.
+        gain 1% fighter replacement time
+or
+9) Efficient Production:
+    swarm cost is reduced by 50%.
+    Ships can control 100% more swarms.
+
+
+
 systems:
 swarms: fighter craft spawned with this skill. cost 100 reclame at base
 reclame package: (like threat) fighters that return to a target firendly vessel. if they reach it, the ship gains X reclaim
