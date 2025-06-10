@@ -16,6 +16,7 @@ public class NanoThief_Attribute extends SCBaseAptitudePlugin {
         3) add in a json file setting for custom fighter wings for player (temp solution for now.)
         4) add in the system that lets me sellect a fighter for the player fleet.
         5) make it so the fighters acsualy lanch from the ship.
+        6) add in the quest to allow someone to quire this skill (kill a centen number of fabricates, then just have it.)
 
 skills:
 0) base:
@@ -214,8 +215,15 @@ or
 
     @Override
     public Float getNPCFleetSpawnWeight(SCData scData, CampaignFleetAPI campaignFleetAPI) {
-        String faction = campaignFleetAPI.getFaction().getId();
-        if (Settings.NanoThief_Users.contains(faction)) return 100f;
+        /*String faction = campaignFleetAPI.getFaction().getId();
+        if (Settings.NanoThief_Users.contains(faction)) return 100f;*/
         return 0f;
+    }
+
+    @Override
+    public Boolean guaranteePick(CampaignFleetAPI fleet) {
+        String faction = fleet.getFaction().getId();
+        if (Settings.NanoThief_Users.contains(faction)) return true;
+        return super.guaranteePick(fleet);
     }
 }

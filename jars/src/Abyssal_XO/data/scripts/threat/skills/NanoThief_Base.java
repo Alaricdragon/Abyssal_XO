@@ -1,7 +1,10 @@
 package Abyssal_XO.data.scripts.threat.skills;
 
+import Abyssal_XO.data.scripts.Settings;
+import Abyssal_XO.data.scripts.threat.dialogPlugin.Nano_Thief_dialog;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_BattleListener;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.CharacterDataAPI;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
@@ -64,8 +67,17 @@ public class NanoThief_Base extends Nano_Thief_SKill_Base {
         }*/
     }
 
+    @Override
+    public void onActivation(SCData data) {
+        if (data.getCommander().equals(Global.getSector().getPlayerPerson())){
+            //Global.getSector().getCampaignUI().showInteractionDialog(new Nano_Thief_dialog(),Global.getSector().getPlayerFleet());
+            /**/CharacterDataAPI character = Global.getSector().getCharacterData();
+            if (character.getAbilities().contains(Settings.NANO_THIEF_ABILITY)) return;
+            character.addAbility(Settings.NANO_THIEF_ABILITY);/**/
+        }
+    }
 
-    public void changeReclaimStats(ShipAPI ship,int quality){
+    public void changeReclaimStats(ShipAPI ship, int quality){
         //changes the stats of the reclaim swarm
     }
     public void changeCombatSwarmStats(ShipAPI ship,int quality){
