@@ -371,7 +371,6 @@ public class Nano_Thief_AIManager implements ShipAIPlugin {
 
 		float useHeading = desiredHeading;
 		//useHeading += headingChangeRate * elapsedSincePrevHeadingUpdate;
-
 		CombatEngineAPI engine = Global.getCombatEngine();
 		engine.headInDirectionWithoutTurning(ship, useHeading, 10000);
 		Misc.turnTowardsFacingV2(ship, useHeading, 0f);

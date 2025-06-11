@@ -1,6 +1,8 @@
 package Abyssal_XO.data.scripts.threat.listiners;
 
 import Abyssal_XO.data.scripts.Settings;
+import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_OVERRIDE;
+import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_NoneCombatAI;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
@@ -30,6 +32,8 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
     private HashMap<String,Nano_Thief_Stats> hostileCaptions;
 
     public NanoThief_BattleListener(){
+        Nano_Thief_AI_OVERRIDE.reset();
+        Nano_Thief_NoneCombatAI.init();
         CombatEngineAPI engine = Global.getCombatEngine();
         log.info("(NanoThief)attempting to get commanders for friendly fleet...");
         friendlyCaptions = getCommanders(engine.getFleetManager(FleetSide.PLAYER).getAllFleetCommanders());
@@ -93,7 +97,7 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
         for (ShipAPI a : Global.getCombatEngine().getShips()) {
            attemptToTranformTarget(a,amount);
         }
-
+        Nano_Thief_AI_OVERRIDE.advanceAll(amount);
     }
     public void attemptToTranformTarget(ShipAPI target,float amount){
         if (target == null) return;

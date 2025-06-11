@@ -25,10 +25,13 @@ public class Nano_Thief_AI_CustomSwarm_Shell implements ShipAIPlugin {
         this.stats = stats;
         ShipAIPlugin combatAI = ship.getShipAI();
         this.combatAI = combatAI;
-        this.swarmAI = new Nano_Thief_AI_CustomSwarm(ship,stats);
+        this.swarmAI = new Nano_Thief_AI_CustomSwarm(ship,stats);//combatAI;//new Nano_Thief_NoneCombatAI(ship,combatAI.getAIFlags(),combatAI.getConfig());//
         this.currAI = swarmAI;
+        //this.combatAI = swarmAI;
+        this.swarmAI = combatAI;
+        this.currAI = combatAI;
         ship.setShipAI(this);
-        ship.getWing().setSourceShip(ship);//sets to ifself to prevent min ingagment rage from triggering. might remove if i build a custom AI for the ships.
+        //ship.getWing().setSourceShip(ship);//sets to ifself to prevent min ingagment rage from triggering. might remove if i build a custom AI for the ships.
         //combatTags = ship.getAIFlags();
 
         range = ship.getWing().getSpec().getAttackRunRange();
@@ -43,12 +46,13 @@ public class Nano_Thief_AI_CustomSwarm_Shell implements ShipAIPlugin {
     private static final float infinitival = 5;
     @Override
     public void advance(float amount) {
-        try {
-            currAI.advance(amount);
-        }catch (Exception e){
-            combatAI.advance(amount);
-            log.info("ERROR, failed to get AI data of error: "+e);
-        }
+        /*if (currAI instanceof Nano_Thief_NoneCombatAI){
+            log.info("running none combat AI");
+        }else{
+            log.info("running combat AI");
+        }*/
+        currAI.advance(amount);
+        //if (!ship.isWingLeader()) return;
         time+=amount;
         if (time >= infinitival){
             //applyHpLossIfRequired(time);

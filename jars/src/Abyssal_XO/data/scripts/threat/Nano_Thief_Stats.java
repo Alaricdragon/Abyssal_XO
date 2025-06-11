@@ -1,9 +1,8 @@
 package Abyssal_XO.data.scripts.threat;
 
 import Abyssal_XO.data.scripts.Settings;
-import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_CustomSwarm_Shell;
+import Abyssal_XO.data.scripts.threat.AI.*;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_RecreationScript;
-import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_Reclaim;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
 import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_SKill_Base;
 import Abyssal_XO.data.scripts.threat.subsystems.DamageOverTime_System;
@@ -442,10 +441,13 @@ public class Nano_Thief_Stats {
 
     }
     public void modifiyCustomShip(ShipAPI fighter){
+        //ship.getAllWeapons().get(0).isFiring();
+        //so, thats a thing. I could 100% do that now. fuck me and fuck you all.
         fighter.getWing();
         fighter.getMutableStats();
-        fighter.setShipAI(new Nano_Thief_AI_CustomSwarm_Shell(fighter,this));
-        //fighter.getWing().setSourceShip(fighter);
+        //fighter.setShipAI(new Nano_Thief_AI_CustomSwarm_Shell(fighter,this));
+        fighter.getWing().setSourceShip(fighter);
+        new Nano_Thief_AI_OVERRIDE(fighter,this);
         //fighter.getWing().getSpec().setRange(1000000);
 
         //fighter.getWing().setLeader(fighter);
@@ -456,8 +458,10 @@ public class Nano_Thief_Stats {
 
         float ttl = getModifedTTL(fighter);
         for (ShipAPI a : fighter.getWing().getWingMembers()){
+            //fighter.setShipAI(new Nano_Thief_AI_CustomSwarm_Shell(fighter,this));
+            //fighter.setShipAI(new Nano_Thief_NoneCombatAI(fighter));
             MagicSubsystemsManager.addSubsystemToShip(a, new DamageOverTime_System(a, ttl,range));
-            a.addTag("swarm_fighter");//hopefully, this helps. but it might not be. or maybe I should be puting this on the figher? mmm...
+            //a.addTag("swarm_fighter");//hopefully, this helps. but it might not be. or maybe I should be puting this on the figher? mmm...
             for (Nano_Thief_SKill_Base b : skills) {
                 b.changeCombatSwarmStats(fighter,this);
             }
