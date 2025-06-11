@@ -19,6 +19,7 @@ public class Settings {
     public static final String NANO_THIEF_ABILITY = "Abyssal_XO_NanoThief_setFighters";
     public static final String NANO_THIEF_CUSTOM_WING_MEMORY_KEY = "$Abyssal_XO_NANO_THIEF_CUSTOMWING";
     public static final String NANO_THIEF_BASEWING = "attack_swarm_wing";//"broadsword_wing";
+    public static final String NANO_THIEF_PALYER_BASEWING = "talon_wing";//"broadsword_wing";
     public static final String DISPLAYID_NANOTHIEF = "Abyssal_XO_DisplayKey";
     public static final String HULLMOD_CENTRAL_FAB = "Abyssal_XO_CF";
     public static final String TAG_HASRECLAMED = "Abyssal_XO_NanoThief_HasReclamed";

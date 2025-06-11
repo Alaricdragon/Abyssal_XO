@@ -17,7 +17,10 @@ public class Nano_Thief_Selection_CargoListiner implements CargoPickerListener {
     static CargoAPI selectedFighters;
     private static String oldFighter;
     private static String currentFighter;
+    private static CargoAPI backupCargo;
     public static CargoAPI prepareForSelection(){
+        oldFighter = null;
+        currentFighter = null;
         playerFighters = Global.getSector().getPlayerFleet().getCargo();
         playerFighters = playerFighters.createCopy();
         List<CargoAPI.CargoItemQuantity<String>> a = playerFighters.getFighters();
@@ -26,20 +29,25 @@ public class Nano_Thief_Selection_CargoListiner implements CargoPickerListener {
             playerFighters.addFighters(b.getItem(),1);
         }
         selectedFighters = null;
+        backupCargo = Global.getSector().getPlayerFleet().getCargo().createCopy();
         return playerFighters;
     }
     private boolean hasFighterInStorge = true;
     public void prepareSelectedFighter(CargoAPI cargo){
-        oldCargo = cargo.createCopy();
+        oldFighter = null;
         selectedFighters = cargo;
-        String customFighter = "talon_wing";
+        String customFighter = Settings.NANO_THIEF_PALYER_BASEWING;//"talon_wing";
         if(Global.getSector().getPlayerPerson().getMemory().contains(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY)) {
-            customFighter = Global.getSector().getPlayerPerson().getMemory().getString(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY);
-            cargo.addFighters(customFighter,1);
-            oldFighter = customFighter;
-            currentFighter = customFighter;
-            playerFighters.removeFighters(currentFighter,1);
-            return;
+            if (Global.getSector().getPlayerPerson().getMemory().getString(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY).equals("null")){
+
+            }else {
+                customFighter = Global.getSector().getPlayerPerson().getMemory().getString(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY);
+                cargo.addFighters(customFighter, 1);
+                oldFighter = customFighter;
+                currentFighter = customFighter;
+                playerFighters.removeFighters(currentFighter, 1);
+                return;
+            }
         }
         hasFighterInStorge = false;
     }
@@ -52,29 +60,52 @@ public class Nano_Thief_Selection_CargoListiner implements CargoPickerListener {
     @Override
     public void cancelledCargoSelection() {
         log.info("this was considered a canal");
+
+        CargoAPI playerTemp = Global.getSector().getPlayerFleet().getCargo();
+        playerTemp.clear();
+        playerTemp.addAll(backupCargo);
         if (oldFighter != null) {
             Global.getSector().getPlayerPerson().getMemory().set(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY, oldFighter);//getString(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY);
         }else{
+            Global.getSector().getPlayerPerson().getMemory().set(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY,"null");
             Global.getSector().getPlayerPerson().getMemory().expire(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY,-1);
             Global.getSector().getPlayerPerson().getMemory().unset(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY);//getString(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY);
-
         }
 
     }
-    private CargoAPI oldCargo;
     @Override
     public void recreateTextPanel(TooltipMakerAPI panel, CargoAPI cargo, CargoStackAPI pickedUp, boolean pickedUpFromSource, CargoAPI combined) {
         if (selectedFighters == null) prepareSelectedFighter(cargo);
         if (cargo.getFighters().isEmpty() && hasFighterInStorge){
             hasFighterInStorge = false;
-            setNewFighter(cargo,null,currentFighter);
+            setNewFighter(cargo,pickedUp,null,currentFighter);
         }
         if (!hasFighterInStorge && cargo.getFighters().size() == 1){
             hasFighterInStorge = true;
-            setNewFighter(cargo,cargo.getFighters().get(0).getItem(),null);
+            setNewFighter(cargo,pickedUp,cargo.getFighters().get(0).getItem(),null);
         }
+        if (cargo.getFighters().size() == 1 && !cargo.getFighters().get(0).getItem().equals(currentFighter)){
+            setNewFighter(cargo,pickedUp,cargo.getFighters().get(0).getItem(),currentFighter);
+        }
+        /*if (pickedUp != null) {
+            //pickedUp.getCargo().getFighters().clear();
+            pickedUp.subtract(9999);
+            pickedUp.setType(null);
+            //pickedUp.setPickedUp(false);
+        }*/
+        /*if (pickedUp != null && !pickedUp.getCargo().getFighters().get(0).getItem().equals(currentFighter)){
+            String temp = pickedUp.getCargo().getFighters().get(0).getItem();
+            pickedUp.getCargo().clear();
+            setNewFighter(cargo,pickedUp,temp,currentFighter);
+            selectedFighters.addFighters(temp,1);
+        }*/
         while (cargo.getFighters().size() > 1){
-            setNewFighter(cargo,cargo.getFighters().get(1).getItem(),currentFighter);
+            for (CargoAPI.CargoItemQuantity<String> a : cargo.getFighters()) {
+                if (!a.getItem().equals(currentFighter)) {
+                    setNewFighter(cargo, pickedUp, a.getItem(), currentFighter);
+                    break;
+                }
+            }
 
         }
         /*if (){
@@ -108,14 +139,31 @@ public class Nano_Thief_Selection_CargoListiner implements CargoPickerListener {
         //panel.addImage("very good stats.",5);
         panel.addPara(fighterSpec.getWingName(),5);
     }
-    private void setNewFighter(CargoAPI cargo,String newFTemp,String oldFTemp){
+    private void setNewFighter(CargoAPI cargo,CargoStackAPI pickedUp,String newFTemp,String oldFTemp){
+        //if (pickedUp != null)pickedUp.getCargo().clear();
         if (oldFTemp != null) {
-            cargo.removeFighters(oldFTemp, 1);
+            cargo.removeFighters(oldFTemp, 9999999);
             if (!cargo.getFighters().isEmpty()) {
-                playerFighters.addFighters(oldFTemp, 1);
-                Global.getSector().getPlayerFleet().getCargo().addFighters(oldFTemp, 1);
-                //todo: when exiting dialog, find a way to change what fighters are in the players cargo to match what they were at the start of this.
-                //because having both the 'add fighters' and 'remove fighters' work with this might be hard. maybe have a 'last removed fighter' data that is reset whenever 'set new fighter' is called?
+
+                /*boolean alreadyHas = false;
+                for (CargoAPI.CargoItemQuantity<String> a : playerFighters.getFighters()){
+                    if (a.getItem().equals(oldFTemp)){
+                        alreadyHas = true;
+                        break;
+                    }
+                }
+                if (pickedUp != null && !alreadyHas){
+                    for (CargoAPI.CargoItemQuantity<String> a : pickedUp.getCargo().getFighters()){
+                        if (a.getItem().equals(oldFTemp)){
+                            alreadyHas = true;
+                            break;
+                        }
+                    }
+                }*/
+                //if (!alreadyHas) {
+                    playerFighters.addFighters(oldFTemp, 1);
+                    Global.getSector().getPlayerFleet().getCargo().addFighters(oldFTemp, 1);
+                //}
             }
         }
         if (newFTemp != null) {

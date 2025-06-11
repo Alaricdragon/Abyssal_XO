@@ -4,9 +4,11 @@ import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.util.Misc;
+import org.apache.log4j.Logger;
 import org.lwjgl.util.vector.Vector2f;
 
 public class Nano_Thief_AI_CustomSwarm_Shell implements ShipAIPlugin {
+    private static Logger log = Global.getLogger(Nano_Thief_Stats.class);
     private Nano_Thief_Stats stats;
     private ShipAIPlugin combatAI;
     private ShipAIPlugin swarmAI;
@@ -41,7 +43,12 @@ public class Nano_Thief_AI_CustomSwarm_Shell implements ShipAIPlugin {
     private static final float infinitival = 5;
     @Override
     public void advance(float amount) {
-        currAI.advance(amount);
+        try {
+            currAI.advance(amount);
+        }catch (Exception e){
+            combatAI.advance(amount);
+            log.info("ERROR, failed to get AI data of error: "+e);
+        }
         time+=amount;
         if (time >= infinitival){
             //applyHpLossIfRequired(time);

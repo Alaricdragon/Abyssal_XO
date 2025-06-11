@@ -49,7 +49,7 @@ public class Nano_Thief_Stats {
         if (fighterToBuild != null) this.fighterToBuild = fighterToBuild;
         this.commanderID = commanderID;
         this.officer = officer;
-        log.info("creating commander data for a new commander with "+officer.getActiveSkillPlugins().size()+" skills");
+        log.info("creating commander data for a new commander with "+officer.getActiveSkillPlugins().size()+" skills"+" and a fighter to build of "+this.fighterToBuild);
         for (SCBaseSkillPlugin a : officer.getActiveSkillPlugins()){
             Nano_Thief_SKill_Base b = (Nano_Thief_SKill_Base) a;
             log.info("  adding skill to commander of: "+b.getName());
@@ -63,7 +63,7 @@ public class Nano_Thief_Stats {
                 closest = true;
             }
         }
-        this.fighterToBuild = "trident_wing";//"dagger_wing";//"broadsword_wing";
+        this.fighterToBuild = "warthog_wing";//"warthog_wing";//"trident_wing";//"dagger_wing";//"broadsword_wing";
         getBaseStatsForFighter(Global.getSettings().getFighterWingSpec(this.fighterToBuild));
     }
     public void spawnReclaim() {
@@ -442,12 +442,17 @@ public class Nano_Thief_Stats {
 
     }
     public void modifiyCustomShip(ShipAPI fighter){
-        //getBaseStatsForFighter(fighter);
         fighter.getWing();
         fighter.getMutableStats();
         fighter.setShipAI(new Nano_Thief_AI_CustomSwarm_Shell(fighter,this));
-        fighter.getWing().setSourceShip(fighter);
+        //fighter.getWing().setSourceShip(fighter);
+        //fighter.getWing().getSpec().setRange(1000000);
+
+        //fighter.getWing().setLeader(fighter);
+        //fighter.getWing().getSpec().setRange(1000000);
+        //fighter.getMutableStats().getFighterWingRange().unmodify();
         //fighter.getWing();
+        //fighter.getMutableStats().getFighterWingRange().modifyFlat("Abyssal_XO_WING_MULTI",1000000);
 
         float ttl = getModifedTTL(fighter);
         for (ShipAPI a : fighter.getWing().getWingMembers()){

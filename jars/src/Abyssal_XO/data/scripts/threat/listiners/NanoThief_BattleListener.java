@@ -64,6 +64,8 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
                 fleet = Global.getSector().getPlayerFleet();
                 if(Global.getSector().getPlayerPerson().getMemoryWithoutUpdate().contains(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY)) {
                     customFighter = Global.getSector().getPlayerPerson().getMemoryWithoutUpdate().getString(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY);
+                }else{
+                    customFighter = Settings.NANO_THIEF_PALYER_BASEWING;
                 }
             }else{
                 if(a.getMemoryWithoutUpdate().contains(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY)) {
@@ -148,20 +150,20 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
             if (curr.equals(target)) continue;
             if (curr.getFleetCommander() == null) continue;
             if (curr.isFighter()) continue;
-            log.info("  has fleet commander");
+            //log.info("  has fleet commander");
             if (!commanders.containsKey(curr.getFleetCommander().getId())) continue;
-            log.info("  has valid fleet commander");
+            //log.info("  has valid fleet commander");
             /*log.info("  has fleetmember");
             if (curr.getFleetMember().getFleetData() == null) continue;
             log.info("  has fleetdata");
             if (curr.getFleetMember().getFleetData().getFleet() == null) continue;
             log.info("  has fleet");
             if (!commanders.containsKey(curr.getFleetMember().getFleetData().getCommander().getFleet())) continue;*/
-            log.info("  has commander");
+            //log.info("  has commander");
             Vector2f pointB = curr.getLocation();
             float c = Misc.getDistance(pointA,pointB);
             if (c < distance){
-                log.info("got valid target. setting possible target as: "+curr.getFleetCommander().getId());
+                //log.info("got valid target. setting possible target as: "+curr.getFleetCommander().getId());
                 distance = c;
                 output.one = commanders.get(curr.getFleetCommander().getId());
                 output.two = curr.getOriginalOwner();

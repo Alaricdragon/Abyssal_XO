@@ -1,17 +1,20 @@
 package Abyssal_XO.data.scripts.threat.AI;
 
+import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.impl.combat.threat.*;
 import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.api.util.WeightedRandomPicker;
+import org.apache.log4j.Logger;
 import org.lwjgl.util.vector.Vector2f;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Nano_Thief_AIManager implements ShipAIPlugin {
+	private static Logger log = Global.getLogger(Nano_Thief_Stats.class);
 	//note: I am not using this class. its here for refence.
 
     //notes:
@@ -316,25 +319,30 @@ public class Nano_Thief_AIManager implements ShipAIPlugin {
 
 	@Override
 	public void advance(float amount) {
+		log.info("stage 1");
 		//if (true) return;
 
 		elapsed += amount;
 		advanceForSpecificSwarmType(amount);
+		log.info("stage 2");
 
 		updateInterval.advance(amount);
 		if (updateInterval.intervalElapsed()) {
 			updateFlockingData();
 		}
 
+		log.info("stage 3");
 		headingInterval.advance(amount * 5f);
 		if (headingInterval.intervalElapsed()) {
 			computeDesiredHeading();
 			elapsedSincePrevHeadingUpdate = 0f;
 		}
-
+		log.info("stage 4");
 		giveMovementCommands();
 
+		log.info("stage 5");
 		elapsedSincePrevHeadingUpdate += amount;
+		log.info("stage 6");
 	}
 
 	protected void giveMovementCommands() {

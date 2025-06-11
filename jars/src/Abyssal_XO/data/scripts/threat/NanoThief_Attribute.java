@@ -9,6 +9,10 @@ import second_in_command.specs.SCBaseAptitudePlugin;
 public class NanoThief_Attribute extends SCBaseAptitudePlugin {
     /*so relevent data:
     to do list:
+        !!) make it so ships with under 1000 engagement range cannot become 'Simulacrum Fighter Wings'
+            -might not be required... no it is. I cant risk all the possible issues.
+        !!) rewrite the custom movement AI. nothing is going to work as far as making my god dam ship go out and attack things.
+            -just find a way to move ships to whatever happens to be in visual range.
         1) rebalance the 9 skills to not use the quality system.
             -1.a) rebalance skills
             -1.b) implement skills.
