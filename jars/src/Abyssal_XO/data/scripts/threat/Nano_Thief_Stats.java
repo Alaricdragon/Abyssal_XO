@@ -62,7 +62,7 @@ public class Nano_Thief_Stats {
                 closest = true;
             }
         }
-        this.fighterToBuild = "warthog_wing";//"warthog_wing";//"trident_wing";//"dagger_wing";//"broadsword_wing";
+        //this.fighterToBuild = "claw_wing";//"warthog_wing";//"warthog_wing";//"trident_wing";//"dagger_wing";//"broadsword_wing";
         getBaseStatsForFighter(Global.getSettings().getFighterWingSpec(this.fighterToBuild));
     }
     public void spawnReclaim() {
@@ -443,11 +443,16 @@ public class Nano_Thief_Stats {
     public void modifiyCustomShip(ShipAPI fighter){
         //ship.getAllWeapons().get(0).isFiring();
         //so, thats a thing. I could 100% do that now. fuck me and fuck you all.
-        fighter.getWing();
-        fighter.getMutableStats();
+        //fighter.getWing();
+        //fighter.getMutableStats();
         //fighter.setShipAI(new Nano_Thief_AI_CustomSwarm_Shell(fighter,this));
-        fighter.getWing().setSourceShip(fighter);
+        //fighter.getWing().setSourceShip(fighter);
+
+
+        //fighter.getWing().setSourceShip(null);
         new Nano_Thief_AI_OVERRIDE(fighter,this);
+
+
         //fighter.getWing().getSpec().setRange(1000000);
 
         //fighter.getWing().setLeader(fighter);
@@ -461,6 +466,7 @@ public class Nano_Thief_Stats {
             //fighter.setShipAI(new Nano_Thief_AI_CustomSwarm_Shell(fighter,this));
             //fighter.setShipAI(new Nano_Thief_NoneCombatAI(fighter));
             MagicSubsystemsManager.addSubsystemToShip(a, new DamageOverTime_System(a, ttl,range));
+            a.getMutableStats().getMinCrewMod().modifyMult("Abyssal_XO",0);
             //a.addTag("swarm_fighter");//hopefully, this helps. but it might not be. or maybe I should be puting this on the figher? mmm...
             for (Nano_Thief_SKill_Base b : skills) {
                 b.changeCombatSwarmStats(fighter,this);

@@ -5,6 +5,7 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.FighterWingAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
+import com.fs.starfarer.api.combat.ShipwideAIFlags;
 import com.fs.starfarer.api.mission.FleetSide;
 import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.api.util.WeightedRandomPicker;
@@ -34,15 +35,37 @@ public class Nano_Thief_AI_OVERRIDE {
 
     FighterWingAPI wing;
     private float range;
-    private ShipAPI target;
+    //private ShipAPI target;
     HashMap<ShipAPI,Nano_Thief_AI_CustomSwarm> swarmAIAttempt;
     public Nano_Thief_AI_OVERRIDE(ShipAPI ship, Nano_Thief_Stats stats){
+        /*so, I have naerly got this fucking working. at last.
+        * what is happening:
+        * if I set the fighters source ship to null, they will basicly ram into the enamy ships, instead of normal attack runs.
+        * if I set the fighters source to themselves, they break.
+        * if I set the fighters source to there to the ship that spawned them, they will not have infinite engagment range.
+        * solution: when range from source ship - target is >= to engagement range:
+        * get closest hostile to target, and set that ship to the source ship.
+        * therefore, 'jumping' my engagement range between targets.
+        *
+        * */
+
         this.wing = ship.getWing();
+        //ship.getWing().getSpec();
+        //Global.getCombatEngine().getFleetManager(0).ship
         //range = wing.getRange() - 500;
-        range = wing.getRange()*0.0f;
+        //range = wing.getSpec().getAttackRunRange()*0.9f;
+        range = wing.getRange();
+        //ship.setPullBackFighters(false);
         wings.add(this);
         swarmAIAttempt = new HashMap<>();
+        //wing.setSourceShip(null);
+        //wing.set
+        //wing.
+        //ship.getWing().getSpec().addTag("independent_of_carrier");
         for (ShipAPI curr : wing.getWingMembers()) {
+            //curr.addTag("independent_of_carrier");
+            //curr.getAIFlags().setFlag(ShipwideAIFlags.AIFlags.);
+            //curr.getMutableStats().getFighterWingRange().modifyFlat("Abyssal_XO_Range",200000);
             swarmAIAttempt.put(curr,new Nano_Thief_AI_CustomSwarm(curr, stats));
         }
         log.info("creating a fighter with a range of: "+range);
@@ -51,18 +74,27 @@ public class Nano_Thief_AI_OVERRIDE {
     private float time=0;
     public void advance(float amount){
         ShipAPI leader = wing.getLeader();
-        if (target != null && !target.isHulk() && target.isAlive() && getRange(target,leader) <= range-10000) {
+        //log.info("is pull back fighters?: "+leader.isPullBackFighters());
+        //leader.setPullBackFighters(false);
+        if (MoveToShip != null && !MoveToShip.isHulk() && MoveToShip.isAlive() && MathUtils.getDistance(leader,MoveToShip) <= range) {
+            //wing.setSourceShip(leader);
             //Global.getCombatEngine();
-            log.info("already has valid target. ignoring advance");
+            //wing.setSourceShip(MoveToShip); is very interesting. it almost worked. like, almost. I think it made the fighter target based on what the target was targeting. so they swarmed around me.
+            //wing.setSourceShip(MoveToShip);
+            //if (leader.getShipTarget().)
+            //if (leader.getShipTarget() != null)log.info("get leader target: "+leader.getShipTarget().getName());
+            //leader.setShipTarget(MoveToShip);
+            //log.info("already has valid target. ignoring advance");
             return;
         }
         if (swarmAIAttempt.containsKey(leader)){
-            time+=amount;
+            //log.info("preforming COMMAND MOVEMENT!");
+            /*time+=amount;
             if (time >= interval){
                 log.info("  attempting to get closest hostile....");
                 time = 0;
                 getClosestHostile(range);
-            }
+            }*/
             CommandMovement(amount);
             //swarmAIAttempt.get(leader).advance(amount);
         }
@@ -72,11 +104,11 @@ public class Nano_Thief_AI_OVERRIDE {
     }
     private ShipAPI getClosestHostile(float range){
         ShipAPI ship = wing.getLeader();
-        int owner = ship.getOwner();
-        CombatEngineAPI engine = Global.getCombatEngine();
-        target = Misc.findClosestShipEnemyOf(ship,ship.getLocation(), ShipAPI.HullSize.FRIGATE,range,false);
-        if (target != null)log.info("      get new target as: "+target.getName());
-        return target;
+        //int owner = ship.getOwner();
+        //CombatEngineAPI engine = Global.getCombatEngine();
+        MoveToShip = Misc.findClosestShipEnemyOf(ship,ship.getLocation(), ShipAPI.HullSize.FRIGATE,range,false);
+        //if (MoveToShip != null)log.info("      get new MoveToShip as: "+MoveToShip.getName());
+        return MoveToShip;
         /*/
         for (ShipAPI curr : engine.getShips()) {
             log.info("  looking at ship...");
@@ -105,7 +137,7 @@ public class Nano_Thief_AI_OVERRIDE {
     public void CommandMovement(float amount){
         //if (shouldBeInCombatMode()) return;
         time2+=amount;
-        if (time2 >= interval2 || MoveToShip == null || MoveToShip.isHulk() || !MoveToShip.isAlive()){//waypoint==null){
+        if (time2 >= interval2 || MoveToShip == null || MoveToShip.isHulk() || !MoveToShip.isAlive() || MoveToShip.getOwner() == 100){//waypoint==null){
             //createWaypoint();
             getMoveToShip();
         }
@@ -116,17 +148,18 @@ public class Nano_Thief_AI_OVERRIDE {
         return targetTemp != null && !targetTemp.isHulk() && targetTemp.isAlive() && targetTemp.getOwner() != wing.getLeader().getOwner();
     }*/
     private void getMoveToShip(){
-        MoveToShip = getClosestHostile();
+        //log.info("  attempting to get closest hostile....");
+        getClosestHostile();
     }
     public void move(){
         if (MoveToShip == null) return;
         CombatEngineAPI engine = Global.getCombatEngine();
         ShipAPI ship = wing.getLeader();
         //float useHeading = Misc.getClosestTurnDirection(ship.getLocation(),waypoint);
-        float useHeading = Misc.getClosestTurnDirection(ship.getLocation(),MoveToShip.getLocation());
-        engine.headInDirectionWithoutTurning(ship, useHeading, 10000);
+        //float useHeading = Misc.getClosestTurnDirection(ship.getLocation(),MoveToShip.getLocation());
         float angle = VectorUtils.getAngle(ship.getLocation(),MoveToShip.getLocation());
-        if (MathUtils.getShortestRotation(angle,ship.getFacing()) <= 5f) {
+        engine.headInDirectionWithoutTurning(ship, angle, 10000);
+        if (MathUtils.getShortestRotation(angle,ship.getFacing()) >= 1f) {
             Misc.turnTowardsFacingV2(ship, angle, 0f);
         }
 
