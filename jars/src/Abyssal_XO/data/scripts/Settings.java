@@ -20,6 +20,7 @@ public class Settings {
     public static final int NANO_THIEF_BASESWARM_TTL = 120;//swrams get exstea base TTL because they already die from shoting wepons.
 
 
+    public static final int NANO_THIEF_ReclaimPerControl_BASE = 1000;
     public static final float NANO_THIEF_CustomSwarm_COST_BASE = 20;//swarms cost 100 at 10 op, 200 at 20, 300 at 30.
     public static final float NANO_THIEF_CustomSwarm_COST_PEROP = 10;//swarms cost 100 at 10 op, 200 at 20, 300 at 30.
     public static final float NANO_THIEF_CustomSwarm_BUILDTIME_PREREFIT = 0.5f;//swarms build 3 times faster then they should

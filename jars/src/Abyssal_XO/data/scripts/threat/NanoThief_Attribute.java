@@ -22,7 +22,7 @@ public class NanoThief_Attribute extends SCBaseAptitudePlugin {
 skills:
 0) base:
     base:
-    When any ship is destroyed, harvest a Reclaim Package worth 1000/2000/4000/8000 reclaim, depending on hullsize. reclaim packages will then go to the nearest ship in the fleet. any packages that reaches there target will be converted into reclaim.
+    When any ship is destroyed, harvest a Reclaim Package worth 1000/2000/3000/4000 reclaim, depending on hullsize. reclaim packages will then go to the nearest ship in the fleet. any packages that reaches there target will be converted into reclaim.
     for every 1000 reclaim in a ship, gain 1 control.
     for every control, gain the ability to control one more Simulacrum Fighter Wings.
     Each Simulacrum Fighter Wing costs OP cost * ?? reclaim to produce, and can takes refit time * wing size * ?? seconds to produce.

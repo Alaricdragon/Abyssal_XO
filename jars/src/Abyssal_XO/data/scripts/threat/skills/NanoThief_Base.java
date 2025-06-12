@@ -1,6 +1,7 @@
 package Abyssal_XO.data.scripts.threat.skills;
 
 import Abyssal_XO.data.scripts.Settings;
+import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.dialogPlugin.Nano_Thief_dialog;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_BattleListener;
 import com.fs.starfarer.api.Global;
@@ -8,13 +9,18 @@ import com.fs.starfarer.api.campaign.CharacterDataAPI;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
+import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import second_in_command.SCData;
 
 public class NanoThief_Base extends Nano_Thief_SKill_Base {
-    /*NOTE:
-    * this is active, however it only effects destroyed friendly ships. I need something more...(also spawns infinit ships lol)*/
+    private static final String key = "AbyssalXO_Nano_Thief_Skill_0";
+    private static final float hullMod = 0.8f;
+    private static final float armorMod = 0.8f;
+    private static final float shieldMod = 1.2f;
+    private static final float damageMod = 0.9f;
+
     @Override
     public String getAffectsString() {
         return "every ship destroyed in combat";
@@ -23,15 +29,38 @@ public class NanoThief_Base extends Nano_Thief_SKill_Base {
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
         //this is effectivly template data. for now.
-        tooltip.addPara("Halves the speed at which combat readiness degrades after peak performance time runs out", 0f, Misc.getHighlightColor(), Misc.getHighlightColor());
-        tooltip.addPara("Powers up imprints from the \"Dance between Realms\" skill", 0f, Misc.getHighlightColor(), Misc.getHighlightColor());
-        tooltip.addPara("   - Turns Helmsmanship, Field Modulation and Systems Expertise Elite", 0f, Misc.getTextColor(), Misc.getHighlightColor(), "Helmsmanship", "Field Modulation", "Systems Expertise");
-        tooltip.addPara("   - Provides imprints with non-elite Energy Weapon Mastery and Gunnery Implants", 0f, Misc.getTextColor(), Misc.getHighlightColor(), "Energy Weapon Mastery", "Gunnery Implants");
-
+        /*
+    When any ship is destroyed in combat, harvest a Reclaim Package worth 1000/2000/3000/4000 reclaim, depending on hullsize. reclaim packages will then go to the nearest ship in the fleet. Any  Reclaim Packages that reaches there target will be converted into reclaim.
+    for every 1000 reclaim in a ship, gain 1 control, rounded up.
+    for every control, gain the ability to control one more Simulacrum Fighter Wings.
+    Each Simulacrum Fighter Wing costs OP cost * ?? reclaim to produce, and can takes refit time * wing size * ?? seconds to produce.
+    Simulacrum Fighters dont benefit from fighter modifiers, and rapidly decay, only being able to stay in combat for 60 seconds before being destroyed.
+    Simulacrum Fighters have infinite engagement range.
+    Simulacrum Fighters have -20% hull, -20% shield efficiency, and -10% damage
+        *
+        * */
+        String hullmod = 100-((int)((hullMod)*100))+"%";
+        String armormod = 100-((int)((armorMod)*100))+"%";
+        String shieldmod = (int)((shieldMod-1)*100)+"%";
+        String damagemod = 100-((int)((damageMod)*100))+"%";
+        tooltip.addPara("When any ship is destroyed in combat, harvest a Reclaim Package worth %s/%s/%s/%s reclaim, depending on hullsize. reclaim packages will then go to the nearest ship in the fleet. Any  Reclaim Packages that reaches there target will be converted into reclaim.",0f,Misc.getHighlightColor(), Misc.getHighlightColor(),""+Settings.NANO_THIEF_RECLAIM_GAIN[0],""+Settings.NANO_THIEF_RECLAIM_GAIN[1],""+Settings.NANO_THIEF_RECLAIM_GAIN[2],""+Settings.NANO_THIEF_RECLAIM_GAIN[3]);
+        tooltip.addPara("For every %s reclaim in a ship, it gains %s control, rounded up.",0f,Misc.getHighlightColor(), Misc.getHighlightColor(),""+(int)Settings.NANO_THIEF_ReclaimPerControl_BASE,""+1);
+        tooltip.addPara("For every control a ship has, it gains the ability to maintain %s Simulacrum Fighter Wings",0f,Misc.getHighlightColor(), Misc.getHighlightColor(),""+1);
+        tooltip.addPara("Every Simulacrum Fighter Wings Produced by your fleet:",0, Misc.getHighlightColor(), Misc.getHighlightColor());
+        tooltip.addPara("   -Reclaim cost is %s per ordnance point + %s",0, Misc.getTextColor(), Misc.getHighlightColor(),""+(int)Settings.NANO_THIEF_CustomSwarm_COST_PEROP,""+(int)Settings.NANO_THIEF_CustomSwarm_COST_BASE);
+        tooltip.addPara("   -Build time is wing size x replacement rate x %s",0,Misc.getTextColor(), Misc.getHighlightColor(),""+Settings.NANO_THIEF_CustomSwarm_BUILDTIME_PREREFIT);
+        tooltip.addPara("   -Time to live is %s for bombers, and %s for none bombers",0,Misc.getTextColor(), Misc.getHighlightColor(),""+(int)Settings.NANO_THIEF_CustomSwarm_Bomber_TTL,""+(int)Settings.NANO_THIEF_CustomSwarm_TTL);
+        tooltip.addPara("   -Gain infinite engagement range",0, Misc.getTextColor(), Misc.getHighlightColor());
+        tooltip.addPara("   -Lose %s hull",0, Misc.getTextColor(), Misc.getNegativeHighlightColor(),hullmod);
+        tooltip.addPara("   -Lose %s armor rating",0, Misc.getTextColor(), Misc.getNegativeHighlightColor(),armormod);
+        tooltip.addPara("   -Lose %s shield strength",0, Misc.getTextColor(), Misc.getNegativeHighlightColor(),shieldmod);
+        tooltip.addPara("   -Lose %s damage",0, Misc.getTextColor(), Misc.getNegativeHighlightColor(),damagemod);
         tooltip.addSpacer(10f);
+        LabelAPI label = tooltip.addPara("\"Its an art you know. Salving ships on the battlefield, well under fire. There are legends of rebels harvesting whole fleets on the battlefields, sending the patchwork wreckage to attack there oppressors. Its an wonderful thing to watch. \n Makes me want to cry tears of joy. And envy.\"", Misc.getTextColor(), 0f);
+        tooltip.addPara(" - unknown", Misc.getTextColor(), 0f);
 
-        var label = tooltip.addPara("\"Me's a crowd.\"", Misc.getHighlightColor(), 0f);
         label.italicize();
+
 
     }
     @Override
@@ -77,75 +106,14 @@ public class NanoThief_Base extends Nano_Thief_SKill_Base {
         }
     }
 
-    public void changeReclaimStats(ShipAPI ship, int quality){
-        //changes the stats of the reclaim swarm
+    @Override
+    public void changeCombatSwarmStats(ShipAPI ship, Nano_Thief_Stats stats) {
+        ship.getMutableStats().getHullBonus().modifyMult(key,hullMod);
+        ship.getMutableStats().getArmorBonus().modifyMult(key,armorMod);
+        if (stats.getFighterHullSpec().getShieldSpec() == null) return;
+        ship.getMutableStats().getShieldDamageTakenMult().modifyFlat(key,stats.getFighterHullSpec().getShieldSpec().getFluxPerDamageAbsorbed()*shieldMod);
     }
-    public void changeCombatSwarmStats(ShipAPI ship,int quality){
-        applyBaseQualityChange(ship, quality);
-        //changes the stats of the combat swarm
-    }
-    public void changeDefenderSwarmStats(ShipAPI ship,int quality){
-        applyBaseQualityChange(ship, quality);
-        //changes the stats of the defense swarm.
-    }
-    private static String source = "Abyssal_XO_Nano_Theif_Stats";
-    private void applyBaseQualityChange(ShipAPI ship,int quality){
-        //quality = 10;
-        log.info("attempting to apply base quality upgrade with a quality of "+quality);
-        if (quality < 0){
-            log.info("quality is in fact, decreasing...");
-            float multi = 1;
-            while (quality < 0) {
-                multi *= 0.9;
-                quality++;
-            }
-            log.info("got total quality modifier as: "+multi);
-
-            ship.getMutableStats().getHullBonus().modifyMult(source,multi);
-
-            ship.getMutableStats().getMaxSpeed().modifyMult(source,multi);
-            ship.getMutableStats().getAcceleration().modifyMult(source,multi);
-
-            ship.getMutableStats().getEnergyAmmoRegenMult().modifyMult(source,multi);
-            ship.getMutableStats().getBallisticAmmoRegenMult().modifyMult(source,multi);
-            ship.getMutableStats().getMissileAmmoRegenMult().modifyMult(source,multi);
-
-            ship.getMutableStats().getBallisticRoFMult().modifyMult(source,multi);
-            ship.getMutableStats().getEnergyRoFMult().modifyMult(source,multi);
-            ship.getMutableStats().getMissileRoFMult().modifyMult(source,multi);
-
-        }else if (quality > 0){
-            log.info("quality is in fact, increasing...");
-            float multi = (quality*0.1f) + 1;
-            log.info("got total quality modifier as: "+multi);
-            //ship.getMutableStats().getTimeMult();
-            ship.getMutableStats().getHullBonus().modifyMult(source,multi);
-
-            ship.getMutableStats().getMaxSpeed().modifyMult(source,multi);
-            ship.getMutableStats().getAcceleration().modifyMult(source,multi);
-
-            ship.getMutableStats().getEnergyAmmoRegenMult().modifyMult(source,multi);
-            ship.getMutableStats().getBallisticAmmoRegenMult().modifyMult(source,multi);
-            ship.getMutableStats().getMissileAmmoRegenMult().modifyMult(source,multi);
-
-            ship.getMutableStats().getBallisticRoFMult().modifyMult(source,multi);
-            ship.getMutableStats().getEnergyRoFMult().modifyMult(source,multi);
-            ship.getMutableStats().getMissileRoFMult().modifyMult(source,multi);
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-        /*
+    /*
         if (Global.getCombatEngine().hasPluginOfClass(NanoThief_BattleListener.class)) return;
         Global.getCombatEngine().addPlugin(new NanoThief_BattleListener());
         //note: this might only effect ships with the commander? will need to check...

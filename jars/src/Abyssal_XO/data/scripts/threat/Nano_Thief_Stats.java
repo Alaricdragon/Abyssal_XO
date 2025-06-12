@@ -42,11 +42,13 @@ public class Nano_Thief_Stats {
 
     ArrayList<Nano_Thief_SKill_Base> skills = new ArrayList<>();
 
-    private float reclaimPerControl = 1000;
+    private float reclaimPerControl = Settings.NANO_THIEF_ReclaimPerControl_BASE;
     private float ttl = 60;
+    @Getter
     private float range;
 
     private String fighterToBuild = Settings.NANO_THIEF_BASEWING;
+    @Getter
     private ShipHullSpecAPI fighterHullSpec;
     public Nano_Thief_Stats(String fighterToBuild) {
         if (fighterToBuild != null) this.fighterToBuild = fighterToBuild;
@@ -491,16 +493,16 @@ public class Nano_Thief_Stats {
 
         float ttl = getModifedTTL(fighter);
         for (ShipAPI a : fighter.getWing().getWingMembers()){
-            //fighter.setShipAI(new Nano_Thief_AI_CustomSwarm_Shell(fighter,this));
-            //fighter.setShipAI(new Nano_Thief_NoneCombatAI(fighter));
             MagicSubsystemsManager.addSubsystemToShip(a, new DamageOverTime_System(a, ttl,range));
             a.getMutableStats().getMinCrewMod().modifyMult("Abyssal_XO",0);
-            //a.addTag("swarm_fighter");//hopefully, this helps. but it might not be. or maybe I should be puting this on the figher? mmm...
+            //log.info("changing swarm stats for a single fighter...");
             for (Nano_Thief_SKill_Base b : skills) {
-                b.changeCombatSwarmStats(fighter,this);
+                b.changeCombatSwarmStats(a,this);
             }
         }
-
+        for (Nano_Thief_SKill_Base b : skills) {
+            b.changeCombatSwarmStats(fighter.getWing(),this);
+        }
     }
     public ShipAPI createDefenseSwarm(ShipAPI primary){
         /*for (Nano_Thief_SKill_Base a : skills){
