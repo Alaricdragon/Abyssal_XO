@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Nano_Thief_Stats {
+
     private boolean wingSet = false;
     private float productionTime = 1;
     private float swarmCost = 100;
@@ -448,10 +449,30 @@ public class Nano_Thief_Stats {
         //fighter.setShipAI(new Nano_Thief_AI_CustomSwarm_Shell(fighter,this));
         //fighter.getWing().setSourceShip(fighter);
 
-
+        //so, this worked. but it only wokred in the contect of having the ships act strange. (if I removed the set sorce ship null it worked but only in engagment range)/
+        //I am keeping this line, to better remember how mush I am fucking pissed what the hell game?
+        //at least its all fixed now.... hopefully.
         //fighter.getWing().setSourceShip(null);
-        new Nano_Thief_AI_OVERRIDE(fighter,this);
+        //new Nano_Thief_AI_OVERRIDE(fighter,this);
 
+        CombatEngineAPI engine = Global.getCombatEngine();
+        CombatFleetManagerAPI manager = engine.getFleetManager(fighter.getOriginalOwner());
+        manager.setSuppressDeploymentMessages(true);
+        Vector2f loc = fighter.getLocation();
+        float facing = (float) Math.random() * 360f;
+        //log.info("attempting to create a attack swarm at "+loc.x+", "+loc.y+" at ship of "+primary.getName()+" who's location is "+primary.getLocation().x+", "+primary.getLocation().y);
+        ShipAPI temp = manager.spawnShipOrWing("talon_Interceptor", loc, facing, 0f, null);
+        temp.getMutableStats().getFighterWingRange().modifyFlat("Abyssal_XO",5000000);
+        fighter.getWing().setSourceShip(temp);
+        //manager.removeDeployed(temp,false);
+        /*fighter.setDoNotRender(true);
+        fighter.setExplosionScale(0f);
+        fighter.setHulkChanceOverride(0f);
+        fighter.setImpactVolumeMult(SwarmLauncherEffect.IMPACT_VOLUME_MULT);
+        fighter.getArmorGrid().clearComponentMap(); // no damage to weapons/engines*/
+        engine.removeEntity(temp);
+
+        manager.setSuppressDeploymentMessages(false);
 
         //fighter.getWing().getSpec().setRange(1000000);
 
@@ -501,7 +522,7 @@ public class Nano_Thief_Stats {
         }
         this.productionTime = a.getNumFighters() * a.getRefitTime() * Settings.NANO_THIEF_CustomSwarm_BUILDTIME_PREREFIT;
         this.ttl = Settings.NANO_THIEF_CustomSwarm_TTL;
-        this.swarmCost = a.getOpCost(a.getVariant().getStatsForOpCosts())*Settings.NANO_THIEF_CustomSwarm_COST_PEROP;
+        this.swarmCost = (a.getOpCost(a.getVariant().getStatsForOpCosts())*Settings.NANO_THIEF_CustomSwarm_COST_PEROP)+Settings.NANO_THIEF_CustomSwarm_COST_BASE;
         log.info("got swarm of ID: "+a.getId()+" stats as: cost: "+swarmCost+", productionTime: "+productionTime+", time to live"+ttl+", and range: "+this.range);
     }
     /*

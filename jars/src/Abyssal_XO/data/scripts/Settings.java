@@ -7,11 +7,12 @@ import org.json.JSONException;
 import java.util.ArrayList;
 
 public class Settings {
-    public static final int NANO_THIEF_BASESWARM_COST = 125;
+    public static final int NANO_THIEF_BASESWARM_COST = 175;
     public static final int NANO_THIEF_BASESWARM_BUILDTIME = 5;
     public static final int NANO_THIEF_BASESWARM_TTL = 120;//swrams get exstea base TTL because they already die from shoting wepons.
 
 
+    public static final float NANO_THIEF_CustomSwarm_COST_BASE = 50;//swarms cost 100 at 10 op, 200 at 20, 300 at 30.
     public static final float NANO_THIEF_CustomSwarm_COST_PEROP = 10;//swarms cost 100 at 10 op, 200 at 20, 300 at 30.
     public static final float NANO_THIEF_CustomSwarm_BUILDTIME_PREREFIT = 0.3f;//swarms build 3 times faster then they should
     public static final int NANO_THIEF_CustomSwarm_TTL = 60;//swrams get exstea base TTL because they already die from shoting wepons.

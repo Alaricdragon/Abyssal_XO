@@ -32,8 +32,8 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
     private HashMap<String,Nano_Thief_Stats> hostileCaptions;
 
     public NanoThief_BattleListener(){
-        Nano_Thief_AI_OVERRIDE.reset();
-        Nano_Thief_NoneCombatAI.init();
+        //Nano_Thief_AI_OVERRIDE.reset();
+        //Nano_Thief_NoneCombatAI.init();
         CombatEngineAPI engine = Global.getCombatEngine();
         log.info("(NanoThief)attempting to get commanders for friendly fleet...");
         friendlyCaptions = getCommanders(engine.getFleetManager(FleetSide.PLAYER).getAllFleetCommanders());
@@ -119,13 +119,13 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
             CombatEngineAPI engine = Global.getCombatEngine();
             //int owner = target.getOriginalOwner();
             boolean found = false;
-            for (ShipAPI curr : engine.getShips()) {
+            /*for (ShipAPI curr : engine.getShips()) {
                 //if (curr == target || curr.getOwner() != owner) continue;
                 //if (curr.isHulk() || curr.getOwner() == 100) continue;
                 //if (!Nano_Thief_Utils.canAcceptReclaim(curr)) continue;
                 //if (curr.getCurrentCR() >= 1f) continue;
                 break;
-            }
+            }*/
             Pair<Nano_Thief_Stats, Integer> force0 = getPreferredCommander(target,friendlyCaptions);
             Pair<Nano_Thief_Stats, Integer> force1 = getPreferredCommander(target,hostileCaptions);
             if (force0.one != null){
