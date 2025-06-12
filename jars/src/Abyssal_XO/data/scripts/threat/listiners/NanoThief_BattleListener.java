@@ -97,7 +97,7 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
         for (ShipAPI a : Global.getCombatEngine().getShips()) {
            attemptToTranformTarget(a,amount);
         }
-        Nano_Thief_AI_OVERRIDE.advanceAll(amount);
+        //Nano_Thief_AI_OVERRIDE.advanceAll(amount);
     }
     public void attemptToTranformTarget(ShipAPI target,float amount){
         if (target == null) return;

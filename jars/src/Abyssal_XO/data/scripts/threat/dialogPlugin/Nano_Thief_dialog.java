@@ -24,18 +24,12 @@ public class Nano_Thief_dialog implements InteractionDialogPlugin {
     public void init(){
         //Global.getSector().getCampaignUI().
     }
-    InteractionDialogAPI dialog;
+    public static InteractionDialogAPI dialog;
     @Override
     public void init(InteractionDialogAPI dialog) {
         this.dialog = dialog;
-        /*TooltipMakerAPI tooltip = dialog.getTextPanel().beginTooltip();
-        tooltip.addSectionHeading("Main Force", Alignment.MID,10);
-        tooltip.addShipList(10,10,50,Global.getSector().getPlayerFleet().getFaction().getBaseUIColor(),Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy(),10);
-        dialog.getTextPanel().addTooltip();*/
         attemptShowCargo(dialog);
-        //attemptThing2(dialog);
-        //attemptShipThing(dialog);
-        dialog.getOptionPanel().addOption("exit","exit");
+        //dialog.getOptionPanel().addOption("exit","exit");
 
         //dialog.get
     }
@@ -120,7 +114,7 @@ public class Nano_Thief_dialog implements InteractionDialogPlugin {
     }
     @Override
     public void optionSelected(String optionText, Object optionData) {
-        if (optionData.equals("exit")){
+        if (optionData.equals("exit") || optionData.equals("Cancal")){
             dialog.dismiss();
         }
     }

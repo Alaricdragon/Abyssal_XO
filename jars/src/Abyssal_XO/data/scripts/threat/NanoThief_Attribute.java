@@ -9,18 +9,16 @@ import second_in_command.specs.SCBaseAptitudePlugin;
 public class NanoThief_Attribute extends SCBaseAptitudePlugin {
     /*so relevent data:
     to do list:
-        !!NOTE!!)
-            -as of right fucking now, the wings work. they engage things and every fuck thing. I am so fucking mad you have no idea!
-        !!) make it so ships with under 1000 engagement range cannot become 'Simulacrum Fighter Wings'
-            -might not be required... no it is. I cant risk all the possible issues.
         1) rebalance the 9 skills to not use the quality system.
             -1.a) rebalance skills
             -1.b) implement skills.
         2) add in the new icons for the systems
-        4)(done) add in the system that lets me sellect a fighter for the player fleet.
-        5) make it so the fighters acsualy lanch from the ship.
-        6) add in the quest to allow someone to quire this skill (kill a centen number of fabricates, then just have it.)
+        3) make it so the fighters acsualy lanch from the ship.
+        4) add in the quest to allow someone to quire this skill (kill a centen number of fabricates, then just have it.)
 
+    -balance:
+        the fighters are way to fucking strong. this is not a issue that can be fixed with deploment time
+        solution: reduce fighter damage by 10%, and hull by 20%, and shields by 20%.
 skills:
 0) base:
     base:
@@ -30,35 +28,37 @@ skills:
     Each Simulacrum Fighter Wing costs OP cost * ?? reclaim to produce, and can takes refit time * wing size * ?? seconds to produce.
     Simulacrum Fighters dont benefit from fighter modifiers, and rapidly decay, only being able to stay in combat for 60 seconds before being destroyed.
     Simulacrum Fighters have infinite engagement range.
+    Simulacrum Fighters have -20% hull, -20% shield efficiency, and -10% damage
 
-    Reclaim packages cannot be collected well a ship is in phase.
-    Simulacrum Fighters cannot be deployed well a ship is in phase.
+    Reclaim packages cannot be collected by a ship is in phase.
+    Simulacrum Fighters cannot be deployed by a ship is in phase.
 
 1) Overcharged:
     Gain the 'Overcharged' sub system, wish increases precived time flow by 200% for 30 seconds with a very long cooldown.
-    lose 30% time to live, 50% hp, and shields take 100% more damage.
+    lose 50% time to live, 50% hp, and shields take 100% more damage.
     or
     Increased damage by 20%. increase speed and acceleration by 100%. Increase weapon fire and ammunition recharge rate by 500%
     lose 80% hp, 80% time to live, shields take 500% more damage
 2) Mass Manufacturing:
-    cost 33% less
-    take 20% less time to build
+    cost 20% less
+    take 30% less time to build
     use 10% less control
-    10% less HP
-    10% less speed
-    10% less damage
+    5% less HP
+    5% less speed
+    5% less damage
 3) Longevity:
     gain 20% maximum hull
     shields take 20% less damage
     gain 100% Time To Live
 4) advanced installation:
-    gain the 'phase teleport' sub system?
+    when outside of combat gain:
+        +40% max speed.
 5) Quality Checks:
-    cost 20% more
+    cost 30% more
     take 10% more time to build
     gains 10% Time To Live
-    gains 20% max hp
-    shields take 20% less damage
+    gains 10% max hp
+    shields take 10% less damage
     gains 10% higher fire rate for all weapons
     gain 10% recharge rate for all weapons
     gain 10% flux dissipation
@@ -68,10 +68,9 @@ skills:
    Simulacrum Fighter Wings produced by the Central Fabricator:
     cost 33% less.
     cost 50% less control
-    gain 10% max hp
-    shields take 10% less damage.
     gain 20% time to live
-    gain 5% damage
+    gain 5% max hp
+    shields take 5% less damage.
    Simulacrum Fighter Wings produced by any ship that is NOT the Central Fabricator:
     cost 50% more
     take 25% more time to build
@@ -82,6 +81,9 @@ skills:
    After the Central Fabricator is assigned, it cannot be changed for the inter combat, even if it is destroyed or retreats.
    gain the 'Central Fabricator' hullmod, allowing you to chose your Central Fabricator
 7) Material Analyses:
+    cost 25% more
+    take 100% more time to build
+
     //note: I dont know how to feel about this... giving ships stats seems strange... maybe instead:
     40% chance of:
     25% chance of:
@@ -98,20 +100,21 @@ skills:
         gain 10% max hp
         shields take 10% less damage
     15% chance of:
-        gain 50% speed and acceleration
-        engines take 50% less damage
+        gain 25% time to live
+        gain 20% max hp
+        shields take 20% less damage
     15% chance of:
+        lose 25% time to live
         lose 10% hp
         gain 10% increased damage
         gain 20% increased weapon range
     5% chance of:
         gain 50% max hp
         shields take 50% less damage
-        gain 30% max speed
         gain 30% rate of fire for all weapons
         gain 30% ammo regeneration
         gain 30% increased flux dissipation
-        gain 20% increased damage
+        gain 10% increased damage
 
     cost 25% more
     take 100% more time to produce
@@ -124,8 +127,9 @@ skills:
         gain 1% fighter replacement time
 or
 9) Efficient Production:
-    swarm cost is reduced by 50%.
-    Ships can control 100% more swarms.
+    production time reduced by 30%.
+    cost reduced by 30%.
+    control cost reduced by 50%.
 
 
 

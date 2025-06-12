@@ -1,12 +1,14 @@
 package Abyssal_XO.data.scripts.threat.dialogPlugin;
 
 import Abyssal_XO.data.scripts.Settings;
+import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CargoAPI;
 import com.fs.starfarer.api.campaign.CargoPickerListener;
 import com.fs.starfarer.api.campaign.CargoStackAPI;
 import com.fs.starfarer.api.loading.FighterWingSpecAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
+import com.fs.starfarer.api.util.Misc;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -26,7 +28,10 @@ public class Nano_Thief_Selection_CargoListiner implements CargoPickerListener {
         List<CargoAPI.CargoItemQuantity<String>> a = playerFighters.getFighters();
         playerFighters.clear();
         for (CargoAPI.CargoItemQuantity<String> b : a){
-            playerFighters.addFighters(b.getItem(),1);
+            FighterWingSpecAPI spec = Global.getSettings().getFighterWingSpec(b.getItem());
+            if (spec.getRange() >= Settings.NANO_THIEF_MINRANGEOFWING) {
+                playerFighters.addFighters(b.getItem(), 1);
+            }
         }
         selectedFighters = null;
         backupCargo = Global.getSector().getPlayerFleet().getCargo().createCopy();
@@ -55,11 +60,13 @@ public class Nano_Thief_Selection_CargoListiner implements CargoPickerListener {
     }
     @Override
     public void pickedCargo(CargoAPI cargo) {
+        //log.info("this was a 'picked cargo'.");
+        Nano_Thief_dialog.dialog.dismiss();
     }
 
     @Override
     public void cancelledCargoSelection() {
-        log.info("this was considered a canal");
+        //log.info("this was considered a canal");
 
         CargoAPI playerTemp = Global.getSector().getPlayerFleet().getCargo();
         playerTemp.clear();
@@ -71,7 +78,7 @@ public class Nano_Thief_Selection_CargoListiner implements CargoPickerListener {
             Global.getSector().getPlayerPerson().getMemory().expire(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY,-1);
             Global.getSector().getPlayerPerson().getMemory().unset(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY);//getString(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY);
         }
-
+        Nano_Thief_dialog.dialog.dismiss();
     }
     @Override
     public void recreateTextPanel(TooltipMakerAPI panel, CargoAPI cargo, CargoStackAPI pickedUp, boolean pickedUpFromSource, CargoAPI combined) {
@@ -123,8 +130,12 @@ public class Nano_Thief_Selection_CargoListiner implements CargoPickerListener {
             }
         }
         //cargo.addCommodity("crew",200);
-        panel.addPara("the inserted fighter LCP is set as your replecent fighter. the fighter LCP will not be available untill you replace it with another one.",5);
+        panel.addPara("the inserted fighter LCP is set as your Simulacrum Fighter Wing. the fighter LCP will not be available until you replace it with another one.",5);
         panel.addPara("if nothing is selected, talon wings will be selected for deployment",5);
+        panel.addPara("The rules for base stats (before skill modifications) is as follows:",5);
+        panel.addPara("Reclaim cost is %s per ordnance point + %s",5, Misc.getTextColor(), Misc.getHighlightColor(),""+(int)Settings.NANO_THIEF_CustomSwarm_COST_PEROP,""+(int)Settings.NANO_THIEF_CustomSwarm_COST_BASE);
+        panel.addPara("Build time is wing size * replacement rate * %s",5,Misc.getTextColor(), Misc.getHighlightColor(),""+Settings.NANO_THIEF_CustomSwarm_BUILDTIME_PREREFIT);
+        panel.addPara("Time to live is %s for bombers, and %s for everything else",5,Misc.getTextColor(), Misc.getHighlightColor(),""+(int)Settings.NANO_THIEF_CustomSwarm_Bomber_TTL,""+(int)Settings.NANO_THIEF_CustomSwarm_TTL);
         applyStatsPanel(panel);
 
         //dialog.dismiss();
@@ -135,9 +146,11 @@ public class Nano_Thief_Selection_CargoListiner implements CargoPickerListener {
         String sprite = Global.getSettings().getFighterWingSpec(fighterID).getVariant().getHullSpec().getSpriteName();
         FighterWingSpecAPI fighterSpec = Global.getSettings().getFighterWingSpec(fighterID);
         //panel.addImageWithText(5);
-        panel.addImage(sprite,5);
-        //panel.addImage("very good stats.",5);
+        panel.addPara("",5);
         panel.addPara(fighterSpec.getWingName(),5);
+        panel.addImage(sprite,5);
+        Nano_Thief_Stats.displayStatsForFighterWithoutModification(panel,fighterSpec);
+        //panel.addImage("very good stats.",5);
     }
     private void setNewFighter(CargoAPI cargo,CargoStackAPI pickedUp,String newFTemp,String oldFTemp){
         //if (pickedUp != null)pickedUp.getCargo().clear();

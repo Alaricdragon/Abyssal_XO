@@ -5,7 +5,6 @@ import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.listeners.AdvanceableListener;
-import lombok.Getter;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -23,6 +22,7 @@ public class NanoThief_ShipStats implements AdvanceableListener {
     private float progress = 0;
     private static final float interval = 1;
     private int control;
+    private boolean isCentralFabricate=false;
     private static Logger log = Global.getLogger(NanoThief_ShipStats.class);
     public NanoThief_ShipStats(ShipAPI ship,Nano_Thief_Stats stats){
         this.ship = ship;
@@ -30,6 +30,9 @@ public class NanoThief_ShipStats implements AdvanceableListener {
         this.rpc = stats.getModifedReclaimPerControl(ship);
         this.cost = stats.getModifiedCost(ship);
         this.creationTime = stats.getModifedProductionTime(ship);
+        if (ship.equals(stats.getCentralFab())){
+            isCentralFabricate = true;
+        }
         //log.info("created swarm controller for ship of "+this.ship.getName());
     }
     public void addReclaim(float amount){
@@ -77,6 +80,10 @@ public class NanoThief_ShipStats implements AdvanceableListener {
     private void attemptToDisplayStats(){
         if (!ship.equals(Global.getCombatEngine().getPlayerShip())) return;
         if (control > swarms.size()) {
+            if (isCentralFabricate) {
+                Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_3", "graphics/icons/hullsys/temporal_shell.png",
+                        "Central Fabricator", "The center of all Simulacrum Fighter Wing in your fleet", false);
+            }
             if (progress >= creationTime) {
                 Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_2", "graphics/icons/hullsys/temporal_shell.png",
                         "Production Status", "Ready to launch fighter wing", false);

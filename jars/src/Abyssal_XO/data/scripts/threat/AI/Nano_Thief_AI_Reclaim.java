@@ -250,7 +250,7 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 				}
 			} else if(canGather()){
 				sinceTurnedOffFlash += amount;
-				if (sinceTurnedOffFlash > 3f) {
+				if (sinceTurnedOffFlash > 2f) {
 					CombatEngineAPI engine = Global.getCombatEngine();
 					if (fabricator.isAlive()) {
 						//todo: HERE. this is were I apply effects to ships! I have no fucking clue how it works.

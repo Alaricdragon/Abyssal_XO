@@ -2,6 +2,7 @@ package Abyssal_XO.data.scripts.threat.ability;
 
 import Abyssal_XO.data.scripts.threat.dialogPlugin.Nano_Thief_dialog;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.CampaignUIAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.campaign.econ.SubmarketAPI;
 import com.fs.starfarer.api.impl.campaign.abilities.BaseDurationAbility;
@@ -14,6 +15,12 @@ public class Nano_Thief_ability extends BaseDurationAbility {
     protected void activateImpl() {
         //Global.getSector().getCampaignUI().showInteractionDialog(Global.getSector().getEconomy().getMarketsCopy().get(0).getSubmarketsCopy().get(0).getCargo());
         Global.getSector().getCampaignUI().showInteractionDialog(new Nano_Thief_dialog(),Global.getSector().getPlayerFleet());
+        /*Global.getSector().getCampaignUI().showInteractionDialogFromCargo(new Nano_Thief_dialog(), Global.getSector().getPlayerFleet(), new CampaignUIAPI.DismissDialogDelegate() {
+            @Override
+            public void dialogDismissed() {
+                Nano_Thief_dialog.dialog.dismiss();
+            }
+        });*/
         //Global.getFactory().createMarket(memoryKey,"null",1);
         //Global.getSector().getEconomy();
         //CargoAPI.
