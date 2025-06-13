@@ -438,14 +438,14 @@ public class Nano_Thief_Stats {
         RoilingSwarmEffect swarm = FragmentSwarmHullmod.createSwarmFor(fighter);
         //fighter.setShipAI(new Nano_Thief_AI_CustomSwarm_Shell(fighter,this,120));
         float ttl = getModifedTTL(fighter);
+        for (Nano_Thief_SKill_Base b : skills) {
+            b.changeCombatSwarmStats(fighter.getWing(),this);
+        }
         for (ShipAPI a : fighter.getWing().getWingMembers()){
-            MagicSubsystemsManager.addSubsystemToShip(a, new DamageOverTime_System(a, ttl,range));
             for (Nano_Thief_SKill_Base b : skills) {
                 b.changeCombatSwarmStats(a,this);
             }
-        }
-        for (Nano_Thief_SKill_Base b : skills) {
-            b.changeCombatSwarmStats(fighter.getWing(),this);
+            MagicSubsystemsManager.addSubsystemToShip(a, new DamageOverTime_System(a, ttl,range));
         }
 
     }
@@ -492,16 +492,16 @@ public class Nano_Thief_Stats {
         //fighter.getMutableStats().getFighterWingRange().modifyFlat("Abyssal_XO_WING_MULTI",1000000);
 
         float ttl = getModifedTTL(fighter);
+        for (Nano_Thief_SKill_Base b : skills) {
+            b.changeCombatSwarmStats(fighter.getWing(),this);
+        }
         for (ShipAPI a : fighter.getWing().getWingMembers()){
-            MagicSubsystemsManager.addSubsystemToShip(a, new DamageOverTime_System(a, ttl,range));
             a.getMutableStats().getMinCrewMod().modifyMult("Abyssal_XO",0);
             //log.info("changing swarm stats for a single fighter...");
             for (Nano_Thief_SKill_Base b : skills) {
                 b.changeCombatSwarmStats(a,this);
             }
-        }
-        for (Nano_Thief_SKill_Base b : skills) {
-            b.changeCombatSwarmStats(fighter.getWing(),this);
+            MagicSubsystemsManager.addSubsystemToShip(a, new DamageOverTime_System(a, ttl,range));
         }
     }
     public ShipAPI createDefenseSwarm(ShipAPI primary){

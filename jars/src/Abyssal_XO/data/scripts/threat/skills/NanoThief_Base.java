@@ -18,7 +18,7 @@ public class NanoThief_Base extends Nano_Thief_SKill_Base {
     private static final String key = "AbyssalXO_Nano_Thief_Skill_0";
     private static final float hullMod = 0.8f;
     private static final float armorMod = 0.8f;
-    private static final float shieldMod = 1.2f;
+    private static final float shieldMod = 0.2f;
     private static final float damageMod = 0.9f;
 
     @Override
@@ -41,7 +41,7 @@ public class NanoThief_Base extends Nano_Thief_SKill_Base {
         * */
         String hullmod = 100-((int)((hullMod)*100))+"%";
         String armormod = 100-((int)((armorMod)*100))+"%";
-        String shieldmod = (int)((shieldMod-1)*100)+"%";
+        String shieldmod = (int)(((1+shieldMod)*100)-100)+"%";
         String damagemod = 100-((int)((damageMod)*100))+"%";
         tooltip.addPara("When any ship is destroyed in combat, harvest a Reclaim Package worth %s/%s/%s/%s reclaim, depending on hullsize. reclaim packages will then go to the nearest ship in the fleet. Any  Reclaim Packages that reaches there target will be converted into reclaim.",0f,Misc.getHighlightColor(), Misc.getHighlightColor(),""+Settings.NANO_THIEF_RECLAIM_GAIN[0],""+Settings.NANO_THIEF_RECLAIM_GAIN[1],""+Settings.NANO_THIEF_RECLAIM_GAIN[2],""+Settings.NANO_THIEF_RECLAIM_GAIN[3]);
         tooltip.addPara("For every %s reclaim in a ship, it gains %s control, rounded up.",0f,Misc.getHighlightColor(), Misc.getHighlightColor(),""+(int)Settings.NANO_THIEF_ReclaimPerControl_BASE,""+1);
@@ -56,7 +56,7 @@ public class NanoThief_Base extends Nano_Thief_SKill_Base {
         tooltip.addPara("   -Lose %s shield strength",0, Misc.getTextColor(), Misc.getNegativeHighlightColor(),shieldmod);
         tooltip.addPara("   -Lose %s damage",0, Misc.getTextColor(), Misc.getNegativeHighlightColor(),damagemod);
         tooltip.addSpacer(10f);
-        LabelAPI label = tooltip.addPara("\"Its an art you know. Salving ships on the battlefield, well under fire. There are legends of rebels harvesting whole fleets on the battlefields, sending the patchwork wreckage to attack there oppressors. Its an wonderful thing to watch. \n Makes me want to cry tears of joy. And envy.\"", Misc.getTextColor(), 0f);
+        LabelAPI label = tooltip.addPara("\"Its an art you know. Salvaging ships on the battlefield, well under fire. There are legends of rebels harvesting whole fleets on the battlefields, sending the patchwork wreckage to attack there oppressors. Its an wonderful thing to watch. \n Makes me want to cry tears of joy. And envy.\"", Misc.getTextColor(), 0f);
         tooltip.addPara(" - unknown", Misc.getTextColor(), 0f);
 
         label.italicize();
@@ -110,6 +110,12 @@ public class NanoThief_Base extends Nano_Thief_SKill_Base {
     public void changeCombatSwarmStats(ShipAPI ship, Nano_Thief_Stats stats) {
         ship.getMutableStats().getHullBonus().modifyMult(key,hullMod);
         ship.getMutableStats().getArmorBonus().modifyMult(key,armorMod);
+
+        ship.getMutableStats().getBeamWeaponDamageMult().modifyMult(key,damageMod);
+        ship.getMutableStats().getMissileWeaponDamageMult().modifyMult(key,damageMod);
+        ship.getMutableStats().getEnergyWeaponDamageMult().modifyMult(key,damageMod);
+        ship.getMutableStats().getBallisticWeaponDamageMult().modifyMult(key,damageMod);
+
         if (stats.getFighterHullSpec().getShieldSpec() == null) return;
         ship.getMutableStats().getShieldDamageTakenMult().modifyFlat(key,stats.getFighterHullSpec().getShieldSpec().getFluxPerDamageAbsorbed()*shieldMod);
     }

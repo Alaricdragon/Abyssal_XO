@@ -16,13 +16,13 @@ public class NanoThief_1 extends Nano_Thief_SKill_Base{
     private static final String key = "AbyssalXO_Nano_Thief_Skill_1";
     private static final float hullMod = 0.8f;
     private static final float armorMod = 0.8f;
-    private static final float shieldMod = 1.2f;
+    private static final float shieldMod = 0.2f;
     private static final float ttlMod = 0.5f;
 
     @Getter
-    private static final float timeFlowMod = 2;
+    private static final float timeFlowMod = 1f;
     @Getter
-    private static final float timeFlowDur = 30;//10 seconds precived.
+    private static final float timeFlowDur = 20;//10 seconds precived.
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
         /*
@@ -33,12 +33,12 @@ public class NanoThief_1 extends Nano_Thief_SKill_Base{
         50% .
 
          */
-        String timeflowmod = (int)(100*(timeFlowMod+1))+"%";
-        String timeflowdur = (int)(timeFlowDur/timeFlowMod)+"%";
+        String timeflowmod = (int)(100*(timeFlowMod))+"%";
+        String timeflowdur = (int)(timeFlowDur/timeFlowMod)+"";
 
         String hullmod = 100-((int)((hullMod)*100))+"%";
         String armormod = 100-((int)((armorMod)*100))+"%";
-        String shieldmod = (int)((shieldMod-1)*100)+"%";
+        String shieldmod = (int)(((1+shieldMod)*100)-100)+"%";
         String damagemod = 100-((int)((ttlMod)*100))+"%";
         tooltip.addPara("Gain the 'Overcharged' sub system, wish increased precived time flow by %s for %s seconds with a very long cooldown.",0, Misc.getHighlightColor(), Misc.getHighlightColor(),timeflowmod,timeflowdur);
         tooltip.addPara("Lose %s hull",0, Misc.getTextColor(), Misc.getNegativeHighlightColor(),hullmod);

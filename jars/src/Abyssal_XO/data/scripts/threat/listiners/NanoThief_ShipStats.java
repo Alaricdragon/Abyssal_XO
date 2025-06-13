@@ -20,7 +20,7 @@ public class NanoThief_ShipStats implements AdvanceableListener {
     private float cost;
     private float creationTime;
     private float progress = 0;
-    private static final float interval = 1;
+    private static final float interval = 0.25f;
     private int control;
     private boolean isCentralFabricate=false;
     private static Logger log = Global.getLogger(NanoThief_ShipStats.class);
@@ -56,7 +56,7 @@ public class NanoThief_ShipStats implements AdvanceableListener {
         //log.info("running swarm controler for ship of: "+ship.getName());
         for (int a = swarms.size()-1; a >= 0; a--){
             ShipAPI swarm = swarms.get(a);
-            if (swarm.isHulk() || !swarm.isAlive()){
+            if (swarm.getWing().getWingMembers().isEmpty()){//swarm.isHulk() || !swarm.isAlive()){
                 swarms.remove(a);
             }
         }
@@ -67,7 +67,7 @@ public class NanoThief_ShipStats implements AdvanceableListener {
                 swarms.add(stats.createCombatSwarm(ship));
                 reclaim-=cost;
                 this.creationTime = stats.getModifedProductionTime(ship);
-                log.info("creating time for next swarm gotten as: "+this.creationTime);
+                //log.info("creating time for next swarm gotten as: "+this.creationTime);
                 progress = 0;
             }
         }else{

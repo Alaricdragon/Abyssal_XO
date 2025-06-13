@@ -43,14 +43,13 @@ skills:
     cost 20% less
     take 30% less time to build
     use 10% less control
-    5% less HP
-    5% less speed
+    5% less HP, armor, and shields.
     5% less damage
 3) Longevity:
-    gain 20% maximum hull
-    shields take 20% less damage
+    gain 10% maximum hull
+    shields take 10% less damage
     gain 100% Time To Live
-4) advanced installation:
+4) Advanced Installation:
     when outside of combat gain:
         +40% max speed.
 5) Quality Checks:
