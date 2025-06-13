@@ -41,10 +41,10 @@ public class NanoThief_1 extends Nano_Thief_SKill_Base{
         String shieldmod = (int)(((1+shieldMod)*100)-100)+"%";
         String damagemod = 100-((int)((ttlMod)*100))+"%";
         tooltip.addPara("Gain the 'Overcharged' sub system, wish increased precived time flow by %s for %s seconds with a very long cooldown.",0, Misc.getHighlightColor(), Misc.getHighlightColor(),timeflowmod,timeflowdur);
-        tooltip.addPara("Lose %s hull",0, Misc.getTextColor(), Misc.getNegativeHighlightColor(),hullmod);
-        tooltip.addPara("Lose %s armor rating",0, Misc.getTextColor(), Misc.getNegativeHighlightColor(),armormod);
-        tooltip.addPara("Lose %s shield strength",0, Misc.getTextColor(), Misc.getNegativeHighlightColor(),shieldmod);
-        tooltip.addPara("Lose %s time to live",0, Misc.getTextColor(), Misc.getNegativeHighlightColor(),damagemod);
+        tooltip.addPara("Lose %s hull",0, Misc.getNegativeHighlightColor(), Misc.getNegativeHighlightColor(),hullmod);
+        tooltip.addPara("Lose %s armor rating",0, Misc.getNegativeHighlightColor(), Misc.getNegativeHighlightColor(),armormod);
+        tooltip.addPara("Lose %s shield strength",0, Misc.getNegativeHighlightColor(), Misc.getNegativeHighlightColor(),shieldmod);
+        tooltip.addPara("Lose %s time to live",0, Misc.getNegativeHighlightColor(), Misc.getNegativeHighlightColor(),damagemod);
 
         tooltip.addSpacer(10f);
 

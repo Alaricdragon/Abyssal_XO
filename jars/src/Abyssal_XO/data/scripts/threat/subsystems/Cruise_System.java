@@ -2,6 +2,7 @@ package Abyssal_XO.data.scripts.threat.subsystems;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.ShipAPI;
+import com.fs.starfarer.api.combat.ShipwideAIFlags;
 import org.apache.log4j.Logger;
 import org.lazywizard.lazylib.MathUtils;
 import org.magiclib.subsystems.MagicSubsystem;
@@ -19,19 +20,19 @@ public class Cruise_System extends MagicSubsystem {
         //log.info("adding the overcharged system to a single fighter...");
     }
 
-    @Override
+    /*@Override
     protected float getRange() {
         return this.range;
-    }
+    }*/
     /*@Override
     protected float getRange() {
         ship.getAllWeapons().get(0);
     }*/
 
-    @Override
+    /*@Override
     public boolean isToggle() {
-        return true;
-    }
+        return false;
+    }*/
 
     /*@Override
     public float getBaseActiveDuration() {
@@ -45,14 +46,17 @@ public class Cruise_System extends MagicSubsystem {
 
     @Override
     public float getBaseActiveDuration() {
-        return 0;
+        return 5;
     }
 
     @Override
     public float getBaseCooldownDuration() {
-        return 5;
+        return 0;
     }
 
+    private static int intival = 5;
+    private float time = 0;
+    private ShipAPI target=null;
     @Override
     public boolean shouldActivateAI(float amount) {
         //todo: put this on a timer so it does not spam? or is it fine????
@@ -60,7 +64,18 @@ public class Cruise_System extends MagicSubsystem {
         * 1) add a timer to this. maybe 3 seconds.
         * 2) when the timer goes off, mark the target. use that as a thing.
         * 3) */
-        return (ship.getShipTarget() == null) || MathUtils.getDistance(ship,ship.getShipTarget()) >= range;
+        //ShipwideAIFlags.AIFlags.IN_ATTACK_RUN;
+        //ShipwideAIFlags.AIFlags.WING_NEAR_ENEMY
+        /*time+=amount;
+        if (time >= intival){
+            time = 0;*/
+        target = ship.getShipTarget();
+        //if (target == null) log.info("no target...");
+        //log.info("the target is: "+target.getName());
+        //}
+        return target == null || MathUtils.getDistance(ship,target) >= range;
+        //return !ship.getAIFlags().hasFlag(ShipwideAIFlags.AIFlags.WING_NEAR_ENEMY) && !ship.getAIFlags().hasFlag(ShipwideAIFlags.AIFlags.IN_ATTACK_RUN) && !ship.getAIFlags().hasFlag(ShipwideAIFlags.AIFlags.WING_WAS_NEAR_ENEMY) && !ship.getAIFlags().hasFlag(ShipwideAIFlags.AIFlags.WING_SHOULD_GET_SOME_DISTANCE);//ship.getAIFlags().hasFlag(ShipwideAIFlags.AIFlags.RUN_QUICKLY);
+        //return (ship.getShipTarget() == null) || MathUtils.getDistance(ship,ship.getShipTarget()) >= range;
     }
     @Override
     public void onActivate() {

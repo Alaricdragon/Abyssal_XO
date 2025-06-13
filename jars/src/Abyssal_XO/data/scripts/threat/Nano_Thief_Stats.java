@@ -469,8 +469,9 @@ public class Nano_Thief_Stats {
         Vector2f loc = fighter.getLocation();
         float facing = (float) Math.random() * 360f;
         //log.info("attempting to create a attack swarm at "+loc.x+", "+loc.y+" at ship of "+primary.getName()+" who's location is "+primary.getLocation().x+", "+primary.getLocation().y);
-        ShipAPI temp = manager.spawnShipOrWing("talon_Interceptor", loc, facing, 0f, null);
+        ShipAPI temp = manager.spawnShipOrWing("enforcer_Assault", loc, facing, 0f, null);
         temp.getMutableStats().getFighterWingRange().modifyFlat("Abyssal_XO",5000000);
+        temp.getMutableStats().getMaxSpeed().modifyMult("Abyssal_XO",0);
         fighter.getWing().setSourceShip(temp);
         //manager.removeDeployed(temp,false);
         /*fighter.setDoNotRender(true);

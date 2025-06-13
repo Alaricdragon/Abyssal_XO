@@ -28,7 +28,6 @@ public class NanoThief_Base extends Nano_Thief_SKill_Base {
 
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
-        //this is effectivly template data. for now.
         /*
     When any ship is destroyed in combat, harvest a Reclaim Package worth 1000/2000/3000/4000 reclaim, depending on hullsize. reclaim packages will then go to the nearest ship in the fleet. Any  Reclaim Packages that reaches there target will be converted into reclaim.
     for every 1000 reclaim in a ship, gain 1 control, rounded up.
@@ -119,45 +118,4 @@ public class NanoThief_Base extends Nano_Thief_SKill_Base {
         if (stats.getFighterHullSpec().getShieldSpec() == null) return;
         ship.getMutableStats().getShieldDamageTakenMult().modifyFlat(key,stats.getFighterHullSpec().getShieldSpec().getFluxPerDamageAbsorbed()*shieldMod);
     }
-    /*
-        if (Global.getCombatEngine().hasPluginOfClass(NanoThief_BattleListener.class)) return;
-        Global.getCombatEngine().addPlugin(new NanoThief_BattleListener());
-        //note: this might only effect ships with the commander? will need to check...
-        super.advanceInCombat(data, ship, amount);
-        if (!ship.isHulk() || ship.hasTag(TAG_HASRECLAMED)) return;
-        if (ThreatCombatStrategyAI.isFabricator(ship)) return;
-
-        float elapsedAsHulk = 0f;
-        String key = "SiC_NanoThief_elapsedAsHulkKey";
-        if (ship.getCustomData().containsKey(key)) {
-            elapsedAsHulk = (float) ship.getCustomData().get(key);
-        }
-        elapsedAsHulk += amount;
-        ship.setCustomData(key, elapsedAsHulk);
-        if (elapsedAsHulk > 1f) {
-            CombatEngineAPI engine = Global.getCombatEngine();
-            int owner = ship.getOriginalOwner();
-            boolean found = false;
-            for (ShipAPI curr : engine.getShips()) {
-                if (curr == ship || curr.getOwner() != owner) continue;
-                if (curr.isHulk() || curr.getOwner() == 100) continue;
-                if (!Nano_Thief_Utils.canAcceptReclaim(curr)) continue;
-                //if (curr.getCurrentCR() >= 1f) continue;
-                found = true;
-                break;
-            }
-            if (found) {
-                Global.getCombatEngine().addPlugin(new ThreatShipReclamationScript(ship, 3f));
-            } else {
-                ship.setCustomData(key, 0f);
-            }
-        }
-    }*/
 }
-//note: I was looking at 'SotF.TendToOurGarden' for this. it might be useful for defensive reasons.
-/*class NanoThief_SwarmCreater implements AdvanceableListener {
-    @Override
-    public void advance(float amount) {
-
-    }
-}*/

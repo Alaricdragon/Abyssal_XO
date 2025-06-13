@@ -19,6 +19,9 @@ public class NanoThief_Attribute extends SCBaseAptitudePlugin {
     -balance:
         the fighters are way to fucking strong. this is not a issue that can be fixed with deploment time
         solution: reduce fighter damage by 10%, and hull by 20%, and shields by 20%.
+
+    -bugs:
+        (fixed): something is modifiing the max speed of the fighters by like 75% increase. the reasons is unknown.
 skills:
 0) base:
     base:
@@ -206,12 +209,12 @@ or
         section1.addSkill("SiC_NanoThief_skill_3");
         section1.addSkill("SiC_NanoThief_skill_4");
         section1.addSkill("SiC_NanoThief_skill_5");
+        section1.addSkill("SiC_NanoThief_skill_6");
+        section1.addSkill("SiC_NanoThief_skill_7");
         addSection(section1);
 
-        SCAptitudeSection section2 = new SCAptitudeSection(false, 3, "technology2");
-        section2.addSkill("SiC_NanoThief_skill_6");
-        section2.addSkill("SiC_NanoThief_skill_7");
-        addSection(section2);
+        /*SCAptitudeSection section2 = new SCAptitudeSection(false, 3, "technology2");
+        addSection(section2);*/
 
         SCAptitudeSection section3 = new SCAptitudeSection(false, 4, "technology4");
         section3.addSkill("SiC_NanoThief_skill_8");
