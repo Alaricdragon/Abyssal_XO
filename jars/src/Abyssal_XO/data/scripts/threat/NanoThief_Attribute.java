@@ -53,6 +53,7 @@ skills:
     shields take 10% less damage
     gain 100% Time To Live
 4) Advanced Installation:
+    gain 50su speed.
     when outside of combat gain:
         +40% max speed.
 5) Quality Checks:
@@ -60,10 +61,11 @@ skills:
     take 10% more time to build
     gains 10% Time To Live
     gains 10% max hp
+    gain 10% flux dissipation
     shields take 10% less damage
     gains 10% higher fire rate for all weapons
     gain 10% recharge rate for all weapons
-    gain 10% flux dissipation
+    gain 5% more damage
 6) Centralized Logistics: when the first reclaim package is created, the largest, highest mass ship in your fleet is marked as the 'Central Fabricator'. Reclaim Packages will always attempt to move to the Central Fabricator, provided it exists.
    for every 1000 Reclaim the Central Fabricator has:
     produce Simulacrum Fighter Wings 10% faster.

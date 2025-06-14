@@ -23,8 +23,8 @@ public class NanoThief_3 extends Nano_Thief_SKill_Base{
 
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
-        String hullmod = ((int)((1+hullMod)*100))-100+"%";
-        String armormod = ((int)((1+armorMod)*100))-100+"%";
+        String hullmod = ((int)((hullMod)*100))+"%";
+        String armormod = ((int)((armorMod)*100))+"%";
         String shieldmod = 100-(int)((shieldMod*100))+"%";
         String damagemod = ((int)((timeMod)*100))-100+"%";
         tooltip.addPara("gain %s hull",0, Misc.getHighlightColor(), Misc.getHighlightColor(),hullmod);
@@ -43,9 +43,9 @@ public class NanoThief_3 extends Nano_Thief_SKill_Base{
     }
     @Override
     public void changeCombatSwarmStats(ShipAPI ship, Nano_Thief_Stats stats) {
-        ship.getMutableStats().getHullBonus().modifyMult(key,hullMod);
-        ship.getMutableStats().getArmorBonus().modifyMult(key,armorMod);
+        ship.getMutableStats().getHullBonus().modifyFlat(key,hullMod*stats.getFighterHullSpec().getHitpoints());
+        ship.getMutableStats().getArmorBonus().modifyFlat(key,armorMod*stats.getFighterHullSpec().getArmorRating());
         if (stats.getFighterHullSpec().getShieldSpec() == null) return;
-        ship.getMutableStats().getShieldDamageTakenMult().modifyMult(key,stats.getFighterHullSpec().getShieldSpec().getFluxPerDamageAbsorbed());
+        ship.getMutableStats().getShieldDamageTakenMult().modifyMult(key,shieldMod);//stats.getFighterHullSpec().getShieldSpec().getFluxPerDamageAbsorbed());
     }
 }
