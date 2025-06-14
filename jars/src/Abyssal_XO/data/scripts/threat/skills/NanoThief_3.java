@@ -42,7 +42,7 @@ public class NanoThief_3 extends Nano_Thief_SKill_Base{
 
     }
     @Override
-    public void changeCombatSwarmStats(ShipAPI ship, Nano_Thief_Stats stats) {
+    public void changeCombatSwarmStats(ShipAPI ship,ShipAPI fabricator, Nano_Thief_Stats stats) {
         ship.getMutableStats().getHullBonus().modifyFlat(key,hullMod*stats.getFighterHullSpec().getHitpoints());
         ship.getMutableStats().getArmorBonus().modifyFlat(key,armorMod*stats.getFighterHullSpec().getArmorRating());
         if (stats.getFighterHullSpec().getShieldSpec() == null) return;

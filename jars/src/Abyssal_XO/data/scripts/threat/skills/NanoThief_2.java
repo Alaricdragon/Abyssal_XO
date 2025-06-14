@@ -61,7 +61,7 @@ public class NanoThief_2 extends Nano_Thief_SKill_Base{
         label.italicize();
     }
     @Override
-    public void changeCombatSwarmStats(ShipAPI ship, Nano_Thief_Stats stats) {
+    public void changeCombatSwarmStats(ShipAPI ship,ShipAPI fabricator, Nano_Thief_Stats stats) {
         ship.getMutableStats().getHullBonus().modifyMult(key,hullMod);
         ship.getMutableStats().getArmorBonus().modifyMult(key,armorMod);
 

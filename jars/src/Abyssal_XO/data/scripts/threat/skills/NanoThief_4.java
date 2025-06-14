@@ -44,7 +44,7 @@ public class NanoThief_4 extends Nano_Thief_SKill_Base{
 
     }
     @Override
-    public void changeCombatSwarmStats(ShipAPI ship, Nano_Thief_Stats stats) {
+    public void changeCombatSwarmStats(ShipAPI ship,ShipAPI fabricator, Nano_Thief_Stats stats) {
         /*log.info("getting a single ships speed stats...");
         for (String a : ship.getMutableStats().getMaxSpeed().getFlatMods().keySet()){
             log.info("  flat mod as: "+ship.getMutableStats().getMaxSpeed().getFlatMods().get(a).value);

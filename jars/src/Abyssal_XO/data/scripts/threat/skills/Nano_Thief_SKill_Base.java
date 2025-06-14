@@ -36,10 +36,10 @@ public class Nano_Thief_SKill_Base extends SCBaseSkillPlugin {
     public void changeReclaimStats(ShipAPI ship, Nano_Thief_Stats stats){
         //changes the stats of the reclaim swarm
     }
-    public void changeCombatSwarmStats(ShipAPI ship, Nano_Thief_Stats stats){
+    public void changeCombatSwarmStats(ShipAPI ship,ShipAPI fabricator, Nano_Thief_Stats stats){
         //changes the stats of the combat swarm
     }
-    public void changeCombatSwarmStats(FighterWingAPI wing, Nano_Thief_Stats stats){
+    public void changeCombatSwarmStats(FighterWingAPI wing, ShipAPI fabricator,Nano_Thief_Stats stats){
         //some things just want to modifiy the intier fighter wing.
         //changes the stats of the combat swarm
     }

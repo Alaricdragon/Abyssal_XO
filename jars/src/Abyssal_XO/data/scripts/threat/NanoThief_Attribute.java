@@ -84,11 +84,23 @@ skills:
     lose 5% damage
    After the Central Fabricator is assigned, it cannot be changed for the inter combat, even if it is destroyed or retreats.
    gain the 'Central Fabricator' hullmod, allowing you to chose your Central Fabricator
-7) Material Analyses:
+-7) Prepared Deployment
+    when a ship has deployed all Simulacrum Fighter Wings it can control, the ship will continue to build Simulacrum Fighter Wings and hold them in storge.
+    The ship can store up to the number of Simulacrum Fighter Wings this ship can control * 0.2 +1.
+    the ship can deploy Simulacrum Fighter Wings extremely quickly when control becomes available.
+
+    what do I need to do to get this working?
+    1) make a new system in ship stats that can add additional ships to 'prepared to be deployed'. by defalt, the value of this will be one.
+    2) whenever the ship is at full capacity for swarms, check and make sure it is not at full capacity for 'stored swrams'.
+
+    3) make it so ship stats and skill base has a way to modify the number of available 'stored ships'
+
+
+
+-OLD) Material Analyses:
     cost 25% more
     take 100% more time to build
 
-    //note: I dont know how to feel about this... giving ships stats seems strange... maybe instead:
     40% chance of:
     25% chance of:
     15% chance of:

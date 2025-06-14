@@ -5,12 +5,14 @@ import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.listeners.AdvanceableListener;
+import lombok.Getter;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 
 public class NanoThief_ShipStats implements AdvanceableListener {
     private Nano_Thief_Stats stats;
+    @Getter
     private float reclaim = 0;
     private ArrayList<ShipAPI> swarms = new ArrayList<>();
     private float rpc;
@@ -80,10 +82,6 @@ public class NanoThief_ShipStats implements AdvanceableListener {
     private void attemptToDisplayStats(){
         if (!ship.equals(Global.getCombatEngine().getPlayerShip())) return;
         if (control > swarms.size()) {
-            if (isCentralFabricate) {
-                Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_3", "graphics/icons/hullsys/temporal_shell.png",
-                        "Central Fabricator", "The center of all Simulacrum Fighter Wing in your fleet", false);
-            }
             if (progress >= creationTime) {
                 Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_2", "graphics/icons/hullsys/temporal_shell.png",
                         "Production Status", "Ready to launch fighter wing", false);
@@ -92,6 +90,19 @@ public class NanoThief_ShipStats implements AdvanceableListener {
                         "Production Status", "Fighter wing "+(int)((progress / creationTime) * 100)+"% complete", false);
             }
         }
+        if (isCentralFabricate) {
+            Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_3", "graphics/icons/hullsys/temporal_shell.png",
+                    "Central Fabricator", "The center of all Simulacrum Fighter Wing in your fleet", false);
+        }
+        /*String display = "";
+        display = "Stored Reclaim:"+ (int)reclaim+" reclaim available";
+        display += "\n Deployed Simulacrum Fighter Wings: "+swarms.size()+"/"+controlAmount();
+
+        String buildStatus = "";
+        Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF+"_0","graphics/icons/hullsys/temporal_shell.png",
+                "Simulacrum Fighter Wings status",display,false);*/
+
+
         Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF+"_1", "graphics/icons/hullsys/temporal_shell.png",
                 "Stored Reclaim", (int)reclaim+" reclaim available", false);
         int control = controlAmount();

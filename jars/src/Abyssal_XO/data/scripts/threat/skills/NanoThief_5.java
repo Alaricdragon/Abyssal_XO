@@ -14,11 +14,11 @@ public class NanoThief_5 extends Nano_Thief_SKill_Base{
 
     private static final float hullMod = 0.1f;
     private static final float armorMod = 0.1f;
-    private static final float shieldMod = 0.1f;
+    private static final float shieldMod = 0.9f;
 
     private static final float damageMod = 0.05f;
     private static final float fireMod = 0.1f;
-    private static final float rechargeMod = 0.1f;
+    private static final float rechargeMod = 10f;//please dont ask
     private static final float fluxMod = 0.1f;
 
 
@@ -34,6 +34,12 @@ public class NanoThief_5 extends Nano_Thief_SKill_Base{
     public float costChange(float cost, ShipAPI target, Nano_Thief_Stats stats) {
         return cost * costMod;
     }
+
+    @Override
+    public float timeToLiveChange(float time, ShipAPI target, Nano_Thief_Stats stats) {
+        return time * timeMod;
+    }
+
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
         /*
@@ -52,7 +58,7 @@ public class NanoThief_5 extends Nano_Thief_SKill_Base{
         String armormod = ((int)((armorMod)*100))+"%";
         String shieldmod = 100-(int)((shieldMod*100))+"%";
         String firerate = (int)(fireMod*100)+"%";
-        String rechare = (int)(rechargeMod*100)+"%";
+        String rechare = (int)(rechargeMod)+"%";
         String fluxmod = (int)(fluxMod*100)+"%";
         String damagemod = (int)(damageMod*100)+"%";
 
@@ -84,7 +90,17 @@ public class NanoThief_5 extends Nano_Thief_SKill_Base{
     }
 
     @Override
-    public void changeCombatSwarmStats(ShipAPI ship, Nano_Thief_Stats stats) {
+    public void changeCombatSwarmStats(ShipAPI ship,ShipAPI fabricator, Nano_Thief_Stats stats) {
+        ship.getMutableStats().getBeamWeaponDamageMult().modifyMult(key,damageMod);
+        ship.getMutableStats().getMissileWeaponDamageMult().modifyMult(key,damageMod);
+        ship.getMutableStats().getEnergyWeaponDamageMult().modifyMult(key,damageMod);
+        ship.getMutableStats().getBallisticWeaponDamageMult().modifyMult(key,damageMod);
+
+        ship.getMutableStats().getBallisticAmmoRegenMult().modifyPercent(key, fireMod);
+        ship.getMutableStats().getEnergyAmmoRegenMult().modifyPercent(key, fireMod);
+        ship.getMutableStats().getMissileAmmoRegenMult().modifyPercent(key, fireMod);
+
+        ship.getMutableStats().getFluxDissipation().modifyFlat(key,stats.getFighterHullSpec().getFluxCapacity()*fluxMod);
 
 
         ship.getMutableStats().getHullBonus().modifyFlat(key,hullMod*stats.getFighterHullSpec().getHitpoints());

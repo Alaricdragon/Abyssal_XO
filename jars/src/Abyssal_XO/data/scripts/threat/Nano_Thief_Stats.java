@@ -68,7 +68,7 @@ public class Nano_Thief_Stats {
             //SQ_muti *= b.qualityMulti;
             //SQ_add += b.qualityAdd;
             if (b.getId().equals("SiC_NanoThief_skill_6")){
-                closest = true;
+                closest = false;
             }
         }
         //this.fighterToBuild = "claw_wing";//"warthog_wing";//"warthog_wing";//"trident_wing";//"dagger_wing";//"broadsword_wing";
@@ -242,13 +242,11 @@ public class Nano_Thief_Stats {
 
     private static final String NanoThiefStorgeKey = "$NanoThief_StoredReclaim_Base";
     //private HashMap<ShipAPI,Integer> reclaimGathered = new HashMap<>();
-    public int randomIntTemp = 0;
     public void applyEffectsWhenAbsorbed(ShipAPI target,ShipAPI reclaim,int reclaimValue){
         NanoThief_ShipStats listiner = null;
         if (!target.hasListenerOfClass(NanoThief_ShipStats.class)) {
             listiner = new NanoThief_ShipStats(target,this);
             target.addListener(listiner);
-            randomIntTemp++;
             //log.info("adding listener for ship of: "+target.getName());
         }else{
             List<NanoThief_ShipStats> a = target.getListenerManager().getListeners(NanoThief_ShipStats.class);
@@ -415,9 +413,9 @@ public class Nano_Thief_Stats {
         takeoffVel.scale(fighter.getMaxSpeed() * 1f);
 
         if (wingId.equals(Settings.NANO_THIEF_BASEWING)){
-            modifiyBaseShip(fighter);
+            modifiyBaseShip(fighter,primary);
         }else{
-            modifiyCustomShip(fighter);
+            modifiyCustomShip(fighter,primary);
         }
 
         Vector2f.add(fighter.getVelocity(), takeoffVel, fighter.getVelocity());
@@ -428,7 +426,7 @@ public class Nano_Thief_Stats {
         }*/
         return fighter;
     }
-    public void modifiyBaseShip(ShipAPI fighter){
+    public void modifiyBaseShip(ShipAPI fighter,ShipAPI frabacator){
         //getBaseStatsForFighter(fighter);
         fighter.setDoNotRender(true);
         fighter.setExplosionScale(0f);
@@ -439,17 +437,17 @@ public class Nano_Thief_Stats {
         //fighter.setShipAI(new Nano_Thief_AI_CustomSwarm_Shell(fighter,this,120));
         float ttl = getModifedTTL(fighter);
         for (Nano_Thief_SKill_Base b : skills) {
-            b.changeCombatSwarmStats(fighter.getWing(),this);
+            b.changeCombatSwarmStats(fighter.getWing(),frabacator,this);
         }
         for (ShipAPI a : fighter.getWing().getWingMembers()){
             for (Nano_Thief_SKill_Base b : skills) {
-                b.changeCombatSwarmStats(a,this);
+                b.changeCombatSwarmStats(a,frabacator,this);
             }
             MagicSubsystemsManager.addSubsystemToShip(a, new DamageOverTime_System(a, ttl,range));
         }
 
     }
-    public void modifiyCustomShip(ShipAPI fighter){
+    public void modifiyCustomShip(ShipAPI fighter,ShipAPI frabacator){
         //ship.getAllWeapons().get(0).isFiring();
         //so, thats a thing. I could 100% do that now. fuck me and fuck you all.
         //fighter.getWing();
@@ -494,13 +492,13 @@ public class Nano_Thief_Stats {
 
         float ttl = getModifedTTL(fighter);
         for (Nano_Thief_SKill_Base b : skills) {
-            b.changeCombatSwarmStats(fighter.getWing(),this);
+            b.changeCombatSwarmStats(fighter.getWing(),frabacator,this);
         }
         for (ShipAPI a : fighter.getWing().getWingMembers()){
             a.getMutableStats().getMinCrewMod().modifyMult("Abyssal_XO",0);
             //log.info("changing swarm stats for a single fighter...");
             for (Nano_Thief_SKill_Base b : skills) {
-                b.changeCombatSwarmStats(a,this);
+                b.changeCombatSwarmStats(a,frabacator,this);
             }
             MagicSubsystemsManager.addSubsystemToShip(a, new DamageOverTime_System(a, ttl,range));
         }
