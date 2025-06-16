@@ -29,6 +29,9 @@ public class Nano_Thief_SKill_Base extends SCBaseSkillPlugin {
     public float timeToLiveChange(float time, ShipAPI target, Nano_Thief_Stats stats){
         return time;
     }
+    public float storedSwarmChange(float stored, ShipAPI target, Nano_Thief_Stats stats){
+        return stored;
+    }
 
     public void ApplyChangeOnReclaim(ShipAPI ship,ShipAPI reclaim, float reclaimValue, Nano_Thief_Stats stats){
         //runs code whenever reclaim is collected.

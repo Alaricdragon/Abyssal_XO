@@ -24,18 +24,20 @@ public class NanoThief_ShipStats implements AdvanceableListener {
     private float progress = 0;
     private static final float interval = 0.25f;
     private int control;
+    private int maxStorge;
+    private int stored = 0;
     private boolean isCentralFabricate=false;
     private static Logger log = Global.getLogger(NanoThief_ShipStats.class);
     public NanoThief_ShipStats(ShipAPI ship,Nano_Thief_Stats stats){
         this.ship = ship;
         this.stats = stats;
-        this.rpc = stats.getModifedReclaimPerControl(ship);
-        this.cost = stats.getModifiedCost(ship);
-        this.creationTime = stats.getModifedProductionTime(ship);
         if (ship.equals(stats.getCentralFab())){
             isCentralFabricate = true;
         }
-        //log.info("created swarm controller for ship of "+this.ship.getName());
+        this.rpc = stats.getModifedReclaimPerControl(ship);
+        this.cost = stats.getModifiedCost(ship);
+        this.creationTime = stats.getModifedProductionTime(ship);
+        this.maxStorge = stats.getModifedStoredSwarms(ship);
     }
     public void addReclaim(float amount){
         //log.info("increasing reclaim by: "+amount);
@@ -63,14 +65,32 @@ public class NanoThief_ShipStats implements AdvanceableListener {
             }
         }
         control = controlAmount();
-        if (swarms.size() < control && reclaim >= cost){
-            if (ship.isPhased()) return;
-            if (progress >= creationTime){
-                swarms.add(stats.createCombatSwarm(ship));
-                reclaim-=cost;
-                this.creationTime = stats.getModifedProductionTime(ship);
-                //log.info("creating time for next swarm gotten as: "+this.creationTime);
-                progress = 0;
+        if (swarms.size() < control && stored != 0 && !ship.isPhased()){
+            stored--;
+            swarms.add(stats.createCombatSwarm(ship));
+        }
+        if (reclaim >= cost){
+            if (swarms.size() < control && !ship.isPhased()) {
+                if (progress >= creationTime) {
+                    swarms.add(stats.createCombatSwarm(ship));
+                    reclaim -= cost;
+                    this.creationTime = stats.getModifedProductionTime(ship);
+                    this.maxStorge = stats.getModifedStoredSwarms(ship);
+                    //log.info("creating time for next swarm gotten as: "+this.creationTime);
+                    progress = 0;
+                }
+                return;
+            }
+            if (stored < maxStorge) {
+                //if (ship.isPhased()) return;
+                if (progress >= creationTime) {
+                    this.stored++;
+                    reclaim -= cost;
+                    this.creationTime = stats.getModifedProductionTime(ship);
+                    this.maxStorge = stats.getModifedStoredSwarms(ship);
+                    progress = 0;
+                }
+                return;
             }
         }else{
             progress = 0;
@@ -81,18 +101,18 @@ public class NanoThief_ShipStats implements AdvanceableListener {
     }
     private void attemptToDisplayStats(){
         if (!ship.equals(Global.getCombatEngine().getPlayerShip())) return;
-        if (control > swarms.size()) {
+        if (control > swarms.size() || maxStorge > stored) {
             if (progress >= creationTime) {
                 Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_2", "graphics/icons/hullsys/temporal_shell.png",
-                        "Production Status", "Ready to launch fighter wing", false);
+                        "Production Status", "Ready to launch Simulacrum Fighter Wing", false);
             } else {
                 Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_2", "graphics/icons/hullsys/temporal_shell.png",
-                        "Production Status", "Fighter wing "+(int)((progress / creationTime) * 100)+"% complete", false);
+                        "Production Status", "Simulacrum Fighter Wing "+(int)((progress / creationTime) * 100)+"% complete", false);
             }
         }
         if (isCentralFabricate) {
             Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_3", "graphics/icons/hullsys/temporal_shell.png",
-                    "Central Fabricator", "The center of all Simulacrum Fighter Wing in your fleet", false);
+                    "Central Fabricator", "The center of all Simulacrum Fighter Wing production in your fleet", false);
         }
         /*String display = "";
         display = "Stored Reclaim:"+ (int)reclaim+" reclaim available";
@@ -107,6 +127,10 @@ public class NanoThief_ShipStats implements AdvanceableListener {
                 "Stored Reclaim", (int)reclaim+" reclaim available", false);
         int control = controlAmount();
         Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF, "graphics/icons/hullsys/temporal_shell.png",
-                "Deployed Swarms", swarms.size()+"/"+control, false);
+                "Deployed Simulacrum Fighter Wing", swarms.size()+"/"+control, false);
+        if (stored == 0) return;
+        Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF+"_4", "graphics/icons/hullsys/temporal_shell.png",
+                "Prepared Simulacrum Fighter Wing", stored+"/"+maxStorge, false);
+
     }
 }

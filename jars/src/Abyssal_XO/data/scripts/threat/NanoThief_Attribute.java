@@ -15,7 +15,7 @@ public class NanoThief_Attribute extends SCBaseAptitudePlugin {
         2) add in the new icons for the systems
         3) make it so the fighters acsualy lanch from the ship.
         4) add in the quest to allow someone to quire this skill (kill a centen number of fabricates, then just have it.)
-
+        5) improve the display for the nano-thief stats. something like, a bar that fills as I build fighters, and a bar that fills as I max deployment (and fills more (with a different color) as I max storge)
     -balance:
         the fighters are way to fucking strong. this is not a issue that can be fixed with deploment time
         solution: reduce fighter damage by 10%, and hull by 20%, and shields by 20%.
@@ -107,40 +107,12 @@ skills:
     15% chance of:
     5% chance of:
 
-    40% chance of:
-        gain 10% time to live
-        gain 5% max hp
-        shields take 5% less damage
-    25% chance of:
-        gain 20% time to live
-        gain 10% max hp
-        shields take 10% less damage
-    15% chance of:
-        gain 25% time to live
-        gain 20% max hp
-        shields take 20% less damage
-    15% chance of:
-        lose 25% time to live
-        lose 10% hp
-        gain 10% increased damage
-        gain 20% increased weapon range
-    5% chance of:
-        gain 50% max hp
-        shields take 50% less damage
-        gain 30% rate of fire for all weapons
-        gain 30% ammo regeneration
-        gain 30% increased flux dissipation
-        gain 10% increased damage
-
-    cost 25% more
-    take 100% more time to produce
-
 8) Desperate Measures:
     for every 1000 reclaim gained
-        restore 0.5 CR
+        restore 1% CR
         gain 10 seconds of PP time
-        gain and 1% of hull, regenerated over 10 seconds.
-        gain 1% fighter replacement time
+        gain and 1% of hull, or 500 hull, whatever is higher regenerated over 10 seconds.
+        gain 1% fighter replacement rate
 or
 9) Efficient Production:
     production time reduced by 30%.
@@ -225,15 +197,19 @@ or
         section1.addSkill("SiC_NanoThief_skill_5");
         section1.addSkill("SiC_NanoThief_skill_6");
         section1.addSkill("SiC_NanoThief_skill_7");
-        addSection(section1);
 
+        //note: this is a temp solution to a very completed issue. I need to be carefull carefull to remove this after~~~
+        section1.addSkill("SiC_NanoThief_skill_8");
+        section1.addSkill("SiC_NanoThief_skill_9");
+
+        addSection(section1);
         /*SCAptitudeSection section2 = new SCAptitudeSection(false, 3, "technology2");
         addSection(section2);*/
 
-        SCAptitudeSection section3 = new SCAptitudeSection(false, 4, "technology4");
+        /*SCAptitudeSection section3 = new SCAptitudeSection(false, 4, "technology4");
         section3.addSkill("SiC_NanoThief_skill_8");
         section3.addSkill("SiC_NanoThief_skill_9");
-        addSection(section3);
+        addSection(section3);*/
     }
 
     @Override

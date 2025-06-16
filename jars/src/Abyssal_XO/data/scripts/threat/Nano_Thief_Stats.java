@@ -315,6 +315,13 @@ public class Nano_Thief_Stats {
         }
         return prod;
     }
+    public int getModifedStoredSwarms(ShipAPI target){
+        float prod = 0;
+        for (Nano_Thief_SKill_Base a : skills){
+            prod = a.storedSwarmChange(prod,target,this);
+        }
+        return (int)prod;
+    }
 
 
     public ShipAPI createReclaim(ShipAPI primary,int forceID){
