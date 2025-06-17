@@ -9,9 +9,8 @@ import second_in_command.specs.SCBaseAptitudePlugin;
 public class NanoThief_Attribute extends SCBaseAptitudePlugin {
     /*so relevent data:
     to do list:
-        1) rebalance the 9 skills to not use the quality system.
-            -1.a) rebalance skills
-            -1.b) implement skills.
+        1) in 'centralized production:' make it add the hullmod
+        1.1) there is a bug that makes it so if I put in a talen, then cancel, the thing does not give me back my wing / reset the fighter to the old one. this needs looking into.
         2) add in the new icons for the systems
         3) make it so the fighters acsualy lanch from the ship.
         4) add in the quest to allow someone to quire this skill (kill a centen number of fabricates, then just have it.)
@@ -199,17 +198,17 @@ or
         section1.addSkill("SiC_NanoThief_skill_7");
 
         //note: this is a temp solution to a very completed issue. I need to be carefull carefull to remove this after~~~
-        section1.addSkill("SiC_NanoThief_skill_8");
-        section1.addSkill("SiC_NanoThief_skill_9");
+        //section1.addSkill("SiC_NanoThief_skill_8");
+        //section1.addSkill("SiC_NanoThief_skill_9");
 
         addSection(section1);
         /*SCAptitudeSection section2 = new SCAptitudeSection(false, 3, "technology2");
         addSection(section2);*/
 
-        /*SCAptitudeSection section3 = new SCAptitudeSection(false, 4, "technology4");
+        SCAptitudeSection section3 = new SCAptitudeSection(false, 4, "technology4");
         section3.addSkill("SiC_NanoThief_skill_8");
         section3.addSkill("SiC_NanoThief_skill_9");
-        addSection(section3);*/
+        addSection(section3);
     }
 
     @Override
