@@ -9,12 +9,12 @@ import second_in_command.specs.SCBaseAptitudePlugin;
 public class NanoThief_Attribute extends SCBaseAptitudePlugin {
     /*so relevent data:
     to do list:
-        1) in 'centralized production:' make it add the hullmod
-        1.1) there is a bug that makes it so if I put in a talen, then cancel, the thing does not give me back my wing / reset the fighter to the old one. this needs looking into.
-        2) add in the new icons for the systems
-        3) make it so the fighters acsualy lanch from the ship.
+        1) there is a bug that makes it so if I put in a talen, then cancel, the thing does not give me back my wing / reset the fighter to the old one. this needs looking into.
+        2) add in the new icons for the systems (copyed another skill for now)
+        3) make it so the fighters acsualy lanch from the ship. (aka an animation for that)
         4) add in the quest to allow someone to quire this skill (kill a centen number of fabricates, then just have it.)
         5) improve the display for the nano-thief stats. something like, a bar that fills as I build fighters, and a bar that fills as I max deployment (and fills more (with a different color) as I max storge)
+        6) add graphics to the 'overcharge' sub system
     -balance:
         the fighters are way to fucking strong. this is not a issue that can be fixed with deploment time
         solution: reduce fighter damage by 10%, and hull by 20%, and shields by 20%.

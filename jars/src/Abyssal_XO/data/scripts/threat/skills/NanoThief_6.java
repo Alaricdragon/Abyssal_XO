@@ -1,8 +1,10 @@
 package Abyssal_XO.data.scripts.threat.skills;
 
+import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
@@ -39,14 +41,19 @@ public class NanoThief_6 extends Nano_Thief_SKill_Base{
     @Override
     public float costChange(float cost, ShipAPI target, Nano_Thief_Stats stats) {
         if (target == null) return cost;
-        if (!target.equals(stats.getCentralFab())) return cost * costMod;
+        if (!target.equals(stats.getCentralFab())){
+            return cost * costMod;
+        }
+        if (target.getVariant().getSMods().contains(Settings.HULLMOD_CENTRAL_FAB)){
+            cost *= centralFabReclaimMultiHullmod;
+        }
         return cost * fabCostMod;
     }
     @Override
     public float reclaimPerControlChange(float reclaim, ShipAPI target, Nano_Thief_Stats stats) {
         if (target == null ) return reclaim;
         if (target.equals(stats.getCentralFab())){
-            if (target.getVariant().getSMods().contains("Abyssal_XO_CF")) reclaim *= centralFabReclaimMultiHullmod;
+            //if (target.getVariant().getSMods().contains("Abyssal_XO_CF")) reclaim *= centralFabReclaimMultiHullmod;
             return reclaim * fabControlMod;
         }
         return reclaim;
@@ -148,6 +155,7 @@ public class NanoThief_6 extends Nano_Thief_SKill_Base{
         tooltip.addPara("   -Lose %s damage",0,Misc.getTextColor(),Misc.getNegativeHighlightColor(),damage);
 
         tooltip.addPara("If the Central Fabracator is destroyed, disabled, or retreates, a new Central Fabractor will not be sellected untill the battle is over",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor());
+        tooltip.addPara("Gain the %s hullmod, allowing you to chose your Central Fabracator",0,Misc.getHighlightColor(),Misc.getHighlightColor(),"Central Fabricator");
 
         tooltip.addSpacer(10f);
 
@@ -175,6 +183,16 @@ public class NanoThief_6 extends Nano_Thief_SKill_Base{
             ship.getMutableStats().getArmorBonus().modifyMult(key,armorMod);
             if (stats.getFighterHullSpec().getShieldSpec() == null) return;
             ship.getMutableStats().getShieldDamageTakenMult().modifyFlat(key,stats.getFighterHullSpec().getShieldSpec().getFluxPerDamageAbsorbed()*shieldMod);
+        }
+    }
+
+    @Override
+    public void onActivation(SCData data) {
+        if (data.getCommander().equals(Global.getSector().getPlayerPerson())) {
+            FactionAPI faction = Global.getSector().getPlayerFaction();
+            if (!faction.getKnownHullMods().contains(Settings.HULLMOD_CENTRAL_FAB)) {
+                faction.addKnownHullMod(Settings.HULLMOD_CENTRAL_FAB);
+            }
         }
     }
 }

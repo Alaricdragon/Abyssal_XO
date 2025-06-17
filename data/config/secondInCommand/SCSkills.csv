@@ -1,13 +1,13 @@
 id,name,iconPath,npcSpawnWeight,plugin
 ,,,,
 #NanoThief,,,,
-SiC_NanoThief_NanoThiefBase,Active Acquisition,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_Base
-SiC_NanoThief_skill_1,Overcharged,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_1
-SiC_NanoThief_skill_2,Mass Manufacturing,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_2
-SiC_NanoThief_skill_3,Longevity,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_3
-SiC_NanoThief_skill_4,Advanced Installation,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_4
-SiC_NanoThief_skill_5,Quality Checks,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_5
-SiC_NanoThief_skill_6,Centralized Logistics,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_6
-SiC_NanoThief_skill_7,Prepared Deployment,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_7
-SiC_NanoThief_skill_8,Desperate Measures,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_8
-SiC_NanoThief_skill_9,Efficient Production,graphics/secondInCommand/witchcraft/dance_between_realms.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_9
+SiC_NanoThief_NanoThiefBase,Active Acquisition,graphics/secondInCommand/improvisation/salvaged_armor.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_Base
+SiC_NanoThief_skill_1,Overcharged,graphics/secondInCommand/improvisation/preservation.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_1
+SiC_NanoThief_skill_2,Mass Manufacturing,graphics/secondInCommand/improvisation/scrappy_maintenance.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_2
+SiC_NanoThief_skill_3,Longevity,graphics/secondInCommand/improvisation/defensive_configuration.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_3
+SiC_NanoThief_skill_4,Advanced Installation,graphics/secondInCommand/improvisation/secured_mounts.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_4
+SiC_NanoThief_skill_5,Quality Checks,graphics/secondInCommand/improvisation/mobilization.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_5
+SiC_NanoThief_skill_6,Centralized Logistics,graphics/secondInCommand/improvisation/enhanced_overrides.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_6
+SiC_NanoThief_skill_7,Prepared Deployment,graphics/secondInCommand/improvisation/redistribution.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_7
+SiC_NanoThief_skill_8,Desperate Measures,graphics/secondInCommand/improvisation/derelict_fortifications.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_8
+SiC_NanoThief_skill_9,Efficient Production,graphics/secondInCommand/improvisation/derelict_operations.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_9
