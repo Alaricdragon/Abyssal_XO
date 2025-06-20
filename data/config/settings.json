@@ -1,6 +1,9 @@
 {
   "NanoThief_Users": [
     "threat"
+  ],
+  "NanoThief_BanndedHullmodsFromAcceptingReclaim": [
+    "strikeCraft"
   ]
 }
 

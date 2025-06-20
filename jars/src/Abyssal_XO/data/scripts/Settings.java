@@ -35,11 +35,18 @@ public class Settings {
     public static final String HULLMOD_CENTRAL_FAB = "Abyssal_XO_CF";
     public static final String TAG_HASRECLAMED = "Abyssal_XO_NanoThief_HasReclamed";
     public static ArrayList<String> NanoThief_Users = new ArrayList<>();
+    public static ArrayList<String> NanoThief_Banned = new ArrayList<>();
     public static void init() throws JSONException {
         JSONArray array = Global.getSettings().getJSONArray("NanoThief_Users");
         NanoThief_Users = new ArrayList<>();
         for (int a  = 0; a < array.length(); a++){
             NanoThief_Users.add(array.getString(a));
+        }
+
+        array = Global.getSettings().getJSONArray("NanoThief_BanndedHullmodsFromAcceptingReclaim");
+        NanoThief_Banned = new ArrayList<>();
+        for (int a  = 0; a < array.length(); a++){
+            NanoThief_Banned.add(array.getString(a));
         }
     }
 }

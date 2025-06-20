@@ -77,7 +77,15 @@ public class Nano_Thief_Stats {
     public void spawnReclaim() {
 
     }
-    public boolean canAcceptReclaim(){
+    public boolean canAcceptReclaim(ShipAPI ship){
+        if (ship.getParentStation() != null) return false;
+        if (ship.getVariant() != null){
+            for (String a : Settings.NanoThief_Banned){
+                if (ship.getVariant().getSMods().contains(a)) return false;
+                if (ship.getVariant().getPermaMods().contains(a)) return false;
+                if (ship.getVariant().getHullMods().contains(a)) return false;
+            }
+        }
         return true;
     }
     public boolean isValidReclaimTarget(ShipAPI ship){
@@ -131,6 +139,7 @@ public class Nano_Thief_Stats {
             //log.info("  has right commander...");
             if (!isValidReclaimTarget(curr)) continue;*/
             if (curr == null) continue;
+            if (!canAcceptReclaim(curr)) continue;
             if (curr.isHulk()) continue;
             if (curr.equals(reclaim)) continue;
             if (curr.getFleetCommander() == null) continue;
@@ -171,6 +180,7 @@ public class Nano_Thief_Stats {
                 if (!curr.getFleetMember().getFleetData().getFleet().equals(fleet)) continue;
                 //log.info("  has right commander...");
                 if (!isValidReclaimTarget(curr)) continue;*/
+                if (!canAcceptReclaim(curr)) continue;
                 if (curr == null) continue;
                 if (curr.isHulk()) continue;
                 if (curr.equals(reclaim)) continue;
@@ -410,10 +420,23 @@ public class Nano_Thief_Stats {
         Vector2f loc = primary.getLocation();
         float facing = (float) Math.random() * 360f;
         //log.info("attempting to create a attack swarm at "+loc.x+", "+loc.y+" at ship of "+primary.getName()+" who's location is "+primary.getLocation().x+", "+primary.getLocation().y);
-        ShipAPI fighter = manager.spawnShipOrWing(wingId, loc, facing, 0f, null);
-        fighter.getWing().setSourceShip(primary);//sets to ifself to prevent min ingagment rage from triggering. might remove if i build a custom AI for the ships.
-
+        int attempts = 0;
+        ShipAPI fighter = null;
+        while(attempts < 10) {
+            try {
+                fighter = manager.spawnShipOrWing(wingId, loc, facing, 0f, null);
+                fighter.getWing().setSourceShip(primary);//sets to ifself to prevent min ingagment rage from triggering. might remove if i build a custom AI for the ships.
+                break;
+            }catch (Exception e){
+                log.info("ERROR: failed to spawn a sawrm of ID: "+this.fighterToBuild+" "+attempts+" failues...");
+            }
+            attempts++;
+        }
         manager.setSuppressDeploymentMessages(false);
+        if (fighter == null){
+            log.info("ERROR: failed to spawn fighters. please use a diffrent wing... and send a report to alaricdragon");
+            return null;
+        }
 
 
         Vector2f takeoffVel = Misc.getUnitVectorAtDegreeAngle(facing);
