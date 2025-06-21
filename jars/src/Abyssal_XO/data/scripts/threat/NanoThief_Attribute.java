@@ -9,7 +9,6 @@ import second_in_command.specs.SCBaseAptitudePlugin;
 public class NanoThief_Attribute extends SCBaseAptitudePlugin {
     /*so relevent data:
     to do list:
-        1) there is a bug that makes it so if I put in a talen, then cancel, the thing does not give me back my wing / reset the fighter to the old one. this needs looking into.
         2) add in the new icons for the systems (copyed another skill for now)
         3) make it so the fighters acsualy lanch from the ship. (aka an animation for that)
         4) add in the quest to allow someone to quire this skill (kill a centen number of fabricates, then just have it.)
@@ -20,7 +19,7 @@ public class NanoThief_Attribute extends SCBaseAptitudePlugin {
         solution: reduce fighter damage by 10%, and hull by 20%, and shields by 20%.
 
     -bugs:
-        (fixed): something is modifiing the max speed of the fighters by like 75% increase. the reasons is unknown.
+        1) there is a bug that makes it so if I put in a talen, then cancel, the thing does not give me back my wing / reset the fighter to the old one. this needs looking into.
 skills:
 0) base:
     base:

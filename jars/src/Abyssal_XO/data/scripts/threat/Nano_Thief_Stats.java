@@ -11,6 +11,7 @@ import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.impl.combat.threat.FragmentSwarmHullmod;
 import com.fs.starfarer.api.impl.combat.threat.RoilingSwarmEffect;
 import com.fs.starfarer.api.impl.combat.threat.SwarmLauncherEffect;
+import com.fs.starfarer.api.impl.combat.threat.ThreatSwarmAI;
 import com.fs.starfarer.api.loading.FighterWingSpecAPI;
 import com.fs.starfarer.api.loading.WingRole;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
@@ -464,6 +465,7 @@ public class Nano_Thief_Stats {
         fighter.setImpactVolumeMult(SwarmLauncherEffect.IMPACT_VOLUME_MULT);
         fighter.getArmorGrid().clearComponentMap(); // no damage to weapons/engines
         RoilingSwarmEffect swarm = FragmentSwarmHullmod.createSwarmFor(fighter);
+        //fighter.setShipAI(new ThreatSwarmAI(fighter));
         //fighter.setShipAI(new Nano_Thief_AI_CustomSwarm_Shell(fighter,this,120));
         float ttl = getModifedTTL(fighter);
         for (Nano_Thief_SKill_Base b : skills) {

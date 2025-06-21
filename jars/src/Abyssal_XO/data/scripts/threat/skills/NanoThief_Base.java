@@ -16,10 +16,10 @@ import second_in_command.SCData;
 
 public class NanoThief_Base extends Nano_Thief_SKill_Base {
     private static final String key = "AbyssalXO_Nano_Thief_Skill_0";
-    private static final float hullMod = 0.8f;
-    private static final float armorMod = 0.8f;
-    private static final float shieldMod = 0.2f;
-    private static final float damageMod = 0.9f;
+    private static final float hullMod = 0.9f;
+    private static final float armorMod = 0.9f;
+    private static final float shieldMod = 0.1f;
+    private static final float damageMod = 0.95f;
 
     @Override
     public String getAffectsString() {
