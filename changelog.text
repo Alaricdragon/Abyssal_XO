@@ -1,3 +1,6 @@
+V0.0.3
+    fixes / crash protection:
+        added protection to prevent some wings from crashing the games. the resalts can be quite nebelus, so please report issues in regards to creating fighters.
 V0.0.2
     buffed the Simulacrum Fighter Wings base stats as follows:
         -10% defenses from -20% defenses

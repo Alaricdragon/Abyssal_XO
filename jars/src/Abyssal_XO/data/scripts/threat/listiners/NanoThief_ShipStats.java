@@ -58,8 +58,15 @@ public class NanoThief_ShipStats implements AdvanceableListener {
         progress+=time;
         time = 0;
         //log.info("running swarm controler for ship of: "+ship.getName());
+        boolean isWing =swarms.size() != 0 && swarms.get(0).getWing() != null;
         for (int a = swarms.size()-1; a >= 0; a--){
             ShipAPI swarm = swarms.get(a);
+            if (!isWing){
+                if (!swarm.isAlive()){
+                    swarms.remove(a);
+                }
+                break;
+            }
             if (swarm.getWing().getWingMembers().isEmpty()){//swarm.isHulk() || !swarm.isAlive()){
                 swarms.remove(a);
             }

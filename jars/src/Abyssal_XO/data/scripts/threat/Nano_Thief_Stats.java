@@ -423,8 +423,10 @@ public class Nano_Thief_Stats {
         //log.info("attempting to create a attack swarm at "+loc.x+", "+loc.y+" at ship of "+primary.getName()+" who's location is "+primary.getLocation().x+", "+primary.getLocation().y);
         int attempts = 0;
         ShipAPI fighter = null;
+        //Global.getSettings().getVariant("");
         while(attempts < 10) {
             try {
+                //manager.wing
                 fighter = manager.spawnShipOrWing(wingId, loc, facing, 0f, null);
                 fighter.getWing().setSourceShip(primary);//sets to ifself to prevent min ingagment rage from triggering. might remove if i build a custom AI for the ships.
                 break;
@@ -498,21 +500,23 @@ public class Nano_Thief_Stats {
         manager.setSuppressDeploymentMessages(true);
         Vector2f loc = fighter.getLocation();
         float facing = (float) Math.random() * 360f;
-        //log.info("attempting to create a attack swarm at "+loc.x+", "+loc.y+" at ship of "+primary.getName()+" who's location is "+primary.getLocation().x+", "+primary.getLocation().y);
-        ShipAPI temp = manager.spawnShipOrWing("enforcer_Assault", loc, facing, 0f, null);
-        temp.getMutableStats().getFighterWingRange().modifyFlat("Abyssal_XO",5000000);
-        temp.getMutableStats().getMaxSpeed().modifyMult("Abyssal_XO",0);
-        fighter.getWing().setSourceShip(temp);
-        //manager.removeDeployed(temp,false);
+        if(fighter.getWing() != null) {
+            //log.info("attempting to create a attack swarm at "+loc.x+", "+loc.y+" at ship of "+primary.getName()+" who's location is "+primary.getLocation().x+", "+primary.getLocation().y);
+            ShipAPI temp = manager.spawnShipOrWing("enforcer_Assault", loc, facing, 0f, null);
+            temp.getMutableStats().getFighterWingRange().modifyFlat("Abyssal_XO", 5000000);
+            temp.getMutableStats().getMaxSpeed().modifyMult("Abyssal_XO", 0);
+            fighter.getWing().setSourceShip(temp);
+            //manager.removeDeployed(temp,false);
         /*fighter.setDoNotRender(true);
         fighter.setExplosionScale(0f);
         fighter.setHulkChanceOverride(0f);
         fighter.setImpactVolumeMult(SwarmLauncherEffect.IMPACT_VOLUME_MULT);
         fighter.getArmorGrid().clearComponentMap(); // no damage to weapons/engines*/
-        engine.removeEntity(temp);
-        manager.removeDeployed(temp,false);
+            engine.removeEntity(temp);
+            manager.removeDeployed(temp, false);
 
-        manager.setSuppressDeploymentMessages(false);
+            manager.setSuppressDeploymentMessages(false);
+        }
 
         //fighter.getWing().getSpec().setRange(1000000);
 
@@ -523,8 +527,16 @@ public class Nano_Thief_Stats {
         //fighter.getMutableStats().getFighterWingRange().modifyFlat("Abyssal_XO_WING_MULTI",1000000);
 
         float ttl = getModifedTTL(fighter);
+        if (fighter.getWing() == null) {
+            for (Nano_Thief_SKill_Base b : skills) {
+                b.changeCombatSwarmStats(fighter,frabacator,this);
+            }
+            MagicSubsystemsManager.addSubsystemToShip(fighter, new DamageOverTime_System(fighter, ttl,range));
+            log.info("WARNING: Fighter wing spawned as a ship as apposed to fighter. possable issues may acore. please record the fighter you are useing in the nano-thief skill and report to alaricdragon for additional data.");
+            return;
+        }
         for (Nano_Thief_SKill_Base b : skills) {
-            b.changeCombatSwarmStats(fighter.getWing(),frabacator,this);
+            b.changeCombatSwarmStats(fighter.getWing(), frabacator, this);
         }
         for (ShipAPI a : fighter.getWing().getWingMembers()){
             a.getMutableStats().getMinCrewMod().modifyMult("Abyssal_XO",0);
