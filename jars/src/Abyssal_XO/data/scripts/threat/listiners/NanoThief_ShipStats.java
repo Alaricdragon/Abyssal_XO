@@ -3,20 +3,28 @@ package Abyssal_XO.data.scripts.threat.listiners;
 import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.combat.CombatFleetManagerAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
+import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.combat.listeners.AdvanceableListener;
+import com.fs.starfarer.api.fleet.FleetMemberAPI;
+import com.fs.starfarer.api.fleet.FleetMemberType;
+import com.fs.starfarer.api.loading.VariantSource;
+import com.fs.starfarer.combat.entities.Ship;
 import lombok.Getter;
 import org.apache.log4j.Logger;
+import org.lwjgl.util.vector.Vector2f;
 
 import java.util.ArrayList;
 
 public class NanoThief_ShipStats implements AdvanceableListener {
+    @Getter
     private Nano_Thief_Stats stats;
     @Getter
     private float reclaim = 0;
     private ArrayList<ShipAPI> swarms = new ArrayList<>();
     private float rpc;
-    //@Getter
+    @Getter
     private ShipAPI ship;
     private float time = 0;
     private float cost;
@@ -74,12 +82,12 @@ public class NanoThief_ShipStats implements AdvanceableListener {
         control = controlAmount();
         if (swarms.size() < control && stored != 0 && !ship.isPhased()){
             stored--;
-            swarms.add(stats.createCombatSwarm(ship));
+            processReclaimCore();
         }
         if (reclaim >= cost){
             if (swarms.size() < control && !ship.isPhased()) {
                 if (progress >= creationTime) {
-                    swarms.add(stats.createCombatSwarm(ship));
+                    processReclaimCore();
                     reclaim -= cost;
                     this.creationTime = stats.getModifedProductionTime(ship);
                     this.maxStorge = stats.getModifedStoredSwarms(ship);
@@ -102,6 +110,11 @@ public class NanoThief_ShipStats implements AdvanceableListener {
         }else{
             progress = 0;
         }
+    }
+
+    private void processReclaimCore(){
+        ShipAPI ship = stats.createCombatSwarmCore(this);
+        swarms.add(ship.getLaunchBaysCopy().get(0).getWing().getLeader());
     }
     private int controlAmount(){
         return (int)Math.round((reclaim / rpc+0.49));
@@ -140,4 +153,53 @@ public class NanoThief_ShipStats implements AdvanceableListener {
                 "Prepared Simulacrum Fighter Wing", stored+"/"+maxStorge, false);
 
     }
+
+
+    /*
+    private void addMoreStrangeThing(){
+        //ShipVariantAPI OVERWRITER = reclaimCore.getVariant();//.clone();//Global.getSettings().getVariant("Abyssal_XO_ReclaimCore_Blank").clone();
+        //OVERWRITER.setSource(VariantSource.REFIT);
+        //OVERWRITER.setWingId(tmepSizeThings,stats.getFighterToBuild());
+        tmepSizeThings+=3;
+        reclaimCore.getLaunchBaysCopy().get(0).setExtraDeployments(tmepSizeThings);
+        reclaimCore.getLaunchBaysCopy().get(0).setFastReplacements(tmepSizeThings);
+        reclaimCore.getLaunchBaysCopy().get(0).setExtraDeploymentLimit(tmepSizeThings);
+        reclaimCore.getLaunchBaysCopy().get(0).setExtraDuration(999999999f);
+
+        //reclaimCore.getLaunchBaysCopy().get(tmepSizeThings).getWing();
+        tmepSizeThings++;
+        //reclaimCore.getFleetMember().setVariant(OVERWRITER,false,true);
+    }
+    private ShipAPI reclaimCore;
+    int tmepSizeThings = 3;
+    private void spawnStrangeThingWtihWings(){
+        CombatFleetManagerAPI manager = Global.getCombatEngine().getFleetManager(ship.getOriginalOwner());
+        manager.setSuppressDeploymentMessages(true);
+        Vector2f loc = ship.getLocation();
+        float facing = (float) Math.random() * 360f;
+        //log.info("attempting to create a attack swarm at "+loc.x+", "+loc.y+" at ship of "+primary.getName()+" who's location is "+primary.getLocation().x+", "+primary.getLocation().y);
+        int attempts = 0;
+        ShipAPI fighter = null;
+        //Global.getSettings().getVariant("");
+        ;
+        FleetMemberAPI member = Global.getFactory().createFleetMember(FleetMemberType.SHIP,"Abyssal_XO_ReclaimCore_Blank");
+        ShipVariantAPI OVERWRITER = member.getVariant();//Global.getSettings().getVariant("Abyssal_XO_ReclaimCore_Blank").clone();
+        OVERWRITER.setSource(VariantSource.REFIT);
+        OVERWRITER.setWingId(0,stats.getFighterToBuild());
+        //OVERWRITER.getWing(0).addTag("auto_fighter");
+        //auto_fighter, no_drop, no_sell, rapid_reform, leader_no_swarm, wingmen_no_swarm, match_leader_facing, attack_at_an_angle, independent_of_carrier, restricted, hide_in_codex
+        //OVERWRITER.getWing(0).addTag("leader_no_swarm");
+        //OVERWRITER.getWing(0).addTag("wingmen_no_swarm");
+        OVERWRITER.getWing(0).addTag("independent_of_carrier");
+
+        //OVERWRITER.getWing(0).addTag("auto_fighter");
+        //OVERWRITER.setWingId(1,stats.getFighterToBuild());
+        //OVERWRITER.setWingId(2,stats.getFighterToBuild());
+        member.setVariant(OVERWRITER,false,true);
+        ShipAPI reclaimCore = manager.spawnFleetMember(member,loc, facing, 0f);
+        this.reclaimCore = reclaimCore;
+
+        //Global.getSector().getPlayerFleet().getFleetData().addFleetMember();
+        manager.setSuppressDeploymentMessages(false);
+    }*/
 }

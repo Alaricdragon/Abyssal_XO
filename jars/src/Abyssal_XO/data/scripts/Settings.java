@@ -34,6 +34,7 @@ public class Settings {
     public static final String DISPLAYID_NANOTHIEF = "Abyssal_XO_DisplayKey";
     public static final String HULLMOD_CENTRAL_FAB = "Abyssal_XO_CF";
     public static final String TAG_HASRECLAMED = "Abyssal_XO_NanoThief_HasReclamed";
+    public static final String NANO_THIEF_CREATER_SHIP = "Abyssal_XO_ReclaimCore_Blank";
     public static ArrayList<String> NanoThief_Users = new ArrayList<>();
     public static ArrayList<String> NanoThief_Banned = new ArrayList<>();
     public static void init() throws JSONException {
