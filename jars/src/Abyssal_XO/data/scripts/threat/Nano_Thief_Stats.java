@@ -1,6 +1,7 @@
 package Abyssal_XO.data.scripts.threat;
 
 import Abyssal_XO.data.scripts.Settings;
+import Abyssal_XO.data.scripts.hullmods.ReclaimCore;
 import Abyssal_XO.data.scripts.threat.AI.*;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_RecreationScript;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
@@ -8,11 +9,14 @@ import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_SKill_Base;
 import Abyssal_XO.data.scripts.threat.subsystems.DamageOverTime_System;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
+import com.fs.starfarer.api.fleet.FleetMemberAPI;
+import com.fs.starfarer.api.fleet.FleetMemberType;
 import com.fs.starfarer.api.impl.combat.threat.FragmentSwarmHullmod;
 import com.fs.starfarer.api.impl.combat.threat.RoilingSwarmEffect;
 import com.fs.starfarer.api.impl.combat.threat.SwarmLauncherEffect;
 import com.fs.starfarer.api.impl.combat.threat.ThreatSwarmAI;
 import com.fs.starfarer.api.loading.FighterWingSpecAPI;
+import com.fs.starfarer.api.loading.VariantSource;
 import com.fs.starfarer.api.loading.WingRole;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
@@ -48,6 +52,7 @@ public class Nano_Thief_Stats {
     @Getter
     private float range;
 
+    @Getter
     private String fighterToBuild = Settings.NANO_THIEF_BASEWING;
     @Getter
     private ShipHullSpecAPI fighterHullSpec;
@@ -411,8 +416,57 @@ public class Nano_Thief_Stats {
         }
         return fighter;
     }
-    public ShipAPI createCombatSwarm(ShipAPI primary){
+    public ShipAPI createCombatSwarmCore(NanoThief_ShipStats stats){//ShipAPI primary){
+        ShipAPI primary = stats.getShip();
+        String wingId = fighterToBuild;//Settings.NANO_THIEF_BASEWING;//SwarmLauncherEffect.RECLAMATION_SWARM_WING;//"attack_swarm_wing"
+        CombatEngineAPI engine = Global.getCombatEngine();
+        CombatFleetManagerAPI manager = engine.getFleetManager(primary.getOriginalOwner());
+        manager.setSuppressDeploymentMessages(true);
 
+        Vector2f loc = primary.getLocation();
+        float facing = (float) Math.random() * 360f;
+        //log.info("attempting to create a attack swarm at "+loc.x+", "+loc.y+" at ship of "+primary.getName()+" who's location is "+primary.getLocation().x+", "+primary.getLocation().y);
+        ShipAPI fighter = null;
+        //Global.getSettings().getVariant("");
+
+
+        FleetMemberAPI member = Global.getFactory().createFleetMember(FleetMemberType.SHIP,"Abyssal_XO_ReclaimCore_Blank");
+        ShipVariantAPI OVERWRITER = member.getVariant();//Global.getSettings().getVariant("Abyssal_XO_ReclaimCore_Blank").clone();
+        OVERWRITER.setSource(VariantSource.REFIT);
+        OVERWRITER.setWingId(0,this.fighterToBuild);
+        OVERWRITER.getWing(0).addTag("independent_of_carrier");
+        //OVERWRITER.getWing(0).addTag("auto_fighter");
+        //OVERWRITER.setWingId(1,stats.getFighterToBuild());
+        //OVERWRITER.setWingId(2,stats.getFighterToBuild());
+        member.setVariant(OVERWRITER,false,true);
+        fighter = manager.spawnFleetMember(member,loc, facing, 0f);
+        fighter.setShipAI(new Nano_Thief_AI_SawrmSpawner(fighter,primary,this.fighterToBuild,stats));
+        //note: this is usefull for making the guys follow your primary ship. not yet compleated.
+        /*if (stats.getReclaimCore() == null){
+            ShipAPI core = manager.spawnShipOrWing("Abyssal_XO_ReclaimCore_Blank",loc, facing, 0f,null);
+            core.setShipAI(new Nano_Thief_AI_ReclaimCoreBlank(core,primary));
+            //core.setAlphaMult(0);
+            stats.setReclaimCore(core);
+        }*/
+        fighter.setCustomData(ReclaimCore.IDOfData,stats);
+
+        manager.removeDeployed(fighter,false);
+
+
+
+        //fighter = manager.spawnShipOrWing(Settings.NANO_THIEF_CREATER_SHIP, loc, facing, 0f, null);
+        //fighter.getWing().setSourceShip(primary);//sets to ifself to prevent min ingagment rage from triggering. might remove if i build a custom AI for the ships.
+        manager.setSuppressDeploymentMessages(false);
+        Vector2f takeoffVel = Misc.getUnitVectorAtDegreeAngle(facing);
+        takeoffVel.scale(fighter.getMaxSpeed() * 1f);
+
+        //Vector2f.add(fighter.getVelocity(), takeoffVel, fighter.getVelocity());
+
+
+        return fighter;//note: note a fighter, but instead something very diffrent.
+    }
+    /*
+    public ShipAPI createCombatSwarm(ShipAPI primary){
         String wingId = fighterToBuild;//Settings.NANO_THIEF_BASEWING;//SwarmLauncherEffect.RECLAMATION_SWARM_WING;//"attack_swarm_wing"
         CombatEngineAPI engine = Global.getCombatEngine();
         CombatFleetManagerAPI manager = engine.getFleetManager(primary.getOriginalOwner());
@@ -452,13 +506,32 @@ public class Nano_Thief_Stats {
         }
 
         Vector2f.add(fighter.getVelocity(), takeoffVel, fighter.getVelocity());
-
-
-
-        /*for (Nano_Thief_SKill_Base a : skills){
-        }*/
         return fighter;
+    }*/
+    public void modifySingleFighter(ShipAPI fighter,ShipAPI frabacator){
+        if (fighter.getWing().getSpec().getId().equals(Settings.NANO_THIEF_BASEWING)){
+            modifiyBaseShip(fighter);
+        }else{
+            //modifiyCustomShip(fighter);
+        }
+        float ttl = getModifedTTL(fighter);
+        fighter.getMutableStats().getMinCrewMod().modifyMult("Abyssal_XO",0);
+        //log.info("changing swarm stats for a single fighter...");
+        for (Nano_Thief_SKill_Base b : skills) {
+            b.changeCombatSwarmStats(fighter,frabacator,this);
+        }
+        MagicSubsystemsManager.addSubsystemToShip(fighter, new DamageOverTime_System(fighter, ttl,range));
     }
+    public void modifiyBaseShip(ShipAPI fighter){
+        fighter.setDoNotRender(true);
+        fighter.setExplosionScale(0f);
+        fighter.setHulkChanceOverride(0f);
+        fighter.setImpactVolumeMult(SwarmLauncherEffect.IMPACT_VOLUME_MULT);
+        fighter.getArmorGrid().clearComponentMap(); // no damage to weapons/engines
+        RoilingSwarmEffect swarm = FragmentSwarmHullmod.createSwarmFor(fighter);
+
+    }
+    /*
     public void modifiyBaseShip(ShipAPI fighter,ShipAPI frabacator){
         //getBaseStatsForFighter(fighter);
         fighter.setDoNotRender(true);
@@ -467,33 +540,17 @@ public class Nano_Thief_Stats {
         fighter.setImpactVolumeMult(SwarmLauncherEffect.IMPACT_VOLUME_MULT);
         fighter.getArmorGrid().clearComponentMap(); // no damage to weapons/engines
         RoilingSwarmEffect swarm = FragmentSwarmHullmod.createSwarmFor(fighter);
-        //fighter.setShipAI(new ThreatSwarmAI(fighter));
-        //fighter.setShipAI(new Nano_Thief_AI_CustomSwarm_Shell(fighter,this,120));
+
         float ttl = getModifedTTL(fighter);
         for (Nano_Thief_SKill_Base b : skills) {
             b.changeCombatSwarmStats(fighter.getWing(),frabacator,this);
         }
         for (ShipAPI a : fighter.getWing().getWingMembers()){
-            for (Nano_Thief_SKill_Base b : skills) {
-                b.changeCombatSwarmStats(a,frabacator,this);
-            }
-            MagicSubsystemsManager.addSubsystemToShip(a, new DamageOverTime_System(a, ttl,range));
+            modifySingleFighter(a,frabacator);
         }
 
     }
     public void modifiyCustomShip(ShipAPI fighter,ShipAPI frabacator){
-        //ship.getAllWeapons().get(0).isFiring();
-        //so, thats a thing. I could 100% do that now. fuck me and fuck you all.
-        //fighter.getWing();
-        //fighter.getMutableStats();
-        //fighter.setShipAI(new Nano_Thief_AI_CustomSwarm_Shell(fighter,this));
-        //fighter.getWing().setSourceShip(fighter);
-
-        //so, this worked. but it only wokred in the contect of having the ships act strange. (if I removed the set sorce ship null it worked but only in engagment range)/
-        //I am keeping this line, to better remember how mush I am fucking pissed what the hell game?
-        //at least its all fixed now.... hopefully.
-        //fighter.getWing().setSourceShip(null);
-        //new Nano_Thief_AI_OVERRIDE(fighter,this);
 
         CombatEngineAPI engine = Global.getCombatEngine();
         CombatFleetManagerAPI manager = engine.getFleetManager(fighter.getOriginalOwner());
@@ -507,24 +564,11 @@ public class Nano_Thief_Stats {
             temp.getMutableStats().getMaxSpeed().modifyMult("Abyssal_XO", 0);
             fighter.getWing().setSourceShip(temp);
             //manager.removeDeployed(temp,false);
-        /*fighter.setDoNotRender(true);
-        fighter.setExplosionScale(0f);
-        fighter.setHulkChanceOverride(0f);
-        fighter.setImpactVolumeMult(SwarmLauncherEffect.IMPACT_VOLUME_MULT);
-        fighter.getArmorGrid().clearComponentMap(); // no damage to weapons/engines*/
             engine.removeEntity(temp);
             manager.removeDeployed(temp, false);
 
             manager.setSuppressDeploymentMessages(false);
         }
-
-        //fighter.getWing().getSpec().setRange(1000000);
-
-        //fighter.getWing().setLeader(fighter);
-        //fighter.getWing().getSpec().setRange(1000000);
-        //fighter.getMutableStats().getFighterWingRange().unmodify();
-        //fighter.getWing();
-        //fighter.getMutableStats().getFighterWingRange().modifyFlat("Abyssal_XO_WING_MULTI",1000000);
 
         float ttl = getModifedTTL(fighter);
         if (fighter.getWing() == null) {
@@ -539,20 +583,13 @@ public class Nano_Thief_Stats {
             b.changeCombatSwarmStats(fighter.getWing(), frabacator, this);
         }
         for (ShipAPI a : fighter.getWing().getWingMembers()){
-            a.getMutableStats().getMinCrewMod().modifyMult("Abyssal_XO",0);
-            //log.info("changing swarm stats for a single fighter...");
-            for (Nano_Thief_SKill_Base b : skills) {
-                b.changeCombatSwarmStats(a,frabacator,this);
-            }
-            MagicSubsystemsManager.addSubsystemToShip(a, new DamageOverTime_System(a, ttl,range));
+            modifySingleFighter(a,frabacator);
         }
     }
-    public ShipAPI createDefenseSwarm(ShipAPI primary){
-        /*for (Nano_Thief_SKill_Base a : skills){
-            a.changeDefenderSwarmStats(primary,quality);
-        }*/
+    */
+    /*public ShipAPI createDefenseSwarm(ShipAPI primary){
         return createCombatSwarm(primary);
-    }
+    }*/
 
 
     private static void getBaseStatsForFighter(FighterWingSpecAPI a,Nano_Thief_Stats spec){

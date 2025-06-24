@@ -1,0 +1,14 @@
+{
+	"quality":0.0,
+	"displayName":"Fighter",
+	"hullId":"Abyssal_XO_ReclaimCore",
+	"variantId":"Abyssal_XO_ReclaimCore_Blank",
+	"fluxVents":0,
+	"fluxCapacitors":0,
+	"hullMods":[], # array of strings
+	
+	# mode is either LINKED or ALTERNATING
+	# slot ids (WS ***) must match what's in the .ship file
+	"weaponGroups":[
+	],
+}
