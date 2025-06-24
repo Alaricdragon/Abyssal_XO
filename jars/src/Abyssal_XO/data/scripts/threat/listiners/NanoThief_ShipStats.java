@@ -3,6 +3,7 @@ package Abyssal_XO.data.scripts.threat.listiners;
 import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.CombatFleetManagerAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
@@ -12,12 +13,25 @@ import com.fs.starfarer.api.fleet.FleetMemberType;
 import com.fs.starfarer.api.loading.VariantSource;
 import com.fs.starfarer.combat.entities.Ship;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.log4j.Logger;
 import org.lwjgl.util.vector.Vector2f;
 
 import java.util.ArrayList;
 
 public class NanoThief_ShipStats implements AdvanceableListener {
+    /*so, here is the plan:
+    * first, every time I spawn a ship, I will spawn a specal ship that is invinsable, and deploys a single fighter wing.
+    * secondly, if that 'reclaim core' is the only 'reclaim core' deployed by this craft, I will set it as such here.
+    * regardless, I will always save all reclaim cores on this class. when a reclaim core becomes inactibe it will be removed.
+    * when the ship attacked to this listiner dies, all reclaim cores will be removed instantly.
+    * if the reclaim core is not the main reclaim core:
+    * after the fighters are deployed, the 'sorce' of the wing will change to the primary reclaim core, and the reclaim core will be removed.
+    * in theory, this is simple.*/
+    @Getter
+    @Setter
+    private ShipAPI reclaimCore = null;
+    private ArrayList<ShipAPI> reclaimCores = new ArrayList<>();
     @Getter
     private Nano_Thief_Stats stats;
     @Getter
@@ -57,7 +71,7 @@ public class NanoThief_ShipStats implements AdvanceableListener {
         time+=amount;
         if (time <= interval) return;
         if (ship.isHulk() || !ship.isAlive()){
-            ship.getListenerManager().removeListener(this);
+            kill();
         }
         if (ship.getFluxTracker().isOverloadedOrVenting()) {
             time = 0;
@@ -66,26 +80,28 @@ public class NanoThief_ShipStats implements AdvanceableListener {
         progress+=time;
         time = 0;
         //log.info("running swarm controler for ship of: "+ship.getName());
-        boolean isWing =swarms.size() != 0 && swarms.get(0).getWing() != null;
+
+        //boolean isWing =swarms.size() != 0 && swarms.get(0).getWing() != null;
         for (int a = swarms.size()-1; a >= 0; a--){
             ShipAPI swarm = swarms.get(a);
-            if (!isWing){
+            /*if (!isWing){
                 if (!swarm.isAlive()){
                     swarms.remove(a);
                 }
                 break;
-            }
+            }*/
             if (swarm.getWing().getWingMembers().isEmpty()){//swarm.isHulk() || !swarm.isAlive()){
                 swarms.remove(a);
             }
         }
         control = controlAmount();
-        if (swarms.size() < control && stored != 0 && !ship.isPhased()){
+        int size = swarms.size() + reclaimCores.size();
+        if (size < control && stored != 0 && !ship.isPhased()){
             stored--;
             processReclaimCore();
         }
         if (reclaim >= cost){
-            if (swarms.size() < control && !ship.isPhased()) {
+            if (size < control && !ship.isPhased()) {
                 if (progress >= creationTime) {
                     processReclaimCore();
                     reclaim -= cost;
@@ -111,10 +127,23 @@ public class NanoThief_ShipStats implements AdvanceableListener {
             progress = 0;
         }
     }
-
+    private void kill(){
+        ship.getListenerManager().removeListener(this);
+        CombatEngineAPI engine = Global.getCombatEngine();
+        for (ShipAPI core : reclaimCores){
+            engine.removeEntity(core);
+        }
+    }
+    public void removeReclaimCore(ShipAPI reclaimCore){
+        reclaimCores.remove(reclaimCore);
+    }
+    public void addWingToList(ShipAPI wingLeader){
+        swarms.add(wingLeader);
+    }
     private void processReclaimCore(){
         ShipAPI ship = stats.createCombatSwarmCore(this);
-        swarms.add(ship.getLaunchBaysCopy().get(0).getWing().getLeader());
+        reclaimCores.add(ship);
+        //swarms.add(ship.getLaunchBaysCopy().get(0).getWing().getLeader());
     }
     private int controlAmount(){
         return (int)Math.round((reclaim / rpc+0.49));
@@ -147,7 +176,7 @@ public class NanoThief_ShipStats implements AdvanceableListener {
                 "Stored Reclaim", (int)reclaim+" reclaim available", false);
         int control = controlAmount();
         Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF, "graphics/icons/hullsys/temporal_shell.png",
-                "Deployed Simulacrum Fighter Wing", swarms.size()+"/"+control, false);
+                "Deployed Simulacrum Fighter Wing", (swarms.size()+reclaimCores.size())+"/"+control, false);
         if (stored == 0) return;
         Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF+"_4", "graphics/icons/hullsys/temporal_shell.png",
                 "Prepared Simulacrum Fighter Wing", stored+"/"+maxStorge, false);

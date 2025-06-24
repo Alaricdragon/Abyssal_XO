@@ -1,6 +1,7 @@
 package Abyssal_XO.data.scripts.threat;
 
 import Abyssal_XO.data.scripts.Settings;
+import Abyssal_XO.data.scripts.hullmods.ReclaimCore;
 import Abyssal_XO.data.scripts.threat.AI.*;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_RecreationScript;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
@@ -429,7 +430,6 @@ public class Nano_Thief_Stats {
         //Global.getSettings().getVariant("");
 
 
-
         FleetMemberAPI member = Global.getFactory().createFleetMember(FleetMemberType.SHIP,"Abyssal_XO_ReclaimCore_Blank");
         ShipVariantAPI OVERWRITER = member.getVariant();//Global.getSettings().getVariant("Abyssal_XO_ReclaimCore_Blank").clone();
         OVERWRITER.setSource(VariantSource.REFIT);
@@ -440,9 +440,17 @@ public class Nano_Thief_Stats {
         //OVERWRITER.setWingId(2,stats.getFighterToBuild());
         member.setVariant(OVERWRITER,false,true);
         fighter = manager.spawnFleetMember(member,loc, facing, 0f);
+        fighter.setShipAI(new Nano_Thief_AI_SawrmSpawner(fighter,primary,this.fighterToBuild,stats));
+        //note: this is usefull for making the guys follow your primary ship. not yet compleated.
+        /*if (stats.getReclaimCore() == null){
+            ShipAPI core = manager.spawnShipOrWing("Abyssal_XO_ReclaimCore_Blank",loc, facing, 0f,null);
+            core.setShipAI(new Nano_Thief_AI_ReclaimCoreBlank(core,primary));
+            //core.setAlphaMult(0);
+            stats.setReclaimCore(core);
+        }*/
+        fighter.setCustomData(ReclaimCore.IDOfData,stats);
 
-
-
+        manager.removeDeployed(fighter,false);
 
 
 
@@ -455,7 +463,6 @@ public class Nano_Thief_Stats {
         //Vector2f.add(fighter.getVelocity(), takeoffVel, fighter.getVelocity());
 
 
-        fighter.setShipAI(new Nano_Thief_AI_SawrmSpawner(fighter,primary,this.fighterToBuild,stats));
         return fighter;//note: note a fighter, but instead something very diffrent.
     }
     /*

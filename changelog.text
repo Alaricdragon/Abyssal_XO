@@ -1,3 +1,8 @@
+V0.0.4
+    fixes:
+        fixed fighter wings randomly being very nebelus.
+    added a fighter wing animation. it kinda just happened.
+    maybe broke the fact that fighter wings are not suppose to benefit from fighter wing buffs from second in command maybe who knows?!?!
 V0.0.3
     fixes / crash protection:
         added protection to prevent some wings from crashing the games. the resalts can be quite nebelus, so please report issues in regards to creating fighters.

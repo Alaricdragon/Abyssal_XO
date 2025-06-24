@@ -13,16 +13,15 @@ public class ReclaimCore extends BaseHullMod {
         ship.setNoDamagedExplosions(true);
         //ship.getMutableStats().getTimeMult().modifyFlat("Abyssal_XO",1.5f);
         ship.getMutableStats().getHullDamageTakenMult().modifyMult("Abyssal_XO",0);
-        ship.getLaunchBaysCopy().get(0).setCurrRate(0);
+        ship.getMutableStats().getFighterWingRange().modifyFlat("Abussal_XO",500000);
+        if (!ship.getLaunchBaysCopy().isEmpty()) ship.getLaunchBaysCopy().get(0).setCurrRate(0);
         ship.setAlphaMult(0f);
     }
 
     @Override
     public void applyEffectsToFighterSpawnedByShip(ShipAPI fighter, ShipAPI ship, String id) {
-        if (ship.getCustomData().containsKey(IDOfData)){
-            NanoThief_ShipStats stats = (NanoThief_ShipStats) ship.getCustomData().get(IDOfData);
-            stats.getStats().modifySingleFighter(fighter,stats.getShip());
-
-        }
+        if (!ship.getCustomData().containsKey(IDOfData)) return;
+        NanoThief_ShipStats stats = (NanoThief_ShipStats) ship.getCustomData().get(IDOfData);
+        stats.getStats().modifySingleFighter(fighter,stats.getShip());
     }
 }
