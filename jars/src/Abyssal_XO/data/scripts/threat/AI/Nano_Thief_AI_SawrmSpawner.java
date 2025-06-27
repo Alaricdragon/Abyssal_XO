@@ -38,7 +38,7 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
         time+=amount;
         if (time >= interval){
             time = 0;
-            if (/*!ship.equals(stats.getReclaimCore()) && */ship.getLaunchBaysCopy().get(0).getWing().getWingMembers().size()+ship.getLaunchBaysCopy().get(0).getNumLost() >= Global.getSettings().getFighterWingSpec(wing).getNumFighters()){
+            if (/*!ship.equals(stats.getReclaimCore()) && */ship.getLaunchBaysCopy().get(0).getWing() == null || (ship.getLaunchBaysCopy().get(0).getWing().getWingMembers().size()+ship.getLaunchBaysCopy().get(0).getNumLost() >= Global.getSettings().getFighterWingSpec(wing).getNumFighters())){
                 FighterWingAPI wing = ship.getLaunchBaysCopy().get(0).getWing();
                 wing.setSourceShip(ship);
                 //wing.setSourceShip(stats.getReclaimCore());
