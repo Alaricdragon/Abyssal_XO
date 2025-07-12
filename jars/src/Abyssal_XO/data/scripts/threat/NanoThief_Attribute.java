@@ -8,18 +8,57 @@ import second_in_command.specs.SCBaseAptitudePlugin;
 
 public class NanoThief_Attribute extends SCBaseAptitudePlugin {
     /*so relevent data:
+
     to do list:
+        -) fix the 'bomber' issues:
+            the issue is bombers cannot land. this causes a bug were the bombers just fly at the enamy with no wepons and it looks silly.
+            solutuions:
+                a) make it so bombers have a carrier they are bound to, letting the bombers work the way they are suppose to (is this even possable??)
+                b) make it so when a fighter wants to refit, the fighter will return to the nearest valid ship that provides reclaim.
         2) add in the new icons for the systems (copyed another skill for now)
-        3) make it so the fighters acsualy lanch from the ship. (aka an animation for that)
         4) add in the quest to allow someone to quire this skill (kill a centen number of fabricates, then just have it.)
         5) improve the display for the nano-thief stats. something like, a bar that fills as I build fighters, and a bar that fills as I max deployment (and fills more (with a different color) as I max storge)
         6) add graphics to the 'overcharge' sub system
     -balance:
-        the fighters are way to fucking strong. this is not a issue that can be fixed with deploment time
-        solution: reduce fighter damage by 10%, and hull by 20%, and shields by 20%.
 
     -bugs:
         1) there is a bug that makes it so if I put in a talen, then cancel, the thing does not give me back my wing / reset the fighter to the old one. this needs looking into.
+    -skill modifications:
+        new skills:
+            I can hold as many as 2 new skills, provided i remove the milestone at the end of the tree....
+            so skills:
+                1)  instant creation:
+                    whenever a reclaim package is created, also create 1/2/3/4 Simulacrum Fighter Wings based on ship size.
+                    the cost of the fighter is removed from the reclaim package.
+                2)  recycling:
+                    when a friendly ship dies, its reclaim turns into a new reclaim package containing all stored reclaim on the ship.
+                3)  Prepared deployment:
+                    when a ship enters combat, gain ether enough reclaim to produce 1/2/3/4 Simulacrum Fighter Wings, or 200/400/600/800 reclaim, whatever is higher, depending on hullsize.
+                    if you have 'Centralized Logistics' the 'Centralized Fabricator' gains all the reclaim from this skill.
+        skill mods:
+            someone suggested the skill modifications might be required. as is, the buffs only effect Simulacrum Fighter Wings and this can make its effectiveness binary
+            so idea: make it so most skills appy some type of 'on death' effect / on get reclaim effect. this will of course remove the reason for the current desprate messures to exsist.
+            2 options for desperate measures:
+                a: I remove this skill, effectively removing the cap stones.
+                b: I buff this skill, making it so ships can actively consume reclaim to activate all the reclaim effects at once. on command.
+            2 possibility for the second capstone: (if I keep it)
+                a: I could change it out for 'Overcharged', making it so the skill no longer has downsides, but is instead just very powerfull.
+                b: I could change it for 'Mimicry', allowing me to produce frigates instead of fighters. this would be very powerful is misbalanced but would be cool as flip.
+
+            possaibilitys for on death effects:
+                shield efficiency
+                flux disapation
+                effective armor rating / repaired armor
+                repaired hull
+                hard flux disapation
+                fighter replacement rate
+                ability cooldown rate
+                fire speed and fire cost
+                speed
+                some type of single charge ability.
+                regen missiles
+                regen ammo
+
 skills:
 0) base:
     base:

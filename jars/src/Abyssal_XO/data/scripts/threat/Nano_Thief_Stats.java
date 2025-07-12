@@ -43,6 +43,8 @@ public class Nano_Thief_Stats {
     private SCOfficer officer;
     private boolean closest = true;
     @Getter
+    private float recycleCostPerFighter = 50;
+    @Getter
     ShipAPI centralFab = null;
 
     ArrayList<Nano_Thief_SKill_Base> skills = new ArrayList<>();
@@ -259,16 +261,7 @@ public class Nano_Thief_Stats {
     private static final String NanoThiefStorgeKey = "$NanoThief_StoredReclaim_Base";
     //private HashMap<ShipAPI,Integer> reclaimGathered = new HashMap<>();
     public void applyEffectsWhenAbsorbed(ShipAPI target,ShipAPI reclaim,int reclaimValue){
-        NanoThief_ShipStats listiner = null;
-        if (!target.hasListenerOfClass(NanoThief_ShipStats.class)) {
-            listiner = new NanoThief_ShipStats(target,this);
-            target.addListener(listiner);
-            //log.info("adding listener for ship of: "+target.getName());
-        }else{
-            List<NanoThief_ShipStats> a = target.getListenerManager().getListeners(NanoThief_ShipStats.class);
-            listiner = a.get(0);
-            //log.info("got listener for ship of: "+listiner.getShip().getName());
-        }
+        NanoThief_ShipStats listiner = getShipStats(target);
         //log.info("adding reclaim to ship");
         //int currentReclaim = reclaimValue;
         listiner.addReclaim(reclaimValue);
@@ -300,6 +293,19 @@ public class Nano_Thief_Stats {
         for (Nano_Thief_SKill_Base a : skills){
             a.ApplyChangeOnReclaim(target,reclaim,reclaimValue,this);
         }
+    }
+    public NanoThief_ShipStats getShipStats(ShipAPI ship){
+        NanoThief_ShipStats listiner = null;
+        if (!ship.hasListenerOfClass(NanoThief_ShipStats.class)) {
+            listiner = new NanoThief_ShipStats(ship,this);
+            ship.addListener(listiner);
+            //log.info("adding listener for ship of: "+ship.getName());
+        }else{
+            List<NanoThief_ShipStats> a = ship.getListenerManager().getListeners(NanoThief_ShipStats.class);
+            listiner = a.get(0);
+            //log.info("got listener for ship of: "+listiner.getShip().getName());
+        }
+        return listiner;
     }
     public float getModifiedCost(ShipAPI target){
         float quality = this.swarmCost;
@@ -339,6 +345,21 @@ public class Nano_Thief_Stats {
         return (int)prod;
     }
 
+    public ShipAPI applyDataToReturnFighterToFriendlyShip(ShipAPI fighter){
+        //I would really really like to set fighters like this to a new wing... maybe... no that would never work arg....
+        //keep this in mind for later....
+        //fighter.setWing();
+        ShipAPI target = getTargetForReclaim(fighter,Global.getCombatEngine());
+        NanoThief_ShipStats stats = getShipStats(target);
+        ShipAPI core = stats.getReclaimCore();
+        if (core == null){
+            //create core
+        }
+        fighter.getWing().setSourceBay(core.getLaunchBaysCopy().get(0));
+
+        return target;
+        //fighter.getWing().setSourceBay();
+    }
 
     public ShipAPI createReclaim(ShipAPI primary,int forceID){
         String wingId = SwarmLauncherEffect.RECLAMATION_SWARM_WING;//"attack_swarm_wing";SwarmLauncherEffect.RECLAMATION_SWARM_WING;//"attack_swarm_wing"
@@ -607,6 +628,7 @@ public class Nano_Thief_Stats {
             spec.swarmCost = Settings.NANO_THIEF_BASESWARM_COST;
             spec.productionTime = Settings.NANO_THIEF_BASESWARM_BUILDTIME;
             spec.ttl = Settings.NANO_THIEF_BASESWARM_TTL;
+            spec.recycleCostPerFighter = (spec.swarmCost * Settings.NANO_THIEF_RecyclePerFighterMulti) / Math.max(a.getNumFighters(),1);
             log.info("got swarm of ID: "+a.getId()+" stats as: cost: "+spec.swarmCost+", productionTime: "+spec.productionTime+", time to live"+spec.ttl+", and range: "+spec.range);
             return;
         }
@@ -617,6 +639,7 @@ public class Nano_Thief_Stats {
             spec.ttl = Settings.NANO_THIEF_CustomSwarm_TTL;
         }
         spec.swarmCost = (a.getOpCost(a.getVariant().getStatsForOpCosts())*Settings.NANO_THIEF_CustomSwarm_COST_PEROP)+Settings.NANO_THIEF_CustomSwarm_COST_BASE;
+        spec.recycleCostPerFighter = (spec.swarmCost * Settings.NANO_THIEF_RecyclePerFighterMulti) / Math.max(a.getNumFighters(),1);
         log.info("got swarm of ID: "+a.getId()+" stats as: cost: "+spec.swarmCost+", productionTime: "+spec.productionTime+", time to live"+spec.ttl+", and range: "+spec.range);
     }
     public static void displayStatsForFighterWithoutModification(TooltipMakerAPI panel,FighterWingSpecAPI a){

@@ -31,6 +31,8 @@ public class NanoThief_ShipStats implements AdvanceableListener {
     @Getter
     @Setter
     private ShipAPI reclaimCore = null;
+    private ArrayList<ShipAPI> returningShips = new ArrayList<>();
+
     private ArrayList<ShipAPI> reclaimCores = new ArrayList<>();
     @Getter
     private Nano_Thief_Stats stats;
@@ -76,6 +78,12 @@ public class NanoThief_ShipStats implements AdvanceableListener {
         if (ship.getFluxTracker().isOverloadedOrVenting()) {
             time = 0;
             return;
+        }
+        for (int a = returningShips.size()-1; a >= 0; a--){
+            if (!returningShips.get(a).isAlive()) returningShips.remove(a);
+        }
+        if (returningShips.isEmpty()){
+            killReclaimCore();
         }
         progress+=time;
         time = 0;
@@ -183,7 +191,13 @@ public class NanoThief_ShipStats implements AdvanceableListener {
 
     }
 
-
+    public void killReclaimCore(){
+        Global.getCombatEngine().removeEntity(reclaimCore);
+        this.reclaimCore = null;
+    }
+    public void addReturningWing(ShipAPI fighter){
+        returningShips.add(fighter);
+    }
     /*
     private void addMoreStrangeThing(){
         //ShipVariantAPI OVERWRITER = reclaimCore.getVariant();//.clone();//Global.getSettings().getVariant("Abyssal_XO_ReclaimCore_Blank").clone();

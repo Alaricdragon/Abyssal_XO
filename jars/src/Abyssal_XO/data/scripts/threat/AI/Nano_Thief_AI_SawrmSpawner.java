@@ -44,6 +44,7 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
                 //wing.setSourceShip(stats.getReclaimCore());
                 stats.addWingToList(wing.getLeader());
                 stats.removeReclaimCore(ship);
+                //ship.setPullBackFighters(false);
                 Global.getCombatEngine().removeEntity(ship);
             }
         }

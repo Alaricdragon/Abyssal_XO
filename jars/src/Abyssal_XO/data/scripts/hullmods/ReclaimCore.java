@@ -1,6 +1,7 @@
 package Abyssal_XO.data.scripts.hullmods;
 
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
+import Abyssal_XO.data.scripts.threat.listiners.NanoThief_FighterRetreatChecker;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
 import com.fs.starfarer.api.combat.BaseHullMod;
 import com.fs.starfarer.api.combat.ShipAPI;
@@ -23,5 +24,7 @@ public class ReclaimCore extends BaseHullMod {
         if (!ship.getCustomData().containsKey(IDOfData)) return;
         NanoThief_ShipStats stats = (NanoThief_ShipStats) ship.getCustomData().get(IDOfData);
         stats.getStats().modifySingleFighter(fighter,stats.getShip());
+        fighter.addListener(new NanoThief_FighterRetreatChecker(fighter,stats.getStats()));
+        //fighter.getListenerManager().addListener();
     }
 }
