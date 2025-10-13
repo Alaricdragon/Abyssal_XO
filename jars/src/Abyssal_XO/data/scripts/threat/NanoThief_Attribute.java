@@ -20,6 +20,71 @@ public class NanoThief_Attribute extends SCBaseAptitudePlugin {
 
     -bugs:
         1) there is a bug that makes it so if I put in a talen, then cancel, the thing does not give me back my wing / reset the fighter to the old one. this needs looking into.
+
+note: I need to change everything.
+issue: the 'fighter spam' with this attribute can be completely broken. I will take a suggestion and turn the fighter thing into a capstone.
+issue: centralized production is completely fucking overpowered. the issue comes from the faster and faster production that accores.
+
+new skill pholosaphy:
+all new skills will incore effects that will slowly use reclaim. (as to avoid the infinit fighter issue I have right now). the skills will be desinged around improving ship stats, or restoring ships.
+so the skills:
+1) recover hull:
+    when out of combat for 5 seconds, recover 1% hull a second.
+    for every 100 hull restored, costs 1 reclaim
+
+2) recover CR / PPC?:
+    for 10 reclaim a second, negate the loss of peak performance time
+    for ships with a peck performance time of 200/150/100/50/25/10, the cost is multiplied by 2/3/4/5/6/7
+    if the ship has infinite PPT, restore CR instead, at a rate of 1 CR every 10 seconds, at the cost of 100 reclaim
+
+3) recover missles:
+    every 15/30/45 seconds, fully refill a single empty missile weapons ammo
+    costs 5/10/20 * op cost reclaim
+
+4) flux recovery
+    when over 20% flux, gain 20% flux dispensation, and 5% hard flux dispensation
+    costs ?? reclaim a second well active
+
+5) forcefully recovery:?
+    increase salvage by 100%
+    reduce the chances of recovering ships by 50%
+5) fighter spawning?
+    when a reclaim package is created, create 1/2/3/4 Simulacrum Fighter Wings instantly
+
+
+(requires at least one from lower tiers of skill)
+6) Expensiveness Production:
+    for every 2000 reclaim held by a ship, increase the power that all ability's by 5%.
+    this process has demonising returns
+
+AND / OR
+
+7) Centralized Logistics: when the first reclaim package is created, the largest, highest mass ship in your fleet is marked as the 'Central Fabricator'. Reclaim Packages will always attempt to move to the Central Fabricator, provided it exists.
+   every 20 seconds, produce 1200 'Refined Reclaim' from 1000 'Reclaim'
+   every second, provided the Central Fabricator holds at least 2000 Refined Reclaim, a Refined Reclaim package is created that holds 50% of the Refined Reclaim the Central Fabricator holds and moves to the fleet member with the smallest amount of Refined Reclaim held
+   (if the craft with the least reclaim is the centralized fabricator nothing happens.)
+   Refined Reclaim moves 2X as fast as normal reclaim
+   for every 1000 Reclaim the Central Fabricator has:
+    produce Refined Reclaim 10% faster.
+
+   After the Central Fabricator is assigned, it cannot be changed for the inter combat, even if it is destroyed or retreats.
+   gain the 'Central Fabricator' hullmod, allowing you to chose your Central Fabricator
+
+(requires at least 4 lower level skills)
+8) Simulacrum Fighter Wings
+    for every 1000 reclaim in a ship, gain 1 control.
+    for every control, gain the ability to control one more Simulacrum Fighter Wings.
+    Each Simulacrum Fighter Wing costs OP cost * ?? reclaim to produce, and can takes refit time * wing size * ?? seconds to produce.
+    Simulacrum Fighters dont benefit from fighter modifiers, and rapidly decay, only being able to stay in combat for 60 seconds before being destroyed.
+    Simulacrum Fighters have infinite engagement range.
+    Use the __ ability to select your Simulacrum Fighter Wings from available fighter LCPs
+OR
+
+9)
+
+
+
+
 skills:
 0) base:
     base:
