@@ -2,7 +2,7 @@
 	"id":"Abyssal_XO", # internal id
 	"name":"Abyssal_XO", # displayed to the player
 	"author":"Alricdragon",
-	"version":"0.0.5",
+	"version":"0.0.6",
 	"description":"Gain a fragment of forbidden power",
 	"gameVersion":"0.98a-RC5",
 	"dependencies": [
