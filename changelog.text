@@ -1,3 +1,5 @@
+V0.0.4
+    nerfed the 'Centralized Logistics' skill to have a stacking 5% reduction in production time (from 10%)
 V0.0.3
     fixes / crash protection:
         added protection to prevent some wings from crashing the games. the resalts can be quite nebelus, so please report issues in regards to creating fighters.

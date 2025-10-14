@@ -33,8 +33,8 @@ so the skills:
     for every 100 hull restored, costs 1 reclaim
 
 2) recover CR / PPC?:
-    for 10 reclaim a second, negate the loss of peak performance time
-    for ships with a peck performance time of 200/150/100/50/25/10, the cost is multiplied by 2/3/4/5/6/7
+    for 10 reclaim a second, negate the loss of peak performance time / combat readiness
+    for ships with a peck performance time of 200/150/100/50/25/10 and lower, the cost is multiplied by 2/3/4/5/6/7
     if the ship has infinite PPT, restore CR instead, at a rate of 1 CR every 10 seconds, at the cost of 100 reclaim
 
 3) recover missles:
