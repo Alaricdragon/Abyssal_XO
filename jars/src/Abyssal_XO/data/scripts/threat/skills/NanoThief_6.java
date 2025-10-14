@@ -19,7 +19,7 @@ public class NanoThief_6 extends Nano_Thief_SKill_Base{
     private static final String key = "AbyssalXO_Nano_Thief_Skill_6";
     private static final float fabCostMod = 0.7f;
     private static final float fabSpeedMod = 0.8f;
-    private static final float fabSpeedPer1000Mod = 0.90f;
+    private static final float fabSpeedPer1000Mod = 0.95f;
     private static final float fabControlMod = 0.8f;
     private static final float centralFabReclaimMultiHullmod = 0.9f;
 
