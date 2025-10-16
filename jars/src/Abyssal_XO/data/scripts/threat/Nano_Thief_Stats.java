@@ -56,13 +56,15 @@ public class Nano_Thief_Stats {
     private String fighterToBuild = Settings.NANO_THIEF_BASEWING;
     @Getter
     private ShipHullSpecAPI fighterHullSpec;
+    private boolean isAlly = false;
     public Nano_Thief_Stats(String fighterToBuild) {
         if (fighterToBuild != null) this.fighterToBuild = fighterToBuild;
     }
-    public Nano_Thief_Stats(String commanderID, SCOfficer officer,String fighterToBuild){
+    public Nano_Thief_Stats(String commanderID,boolean isAlly, SCOfficer officer,String fighterToBuild){
         if (fighterToBuild != null) this.fighterToBuild = fighterToBuild;
         this.commanderID = commanderID;
         this.officer = officer;
+        this.isAlly = isAlly;
         log.info("creating commander data for a new commander with "+officer.getActiveSkillPlugins().size()+" skills"+" and a fighter to build of "+this.fighterToBuild);
         for (SCBaseSkillPlugin a : officer.getActiveSkillPlugins()){
             Nano_Thief_SKill_Base b = (Nano_Thief_SKill_Base) a;
@@ -440,6 +442,13 @@ public class Nano_Thief_Stats {
         //OVERWRITER.setWingId(2,stats.getFighterToBuild());
         member.setVariant(OVERWRITER,false,true);
         fighter = manager.spawnFleetMember(member,loc, facing, 0f);
+        //if (!isAlly) fighter.setAlly(false);
+        fighter.setOwner(primary.getOwner());
+        log.info("spawning spawner with a wing of: "+this.fighterToBuild);
+        log.info("the fighters ID was given as: "+OVERWRITER.getWing(0).getId());
+        //log.info("temp thing: "+fighter.getWing().getSpec());//no wing...? //maybe wing only exsists a short time after creation?
+        log.info("temp thing 2:"+fighter.getLaunchBaysCopy().get(0).getTimeUntilNextReplacement());
+        //log.info("got the true ID of the wing as: "+fighter.getLaunchBaysCopy().get(0).getWing().getSpec().getId());
         fighter.setShipAI(new Nano_Thief_AI_SawrmSpawner(fighter,primary,this.fighterToBuild,stats));
         //note: this is usefull for making the guys follow your primary ship. not yet compleated.
         /*if (stats.getReclaimCore() == null){
@@ -625,7 +634,7 @@ public class Nano_Thief_Stats {
             //log.info("      checking SiC officer of atrubuteID: "+b.getAptitudeId());
             if (!b.getAptitudeId().equals("Abyssal_NanoThief")) continue;
             //log.info("      added Sic officer from fleet "+a.getId()+" to list of commanders....");
-            spec = new Nano_Thief_Stats(a.getId(),b,a.getId());
+            spec = new Nano_Thief_Stats(a.getId(),true,b,a.getId());
             break;
         }
         if (spec == null){

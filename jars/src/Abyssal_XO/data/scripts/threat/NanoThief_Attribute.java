@@ -41,16 +41,20 @@ so the skills:
     every 15/30/45 seconds, fully refill a single empty missile weapons ammo
     costs 5/10/20 * op cost reclaim
 
-4) flux recovery
+4) flux recovery?
     when over 20% flux, gain 20% flux dispensation, and 5% hard flux dispensation
     costs ?? reclaim a second well active
+4)
+
 
 5) forcefully recovery:?
     increase salvage by 100%
     reduce the chances of recovering ships by 50%
 5) fighter spawning?
     when a reclaim package is created, create 1/2/3/4 Simulacrum Fighter Wings instantly
-
+5) create escords:
+    create up to 1/2/3/4 Simulacrum Fighter Wings that act as though under the 'Defensive Targeting Array' hullmod
+    -notes on what a Simulacrum Fighter Wing is here.
 
 (requires at least one from lower tiers of skill)
 6) Expensiveness Production:
@@ -80,7 +84,8 @@ AND / OR
     Use the __ ability to select your Simulacrum Fighter Wings from available fighter LCPs
 OR
 
-9)
+9) create starships? (this is way way way to mush... maybe have this be the capstone?)
+    every DP * 30 seconds, create a starship (reclaim cost == 500 * DP)
 
 
 
@@ -284,7 +289,10 @@ or
     @Override
     public Boolean guaranteePick(CampaignFleetAPI fleet) {
         String faction = fleet.getFaction().getId();
-        if (Settings.NanoThief_Users.contains(faction)) return true;
+        for (String a : Settings.NanoThief_Users){
+            if (a.equals(faction)) return true;
+        }
+        //if (Settings.NanoThief_Users.contains(faction)) return true;
         return super.guaranteePick(fleet);
     }
 }

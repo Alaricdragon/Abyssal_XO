@@ -73,8 +73,14 @@ public class NanoThief_Base extends Nano_Thief_SKill_Base {
     public void advanceInCombat(SCData data, ShipAPI ship, Float amount) {
         if (!Global.getCombatEngine().hasPluginOfClass(NanoThief_BattleListener.class)) {
             Global.getCombatEngine().addPlugin(new NanoThief_BattleListener());
+            //ship.getFleetCommander();
+            //data.getCommander().getFleet();
             //Global.getCombatEngine().addPlugin(new NanoThief_CustomSwarmHPController());
         }
+        //log.info("XO-CommandID: "+data.getCommander().getId());
+        /*if (!NanoThief_BattleListener.getFriendlyCaptions().containsKey(data.getCommander().getId()) && !NanoThief_BattleListener.getHostileCaptions().containsKey(data.getCommander().getId())){
+
+        }*/
 
         /*IntervalUtil interval = (IntervalUtil) Global.getCombatEngine().getCustomData().get("Sic_NanoFief_NanoFief_Waiter");
         if (interval == null) {
