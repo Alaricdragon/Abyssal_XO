@@ -29,63 +29,72 @@ new skill pholosaphy:
 all new skills will incore effects that will slowly use reclaim. (as to avoid the infinit fighter issue I have right now). the skills will be desinged around improving ship stats, or restoring ships.
 so the skills:
 1) recover hull:
+    //I really need to work the numbers here
     when out of combat for 5 seconds, recover 1% hull a second.
     for every 100 hull restored, costs 1 reclaim
 
 2) recover CR / PPC?:
+    //this will not asset threat.
+    //does this really need to be redesined? just take the PPC
     for 10 reclaim a second, negate the loss of peak performance time / combat readiness
     for ships with a peck performance time of 200/150/100/50/25/10 and lower, the cost is multiplied by 2/3/4/5/6/7
     if the ship has infinite PPT, restore CR instead, at a rate of 1 CR every 10 seconds, at the cost of 100 reclaim
 
 3) recover missles:
-    every 15/30/45 seconds, fully refill a single empty missile weapons ammo
-    costs 5/10/20 * op cost reclaim
+    every 15/30/45 seconds, fully refill a single empty 'limited ammo' weapons ammo
+    costs 5/10/20 * op cost reclaim, depending on weapon size
 
+
+4) remorse recovery:
+    increase salvage gains by 10%, excluding rare items.
+    at the end of combat, for every 1000 reclaim in your fleets storge:
+        gain 5 supplies? (1 per 200)
+        gain 10 fuel? (1 per 1000)
 4) flux recovery?
     when over 20% flux, gain 20% flux dispensation, and 5% hard flux dispensation
     costs ?? reclaim a second well active
-4)
-
-
-5) forcefully recovery:?
+4) forcefully recovery:?
     increase salvage by 100%
     reduce the chances of recovering ships by 50%
-5) fighter spawning?
+4) fighter spawning?
     when a reclaim package is created, create 1/2/3/4 Simulacrum Fighter Wings instantly
-5) create escords:
-    create up to 1/2/3/4 Simulacrum Fighter Wings that act as though under the 'Defensive Targeting Array' hullmod
+
+5) create escorts:
+    create up to 1/1/2/3 Simulacrum Fighter Wings that will defend the ship (like defensive targetting array)
     -notes on what a Simulacrum Fighter Wing is here.
 
+6) Simulacrum Fighter Wings
+    Gain the ability to produce Simulacrum Fighter Wings. Your fleet can only maintain up to deployed DP / 10 Simulacrum Fighter Wings at once.
+    Simulacrum Fighter Wings produced by this skill have infinite engagement range.
+
 (requires at least one from lower tiers of skill)
-6) Expensiveness Production:
-    for every 2000 reclaim held by a ship, increase the power that all ability's by 5%.
-    this process has demonising returns
-
-AND / OR
-
-7) Centralized Logistics: when the first reclaim package is created, the largest, highest mass ship in your fleet is marked as the 'Central Fabricator'. Reclaim Packages will always attempt to move to the Central Fabricator, provided it exists.
-   every 20 seconds, produce 1200 'Refined Reclaim' from 1000 'Reclaim'
-   every second, provided the Central Fabricator holds at least 2000 Refined Reclaim, a Refined Reclaim package is created that holds 50% of the Refined Reclaim the Central Fabricator holds and moves to the fleet member with the smallest amount of Refined Reclaim held
+8) Centralized Logistics: when the first reclaim package is created, the largest ship in your fleet is marked as the 'Central Fabricator'. Reclaim Packages will always attempt to move to the Central Fabricator, provided it exists.
+   every second, produce 60 'Refined Reclaim' from 50 'Reclaim'
+   every second, provided the Central Fabricator has at least 2000 refined reclaim, or enough for a single charge of its most expensive ability, send a reclaim package holding 1000 refined reclaim, or 10% of the Central Fabricator refined reclaim, whatever is larger, to the ship with the least stored reclaim in your fleet.
    (if the craft with the least reclaim is the centralized fabricator nothing happens.)
    Refined Reclaim moves 2X as fast as normal reclaim
    for every 1000 Reclaim the Central Fabricator has:
-    produce Refined Reclaim 10% faster.
+    produce Refined Reclaim 5% faster.
+
+   Using normal reclaim for skills costs 20% more reclaim.
 
    After the Central Fabricator is assigned, it cannot be changed for the inter combat, even if it is destroyed or retreats.
    gain the 'Central Fabricator' hullmod, allowing you to chose your Central Fabricator
 
 (requires at least 4 lower level skills)
-8) Simulacrum Fighter Wings
-    for every 1000 reclaim in a ship, gain 1 control.
-    for every control, gain the ability to control one more Simulacrum Fighter Wings.
-    Each Simulacrum Fighter Wing costs OP cost * ?? reclaim to produce, and can takes refit time * wing size * ?? seconds to produce.
-    Simulacrum Fighters dont benefit from fighter modifiers, and rapidly decay, only being able to stay in combat for 60 seconds before being destroyed.
-    Simulacrum Fighters have infinite engagement range.
-    Use the __ ability to select your Simulacrum Fighter Wings from available fighter LCPs
-OR
-
 9) create starships? (this is way way way to mush... maybe have this be the capstone?)
-    every DP * 30 seconds, create a starship (reclaim cost == 500 * DP)
+    every 60 seconds create a starship (reclaim cost == 500 * DP)
+    every D-mod on the ship (excluding 'degraded drive field', 'erratic field ejector', 'compromised storge') reduces the reclaim cost by 20%, up to a maximum of 50%
+    every S-mod on the ship increased the reclaim cost by 25%
+
+
+issues:
+    no match to chose between for capstone.
+    peach performance time is worthless for threat.
+possable skills:
+    a skill that creates missiles (out of a selection). effectively custom bombers
+    a skill like the hive ships skill (lots of fragments or missiles all at once. active ability.)
+
 
 
 

@@ -1,6 +1,7 @@
+V0.0.7:
 V0.0.6:
     balance:
-        changed the '' skill to increase speed by 10% per 1000 -> 5% per 1000
+        changed the 'Centralized Logistics' skill to increase speed by 10% per 1000 -> 5% per 1000
 V0.0.5
     fixes:
         fixed a random crash.
