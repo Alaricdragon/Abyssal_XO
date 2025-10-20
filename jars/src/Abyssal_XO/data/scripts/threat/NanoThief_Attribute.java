@@ -29,43 +29,37 @@ new skill pholosaphy:
 all new skills will incore effects that will slowly use reclaim. (as to avoid the infinit fighter issue I have right now). the skills will be desinged around improving ship stats, or restoring ships.
 so the skills:
 1) recover hull:
-    //I really need to work the numbers here
-    when out of combat for 5 seconds, recover 1% hull a second.
+    every second, recover between 5% and 0.5% hull. This skill is fastest when below 5% hull, and slowest past 90% hull.
     for every 100 hull restored, costs 1 reclaim
 
-2) recover CR / PPC?:
-    //this will not asset threat.
-    //does this really need to be redesined? just take the PPC
-    for 10 reclaim a second, negate the loss of peak performance time / combat readiness
-    for ships with a peck performance time of 200/150/100/50/25/10 and lower, the cost is multiplied by 2/3/4/5/6/7
-    if the ship has infinite PPT, restore CR instead, at a rate of 1 CR every 10 seconds, at the cost of 100 reclaim
-
-3) recover missles:
-    every 15/30/45 seconds, fully refill a single empty 'limited ammo' weapons ammo
+2) recover ammo:
+    fully refill a single empty 'limited ammo' weapons ammo
+    has a cool down of  15/30/45 seconds depending on weapon size
     costs 5/10/20 * op cost reclaim, depending on weapon size
 
-
-4) remorse recovery:
+3) supply forging:
     increase salvage gains by 10%, excluding rare items.
-    at the end of combat, for every 1000 reclaim in your fleets storge:
+    at the end of combat, for every 1000 reclaim your fleet holds:
         gain 5 supplies? (1 per 200)
-        gain 10 fuel? (1 per 1000)
-4) flux recovery?
-    when over 20% flux, gain 20% flux dispensation, and 5% hard flux dispensation
-    costs ?? reclaim a second well active
-4) forcefully recovery:?
-    increase salvage by 100%
-    reduce the chances of recovering ships by 50%
-4) fighter spawning?
-    when a reclaim package is created, create 1/2/3/4 Simulacrum Fighter Wings instantly
+        gain 10 fuel? (1 per 100)
 
-5) create escorts:
+4) scrap shield:
+    give the '' ability:
+        lasts 5 seconds
+        required 30 seconds to recharge.
+        costs 500 reclaim to use
+        increases resistance to damage by 95%. for every point of 100 damage resisted by this ability, uses 1 reclaim
+        weapons and other ability's are disabled for the duration.
+
+5) ????
+
+6) create escorts:
     create up to 1/1/2/3 Simulacrum Fighter Wings that will defend the ship (like defensive targetting array)
     -notes on what a Simulacrum Fighter Wing is here.
 
-6) Simulacrum Fighter Wings
+7) Simulacrum Fighter Wings
     Gain the ability to produce Simulacrum Fighter Wings. Your fleet can only maintain up to deployed DP / 10 Simulacrum Fighter Wings at once.
-    Simulacrum Fighter Wings produced by this skill have infinite engagement range.
+    Simulacrum Fighter Wings produced by this skill have infinite engagement range. (edited)Sunday, October 19, 2025 12:26 PM
 
 (requires at least one from lower tiers of skill)
 8) Centralized Logistics: when the first reclaim package is created, the largest ship in your fleet is marked as the 'Central Fabricator'. Reclaim Packages will always attempt to move to the Central Fabricator, provided it exists.
@@ -79,22 +73,25 @@ so the skills:
    Using normal reclaim for skills costs 20% more reclaim.
 
    After the Central Fabricator is assigned, it cannot be changed for the inter combat, even if it is destroyed or retreats.
-   gain the 'Central Fabricator' hullmod, allowing you to chose your Central Fabricator
+   gain the 'Central Fabricator' hullmod, allowing you to chose your Central Fabricator (edited)Sunday, October 19, 2025 12:17 PM
 
 (requires at least 4 lower level skills)
-9) create starships? (this is way way way to mush... maybe have this be the capstone?)
-    every 60 seconds create a starship (reclaim cost == 500 * DP)
+9) create starships?
+    every 60 seconds create a starship (reclaim cost = 500 * DP)
     every D-mod on the ship (excluding 'degraded drive field', 'erratic field ejector', 'compromised storge') reduces the reclaim cost by 20%, up to a maximum of 50%
     every S-mod on the ship increased the reclaim cost by 25%
-
-
-issues:
-    no match to chose between for capstone.
-    peach performance time is worthless for threat.
-possable skills:
-    a skill that creates missiles (out of a selection). effectively custom bombers
-    a skill like the hive ships skill (lots of fragments or missiles all at once. active ability.)
-
+    when this ship is destroyed, it is worth at 50% of the reclaim it took to create it, or 1000. whatever is lower.
+OR
+10) Desperate Measures:
+    when you take more then 10% hull damage in 5 seconds, or when hull is below 20%
+        if overloaded:
+            reduce overload time by 50%. costs 50 reclaim per second reduced.
+        for 10 seconds, for every 1% of missing hull:
+            increase speed of all nano-thief skills by 2% (excluding desperate measures)
+            increase the cost of all nano-thief skills by 1% (excluding desperate measures)
+        for 10 seconds, well your CR is below 20%:
+            regenerate 1% CR a second. costs 50 reclaim per CR regenerated
+    can only trigger once every 10 seconds
 
 
 

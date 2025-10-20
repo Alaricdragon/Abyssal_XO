@@ -53,7 +53,7 @@ public class Nano_Thief_Stats {
     private float range;
 
     @Getter
-    private String fighterToBuild = Settings.NANO_THIEF_BASEWING;
+    private String fighterToBuild = Settings.NANO_THIEF_BASEWING;//Settings.NANO_THIEF_PALYER_BASEWING;
     @Getter
     private ShipHullSpecAPI fighterHullSpec;
     private boolean isAlly = false;
@@ -433,8 +433,11 @@ public class Nano_Thief_Stats {
 
 
         FleetMemberAPI member = Global.getFactory().createFleetMember(FleetMemberType.SHIP,"Abyssal_XO_ReclaimCore_Blank");
+        engine.getFleetManager(23).spawnShipOrWing("",null,0f,0f);
         ShipVariantAPI OVERWRITER = member.getVariant();//Global.getSettings().getVariant("Abyssal_XO_ReclaimCore_Blank").clone();
         OVERWRITER.setSource(VariantSource.REFIT);
+        //OVERWRITER.setWingId(0,Settings.NANO_THIEF_BASEWING);//'broadsword_wing' from settings causes strange fragment swarm to spawn??? WTF?
+        //OVERWRITER.setWingId(0,Settings.NANO_THIEF_PALYER_BASEWING);//'broadsword_wing' from settings causes strange fragment swarm to spawn??? WTF?
         OVERWRITER.setWingId(0,this.fighterToBuild);
         OVERWRITER.getWing(0).addTag("independent_of_carrier");
         //OVERWRITER.getWing(0).addTag("auto_fighter");
