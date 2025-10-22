@@ -61,6 +61,9 @@ public class Nano_Thief_Selection_CargoListiner implements CargoPickerListener {
     @Override
     public void pickedCargo(CargoAPI cargo) {
         //log.info("this was a 'picked cargo'.");
+        if (oldFighter != null) Global.getSector().getPlayerFleet().getCargo().addFighters(oldFighter, 1);
+        Global.getSector().getPlayerFleet().getCargo().removeFighters(currentFighter,1);
+        Global.getSector().getPlayerPerson().getMemory().set(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY, currentFighter);
         Nano_Thief_dialog.dialog.dismiss();
     }
 
@@ -68,7 +71,7 @@ public class Nano_Thief_Selection_CargoListiner implements CargoPickerListener {
     public void cancelledCargoSelection() {
         //log.info("this was considered a canal");
 
-        CargoAPI playerTemp = Global.getSector().getPlayerFleet().getCargo();
+        /*CargoAPI playerTemp = Global.getSector().getPlayerFleet().getCargo();
         playerTemp.clear();
         playerTemp.addAll(backupCargo);
         if (oldFighter != null) {
@@ -77,7 +80,7 @@ public class Nano_Thief_Selection_CargoListiner implements CargoPickerListener {
             Global.getSector().getPlayerPerson().getMemory().set(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY,"null");
             Global.getSector().getPlayerPerson().getMemory().expire(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY,-1);
             Global.getSector().getPlayerPerson().getMemory().unset(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY);//getString(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY);
-        }
+        }*/
         Nano_Thief_dialog.dialog.dismiss();
     }
     @Override
@@ -175,17 +178,17 @@ public class Nano_Thief_Selection_CargoListiner implements CargoPickerListener {
                 }*/
                 //if (!alreadyHas) {
                     playerFighters.addFighters(oldFTemp, 1);
-                    Global.getSector().getPlayerFleet().getCargo().addFighters(oldFTemp, 1);
+                    //Global.getSector().getPlayerFleet().getCargo().addFighters(oldFTemp, 1);
                 //}
             }
         }
         if (newFTemp != null) {
-            Global.getSector().getPlayerFleet().getCargo().removeFighters(newFTemp,1);
+            //Global.getSector().getPlayerFleet().getCargo().removeFighters(newFTemp,1);
             currentFighter = newFTemp;
-            Global.getSector().getPlayerPerson().getMemory().set(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY, currentFighter);
+            //Global.getSector().getPlayerPerson().getMemory().set(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY, currentFighter);
         }else{
             currentFighter = "talon_wing";
-            Global.getSector().getPlayerPerson().getMemory().set(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY, currentFighter);
+            //Global.getSector().getPlayerPerson().getMemory().set(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY, currentFighter);
         }
     }
 }

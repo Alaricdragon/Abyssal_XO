@@ -15,6 +15,7 @@ import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.mission.FleetSide;
 import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.api.util.Pair;
+import lombok.Getter;
 import org.apache.log4j.Logger;
 import org.lwjgl.util.vector.Vector2f;
 import second_in_command.SCUtils;
@@ -28,17 +29,22 @@ import static Abyssal_XO.data.scripts.Settings.TAG_HASRECLAMED;
 
 public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
     private static Logger log = Global.getLogger(NanoThief_BattleListener.class);
-    private HashMap<String,Nano_Thief_Stats> friendlyCaptions;
-    private HashMap<String,Nano_Thief_Stats> hostileCaptions;
+    @Getter
+    private static HashMap<String,Nano_Thief_Stats> friendlyCaptions;
+    @Getter
+    private static HashMap<String,Nano_Thief_Stats> hostileCaptions;
+
 
     public NanoThief_BattleListener(){
+        friendlyCaptions = new HashMap<>();
+        hostileCaptions = new HashMap<>();
         //Nano_Thief_AI_OVERRIDE.reset();
         //Nano_Thief_NoneCombatAI.init();
         CombatEngineAPI engine = Global.getCombatEngine();
         log.info("(NanoThief)attempting to get commanders for friendly fleet...");
-        friendlyCaptions = getCommanders(engine.getFleetManager(FleetSide.PLAYER).getAllFleetCommanders());
+        friendlyCaptions = getCommanders(engine.getFleetManager(FleetSide.PLAYER).getAllFleetCommanders(),true);
         log.info("(NanoThief)attempting to get commanders for hostile fleet...");
-        hostileCaptions = getCommanders(engine.getFleetManager(FleetSide.ENEMY).getAllFleetCommanders());
+        hostileCaptions = getCommanders(engine.getFleetManager(FleetSide.ENEMY).getAllFleetCommanders(),false);
         //SCUtils.getFleetData()
         //startup data....
     }
@@ -56,7 +62,7 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
         }
         return output;
     }*/
-    private HashMap<String,Nano_Thief_Stats> getCommanders(java.util.List<com.fs.starfarer.api.characters.PersonAPI> commanders){
+    private HashMap<String,Nano_Thief_Stats> getCommanders(java.util.List<com.fs.starfarer.api.characters.PersonAPI> commanders,boolean isPlayerAllied){
         HashMap<String,Nano_Thief_Stats> output = new HashMap<>();
         CombatEngineAPI engine = Global.getCombatEngine();
         for (PersonAPI a : commanders){
@@ -76,14 +82,16 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
                     customFighter = a.getMemoryWithoutUpdate().getString(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY);
                 }
                 fleet = a.getFleet();
+                if (fleet == null && a.getStats() != null) fleet = a.getStats().getFleet();
+                if (fleet == null && a.getFleetCommanderStats() != null) fleet = a.getFleetCommanderStats().getFleet();
             }
             if (fleet == null) continue;
             log.info("  commander does in fact have a fleet.");
             for (SCOfficer b : SCUtils.getFleetData(fleet).getActiveOfficers()){
-                log.info("      checking SiC officer of atrubuteID: "+b.getAptitudeId());
+                log.info("      checking SiC officer of attributeID: "+b.getAptitudeId());
                 if (!b.getAptitudeId().equals("Abyssal_NanoThief")) continue;
                 log.info("      added Sic officer from fleet "+a.getId()+" to list of commanders....");
-                output.put(a.getId(),new Nano_Thief_Stats(a.getId(),b,customFighter));//a.getFleet() is required.
+                output.put(a.getId(),new Nano_Thief_Stats(a.getId(),isPlayerAllied,b,customFighter));//a.getFleet() is required.
                 break;
             }
             log.info("  finished check for commander");
@@ -105,6 +113,8 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
         if (!target.isHulk()) return;
         if (target.hasTag(TAG_HASRECLAMED)) return;
         if (ThreatCombatStrategyAI.isFabricator(target)) return;
+        if (target.getHullSpec().getHullId().equals("attack_swarm")) return;
+        //if (target.getVariant() != null && (target.getVariant().getHullVariantId().equals("attack_swarm") || target.getVariant().getHullVariantId().equals("attack_swarm_Construction"))) return;
         //if (!ship.isHulk() || ship.hasTag(TAG_HASRECLAMED)) return;
         //if (ThreatCombatStrategyAI.isFabricator(ship)) return;
 
@@ -128,6 +138,8 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
             }*/
             Pair<Nano_Thief_Stats, Integer> force0 = getPreferredCommander(target,friendlyCaptions);
             Pair<Nano_Thief_Stats, Integer> force1 = getPreferredCommander(target,hostileCaptions);
+            //log.info("attempting to create reclaim for a ship of ID: "+target.getHullSpec().getHullId());
+            //log.info("  variant: "+target.getVariant().getHullVariantId());
             if (force0.one != null){
                 Global.getCombatEngine().addPlugin(new NanoThief_RecreationScript(force0,target, 3f));
                 found = true;
