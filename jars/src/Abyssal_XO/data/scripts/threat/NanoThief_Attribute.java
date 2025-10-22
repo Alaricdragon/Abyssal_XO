@@ -13,13 +13,15 @@ public class NanoThief_Attribute extends SCBaseAptitudePlugin {
         3) make it so the fighters acsualy lanch from the ship. (aka an animation for that)
         4) add in the quest to allow someone to quire this skill (kill a centen number of fabricates, then just have it.)
         5) improve the display for the nano-thief stats. something like, a bar that fills as I build fighters, and a bar that fills as I max deployment (and fills more (with a different color) as I max storge)
-        6) add graphics to the 'overcharge' sub system
-    -balance:
-        the fighters are way to fucking strong. this is not a issue that can be fixed with deploment time
-        solution: reduce fighter damage by 10%, and hull by 20%, and shields by 20%.
 
-    -bugs:
-        1) there is a bug that makes it so if I put in a talen, then cancel, the thing does not give me back my wing / reset the fighter to the old one. this needs looking into.
+
+        new skill list to do list:
+        1) create a type of listiner attached to every ship with this XO on battle start.
+            -the stats will need to hold a list of all ships attached to this, for reasons. (such as were to give reclaim with centralized production)
+            -this system will need to hold every 'active skill' and the relevant data for each one. effectively, a special class that handles the battle effects of everything
+            -this system will also need to handle fighter spawning.
+        2) disable fighter spawning in the primary XO.
+        3)
 
 note: I need to change everything.
 issue: the 'fighter spam' with this attribute can be completely broken. I will take a suggestion and turn the fighter thing into a capstone.
