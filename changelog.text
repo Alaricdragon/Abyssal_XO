@@ -1,4 +1,9 @@
 V0.0.7:
+    fixes:
+        fixed 'threat' creating 2 - 6 times as many reclaim swarms as they should when they die
+        fixed 'threat' not spawning with the 'Nano-Thief' XO.
+        fixed multiple crashes related to none player forces having the 'Nano-Thief' XO.
+        (hopfuly) fixed all bugs related to missing fighter LCPs after selecting what fighter LCP to use.
 V0.0.6:
     balance:
         changed the 'Centralized Logistics' skill to increase speed by 10% per 1000 -> 5% per 1000

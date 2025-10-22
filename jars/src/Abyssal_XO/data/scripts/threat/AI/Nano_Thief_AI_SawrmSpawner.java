@@ -20,14 +20,14 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
         this.stats = stats;
         this.wing = wing;
         engine = Global.getCombatEngine();
-        /**/
+        /*/
         log.info("preparing sawrm spawner for a single wing:");
         log.info("  stats:");
         displayStats("FighterRefitTime: ","       ",ship.getMutableStats().getFighterRefitTimeMult());
         displayStats("Max Bays: ","       ",ship.getMutableStats().getNumFighterBays());
         displayStats("own wing recovery mod: ","      ",ship.getMutableStats().getDynamic().getStat(Stats.OWN_WING_RECOVERY_MOD));
         displayStats("swarm launcher mod: ","      ",ship.getMutableStats().getDynamic().getStat(Stats.SWARM_LAUNCHER_WING_SIZE_MOD));
-
+        /**/
 
         //ship.getMutableStats().fighter
         /**/
@@ -101,8 +101,8 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
                     try changing out the fleet spawning logic to use something like 'engine.getFleetManager(23).spawnShipOrWing("",null,0f,0f);'. maybe this will help? who knows!
                  */
 
-                log.info("attempting to spawn a new wing of intended ID: "+wing);
-                log.info("The wing ended up with a true ID of: "+ship.getLaunchBaysCopy().get(0).getWing().getSpec().getId());
+                //log.info("attempting to spawn a new wing of intended ID: "+wing);
+                //log.info("The wing ended up with a true ID of: "+ship.getLaunchBaysCopy().get(0).getWing().getSpec().getId());
                 FighterWingAPI wing = ship.getLaunchBaysCopy().get(0).getWing();
                 wing.setSourceShip(ship);
                 //wing.setSourceShip(stats.getReclaimCore());
@@ -110,14 +110,14 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
                 stats.removeReclaimCore(ship);
                 Global.getCombatEngine().removeEntity(ship);
             }else{
-                log.info(ship.getId()+"wing does not exist. getting wing data...");
+                /*log.info(ship.getId()+"wing does not exist. getting wing data...");
                 log.info("  fighter refit time multi:" + ship.getMutableStats().getFighterRefitTimeMult());
                 log.info("  refit rate right now: " +ship.getLaunchBaysCopy().get(0).getCurrRate());
                 log.info("  time until replacement" + ship.getLaunchBaysCopy().get(0).getTimeUntilNextReplacement());
                 log.info("  Fast replacements" + ship.getLaunchBaysCopy().get(0).getFastReplacements());
                 log.info("  Extra Deploy Limit" + ship.getLaunchBaysCopy().get(0).getExtraDeploymentLimit());
                 log.info("  Extra Deploy" + ship.getLaunchBaysCopy().get(0).getExtraDeployments());
-                log.info("  Extra Duration" + ship.getLaunchBaysCopy().get(0).getExtraDuration());
+                log.info("  Extra Duration" + ship.getLaunchBaysCopy().get(0).getExtraDuration());*/
 
                 /*ship.setCurrentCR(100);
                 ship.getLaunchBaysCopy().get(0).setFastReplacements(100);

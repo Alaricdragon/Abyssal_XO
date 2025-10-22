@@ -236,12 +236,12 @@ public class NanoThief_RecreationScript extends BaseEveryFrameCombatPlugin {
 		if (!spawnedSwarms) {
 			int numSwarms = 1;
 
-			for (ConstructionSwarmSystemScript.SwarmConstructableVariant curr : ConstructionSwarmSystemScript.CONSTRUCTABLE) {
+			/*for (ConstructionSwarmSystemScript.SwarmConstructableVariant curr : ConstructionSwarmSystemScript.CONSTRUCTABLE) {
 				if (curr.variantId.equals(primary.getVariant().getHullVariantId())) {
 					numSwarms = (int) Math.round(curr.cr * 100f);
 					break;
 				}
-			}
+			}*/
 
 			for (int i = 0; i < numSwarms; i++) {
 				ShipAPI curr = launchSwarm();

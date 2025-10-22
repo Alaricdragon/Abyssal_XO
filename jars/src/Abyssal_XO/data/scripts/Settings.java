@@ -16,7 +16,7 @@ public class Settings {
     public static final int NANO_THIEF_MINRANGEOFWING = 2000;
 
     public static final int NANO_THIEF_BASESWARM_COST = 175;
-    public static final int NANO_THIEF_BASESWARM_BUILDTIME = 5;
+    public static final int NANO_THIEF_BASESWARM_BUILDTIME = 10;
     public static final int NANO_THIEF_BASESWARM_TTL = 120;//swrams get exstea base TTL because they already die from shoting wepons.
 
 
@@ -29,7 +29,7 @@ public class Settings {
 
     public static final String NANO_THIEF_ABILITY = "Abyssal_XO_NanoThief_setFighters";
     public static final String NANO_THIEF_CUSTOM_WING_MEMORY_KEY = "$Abyssal_XO_NANO_THIEF_CUSTOMWING";
-    public static final String NANO_THIEF_BASEWING = "broadsword_wing";//"attack_swarm_wing";
+    public static final String NANO_THIEF_BASEWING = "attack_swarm_wing";//"attack_swarm_wing";
     public static final String NANO_THIEF_PALYER_BASEWING = "talon_wing";//"broadsword_wing";
     public static final String DISPLAYID_NANOTHIEF = "Abyssal_XO_DisplayKey";
     public static final String HULLMOD_CENTRAL_FAB = "Abyssal_XO_CF";

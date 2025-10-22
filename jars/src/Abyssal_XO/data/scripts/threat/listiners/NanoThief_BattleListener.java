@@ -113,6 +113,8 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
         if (!target.isHulk()) return;
         if (target.hasTag(TAG_HASRECLAMED)) return;
         if (ThreatCombatStrategyAI.isFabricator(target)) return;
+        if (target.getHullSpec().getHullId().equals("attack_swarm")) return;
+        //if (target.getVariant() != null && (target.getVariant().getHullVariantId().equals("attack_swarm") || target.getVariant().getHullVariantId().equals("attack_swarm_Construction"))) return;
         //if (!ship.isHulk() || ship.hasTag(TAG_HASRECLAMED)) return;
         //if (ThreatCombatStrategyAI.isFabricator(ship)) return;
 
@@ -136,6 +138,8 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
             }*/
             Pair<Nano_Thief_Stats, Integer> force0 = getPreferredCommander(target,friendlyCaptions);
             Pair<Nano_Thief_Stats, Integer> force1 = getPreferredCommander(target,hostileCaptions);
+            //log.info("attempting to create reclaim for a ship of ID: "+target.getHullSpec().getHullId());
+            //log.info("  variant: "+target.getVariant().getHullVariantId());
             if (force0.one != null){
                 Global.getCombatEngine().addPlugin(new NanoThief_RecreationScript(force0,target, 3f));
                 found = true;

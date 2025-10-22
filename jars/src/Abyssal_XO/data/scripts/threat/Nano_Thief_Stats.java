@@ -18,6 +18,7 @@ import com.fs.starfarer.api.impl.combat.threat.ThreatSwarmAI;
 import com.fs.starfarer.api.loading.FighterWingSpecAPI;
 import com.fs.starfarer.api.loading.VariantSource;
 import com.fs.starfarer.api.loading.WingRole;
+import com.fs.starfarer.api.mission.FleetSide;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import lombok.Getter;
@@ -422,7 +423,8 @@ public class Nano_Thief_Stats {
         ShipAPI primary = stats.getShip();
         String wingId = fighterToBuild;//Settings.NANO_THIEF_BASEWING;//SwarmLauncherEffect.RECLAMATION_SWARM_WING;//"attack_swarm_wing"
         CombatEngineAPI engine = Global.getCombatEngine();
-        CombatFleetManagerAPI manager = engine.getFleetManager(primary.getOriginalOwner());
+        //CombatFleetManagerAPI manager = engine.getFleetManager(FleetSide.ENEMY);//engine.getFleetManager(primary.getOwner());
+        CombatFleetManagerAPI manager = engine.getFleetManager(primary.getOwner());
         manager.setSuppressDeploymentMessages(true);
 
         Vector2f loc = primary.getLocation();
@@ -433,7 +435,7 @@ public class Nano_Thief_Stats {
 
 
         FleetMemberAPI member = Global.getFactory().createFleetMember(FleetMemberType.SHIP,"Abyssal_XO_ReclaimCore_Blank");
-        engine.getFleetManager(23).spawnShipOrWing("",null,0f,0f);
+        //Global.getFactory().createFleetMember
         ShipVariantAPI OVERWRITER = member.getVariant();//Global.getSettings().getVariant("Abyssal_XO_ReclaimCore_Blank").clone();
         OVERWRITER.setSource(VariantSource.REFIT);
         //OVERWRITER.setWingId(0,Settings.NANO_THIEF_BASEWING);//'broadsword_wing' from settings causes strange fragment swarm to spawn??? WTF?
@@ -443,14 +445,19 @@ public class Nano_Thief_Stats {
         //OVERWRITER.getWing(0).addTag("auto_fighter");
         //OVERWRITER.setWingId(1,stats.getFighterToBuild());
         //OVERWRITER.setWingId(2,stats.getFighterToBuild());
+        member.setOwner(primary.getOwner());
         member.setVariant(OVERWRITER,false,true);
+
         fighter = manager.spawnFleetMember(member,loc, facing, 0f);
+        //engine.ship
+        //fighter.setOwner(primary.getOwner());
+        //fighter = manager.spawnShipOrWing(member,loc,facing,0f);
+
         //if (!isAlly) fighter.setAlly(false);
-        fighter.setOwner(primary.getOwner());
-        log.info("spawning spawner with a wing of: "+this.fighterToBuild);
-        log.info("the fighters ID was given as: "+OVERWRITER.getWing(0).getId());
+        //log.info("spawning spawner with a wing of: "+this.fighterToBuild);
+        //log.info("the fighters ID was given as: "+OVERWRITER.getWing(0).getId());
         //log.info("temp thing: "+fighter.getWing().getSpec());//no wing...? //maybe wing only exsists a short time after creation?
-        log.info("temp thing 2:"+fighter.getLaunchBaysCopy().get(0).getTimeUntilNextReplacement());
+        //log.info("temp thing 2:"+fighter.getLaunchBaysCopy().get(0).getTimeUntilNextReplacement());
         //log.info("got the true ID of the wing as: "+fighter.getLaunchBaysCopy().get(0).getWing().getSpec().getId());
         fighter.setShipAI(new Nano_Thief_AI_SawrmSpawner(fighter,primary,this.fighterToBuild,stats));
         //note: this is usefull for making the guys follow your primary ship. not yet compleated.
