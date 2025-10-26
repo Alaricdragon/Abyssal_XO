@@ -1,7 +1,7 @@
-package Abyssal_XO.data.scripts.threat.listiners;
+package Abyssal_XO.data.scripts.threat_old.listiners;
 
 import Abyssal_XO.data.scripts.Settings;
-import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
+import Abyssal_XO.data.scripts.threat_old.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
@@ -49,10 +49,10 @@ public class NanoThief_ShipStats implements AdvanceableListener {
         if (ship.equals(stats.getCentralFab())){
             isCentralFabricate = true;
         }
-        this.rpc = 0;
-        this.cost = stats.getSwarmCost();
-        this.creationTime = stats.getProductionTime();
-        this.maxStorge = 0;
+        this.rpc = stats.getModifedReclaimPerControl(ship);
+        this.cost = stats.getModifiedCost(ship);
+        this.creationTime = stats.getModifedProductionTime(ship);
+        this.maxStorge = stats.getModifedStoredSwarms(ship);
     }
     public void addReclaim(float amount){
         //log.info("increasing reclaim by: "+amount);
@@ -98,8 +98,8 @@ public class NanoThief_ShipStats implements AdvanceableListener {
                 if (progress >= creationTime) {
                     processReclaimCore();
                     reclaim -= cost;
-                    //this.creationTime = stats.getModifedProductionTime(ship);
-                    //this.maxStorge = stats.getModifedStoredSwarms(ship);
+                    this.creationTime = stats.getModifedProductionTime(ship);
+                    this.maxStorge = stats.getModifedStoredSwarms(ship);
                     //log.info("creating time for next swarm gotten as: "+this.creationTime);
                     progress = 0;
                 }
@@ -110,8 +110,8 @@ public class NanoThief_ShipStats implements AdvanceableListener {
                 if (progress >= creationTime) {
                     this.stored++;
                     reclaim -= cost;
-                    //this.creationTime = stats.getModifedProductionTime(ship);
-                    //this.maxStorge = stats.getModifedStoredSwarms(ship);
+                    this.creationTime = stats.getModifedProductionTime(ship);
+                    this.maxStorge = stats.getModifedStoredSwarms(ship);
                     progress = 0;
                 }
                 return;

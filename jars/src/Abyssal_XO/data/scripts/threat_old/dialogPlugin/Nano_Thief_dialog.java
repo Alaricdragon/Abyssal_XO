@@ -1,8 +1,7 @@
-package Abyssal_XO.data.scripts.threat.dialogPlugin;
+package Abyssal_XO.data.scripts.threat_old.dialogPlugin;
 
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.campaign.InteractionDialogAPI;
-import com.fs.starfarer.api.campaign.InteractionDialogPlugin;
+import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.combat.EngagementResultAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
@@ -33,7 +32,7 @@ public class Nano_Thief_dialog implements InteractionDialogPlugin {
         //dialog.get
     }
     public void attemptShowCargo(InteractionDialogAPI dialog){
-        dialog.showCargoPickerDialog("cargo","Conferm", "Cancal",true,400, Nano_Thief_Selection_CargoListiner.prepareForSelection(),new Nano_Thief_Selection_CargoListiner());
+        dialog.showCargoPickerDialog("cargo","Conferm", "Cancal",true,400,Nano_Thief_Selection_CargoListiner.prepareForSelection(),new Nano_Thief_Selection_CargoListiner());
         /*dialog.showCargoPickerDialog("cargo", "confermSelection", "cancalSelection", true, 400, Global.getSector().getPlayerFleet().getCargo(), new CargoPickerListener() {
             @Override
             public void pickedCargo(CargoAPI cargo) {

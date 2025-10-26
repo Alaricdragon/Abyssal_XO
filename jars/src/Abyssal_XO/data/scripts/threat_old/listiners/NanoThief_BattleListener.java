@@ -1,8 +1,7 @@
-package Abyssal_XO.data.scripts.threat.listiners;
+package Abyssal_XO.data.scripts.threat_old.listiners;
 
 import Abyssal_XO.data.scripts.Settings;
-import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
-import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
+import Abyssal_XO.data.scripts.threat_old.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
@@ -17,7 +16,6 @@ import com.fs.starfarer.api.util.Pair;
 import lombok.Getter;
 import org.apache.log4j.Logger;
 import org.lwjgl.util.vector.Vector2f;
-import second_in_command.SCData;
 import second_in_command.SCUtils;
 import second_in_command.specs.SCOfficer;
 
@@ -61,44 +59,7 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
         }
         return output;
     }*/
-    public static Nano_Thief_Stats getStatsForShip(ShipAPI ship, SCData data){
-        if (friendlyCaptions.containsKey(ship.getFleetCommander().getId())){
-            return friendlyCaptions.get(ship.getFleetCommander().getId());
-        }else if (hostileCaptions.containsKey(ship.getFleetCommander().getId())){
-            return hostileCaptions.get(ship.getFleetCommander().getId());
-        }
-        return null;
-    }
-    public static double getReclaimInShip(ShipAPI ship){
-        if (friendlyCaptions.containsKey(ship.getFleetCommander().getId())){
-            Nano_Thief_Stats stats = friendlyCaptions.get(ship.getFleetCommander().getId());
-            stats.getAvailableShips().get(ship.getId());
-            List<NanoThief_ShipSkills> list = ship.getListenerManager().getListeners(NanoThief_ShipSkills.class);
-            double out = 0;
-            if (list.size() != 0){
-                NanoThief_ShipSkills trueList = (NanoThief_ShipSkills)list.get(0);
-                out += trueList.getReclaim();
-                out += trueList.getRefinedReclaim();
-            }
-            stats.getAvailableShips().remove(ship.getId());
-            return out;
-
-        }else if (hostileCaptions.containsKey(ship.getFleetCommander().getId())){
-            Nano_Thief_Stats stats = hostileCaptions.get(ship.getFleetCommander().getId());
-            stats.getAvailableShips().get(ship.getId());
-            List<NanoThief_ShipSkills> list = ship.getListenerManager().getListeners(NanoThief_ShipSkills.class);
-            double out = 0;
-            if (list.size() != 0){
-                NanoThief_ShipSkills trueList = (NanoThief_ShipSkills)list.get(0);
-                out += trueList.getReclaim();
-                out += trueList.getRefinedReclaim();
-            }
-            stats.getAvailableShips().remove(ship.getId());
-            return out;
-        }
-        return 0;
-    }
-    private HashMap<String,Nano_Thief_Stats> getCommanders(List<PersonAPI> commanders, boolean isPlayerAllied){
+    private HashMap<String,Nano_Thief_Stats> getCommanders(java.util.List<com.fs.starfarer.api.characters.PersonAPI> commanders,boolean isPlayerAllied){
         HashMap<String,Nano_Thief_Stats> output = new HashMap<>();
         CombatEngineAPI engine = Global.getCombatEngine();
         for (PersonAPI a : commanders){

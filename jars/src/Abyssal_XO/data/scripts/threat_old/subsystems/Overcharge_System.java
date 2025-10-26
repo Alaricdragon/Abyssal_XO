@@ -1,8 +1,7 @@
-package Abyssal_XO.data.scripts.threat.subsystems;
+package Abyssal_XO.data.scripts.threat_old.subsystems;
 
-import Abyssal_XO.data.scripts.threat.skills.NanoThief_1;
+import Abyssal_XO.data.scripts.threat_old.skills.NanoThief_1;
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.combat.DamageType;
 import com.fs.starfarer.api.combat.ShipAPI;
 import org.apache.log4j.Logger;
 import org.magiclib.subsystems.MagicSubsystem;

@@ -1,4 +1,4 @@
-package Abyssal_XO.data.scripts.threat.skills;
+package Abyssal_XO.data.scripts.threat_old.skills;
 
 import Abyssal_XO.data.scripts.threat_old.Nano_Thief_Stats;
 import com.fs.starfarer.api.combat.ShipAPI;
@@ -7,7 +7,7 @@ import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import second_in_command.SCData;
 
-public class NanoThief_2 extends Nano_Thief_SKill_Base {
+public class NanoThief_2 extends Nano_Thief_SKill_Base{
     private static final String key = "AbyssalXO_Nano_Thief_Skill_2";
     private static final float hullMod = 0.95f;
     private static final float armorMod = 0.95f;
@@ -17,6 +17,22 @@ public class NanoThief_2 extends Nano_Thief_SKill_Base {
     private static final float costMod = 0.8f;
     private static final float buildTimeMod = 0.7f;
     private static final float controlMod = 0.9f;
+
+    @Override
+    public float costChange(float cost, ShipAPI target, Nano_Thief_Stats stats) {
+        return cost * costMod;
+    }
+
+    @Override
+    public float manufactureTimeChange(float time, ShipAPI target, Nano_Thief_Stats stats) {
+        return time * buildTimeMod;
+    }
+
+    @Override
+    public float reclaimPerControlChange(float reclaim, ShipAPI target, Nano_Thief_Stats stats) {
+        return reclaim * controlMod;
+    }
+
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
         String costmod = 100-((int)((costMod)*100))+"%";
@@ -40,5 +56,18 @@ public class NanoThief_2 extends Nano_Thief_SKill_Base {
         tooltip.addPara(" - unknown", Misc.getTextColor(), 0f);
 
         label.italicize();
+    }
+    @Override
+    public void changeCombatSwarmStats(ShipAPI ship,ShipAPI fabricator, Nano_Thief_Stats stats) {
+        ship.getMutableStats().getHullBonus().modifyMult(key,hullMod);
+        ship.getMutableStats().getArmorBonus().modifyMult(key,armorMod);
+
+        ship.getMutableStats().getBeamWeaponDamageMult().modifyMult(key,damageMod);
+        ship.getMutableStats().getMissileWeaponDamageMult().modifyMult(key,damageMod);
+        ship.getMutableStats().getEnergyWeaponDamageMult().modifyMult(key,damageMod);
+        ship.getMutableStats().getBallisticWeaponDamageMult().modifyMult(key,damageMod);
+
+        if (stats.getFighterHullSpec().getShieldSpec() == null) return;
+        ship.getMutableStats().getShieldDamageTakenMult().modifyFlat(key,stats.getFighterHullSpec().getShieldSpec().getFluxPerDamageAbsorbed()*shieldMod);
     }
 }

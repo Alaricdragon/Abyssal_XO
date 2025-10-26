@@ -1,4 +1,4 @@
-package Abyssal_XO.data.scripts.threat.AI;
+package Abyssal_XO.data.scripts.threat_old.AI;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;

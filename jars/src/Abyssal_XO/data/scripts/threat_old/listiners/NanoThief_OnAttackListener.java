@@ -1,6 +1,5 @@
-package Abyssal_XO.data.scripts.threat.listiners;
+package Abyssal_XO.data.scripts.threat_old.listiners;
 
-import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.DamagingProjectileAPI;

@@ -1,7 +1,7 @@
-package Abyssal_XO.data.scripts.threat.AI;
+package Abyssal_XO.data.scripts.threat_old.AI;
 
-import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
-import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_SKill_Base;
+import Abyssal_XO.data.scripts.threat_old.listiners.NanoThief_ShipStats;
+import Abyssal_XO.data.scripts.threat_old.skills.Nano_Thief_SKill_Base;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import org.apache.log4j.Logger;

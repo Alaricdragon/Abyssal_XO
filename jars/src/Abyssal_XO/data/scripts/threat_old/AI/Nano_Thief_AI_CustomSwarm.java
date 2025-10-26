@@ -1,7 +1,7 @@
-package Abyssal_XO.data.scripts.threat.AI;
+package Abyssal_XO.data.scripts.threat_old.AI;
 
 import Abyssal_XO.data.scripts.threat_old.Nano_Thief_Stats;
-import com.fs.starfarer.api.combat.ShipAPI;
+import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.impl.combat.threat.ThreatSwarmAI;
 
 public class Nano_Thief_AI_CustomSwarm extends ThreatSwarmAI {

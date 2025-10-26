@@ -1,6 +1,6 @@
-package Abyssal_XO.data.scripts.threat.ability;
+package Abyssal_XO.data.scripts.threat_old.ability;
 
-import Abyssal_XO.data.scripts.threat.dialogPlugin.Nano_Thief_dialog;
+import Abyssal_XO.data.scripts.threat_old.dialogPlugin.Nano_Thief_dialog;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.econ.SubmarketAPI;
 import com.fs.starfarer.api.impl.campaign.abilities.BaseDurationAbility;

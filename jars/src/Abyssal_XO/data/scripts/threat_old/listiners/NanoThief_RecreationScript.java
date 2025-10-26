@@ -1,18 +1,12 @@
-package Abyssal_XO.data.scripts.threat.listiners;
+package Abyssal_XO.data.scripts.threat_old.listiners;
 
-import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
+import Abyssal_XO.data.scripts.threat_old.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.combat.BaseEveryFrameCombatPlugin;
-import com.fs.starfarer.api.combat.CombatEngineAPI;
-import com.fs.starfarer.api.combat.ShipAPI;
+import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.impl.combat.RiftLanceEffect;
-import com.fs.starfarer.api.impl.combat.threat.RoilingSwarmEffect;
-import com.fs.starfarer.api.impl.combat.threat.VoltaicDischargeOnFireEffect;
+import com.fs.starfarer.api.impl.combat.threat.*;
 import com.fs.starfarer.api.input.InputEventAPI;
-import com.fs.starfarer.api.util.IntervalUtil;
-import com.fs.starfarer.api.util.Misc;
-import com.fs.starfarer.api.util.Pair;
-import com.fs.starfarer.api.util.WeightedRandomPicker;
+import com.fs.starfarer.api.util.*;
 import org.lwjgl.util.vector.Vector2f;
 
 import java.awt.*;

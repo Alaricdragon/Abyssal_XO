@@ -27,6 +27,8 @@ public class Settings {
     public static final int NANO_THIEF_CustomSwarm_TTL = 60;//swrams get exstea base TTL because they already die from shoting wepons.
     public static final int NANO_THIEF_CustomSwarm_Bomber_TTL = 30;
 
+    public static final double NANO_THIEF_RECLAIM_RECYCLE_PERCENT = 0.5;
+
     public static final String NANO_THIEF_ABILITY = "Abyssal_XO_NanoThief_setFighters";
     public static final String NANO_THIEF_CUSTOM_WING_MEMORY_KEY = "$Abyssal_XO_NANO_THIEF_CUSTOMWING";
     public static final String NANO_THIEF_BASEWING = "attack_swarm_wing";//"attack_swarm_wing";

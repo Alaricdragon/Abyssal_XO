@@ -1,4 +1,4 @@
-package Abyssal_XO.data.scripts.threat.skills;
+package Abyssal_XO.data.scripts.threat_old.skills;
 
 import Abyssal_XO.data.scripts.threat_old.Nano_Thief_Stats;
 import com.fs.starfarer.api.combat.ShipAPI;
@@ -7,10 +7,25 @@ import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import second_in_command.SCData;
 
-public class NanoThief_9 extends Nano_Thief_SKill_Base {
+public class NanoThief_9 extends Nano_Thief_SKill_Base{
     private static float costChange = 0.8f;
     private static float controlChange = 0.5f;
     private static float buildTimeChange = 0.5f;
+    @Override
+    public float costChange(float cost, ShipAPI target, Nano_Thief_Stats stats) {
+        return cost * costChange;
+    }
+
+    @Override
+    public float manufactureTimeChange(float time, ShipAPI target, Nano_Thief_Stats stats) {
+        return time*buildTimeChange;
+    }
+
+    @Override
+    public float reclaimPerControlChange(float reclaim, ShipAPI target, Nano_Thief_Stats stats) {
+        return reclaim*controlChange;
+    }
+
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
         String costmod = 100-((int)((costChange)*100))+"%";

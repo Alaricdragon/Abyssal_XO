@@ -1,4 +1,4 @@
-package Abyssal_XO.data.scripts.threat.skills;
+package Abyssal_XO.data.scripts.threat_old.skills;
 
 import Abyssal_XO.data.scripts.threat_old.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat_old.listiners.NanoThief_DP_Listener;
@@ -10,7 +10,7 @@ import second_in_command.SCData;
 
 import java.util.List;
 
-public class NanoThief_8 extends Nano_Thief_SKill_Base {
+public class NanoThief_8 extends Nano_Thief_SKill_Base{
     public static final int maxTime = 10;
     private static final int reclaimPerMulti = 1000;
     private static final float hpPercent = 0.05f;
@@ -22,8 +22,14 @@ public class NanoThief_8 extends Nano_Thief_SKill_Base {
     public String getAffectsString() {
         return "all ships in fleet";
     }
+    @Override
+    public void ApplyChangeOnReclaim(ShipAPI ship, ShipAPI reclaim, float reclaimValue, Nano_Thief_Stats stats) {
+        applythingToShipOrModule(ship, reclaim, reclaimValue, stats);
+        for (ShipAPI a : ship.getChildModulesCopy()){
+            applythingToShipOrModule(a, reclaim, reclaimValue, stats);
+        }
+    }
     private void applythingToShipOrModule(ShipAPI ship, ShipAPI reclaim, float reclaimValue, Nano_Thief_Stats stats){
-        //I am keeping this to provide an example of a NanoThief ability being effected by modals.
         NanoThief_DP_Listener listiner = null;
         if (ship.hasListenerOfClass(NanoThief_DP_Listener.class)) {
             List<NanoThief_DP_Listener> a = ship.getListenerManager().getListeners(NanoThief_DP_Listener.class);

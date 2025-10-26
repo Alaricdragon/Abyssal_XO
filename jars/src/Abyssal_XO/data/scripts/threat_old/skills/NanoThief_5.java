@@ -1,4 +1,4 @@
-package Abyssal_XO.data.scripts.threat.skills;
+package Abyssal_XO.data.scripts.threat_old.skills;
 
 import Abyssal_XO.data.scripts.threat_old.Nano_Thief_Stats;
 import com.fs.starfarer.api.combat.ShipAPI;
@@ -7,7 +7,7 @@ import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import second_in_command.SCData;
 
-public class NanoThief_5 extends Nano_Thief_SKill_Base {
+public class NanoThief_5 extends Nano_Thief_SKill_Base{
     private static final String key = "AbyssalXO_Nano_Thief_Skill_5";
 
     private static final float timeMod = 1.1f;
@@ -24,6 +24,22 @@ public class NanoThief_5 extends Nano_Thief_SKill_Base {
 
     private static final float costMod = 1.3f;
     private static final float buildTimeMod = 1.3f;
+
+    @Override
+    public float manufactureTimeChange(float time, ShipAPI target, Nano_Thief_Stats stats) {
+        return time * buildTimeMod;
+    }
+
+    @Override
+    public float costChange(float cost, ShipAPI target, Nano_Thief_Stats stats) {
+        return cost * costMod;
+    }
+
+    @Override
+    public float timeToLiveChange(float time, ShipAPI target, Nano_Thief_Stats stats) {
+        return time * timeMod;
+    }
+
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
         /*
@@ -71,5 +87,25 @@ public class NanoThief_5 extends Nano_Thief_SKill_Base {
 
         label.italicize();
 
+    }
+
+    @Override
+    public void changeCombatSwarmStats(ShipAPI ship,ShipAPI fabricator, Nano_Thief_Stats stats) {
+        ship.getMutableStats().getBeamWeaponDamageMult().modifyMult(key,damageMod);
+        ship.getMutableStats().getMissileWeaponDamageMult().modifyMult(key,damageMod);
+        ship.getMutableStats().getEnergyWeaponDamageMult().modifyMult(key,damageMod);
+        ship.getMutableStats().getBallisticWeaponDamageMult().modifyMult(key,damageMod);
+
+        ship.getMutableStats().getBallisticAmmoRegenMult().modifyPercent(key, fireMod);
+        ship.getMutableStats().getEnergyAmmoRegenMult().modifyPercent(key, fireMod);
+        ship.getMutableStats().getMissileAmmoRegenMult().modifyPercent(key, fireMod);
+
+        ship.getMutableStats().getFluxDissipation().modifyFlat(key,stats.getFighterHullSpec().getFluxCapacity()*fluxMod);
+
+
+        ship.getMutableStats().getHullBonus().modifyFlat(key,hullMod*stats.getFighterHullSpec().getHitpoints());
+        ship.getMutableStats().getArmorBonus().modifyFlat(key,armorMod*stats.getFighterHullSpec().getArmorRating());
+        if (stats.getFighterHullSpec().getShieldSpec() == null) return;
+        ship.getMutableStats().getShieldDamageTakenMult().modifyMult(key,shieldMod);//stats.getFighterHullSpec().getShieldSpec().getFluxPerDamageAbsorbed());
     }
 }

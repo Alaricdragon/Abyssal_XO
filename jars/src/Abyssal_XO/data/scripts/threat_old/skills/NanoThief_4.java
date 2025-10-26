@@ -1,4 +1,4 @@
-package Abyssal_XO.data.scripts.threat.skills;
+package Abyssal_XO.data.scripts.threat_old.skills;
 
 import Abyssal_XO.data.scripts.threat_old.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat_old.subsystems.Cruise_System;
@@ -9,7 +9,7 @@ import com.fs.starfarer.api.util.Misc;
 import org.magiclib.subsystems.MagicSubsystemsManager;
 import second_in_command.SCData;
 
-public class NanoThief_4 extends Nano_Thief_SKill_Base {
+public class NanoThief_4 extends Nano_Thief_SKill_Base{
     private static final String key = "AbyssalXO_Nano_Thief_Skill_4";
     private static final float speedChangeMulti = 0.50f;
     private static final int statisSpeedGain = 40;
@@ -42,5 +42,24 @@ public class NanoThief_4 extends Nano_Thief_SKill_Base {
 
         label.italicize();
 
+    }
+    @Override
+    public void changeCombatSwarmStats(ShipAPI ship,ShipAPI fabricator, Nano_Thief_Stats stats) {
+        /*log.info("getting a single ships speed stats...");
+        for (String a : ship.getMutableStats().getMaxSpeed().getFlatMods().keySet()){
+            log.info("  flat mod as: "+ship.getMutableStats().getMaxSpeed().getFlatMods().get(a).value);
+        }
+        for (String a : ship.getMutableStats().getMaxSpeed().getMultMods().keySet()){
+            log.info("  multi mod as: "+ship.getMutableStats().getMaxSpeed().getMultMods().get(a).value);
+        }*/
+
+
+        //ship.getMutableStats().getZeroFluxSpeedBoost().modifyFlat("aaaaaaaadsadsad",1000);
+        MagicSubsystemsManager.addSubsystemToShip(ship, new Cruise_System(ship,stats.getRange(),stats.getFighterHullSpec().getEngineSpec().getMaxSpeed() * speedChangeMulti));
+        ship.getMutableStats().getEngineHealthBonus().modifyMult(key,enginDurbilityMulti);
+        /*ship.getMutableStats().getHullBonus().modifyMult(key,hullMod);
+        ship.getMutableStats().getArmorBonus().modifyMult(key,armorMod);
+        if (stats.getFighterHullSpec().getShieldSpec() == null) return;
+        ship.getMutableStats().getShieldDamageTakenMult().modifyFlat(key,stats.getFighterHullSpec().getShieldSpec().getFluxPerDamageAbsorbed()*shieldMod);*/
     }
 }

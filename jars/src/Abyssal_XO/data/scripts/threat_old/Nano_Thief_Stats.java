@@ -1,13 +1,10 @@
-package Abyssal_XO.data.scripts.threat;
+package Abyssal_XO.data.scripts.threat_old;
 
 import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.hullmods.ReclaimCore;
-import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_Reclaim;
-import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_SawrmSpawner;
-import Abyssal_XO.data.scripts.threat.listiners.NanoThief_BattleListener;
-import Abyssal_XO.data.scripts.threat.listiners.NanoThief_RecreationScript;
-import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
-import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
+import Abyssal_XO.data.scripts.threat_old.AI.*;
+import Abyssal_XO.data.scripts.threat_old.listiners.NanoThief_RecreationScript;
+import Abyssal_XO.data.scripts.threat_old.listiners.NanoThief_ShipStats;
 import Abyssal_XO.data.scripts.threat_old.skills.Nano_Thief_SKill_Base;
 import Abyssal_XO.data.scripts.threat_old.subsystems.DamageOverTime_System;
 import com.fs.starfarer.api.Global;
@@ -32,17 +29,12 @@ import second_in_command.specs.SCOfficer;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import static Abyssal_XO.data.scripts.Settings.NANO_THIEF_RECLAIM_RECYCLE_PERCENT;
 
 public class Nano_Thief_Stats {
 
     private boolean wingSet = false;
-    @Getter
     private float productionTime = 1;
-    @Getter
     private float swarmCost = 100;
     private static Logger log = Global.getLogger(Nano_Thief_Stats.class);
     private String commanderID;
@@ -63,14 +55,10 @@ public class Nano_Thief_Stats {
     @Getter
     private ShipHullSpecAPI fighterHullSpec;
     private boolean isAlly = false;
-
-    @Getter
-    private HashMap<String,ShipAPI> availableShips=new HashMap<>();
-    public int deployedDP=0;
     public Nano_Thief_Stats(String fighterToBuild) {
         if (fighterToBuild != null) this.fighterToBuild = fighterToBuild;
     }
-    public Nano_Thief_Stats(String commanderID, boolean isAlly, SCOfficer officer, String fighterToBuild){
+    public Nano_Thief_Stats(String commanderID,boolean isAlly, SCOfficer officer,String fighterToBuild){
         if (fighterToBuild != null) this.fighterToBuild = fighterToBuild;
         this.commanderID = commanderID;
         this.officer = officer;
@@ -256,58 +244,102 @@ public class Nano_Thief_Stats {
     }
 
     public int getReclaimValue(ShipAPI reclaim){
+        int amount=0;
         log.info("calculating total increase in reclaim for a "+reclaim.getHullSpec().getHullSize()+" ship");
         log.info("  name:"+reclaim.getName());
-        int amount;
         switch (reclaim.getHullSpec().getHullSize()){
             case CAPITAL_SHIP -> amount = Settings.NANO_THIEF_RECLAIM_GAIN[3];
             case CRUISER -> amount = Settings.NANO_THIEF_RECLAIM_GAIN[2];
             case DESTROYER -> amount = Settings.NANO_THIEF_RECLAIM_GAIN[1];
             default -> amount = Settings.NANO_THIEF_RECLAIM_GAIN[0];
         }
-        double additional = NanoThief_BattleListener.getReclaimInShip(reclaim) * NANO_THIEF_RECLAIM_RECYCLE_PERCENT;
-        if (!NanoThief_BattleListener.getHostileCaptions().isEmpty() && !NanoThief_BattleListener.getFriendlyCaptions().isEmpty()){
-            additional /= 2;
-        }
-        return (int) (amount+additional);
+        return amount;
     }
 
     private static final String NanoThiefStorgeKey = "$NanoThief_StoredReclaim_Base";
     //private HashMap<ShipAPI,Integer> reclaimGathered = new HashMap<>();
-
     public void applyEffectsWhenAbsorbed(ShipAPI target,ShipAPI reclaim,int reclaimValue){
-        NanoThief_ShipSkills listiner = null;
-        if (!target.hasListenerOfClass(Abyssal_XO.data.scripts.threat_old.listiners.NanoThief_ShipStats.class)) {
-            return; //WTF?????
-            //listiner = new Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats(target,this);
-            //target.addListener(listiner);
+        NanoThief_ShipStats listiner = null;
+        if (!target.hasListenerOfClass(NanoThief_ShipStats.class)) {
+            listiner = new NanoThief_ShipStats(target,this);
+            target.addListener(listiner);
             //log.info("adding listener for ship of: "+target.getName());
         }else{
-            List<NanoThief_ShipSkills> a = target.getListenerManager().getListeners(NanoThief_ShipSkills.class);
+            List<NanoThief_ShipStats> a = target.getListenerManager().getListeners(NanoThief_ShipStats.class);
             listiner = a.get(0);
             //log.info("got listener for ship of: "+listiner.getShip().getName());
         }
-        listiner.addReclaim(reclaimValue,false);
+        //log.info("adding reclaim to ship");
+        //int currentReclaim = reclaimValue;
+        listiner.addReclaim(reclaimValue);
+        /*float cost = swarmCost;
+        currentReclaim += (int)target.getCustomData().getOrDefault(NanoThiefStorgeKey,0);
 
+        currentReclaim += reclaimGathered.getOrDefault(target,0);
+
+        while(currentReclaim >= cost){
+            log.info("adding a combat swarm....");
+            currentReclaim-=cost;
+            createCombatSwarm(target,getModifiedQuality(target));
+        }
+        log.info("got remaining reclaim as: "+currentReclaim);
+        reclaimGathered.put(target,currentReclaim);
+        log.info("chacking memory as: "+reclaimGathered.get(target));*/
+        //
+        /*if (Global.getCombatEngine().getPlayerShip().equals(target)){
+            playerReclaimDisplay thing = null;
+            if (Global.getCombatEngine().getListenerManager().hasListenerOfClass(playerReclaimDisplay.class)){
+                thing = Global.getCombatEngine().getListenerManager().getListeners(playerReclaimDisplay.class).get(0);
+            }else{
+                thing = new playerReclaimDisplay(target);
+                Global.getCombatEngine().getListenerManager().addListener(thing);
+            }
+            thing.setValue(currentReclaim);
+        }*/
+
+        for (Nano_Thief_SKill_Base a : skills){
+            a.ApplyChangeOnReclaim(target,reclaim,reclaimValue,this);
+        }
     }
     public float getModifiedCost(ShipAPI target){
         float quality = this.swarmCost;
+        for (Nano_Thief_SKill_Base a : skills){
+            quality = a.costChange(quality,target,this);
+        }
         return quality;
 
     }
     public float getModifedProductionTime(ShipAPI target){
         float prod = this.productionTime;
+        for (Nano_Thief_SKill_Base a : skills){
+            prod = a.manufactureTimeChange(prod,target,this);
+        }
         return prod;
     }
-    public float getAvailableControl(){
+    public float getModifedReclaimPerControl(ShipAPI target){
         float prod = reclaimPerControl;
+        for (Nano_Thief_SKill_Base a : skills){
+            prod = a.reclaimPerControlChange(prod,target,this);
+        }
         return prod;
 
     }
     public float getModifedTTL(ShipAPI target){
         float prod = ttl;
+        for (Nano_Thief_SKill_Base a : skills){
+            prod = a.timeToLiveChange(prod,target,this);
+        }
         return prod;
     }
+    public int getModifedStoredSwarms(ShipAPI target){
+        float prod = 0;
+        for (Nano_Thief_SKill_Base a : skills){
+            prod = a.storedSwarmChange(prod,target,this);
+        }
+        return (int)prod;
+    }
+
+
     public ShipAPI createReclaim(ShipAPI primary,int forceID){
         String wingId = SwarmLauncherEffect.RECLAMATION_SWARM_WING;//"attack_swarm_wing";SwarmLauncherEffect.RECLAMATION_SWARM_WING;//"attack_swarm_wing"
 
@@ -379,9 +411,9 @@ public class Nano_Thief_Stats {
         swarm.getParams().initialMembers = 0;
         swarm.getParams().baseMembersToMaintain = 40;
 
-        /*for (Nano_Thief_SKill_Base a : skills){
+        for (Nano_Thief_SKill_Base a : skills){
             a.changeReclaimStats(fighter,this);
-        }*/
+        }
         return fighter;
     }
     public ShipAPI createCombatSwarmCore(NanoThief_ShipStats stats){//ShipAPI primary){
@@ -449,7 +481,49 @@ public class Nano_Thief_Stats {
 
         return fighter;//note: note a fighter, but instead something very diffrent.
     }
+    /*
+    public ShipAPI createCombatSwarm(ShipAPI primary){
+        String wingId = fighterToBuild;//Settings.NANO_THIEF_BASEWING;//SwarmLauncherEffect.RECLAMATION_SWARM_WING;//"attack_swarm_wing"
+        CombatEngineAPI engine = Global.getCombatEngine();
+        CombatFleetManagerAPI manager = engine.getFleetManager(primary.getOriginalOwner());
+        manager.setSuppressDeploymentMessages(true);
 
+        Vector2f loc = primary.getLocation();
+        float facing = (float) Math.random() * 360f;
+        //log.info("attempting to create a attack swarm at "+loc.x+", "+loc.y+" at ship of "+primary.getName()+" who's location is "+primary.getLocation().x+", "+primary.getLocation().y);
+        int attempts = 0;
+        ShipAPI fighter = null;
+        //Global.getSettings().getVariant("");
+        while(attempts < 10) {
+            try {
+                //manager.wing
+                fighter = manager.spawnShipOrWing(wingId, loc, facing, 0f, null);
+                fighter.getWing().setSourceShip(primary);//sets to ifself to prevent min ingagment rage from triggering. might remove if i build a custom AI for the ships.
+                break;
+            }catch (Exception e){
+                log.info("ERROR: failed to spawn a sawrm of ID: "+this.fighterToBuild+" "+attempts+" failues...");
+            }
+            attempts++;
+        }
+        manager.setSuppressDeploymentMessages(false);
+        if (fighter == null){
+            log.info("ERROR: failed to spawn fighters. please use a diffrent wing... and send a report to alaricdragon");
+            return null;
+        }
+
+
+        Vector2f takeoffVel = Misc.getUnitVectorAtDegreeAngle(facing);
+        takeoffVel.scale(fighter.getMaxSpeed() * 1f);
+
+        if (wingId.equals(Settings.NANO_THIEF_BASEWING)){
+            modifiyBaseShip(fighter,primary);
+        }else{
+            modifiyCustomShip(fighter,primary);
+        }
+
+        Vector2f.add(fighter.getVelocity(), takeoffVel, fighter.getVelocity());
+        return fighter;
+    }*/
     public void modifySingleFighter(ShipAPI fighter,ShipAPI frabacator){
         if (fighter.getWing().getSpec().getId().equals(Settings.NANO_THIEF_BASEWING)){
             modifiyBaseShip(fighter);
@@ -459,10 +533,9 @@ public class Nano_Thief_Stats {
         float ttl = getModifedTTL(fighter);
         fighter.getMutableStats().getMinCrewMod().modifyMult("Abyssal_XO",0);
         //log.info("changing swarm stats for a single fighter...");
-
-        /*for (Nano_Thief_SKill_Base b : skills) {
+        for (Nano_Thief_SKill_Base b : skills) {
             b.changeCombatSwarmStats(fighter,frabacator,this);
-        }*/
+        }
         MagicSubsystemsManager.addSubsystemToShip(fighter, new DamageOverTime_System(fighter, ttl,range));
     }
     public void modifiyBaseShip(ShipAPI fighter){
@@ -474,6 +547,67 @@ public class Nano_Thief_Stats {
         RoilingSwarmEffect swarm = FragmentSwarmHullmod.createSwarmFor(fighter);
 
     }
+    /*
+    public void modifiyBaseShip(ShipAPI fighter,ShipAPI frabacator){
+        //getBaseStatsForFighter(fighter);
+        fighter.setDoNotRender(true);
+        fighter.setExplosionScale(0f);
+        fighter.setHulkChanceOverride(0f);
+        fighter.setImpactVolumeMult(SwarmLauncherEffect.IMPACT_VOLUME_MULT);
+        fighter.getArmorGrid().clearComponentMap(); // no damage to weapons/engines
+        RoilingSwarmEffect swarm = FragmentSwarmHullmod.createSwarmFor(fighter);
+
+        float ttl = getModifedTTL(fighter);
+        for (Nano_Thief_SKill_Base b : skills) {
+            b.changeCombatSwarmStats(fighter.getWing(),frabacator,this);
+        }
+        for (ShipAPI a : fighter.getWing().getWingMembers()){
+            modifySingleFighter(a,frabacator);
+        }
+
+    }
+    public void modifiyCustomShip(ShipAPI fighter,ShipAPI frabacator){
+
+        CombatEngineAPI engine = Global.getCombatEngine();
+        CombatFleetManagerAPI manager = engine.getFleetManager(fighter.getOriginalOwner());
+        manager.setSuppressDeploymentMessages(true);
+        Vector2f loc = fighter.getLocation();
+        float facing = (float) Math.random() * 360f;
+        if(fighter.getWing() != null) {
+            //log.info("attempting to create a attack swarm at "+loc.x+", "+loc.y+" at ship of "+primary.getName()+" who's location is "+primary.getLocation().x+", "+primary.getLocation().y);
+            ShipAPI temp = manager.spawnShipOrWing("enforcer_Assault", loc, facing, 0f, null);
+            temp.getMutableStats().getFighterWingRange().modifyFlat("Abyssal_XO", 5000000);
+            temp.getMutableStats().getMaxSpeed().modifyMult("Abyssal_XO", 0);
+            fighter.getWing().setSourceShip(temp);
+            //manager.removeDeployed(temp,false);
+            engine.removeEntity(temp);
+            manager.removeDeployed(temp, false);
+
+            manager.setSuppressDeploymentMessages(false);
+        }
+
+        float ttl = getModifedTTL(fighter);
+        if (fighter.getWing() == null) {
+            for (Nano_Thief_SKill_Base b : skills) {
+                b.changeCombatSwarmStats(fighter,frabacator,this);
+            }
+            MagicSubsystemsManager.addSubsystemToShip(fighter, new DamageOverTime_System(fighter, ttl,range));
+            log.info("WARNING: Fighter wing spawned as a ship as apposed to fighter. possable issues may acore. please record the fighter you are useing in the nano-thief skill and report to alaricdragon for additional data.");
+            return;
+        }
+        for (Nano_Thief_SKill_Base b : skills) {
+            b.changeCombatSwarmStats(fighter.getWing(), frabacator, this);
+        }
+        for (ShipAPI a : fighter.getWing().getWingMembers()){
+            modifySingleFighter(a,frabacator);
+        }
+    }
+    */
+    /*public ShipAPI createDefenseSwarm(ShipAPI primary){
+        return createCombatSwarm(primary);
+    }*/
+
+
     private static void getBaseStatsForFighter(FighterWingSpecAPI a,Nano_Thief_Stats spec){
         /*if (wingSet) return;
         wingSet = true;*/
@@ -526,5 +660,24 @@ public class Nano_Thief_Stats {
         panel.addPara("NOTE: This does not incude conditional bonuses, like the 'Centralized Production' skill",5,Misc.getNegativeHighlightColor());
 
     }
-
+    /*
+    private void getBaseStatsForFighter(ShipAPI a){
+        if (wingSet) return;
+        wingSet = true;
+        float range=0;
+        for (WeaponAPI b : a.getAllWeapons()){
+            if (b.getRange() > range) range = b.getRange();
+        }
+        this.range = Math.min(1000,range+200);
+        if (a.getWing().getWingId().equals(Settings.NANO_THIEF_BASEWING)){
+            log.info("creating a base wing...");
+            this.swarmCost = Settings.NANO_THIEF_BASESWARM_COST;
+            this.productionTime = Settings.NANO_THIEF_BASESWARM_BUILDTIME;
+            this.ttl = Settings.NANO_THIEF_BASESWARM_TTL;
+            return;
+        }
+        this.swarmCost = a.getWing().getSpec().getOpCost(a.getMutableStats()) * Settings.NANO_THIEF_CustomSwarm_COST_PEROP;
+        this.productionTime = a.getWing().getSpec().getNumFighters() * a.getWing().getSpec().getRefitTime() * Settings.NANO_THIEF_CustomSwarm_BUILDTIME_PREREFIT;
+        this.ttl = Settings.NANO_THIEF_BASESWARM_TTL;
+    }*/
 }

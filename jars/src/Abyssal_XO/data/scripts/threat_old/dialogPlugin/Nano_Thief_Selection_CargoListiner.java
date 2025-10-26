@@ -1,4 +1,4 @@
-package Abyssal_XO.data.scripts.threat.dialogPlugin;
+package Abyssal_XO.data.scripts.threat_old.dialogPlugin;
 
 import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat_old.Nano_Thief_Stats;

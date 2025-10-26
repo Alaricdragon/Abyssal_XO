@@ -1,8 +1,7 @@
-package Abyssal_XO.data.scripts.threat.subsystems;
+package Abyssal_XO.data.scripts.threat_old.subsystems;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.ShipAPI;
-import com.fs.starfarer.api.combat.ShipwideAIFlags;
 import org.apache.log4j.Logger;
 import org.lazywizard.lazylib.MathUtils;
 import org.magiclib.subsystems.MagicSubsystem;

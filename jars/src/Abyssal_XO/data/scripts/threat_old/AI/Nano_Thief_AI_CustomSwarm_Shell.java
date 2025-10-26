@@ -1,6 +1,6 @@
-package Abyssal_XO.data.scripts.threat.AI;
+package Abyssal_XO.data.scripts.threat_old.AI;
 
-import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
+import Abyssal_XO.data.scripts.threat_old.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.util.Misc;

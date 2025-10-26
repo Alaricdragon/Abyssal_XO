@@ -1,7 +1,6 @@
 package Abyssal_XO.data.scripts.hullmods;
 
-import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
-import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
+import Abyssal_XO.data.scripts.threat_old.listiners.NanoThief_ShipStats;
 import com.fs.starfarer.api.combat.BaseHullMod;
 import com.fs.starfarer.api.combat.ShipAPI;
 

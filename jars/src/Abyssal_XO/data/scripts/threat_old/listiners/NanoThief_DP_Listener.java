@@ -1,4 +1,4 @@
-package Abyssal_XO.data.scripts.threat.listiners;
+package Abyssal_XO.data.scripts.threat_old.listiners;
 
 import Abyssal_XO.data.scripts.threat_old.skills.NanoThief_8;
 import com.fs.starfarer.api.Global;

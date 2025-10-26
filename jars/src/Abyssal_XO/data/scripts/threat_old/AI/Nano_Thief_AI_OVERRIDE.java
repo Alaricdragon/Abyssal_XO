@@ -1,4 +1,4 @@
-package Abyssal_XO.data.scripts.threat.AI;
+package Abyssal_XO.data.scripts.threat_old.AI;
 
 import Abyssal_XO.data.scripts.threat_old.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
@@ -32,7 +32,7 @@ public class Nano_Thief_AI_OVERRIDE {
     FighterWingAPI wing;
     private float range;
     //private ShipAPI target;
-    HashMap<ShipAPI, Nano_Thief_AI_CustomSwarm> swarmAIAttempt;
+    HashMap<ShipAPI,Nano_Thief_AI_CustomSwarm> swarmAIAttempt;
     public Nano_Thief_AI_OVERRIDE(ShipAPI ship, Nano_Thief_Stats stats){
         /*so, I have naerly got this fucking working. at last.
         * what is happening:

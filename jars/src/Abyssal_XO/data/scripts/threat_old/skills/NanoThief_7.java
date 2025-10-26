@@ -1,4 +1,4 @@
-package Abyssal_XO.data.scripts.threat.skills;
+package Abyssal_XO.data.scripts.threat_old.skills;
 
 import Abyssal_XO.data.scripts.threat_old.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat_old.listiners.NanoThief_ShipStats;
@@ -10,7 +10,7 @@ import second_in_command.SCData;
 
 import java.util.List;
 
-public class NanoThief_7 extends Nano_Thief_SKill_Base {
+public class NanoThief_7 extends Nano_Thief_SKill_Base{
     private static final int storgeChange = 1;
     private static final int storgeIncreasePerReclaim = 5000;
 
@@ -18,6 +18,19 @@ public class NanoThief_7 extends Nano_Thief_SKill_Base {
     public String getAffectsString() {
         return "all ships in fleet";
     }
+
+    @Override
+    public float storedSwarmChange(float stored, ShipAPI target, Nano_Thief_Stats stats) {
+        int pow = 0;
+        if (target.hasListenerOfClass(NanoThief_ShipStats.class)) {
+            NanoThief_ShipStats listiner;
+            List<NanoThief_ShipStats> a = target.getListenerManager().getListeners(NanoThief_ShipStats.class);
+            listiner = a.get(0);
+            pow = (int) (listiner.getReclaim() / storgeIncreasePerReclaim);
+        }
+        return stored+storgeChange+pow;
+    }
+
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
         String stra = ""+storgeChange;

@@ -1,71 +1,60 @@
 package Abyssal_XO.data.scripts.threat.skills;
 
-import Abyssal_XO.data.scripts.Settings;
-import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
-import Abyssal_XO.data.scripts.threat.subsystems.DamageOverTime_System;
-import Abyssal_XO.data.scripts.threat.subsystems.Overcharge_System;
-import com.fs.starfarer.api.combat.ShipAPI;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_SkillBase;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_1;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import lombok.Getter;
-import org.magiclib.subsystems.MagicSubsystemsManager;
 import second_in_command.SCData;
 
-public class NanoThief_1 extends Nano_Thief_SKill_Base{
+public class NanoThief_1 extends Nano_Thief_SKill_Base {
     private static final String key = "AbyssalXO_Nano_Thief_Skill_1";
-    private static final float hullMod = 0.8f;
-    private static final float armorMod = 0.8f;
-    private static final float shieldMod = 0.2f;
-    private static final float ttlMod = 0.5f;
+    @Getter
+    private static final float hullMin = 0.05f;
+    @Getter
+    private static final float hullMax = 0.9f;
+    @Getter
+    private static final float speedMax = 0.05f;
+    @Getter
+    private static final float speedMin = 0.005f;
 
     @Getter
-    private static final float timeFlowMod = 1f;
+    private static final int reclaimPerHull = 100;
+
     @Getter
-    private static final float timeFlowDur = 20;//10 seconds precived.
+    private static final float hullRange = hullMax-hullMin;
+    @Getter
+    private static final float hullRepairAdvradge = (hullMax+hullMin)/2;
+    public NanoThief_SkillBase createListiner(NanoThief_ShipSkills skills){
+        return new NanoThief_Skill_1(skills);
+    }
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
         /*
-            Gain the 'Overcharged' sub system, wish increases precived time flow by 200% for 30 seconds with a very long cooldown.
-        lose 50% time to live,
-        50% hp,
-        lost 50% armor
-        50% .
-
+    every second, recover between 5% and 0.5% hull. This skill is fastest when below 5% hull, and slowest past 90% hull.
+    for every 100 hull restored, costs 1 reclaim
          */
-        String timeflowmod = (int)(100*(timeFlowMod))+"%";
-        String timeflowdur = (int)(timeFlowDur/timeFlowMod)+"";
 
-        String hullmod = 100-((int)((hullMod)*100))+"%";
-        String armormod = 100-((int)((armorMod)*100))+"%";
-        String shieldmod = (int)(((1+shieldMod)*100)-100)+"%";
-        String damagemod = 100-((int)((ttlMod)*100))+"%";
-        tooltip.addPara("Gain the 'Overcharged' sub system, wish increased precived time flow by %s for %s seconds with a very long cooldown.",0, Misc.getHighlightColor(), Misc.getHighlightColor(),timeflowmod,timeflowdur);
-        tooltip.addPara("Lose %s hull",0, Misc.getNegativeHighlightColor(), Misc.getNegativeHighlightColor(),hullmod);
-        tooltip.addPara("Lose %s armor rating",0, Misc.getNegativeHighlightColor(), Misc.getNegativeHighlightColor(),armormod);
-        tooltip.addPara("Lose %s shield strength",0, Misc.getNegativeHighlightColor(), Misc.getNegativeHighlightColor(),shieldmod);
-        tooltip.addPara("Lose %s time to live",0, Misc.getNegativeHighlightColor(), Misc.getNegativeHighlightColor(),damagemod);
+        String hullMaxS = (hullMax*100)+"%";
+        String hullMinS = (hullMin*100)+"%";
+        String speedMaxS = (speedMax*100)+"%";
+        String speedMinS = (speedMin*100)+"%";
+        String one = "1";
+        String reclaimPerHullS = (reclaimPerHull)+"";
+
+
+        tooltip.addPara("Every second recover a small percentage of hull. This effect becomes faster the more missing hull a ship has, restoring %s hull per second at %s hull, and restoring %s hull per second at %s hull",0, Misc.getHighlightColor(), Misc.getHighlightColor(),speedMaxS,hullMaxS,speedMinS,hullMinS);
+        tooltip.addPara("Costs %s reclaim per %s hull repaired",0, Misc.getNegativeHighlightColor(), Misc.getNegativeHighlightColor(),one,reclaimPerHullS);
 
         tooltip.addSpacer(10f);
 
-        LabelAPI label = tooltip.addPara("\"Yes, its unstable. Hell, its practicly destroys itself when it fires! but dam if its not fun well it lasts\"", Misc.getTextColor(), 0f);
+        LabelAPI label = tooltip.addPara("\"Look, I don't know what you want me to tell you. Maybe that it will all be fine if we just cut a little more of our funds, but the fact of the matter is simple: You want your fancy devices to work, you pay for repairs.\"", Misc.getTextColor(), 0f);
+        //LabelAPI label = tooltip.addPara("\"Yes, its unstable. Hell, its practicly destroys itself when it fires! but dam if its not fun well it lasts\"", Misc.getTextColor(), 0f);
         tooltip.addPara(" - unknown", Misc.getTextColor(), 0f);
 
         label.italicize();
 
-    }
-
-    @Override
-    public float timeToLiveChange(float time, ShipAPI target, Nano_Thief_Stats stats) {
-        return time * ttlMod;
-    }
-
-    @Override
-    public void changeCombatSwarmStats(ShipAPI ship,ShipAPI fabricator, Nano_Thief_Stats stats) {
-        MagicSubsystemsManager.addSubsystemToShip(ship, new Overcharge_System(ship,stats.getRange()));
-        ship.getMutableStats().getHullBonus().modifyMult(key,hullMod);
-        ship.getMutableStats().getArmorBonus().modifyMult(key,armorMod);
-        if (stats.getFighterHullSpec().getShieldSpec() == null) return;
-        ship.getMutableStats().getShieldDamageTakenMult().modifyFlat(key,stats.getFighterHullSpec().getShieldSpec().getFluxPerDamageAbsorbed()*shieldMod);
     }
 }

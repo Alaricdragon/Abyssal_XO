@@ -1,4 +1,4 @@
-package Abyssal_XO.data.scripts.threat.skills;
+package Abyssal_XO.data.scripts.threat_old.skills;
 
 import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat_old.Nano_Thief_Stats;
@@ -14,7 +14,7 @@ import second_in_command.SCData;
 
 import java.util.List;
 
-public class NanoThief_6 extends Nano_Thief_SKill_Base {
+public class NanoThief_6 extends Nano_Thief_SKill_Base{
     private static Logger log = Global.getLogger(NanoThief_6.class);
     private static final String key = "AbyssalXO_Nano_Thief_Skill_6";
     private static final float fabCostMod = 0.7f;
@@ -38,6 +38,49 @@ public class NanoThief_6 extends Nano_Thief_SKill_Base {
     private static final float armorMod = 0.9f;
     private static final float shieldMod = 0.1f;
     private static final float damageMod = 0.95f;
+    @Override
+    public float costChange(float cost, ShipAPI target, Nano_Thief_Stats stats) {
+        if (target == null) return cost;
+        if (!target.equals(stats.getCentralFab())){
+            return cost * costMod;
+        }
+        if (target.getVariant().getSMods().contains(Settings.HULLMOD_CENTRAL_FAB)){
+            cost *= centralFabReclaimMultiHullmod;
+        }
+        return cost * fabCostMod;
+    }
+    @Override
+    public float reclaimPerControlChange(float reclaim, ShipAPI target, Nano_Thief_Stats stats) {
+        if (target == null ) return reclaim;
+        if (target.equals(stats.getCentralFab())){
+            //if (target.getVariant().getSMods().contains("Abyssal_XO_CF")) reclaim *= centralFabReclaimMultiHullmod;
+            return reclaim * fabControlMod;
+        }
+        return reclaim;
+    }
+
+    @Override
+    public float manufactureTimeChange(float time, ShipAPI target, Nano_Thief_Stats stats) {
+        if (target == null) return time;
+        if (!target.equals(stats.getCentralFab())) return time * speedMod;
+        float per1000speedMod = 1;
+        if (target.hasListenerOfClass(NanoThief_ShipStats.class)) {
+            NanoThief_ShipStats listiner;
+            List<NanoThief_ShipStats> a = target.getListenerManager().getListeners(NanoThief_ShipStats.class);
+            listiner = a.get(0);
+            int pow = (int) (listiner.getReclaim() / 1000);
+            if (pow > 0) per1000speedMod = (float) Math.pow(fabSpeedPer1000Mod,pow);
+        }
+        return time * fabSpeedMod * per1000speedMod;
+    }
+
+    @Override
+    public float timeToLiveChange(float time, ShipAPI target, Nano_Thief_Stats stats) {
+        if (target == null) return time;
+        if (target.equals(stats.getCentralFab())) return time * fabControlMod;
+        return time * fabTTLMod;
+    }
+
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
         /*6) Centralized Logistics: when the first reclaim package is created, the largest, highest mass ship in your fleet is marked as the 'Central Fabricator'. Reclaim Packages will always attempt to move to the Central Fabricator, provided it exists.
@@ -122,6 +165,27 @@ public class NanoThief_6 extends Nano_Thief_SKill_Base {
         label.italicize();
 
     }
+    @Override
+    public void changeCombatSwarmStats(ShipAPI ship,ShipAPI fabricator, Nano_Thief_Stats stats) {
+        if (fabricator.equals(stats.getCentralFab())){
+            ship.getMutableStats().getHullBonus().modifyFlat(key,fabHullMod*stats.getFighterHullSpec().getHitpoints());
+            ship.getMutableStats().getArmorBonus().modifyFlat(key,fabArmorMod*stats.getFighterHullSpec().getArmorRating());
+            if (stats.getFighterHullSpec().getShieldSpec() == null) return;
+            ship.getMutableStats().getShieldDamageTakenMult().modifyMult(key,fabShieldMod);//stats.getFighterHullSpec().getShieldSpec().getFluxPerDamageAbsorbed());
+
+        }else{
+            ship.getMutableStats().getBeamWeaponDamageMult().modifyMult(key,damageMod);
+            ship.getMutableStats().getMissileWeaponDamageMult().modifyMult(key,damageMod);
+            ship.getMutableStats().getEnergyWeaponDamageMult().modifyMult(key,damageMod);
+            ship.getMutableStats().getBallisticWeaponDamageMult().modifyMult(key,damageMod);
+
+            ship.getMutableStats().getHullBonus().modifyMult(key,hullMod);
+            ship.getMutableStats().getArmorBonus().modifyMult(key,armorMod);
+            if (stats.getFighterHullSpec().getShieldSpec() == null) return;
+            ship.getMutableStats().getShieldDamageTakenMult().modifyFlat(key,stats.getFighterHullSpec().getShieldSpec().getFluxPerDamageAbsorbed()*shieldMod);
+        }
+    }
+
     @Override
     public void onActivation(SCData data) {
         if (data.getCommander().equals(Global.getSector().getPlayerPerson())) {
