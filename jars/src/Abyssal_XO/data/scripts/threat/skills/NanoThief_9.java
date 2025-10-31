@@ -1,13 +1,11 @@
 package Abyssal_XO.data.scripts.threat.skills;
 
-import Abyssal_XO.data.scripts.threat_old.Nano_Thief_Stats;
-import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import second_in_command.SCData;
 
-public class NanoThief_9 extends Nano_Thief_SKill_Base {
+public class NanoThief_9 extends Nano_Thief_Skill_Base {
     private static float costChange = 0.8f;
     private static float controlChange = 0.5f;
     private static float buildTimeChange = 0.5f;

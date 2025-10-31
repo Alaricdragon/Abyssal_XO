@@ -9,24 +9,31 @@ import com.fs.starfarer.api.util.Misc;
 import lombok.Getter;
 import second_in_command.SCData;
 
-public class NanoThief_1 extends Nano_Thief_SKill_Base {
+public class NanoThief_1 extends Nano_Thief_Skill_Base {
+    /*balance notes:
+    * cost:
+    * remember: cost effectivly scailes with ship HP. something very important.
+    * speed:
+    * speed is effectivly, a percent of 'max'. so however large max speed is, the faster the speed will go, even at higher values.
+    * */
     private static final String key = "AbyssalXO_Nano_Thief_Skill_1";
     @Getter
     private static final float hullMin = 0.05f;
     @Getter
     private static final float hullMax = 0.9f;
     @Getter
-    private static final float speedMax = 0.05f;
+    private static final double speedMax = 0.05d;//5X combat inderance
     @Getter
-    private static final float speedMin = 0.005f;
+    private static final double speedMin = 0.005d;//0.5X combat indurance //1
 
     @Getter
-    private static final int reclaimPerHull = 100;
+    private static final int hullPerReclaim = 50;
 
     @Getter
-    private static final float hullRange = hullMax-hullMin;
+    private static final double hullRange = hullMax-hullMin;//0.01d
     @Getter
-    private static final float hullRepairAdvradge = (hullMax+hullMin)/2;
+    private static final double hullRepairThing = (speedMax-speedMin);//0.01d
+    @Override
     public NanoThief_SkillBase createListiner(NanoThief_ShipSkills skills){
         return new NanoThief_Skill_1(skills);
     }
@@ -42,7 +49,7 @@ public class NanoThief_1 extends Nano_Thief_SKill_Base {
         String speedMaxS = (speedMax*100)+"%";
         String speedMinS = (speedMin*100)+"%";
         String one = "1";
-        String reclaimPerHullS = (reclaimPerHull)+"";
+        String reclaimPerHullS = (hullPerReclaim)+"";
 
 
         tooltip.addPara("Every second recover a small percentage of hull. This effect becomes faster the more missing hull a ship has, restoring %s hull per second at %s hull, and restoring %s hull per second at %s hull",0, Misc.getHighlightColor(), Misc.getHighlightColor(),speedMaxS,hullMaxS,speedMinS,hullMinS);

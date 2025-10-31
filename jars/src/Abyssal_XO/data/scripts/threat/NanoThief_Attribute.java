@@ -30,14 +30,14 @@ issue: centralized production is completely fucking overpowered. the issue comes
 new skill pholosaphy:
 all new skills will incore effects that will slowly use reclaim. (as to avoid the infinit fighter issue I have right now). the skills will be desinged around improving ship stats, or restoring ships.
 so the skills:
-1) recover hull:
+1) recover hull: (done untested)
     every second, recover between 5% and 0.5% hull. This skill is fastest when below 5% hull, and slowest past 90% hull.
     for every 100 hull restored, costs 1 reclaim
 
 2) recover ammo:
     fully refill a single empty 'limited ammo' weapons ammo
     has a cool down of  15/30/45 seconds depending on weapon size
-    costs 5/10/20 * op cost reclaim, depending on weapon size
+    costs 5/10/15 * op cost reclaim, depending on weapon size
 
 3) supply forging:
     increase salvage gains by 10%, excluding rare items.

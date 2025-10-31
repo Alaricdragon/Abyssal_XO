@@ -150,7 +150,6 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
         }
 
     }
-
     public Pair<Nano_Thief_Stats,Integer> getPreferredCommander(ShipAPI target,HashMap<String,Nano_Thief_Stats> commanders){
         Pair<Nano_Thief_Stats,Integer> output = new Pair<Nano_Thief_Stats,Integer>();
         float distance = Float.MAX_VALUE;

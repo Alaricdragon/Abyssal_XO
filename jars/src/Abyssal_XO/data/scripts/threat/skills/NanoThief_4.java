@@ -1,15 +1,11 @@
 package Abyssal_XO.data.scripts.threat.skills;
 
-import Abyssal_XO.data.scripts.threat_old.Nano_Thief_Stats;
-import Abyssal_XO.data.scripts.threat_old.subsystems.Cruise_System;
-import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import org.magiclib.subsystems.MagicSubsystemsManager;
 import second_in_command.SCData;
 
-public class NanoThief_4 extends Nano_Thief_SKill_Base {
+public class NanoThief_4 extends Nano_Thief_Skill_Base {
     private static final String key = "AbyssalXO_Nano_Thief_Skill_4";
     private static final float speedChangeMulti = 0.50f;
     private static final int statisSpeedGain = 40;

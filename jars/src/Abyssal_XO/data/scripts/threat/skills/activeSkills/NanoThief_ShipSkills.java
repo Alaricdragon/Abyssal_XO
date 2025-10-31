@@ -2,6 +2,7 @@ package Abyssal_XO.data.scripts.threat.skills.activeSkills;
 
 import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
+import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.listeners.AdvanceableListener;
@@ -23,9 +24,29 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
         this.ship = ship;
         //set skills here.
         //add in a switch statment to determin data about this ship.
+        for (Nano_Thief_Skill_Base a : stats.getSkills()){
+            NanoThief_SkillBase listener = a.createListiner(this);
+            if (listener == null) continue;
+            skills.add(listener);
+        }
+
+        for (NanoThief_SkillBase a : removedSkills){
+            skills.remove(a);
+        }
+    }
+    private ArrayList<NanoThief_SkillBase> removedSkills = new ArrayList<>();
+    public void suppressListener(NanoThief_SkillBase listiner){
+        removedSkills.add(listiner);
     }
     public double getTotalReclaim(){
         return reclaim+refinedReclaim;
+    }
+    public void useReclaim(double reclaim){
+        if (refinedReclaim > 0){
+            refinedReclaim -= reclaim;
+            return;
+        }
+        this.reclaim -= reclaim;
     }
     public void addReclaim(double reclaim, boolean refined){
         if (refined){

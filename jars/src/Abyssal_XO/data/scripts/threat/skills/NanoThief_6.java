@@ -1,20 +1,15 @@
 package Abyssal_XO.data.scripts.threat.skills;
 
 import Abyssal_XO.data.scripts.Settings;
-import Abyssal_XO.data.scripts.threat_old.Nano_Thief_Stats;
-import Abyssal_XO.data.scripts.threat_old.listiners.NanoThief_ShipStats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.FactionAPI;
-import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import org.apache.log4j.Logger;
 import second_in_command.SCData;
 
-import java.util.List;
-
-public class NanoThief_6 extends Nano_Thief_SKill_Base {
+public class NanoThief_6 extends Nano_Thief_Skill_Base {
     private static Logger log = Global.getLogger(NanoThief_6.class);
     private static final String key = "AbyssalXO_Nano_Thief_Skill_6";
     private static final float fabCostMod = 0.7f;

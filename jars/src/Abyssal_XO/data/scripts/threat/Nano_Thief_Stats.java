@@ -7,8 +7,8 @@ import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_SawrmSpawner;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_BattleListener;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_RecreationScript;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
+import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
-import Abyssal_XO.data.scripts.threat_old.skills.Nano_Thief_SKill_Base;
 import Abyssal_XO.data.scripts.threat_old.subsystems.DamageOverTime_System;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
@@ -51,7 +51,8 @@ public class Nano_Thief_Stats {
     @Getter
     ShipAPI centralFab = null;
 
-    ArrayList<Nano_Thief_SKill_Base> skills = new ArrayList<>();
+    @Getter
+    private ArrayList<Nano_Thief_Skill_Base> skills = new ArrayList<>();
 
     private float reclaimPerControl = Settings.NANO_THIEF_ReclaimPerControl_BASE;
     private float ttl = 60;
@@ -77,7 +78,7 @@ public class Nano_Thief_Stats {
         this.isAlly = isAlly;
         log.info("creating commander data for a new commander with "+officer.getActiveSkillPlugins().size()+" skills"+" and a fighter to build of "+this.fighterToBuild);
         for (SCBaseSkillPlugin a : officer.getActiveSkillPlugins()){
-            Nano_Thief_SKill_Base b = (Nano_Thief_SKill_Base) a;
+            Nano_Thief_Skill_Base b = (Nano_Thief_Skill_Base) a;
             log.info("  adding skill to commander of: "+b.getName());
             skills.add(b);
             //SC_muti *= b.swarmCostMulti;
@@ -134,12 +135,14 @@ public class Nano_Thief_Stats {
         return out;
     }
     public ShipAPI getTargetForReclaim(ShipAPI reclaim, CombatEngineAPI engine){
+        //todo: change this to use the intiernal list of ships that can collect reclaim.
         if (closest){
             return getTargetClosest(reclaim,engine);
         }
         return getPriorityClosest(reclaim, engine);
     }
     private ShipAPI getTargetClosest(ShipAPI reclaim, CombatEngineAPI engine){
+        //todo: change this to use the intiernal list of ships that can collect reclaim.
         ShipAPI output = null;
         Vector2f pointA = reclaim.getLocation();
         float distance = Float.MAX_VALUE;
@@ -277,15 +280,12 @@ public class Nano_Thief_Stats {
 
     public void applyEffectsWhenAbsorbed(ShipAPI target,ShipAPI reclaim,int reclaimValue){
         NanoThief_ShipSkills listiner = null;
-        if (!target.hasListenerOfClass(Abyssal_XO.data.scripts.threat_old.listiners.NanoThief_ShipStats.class)) {
-            return; //WTF?????
-            //listiner = new Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats(target,this);
-            //target.addListener(listiner);
-            //log.info("adding listener for ship of: "+target.getName());
-        }else{
+        if (target.hasListenerOfClass(NanoThief_ShipSkills.class)){
             List<NanoThief_ShipSkills> a = target.getListenerManager().getListeners(NanoThief_ShipSkills.class);
             listiner = a.get(0);
-            //log.info("got listener for ship of: "+listiner.getShip().getName());
+        }else{
+           //target.addListener(new NanoThief_ShipSkills(this,target));
+            log.info("WARNING: NO LISTINER! SPOOKY!");
         }
         listiner.addReclaim(reclaimValue,false);
 
@@ -379,7 +379,7 @@ public class Nano_Thief_Stats {
         swarm.getParams().initialMembers = 0;
         swarm.getParams().baseMembersToMaintain = 40;
 
-        /*for (Nano_Thief_SKill_Base a : skills){
+        /*for (Nano_Thief_Skill_Base a : skills){
             a.changeReclaimStats(fighter,this);
         }*/
         return fighter;
@@ -460,7 +460,7 @@ public class Nano_Thief_Stats {
         fighter.getMutableStats().getMinCrewMod().modifyMult("Abyssal_XO",0);
         //log.info("changing swarm stats for a single fighter...");
 
-        /*for (Nano_Thief_SKill_Base b : skills) {
+        /*for (Nano_Thief_Skill_Base b : skills) {
             b.changeCombatSwarmStats(fighter,frabacator,this);
         }*/
         MagicSubsystemsManager.addSubsystemToShip(fighter, new DamageOverTime_System(fighter, ttl,range));

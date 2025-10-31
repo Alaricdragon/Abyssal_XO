@@ -558,7 +558,7 @@ public class Nano_Thief_Stats {
         RoilingSwarmEffect swarm = FragmentSwarmHullmod.createSwarmFor(fighter);
 
         float ttl = getModifedTTL(fighter);
-        for (Nano_Thief_SKill_Base b : skills) {
+        for (Nano_Thief_Skill_Base b : skills) {
             b.changeCombatSwarmStats(fighter.getWing(),frabacator,this);
         }
         for (ShipAPI a : fighter.getWing().getWingMembers()){
@@ -588,14 +588,14 @@ public class Nano_Thief_Stats {
 
         float ttl = getModifedTTL(fighter);
         if (fighter.getWing() == null) {
-            for (Nano_Thief_SKill_Base b : skills) {
+            for (Nano_Thief_Skill_Base b : skills) {
                 b.changeCombatSwarmStats(fighter,frabacator,this);
             }
             MagicSubsystemsManager.addSubsystemToShip(fighter, new DamageOverTime_System(fighter, ttl,range));
             log.info("WARNING: Fighter wing spawned as a ship as apposed to fighter. possable issues may acore. please record the fighter you are useing in the nano-thief skill and report to alaricdragon for additional data.");
             return;
         }
-        for (Nano_Thief_SKill_Base b : skills) {
+        for (Nano_Thief_Skill_Base b : skills) {
             b.changeCombatSwarmStats(fighter.getWing(), frabacator, this);
         }
         for (ShipAPI a : fighter.getWing().getWingMembers()){

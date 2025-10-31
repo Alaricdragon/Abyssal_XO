@@ -10,7 +10,7 @@ import second_in_command.SCData;
 
 import java.util.List;
 
-public class NanoThief_8 extends Nano_Thief_SKill_Base {
+public class NanoThief_8 extends Nano_Thief_Skill_Base {
     public static final int maxTime = 10;
     private static final int reclaimPerMulti = 1000;
     private static final float hpPercent = 0.05f;

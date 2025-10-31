@@ -1,7 +1,7 @@
 package Abyssal_XO.data.scripts.threat.AI;
 
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
-import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_SKill_Base;
+import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import org.apache.log4j.Logger;
@@ -59,7 +59,7 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
     }
     float time;
     private static final float interval = 1;
-    protected static Logger log = Global.getLogger(Nano_Thief_SKill_Base.class);
+    protected static Logger log = Global.getLogger(Nano_Thief_Skill_Base.class);
     @Override
     public void advance(float amount) {
         //ship.set
