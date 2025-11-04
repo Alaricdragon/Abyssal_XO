@@ -24,10 +24,18 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
         this.ship = ship;
         //set skills here.
         //add in a switch statment to determin data about this ship.
+        stats.getAvailableShips().put(ship.getId(),ship);
         for (Nano_Thief_Skill_Base a : stats.getSkills()){
-            NanoThief_SkillBase listener = a.createListiner(this);
+            NanoThief_SkillBase listener = a.createListiner(this,this.ship);
             if (listener == null) continue;
             skills.add(listener);
+            /*if (listener.applyToModules()){
+                for (ShipAPI b : ship.getChildModulesCopy()){
+                    listener = a.createListiner(this,b);
+                    if (listener == null) continue;
+                    skills.add(listener);
+                }
+            }*/
         }
 
         for (NanoThief_SkillBase a : removedSkills){

@@ -142,11 +142,10 @@ public class Nano_Thief_Stats {
         return getPriorityClosest(reclaim, engine);
     }
     private ShipAPI getTargetClosest(ShipAPI reclaim, CombatEngineAPI engine){
-        //todo: change this to use the intiernal list of ships that can collect reclaim.
         ShipAPI output = null;
         Vector2f pointA = reclaim.getLocation();
         float distance = Float.MAX_VALUE;
-        for (ShipAPI curr : engine.getShips()) {
+        for (ShipAPI curr : availableShips.values()) {
             /*if (curr == null) continue;
             if (curr.isHulk()) continue;
             if (curr.equals(reclaim)) continue;
@@ -188,19 +187,7 @@ public class Nano_Thief_Stats {
         if (centralFab == null){
             float priority = 0;
             float mass = 0;
-            for (ShipAPI curr : engine.getShips()) {
-                /*if (curr == null) continue;
-                if (curr.isHulk()) continue;
-                if (curr.equals(reclaim)) continue;
-                if (curr.getFleetMember() == null) continue;
-                //log.info("  has fleetmember");
-                if (curr.getFleetMember().getFleetData() == null) continue;
-                //log.info("  has fleetdata");
-                if (curr.getFleetMember().getFleetData().getFleet() == null) continue;
-                //log.info("  has fleet");
-                if (!curr.getFleetMember().getFleetData().getFleet().equals(fleet)) continue;
-                //log.info("  has right commander...");
-                if (!isValidReclaimTarget(curr)) continue;*/
+            for (ShipAPI curr : availableShips.values()) {
                 if (!canAcceptReclaim(curr)) continue;
                 if (curr == null) continue;
                 if (curr.isHulk()) continue;
@@ -262,11 +249,12 @@ public class Nano_Thief_Stats {
         log.info("calculating total increase in reclaim for a "+reclaim.getHullSpec().getHullSize()+" ship");
         log.info("  name:"+reclaim.getName());
         int amount;
+        int skills = getSkills().size()-1;
         switch (reclaim.getHullSpec().getHullSize()){
-            case CAPITAL_SHIP -> amount = Settings.NANO_THIEF_RECLAIM_GAIN[3];
-            case CRUISER -> amount = Settings.NANO_THIEF_RECLAIM_GAIN[2];
-            case DESTROYER -> amount = Settings.NANO_THIEF_RECLAIM_GAIN[1];
-            default -> amount = Settings.NANO_THIEF_RECLAIM_GAIN[0];
+            case CAPITAL_SHIP -> amount = Settings.NANO_THIEF_RECLAIM_GAIN[3]*skills;
+            case CRUISER -> amount = Settings.NANO_THIEF_RECLAIM_GAIN[2]*skills;
+            case DESTROYER -> amount = Settings.NANO_THIEF_RECLAIM_GAIN[1]*skills;
+            default -> amount = Settings.NANO_THIEF_RECLAIM_GAIN[0]*skills;
         }
         double additional = NanoThief_BattleListener.getReclaimInShip(reclaim) * NANO_THIEF_RECLAIM_RECYCLE_PERCENT;
         if (!NanoThief_BattleListener.getHostileCaptions().isEmpty() && !NanoThief_BattleListener.getFriendlyCaptions().isEmpty()){

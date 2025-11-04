@@ -3,6 +3,7 @@ package Abyssal_XO.data.scripts.threat.skills;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_SkillBase;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_2;
+import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
@@ -31,6 +32,7 @@ public class NanoThief_2 extends Nano_Thief_Skill_Base {
         tooltip.addPara("Every %s/%s/%s seconds, fully refill a single empty 'limited ammo' weapons ammo",0,Misc.getHighlightColor(),Misc.getHighlightColor(),tSmall,tMid,tLarge);
         tooltip.addPara("Costs %s/%s/%s reclaim per op depending on weapon size",0,Misc.getHighlightColor(),Misc.getHighlightColor(),cSmall,cMid,cLarge);
         tooltip.addPara("Will refill smaller weapons first",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        tooltip.addPara("All attached modules share a cooldown with the main ship",0,Misc.getHighlightColor(),Misc.getHighlightColor());
 
         tooltip.addSpacer(10f);
 
@@ -42,7 +44,7 @@ public class NanoThief_2 extends Nano_Thief_Skill_Base {
     }
 
     @Override
-    public NanoThief_SkillBase createListiner(NanoThief_ShipSkills skills) {
-        return new NanoThief_Skill_2(skills);
+    public NanoThief_SkillBase createListiner(NanoThief_ShipSkills skills, ShipAPI ship) {
+        return new NanoThief_Skill_2(skills,ship);
     }
 }

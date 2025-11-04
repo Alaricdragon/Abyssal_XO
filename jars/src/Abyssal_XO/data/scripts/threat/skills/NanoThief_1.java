@@ -3,6 +3,7 @@ package Abyssal_XO.data.scripts.threat.skills;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_SkillBase;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_1;
+import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
@@ -22,9 +23,9 @@ public class NanoThief_1 extends Nano_Thief_Skill_Base {
     @Getter
     private static final float hullMax = 0.9f;
     @Getter
-    private static final double speedMax = 0.05d;//5X combat inderance
+    private static final double speedMax = 0.02d;//2X combat inderance
     @Getter
-    private static final double speedMin = 0.005d;//0.5X combat indurance //1
+    private static final double speedMin = 0.0025d;//0.25X combat indurance //1
 
     @Getter
     private static final int hullPerReclaim = 50;
@@ -34,8 +35,8 @@ public class NanoThief_1 extends Nano_Thief_Skill_Base {
     @Getter
     private static final double hullRepairThing = (speedMax-speedMin);//0.01d
     @Override
-    public NanoThief_SkillBase createListiner(NanoThief_ShipSkills skills){
-        return new NanoThief_Skill_1(skills);
+    public NanoThief_SkillBase createListiner(NanoThief_ShipSkills skills, ShipAPI ship){
+        return new NanoThief_Skill_1(skills,ship);
     }
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {

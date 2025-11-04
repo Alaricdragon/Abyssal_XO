@@ -27,6 +27,11 @@ note: I need to change everything.
 issue: the 'fighter spam' with this attribute can be completely broken. I will take a suggestion and turn the fighter thing into a capstone.
 issue: centralized production is completely fucking overpowered. the issue comes from the faster and faster production that accores.
 
+
+alturation:
+lower numbers of skills can in theory be more usefull.
+solution: make it so each skill gained increases the amount of reclaim gained.
+1000/2000/3000/4000 / 5 = 200/400/600/800 reclaim gained per hullsize per skill.
 new skill pholosaphy:
 all new skills will incore effects that will slowly use reclaim. (as to avoid the infinit fighter issue I have right now). the skills will be desinged around improving ship stats, or restoring ships.
 so the skills:

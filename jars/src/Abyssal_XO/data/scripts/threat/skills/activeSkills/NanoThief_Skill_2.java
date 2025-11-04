@@ -1,69 +1,102 @@
 package Abyssal_XO.data.scripts.threat.skills.activeSkills;
 
+import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_2;
+import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.WeaponAPI;
 
 import java.util.ArrayList;
 
 public class NanoThief_Skill_2 extends NanoThief_SkillBase {
-    ArrayList<ArrayList<WeaponAPI>> wepons = new ArrayList<>();
-    public NanoThief_Skill_2(NanoThief_ShipSkills skills) {
-        super(skills);
-        skills.ship.getVariant().getWeaponGroups().get(0).getSlots();
-        wepons.add(new ArrayList<>());
-        wepons.add(new ArrayList<>());
-        wepons.add(new ArrayList<>());
-        for (String a : skills.ship.getVariant().getFittedWeaponSlots()){
-            skills.ship.getVariant().getWeaponSpec(a).getAmmoPerSecond();
-            skills.ship.getVariant().getWeaponSpec(a).getMaxAmmo();
-
+    ArrayList<ArrayList<ArrayList<WeaponAPI>>> wepons = new ArrayList<>();
+    public NanoThief_Skill_2(NanoThief_ShipSkills skills, ShipAPI ship) {
+        super(skills,ship);
+        //skills.ship.getVariant().getWeaponGroups().get(0).getSlots();
+        prepareForSingleModule(ship);
+        for (ShipAPI b : skills.ship.getChildModulesCopy()){
+            prepareForSingleModule(b);
         }
-        for (WeaponAPI a : skills.ship.getAllWeapons()){
-            a.getAmmoTracker().setAmmo(0);
+        if (wepons.isEmpty()){
+            skills.suppressListener(this);
+        }
+    }
+    private void prepareForSingleModule(ShipAPI ship){
+        ArrayList<ArrayList<WeaponAPI>> weponsT = new ArrayList<>();
+        weponsT.add(new ArrayList<>());
+        weponsT.add(new ArrayList<>());
+        weponsT.add(new ArrayList<>());
+        for (WeaponAPI a : ship.getAllWeapons()){
+            //a.getAmmoTracker().setAmmo(0);
             if (a.getMaxAmmo() == 0) continue;
             if (a.getAmmoTracker().getAmmoPerSecond() != 0) continue;
             int b = 0;
             if (a.getSpec().getSize().equals(WeaponAPI.WeaponSize.SMALL)) b = 0;
             if (a.getSpec().getSize().equals(WeaponAPI.WeaponSize.MEDIUM)) b = 1;
             if (a.getSpec().getSize().equals(WeaponAPI.WeaponSize.LARGE)) b = 2;
-            wepons.get(b).add(a);
+            weponsT.get(b).add(a);
         }
-        if (wepons.get(0).isEmpty() && wepons.get(1).isEmpty() && wepons.get(2).isEmpty()){
-            skills.suppressListener(this);
+        if (!weponsT.get(0).isEmpty() || !weponsT.get(1).isEmpty() || !weponsT.get(2).isEmpty()){
+            wepons.add(weponsT);
         }
     }
 
     private float cooldown = 0f;
     private static final float secondsPerReceack = 3f;
+    private boolean onCooldown = false;
     @Override
     public void advance(float amount) {
         cooldown-=amount;
         if (cooldown > 0) return;
-        for (ArrayList<WeaponAPI> a : wepons){
-            for (WeaponAPI b : a){
-                if (b.getAmmoTracker().getAmmo() != 0) return;
-                double costPerOpp = 0;
-                float cooldownT = 0;
-                if (b.getSpec().getSize().equals(WeaponAPI.WeaponSize.SMALL)){
-                    costPerOpp = NanoThief_2.costSmall;
-                    cooldownT = NanoThief_2.timeSmall;
-                }
-                if (b.getSpec().getSize().equals(WeaponAPI.WeaponSize.MEDIUM)){
-                    costPerOpp = NanoThief_2.costSmall;
-                    cooldownT = NanoThief_2.timeSmall;
-                }
-                if (b.getSpec().getSize().equals(WeaponAPI.WeaponSize.LARGE)){
-                    costPerOpp = NanoThief_2.costSmall;
-                    cooldownT = NanoThief_2.timeSmall;
-                }
-                double cost = b.getSpec().getOrdnancePointCost(skills.ship.getCaptain().getStats(),skills.ship.getMutableStats()) * costPerOpp;
-                if (skills.getTotalReclaim() >= cost){
-                    skills.useReclaim(cost);
-                    cooldown+=cooldownT;
-                    return;
+        //if (skills.getTotalReclaim() == 0) return;
+        for (ArrayList<ArrayList<WeaponAPI>> weponsT : wepons){
+            for (ArrayList<WeaponAPI> a : weponsT) {
+                for (WeaponAPI b : a) {
+                    if (b.getAmmo() != 0) continue;
+                    double costPerOpp = 0;
+                    float cooldownT = 0;
+                    if (b.getSpec().getSize().equals(WeaponAPI.WeaponSize.SMALL)) {
+                        costPerOpp = NanoThief_2.costSmall;
+                        cooldownT = NanoThief_2.timeSmall;
+                    }
+                    if (b.getSpec().getSize().equals(WeaponAPI.WeaponSize.MEDIUM)) {
+                        costPerOpp = NanoThief_2.costMid;
+                        cooldownT = NanoThief_2.timeMid;
+                    }
+                    if (b.getSpec().getSize().equals(WeaponAPI.WeaponSize.LARGE)) {
+                        costPerOpp = NanoThief_2.costLarge;
+                        cooldownT = NanoThief_2.timeLarge;
+                    }
+                    double cost = Math.max(b.getSpec().getOrdnancePointCost(skills.ship.getCaptain().getStats(), skills.ship.getMutableStats()),1) * costPerOpp;
+                    if (skills.getTotalReclaim() >= cost) {
+                        skills.useReclaim(cost);
+                        cooldown = cooldownT;
+                        //b.getAmmoTracker().setAmmo(b.getAmmoTracker().getMaxAmmo());
+                        b.setAmmo(b.getMaxAmmo());
+                        playSoundIfPlayerShip();
+                        onCooldown = true;
+                        log.info("forging missile...");
+                        return;
+                    }
                 }
             }
         }
-        cooldown+=secondsPerReceack;
+        log.info("activating temp cooldown...");
+        onCooldown = false;
+        cooldown=secondsPerReceack;
+    }
+    private void playSoundIfPlayerShip(){
+        if (!ship.equals(Global.getCombatEngine().getPlayerShip())) return;
+    }
+
+    @Override
+    public void displayStats() {
+        if (onCooldown){
+            Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_2", "graphics/icons/hullsys/temporal_shell.png",
+                    "Missile Forge", "On cooldown for "+((int)cooldown)+" seconds",true);
+            return;
+        }
+        Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_2", "graphics/icons/hullsys/temporal_shell.png",
+                "Missile Forge", "Ready to forge missiles",false);
     }
 }

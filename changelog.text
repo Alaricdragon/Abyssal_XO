@@ -1,6 +1,8 @@
 V0.0.8:
     new:
         reclaim stored in ships is now added to newly created reclaim packages when the ship dies. (split between forces if a 'reclaim battle' is going on)
+    balance changes:
+        now reclaim is 200/400/600/800 per skill per skill. So the same reclaim at max level, but less reclaim at lower levels.
     changed intier skill try:
         'Overcharged' (skill for Simulacrum Fighter Wings) -> 'Constant Repairs' (repair hull at the cost of Reclaim)
 V0.0.7:

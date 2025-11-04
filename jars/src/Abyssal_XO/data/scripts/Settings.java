@@ -8,10 +8,10 @@ import java.util.ArrayList;
 
 public class Settings {
     public static final int[] NANO_THIEF_RECLAIM_GAIN = {
-            1000,
-            2000,
-            3000,
-            4000
+            200,
+            400,
+            600,
+            800
     };
     public static final int NANO_THIEF_MINRANGEOFWING = 2000;
 

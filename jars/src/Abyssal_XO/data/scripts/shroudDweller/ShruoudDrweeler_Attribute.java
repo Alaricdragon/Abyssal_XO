@@ -3,6 +3,89 @@ package Abyssal_XO.data.scripts.shroudDweller;
 public class ShruoudDrweeler_Attribute {
     /*addition hints:
     * 1) ship.isSelectableInWarroom(). maybe this is if I can give this ship comamnds?*/
+
+    /*I am redoing this.
+    * first change: primary 'gimmick' of this attribute is fleet wide abilitys, and 'entropy'.
+    * Entropy is a resorse gained from doing damage. it is fleet wide, and can be used on fleet wide abilitys.
+    * note: most abilitys do not cost 'entropy', but instead happen faster when gaining entropy, or have stronger effects. only some powerful ability consume entropy.
+    * 'Entropy' decreases at a rate of 0.1% per second. so 'Entropy' equlizes at certen values. larger battles will create more 'entropy' at a cap, so nothing ever goes out of control in say, battles against threat.
+    * POSSABLE CHANGE:
+    *   instead of a 'gloabal cooldown' why not have some ability effect the intier map at once? like effect all ships with the same ability at the same time.
+    *   for example: 'stike', but it hits my inter fleet. 'Entropy' could increase its stats, so I do mush more damage for the duration.
+    *   issue: incombatability with 'Breath'. maybe have some things be passive bonuses, that get stronger as 'entropy' is gathered?
+    * possable abilitys:
+    *   'Strike'
+    *       every ? seconds, increases damage by ? of one random ship and all its fighters.
+    *       cooldown multiplexed by 1/2/4/8 depending on hullsize.
+    *   manoeuvrability:
+    *       ???
+    *   'pulse'
+    *       every ? seconds, release a damaging pulse from
+    *       and do what??? kill all fighters? to mush of a gimic.
+    *   'freeze' target target (or maybe just reduce timeflow by like 50%?)
+    *       every ? seconds 'freaze' a hostile ship in place for ? seconds.
+    *       cooldown multiplied by 1/2/4/8 depending on hullsize.
+    *       can only actavate at 10000/30000/90000/120000 'Entropy' depending on hullsize of target.
+    *       will only target ships withen 500/1000/1500/2000 range of a friendly ship.
+    *
+    * 4) 'Hunger':
+    *     increase damage taken by 2X on random hostile ship.
+    *     cooldown multiplied by 1/2/4/8 depending on hullsize.
+    *     can only actavate at 10000/30000/90000/120000 'Entropy' depending on hullsize of target.
+    *     will only target ships withen 500/1000/1500/2000 range of a friendly ship.
+    *
+    * 5) 'Breathe'
+    *   for 20 seconds, slowly increase the recharge rate and effect of all 'Controlled Incursion' ability's by up to 100%.
+    *   for 20 seconds afterwords, slowly reduce the recharge rate and effect of all 'Controlled Incursion' ability's to 0%.
+    *   repeats endlessly.
+    *
+    * 6) 'Dive'
+    *   every 'Entropy'/10000 seconds, arm a single ship with charge of P-Teleporter.
+    *   only can trigger at 5000/25000/125000/625000 'entropy' depended on hull size.
+    *   cooldown is 1/3/9/27 times longer, depending on hullsize.
+    *
+    * 7) 'Lesser Manifestation'
+    *   every 'Entropy'/5000 seconds, manifest a single 'Thread' on a random ship.
+    *   'Threads' are fighter class ships armed with a single 'small rift weapon'. they have low resilience.
+    *   'Threads' rapidly destabilize one manifest, lasting at most 15 seconds before departing.
+    *
+    *
+    * 8) 'Seeking Tendrils'
+    *   every 'Entropy'/5000 seconds, send a rift arc from a random ship, targeting a random hostile ship in 500/1000/1500/2000 range, depending on hullsize.
+    *   deals 250 damage per shot.
+    *   can fire at most 6/12/18/24 times per second, depending on ship size. if more arcs are selected for a ship, instead make the arcs stronger, up to 5 times stronger.
+    *
+    *
+    * (at least 4?)
+    * 9) 'Reformation'
+    *   when a ship would die, restore it to full HP, and increase timeflow (like the abyssal ability from rat). costs DP * 5000 'Entropy' per ship?
+    *   60 second cooldown per ship.
+    *   cooldown is increased by 60 seconds every time it is used on the same ship.
+    * OR?
+    * 10) 'Manifestation'
+    *   spend ALL gathered 'Entropy' spawn some cool ass ship.
+    *   said cool ass ship gaines 25% of the 'Entropy' spent for itself, and its ability's.
+    *   said cool ass ship keeps up to 25% of all newly gathered 'Entropy' in reserve for itself.
+    *   gains the following ability's:
+    *   long range P-Teleporter
+    *   Applied energy
+    *   Lunge
+    *   Entropy Amplification
+    *   if killed, all 'Entropy' stored in reserve for itself is lost.
+    *   cannot have more then one 'Manifestation' active at a time.
+    *   cannot create a new 'Manifestation' until this one dies. must wait 60 seconds after this ones dies to activate again.
+    *
+    *
+    *
+    *
+    *
+    *
+    *
+    *
+    *
+    * */
+
+
     /*notes on how this works:
     * all ships in your fleet
     * at the start of combat, manifests one 'Shrouded Incursion' on your side of the map. It cannot move, and if it is destroyed it will lose all 'Abyssal Charges' and respawn in 60 seconds.

@@ -39,7 +39,7 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
     Simulacrum Fighters have -20% hull, -20% shield efficiency, and -10% damage
         *
         * */
-        tooltip.addPara("When any ship is destroyed in combat, harvest a Reclaim Package worth %s/%s/%s/%s reclaim, depending on hullsize. reclaim packages will then go to the nearest ship in the fleet. Any  Reclaim Packages that reaches there target will be converted into reclaim.",0f,Misc.getHighlightColor(), Misc.getHighlightColor(),""+Settings.NANO_THIEF_RECLAIM_GAIN[0],""+Settings.NANO_THIEF_RECLAIM_GAIN[1],""+Settings.NANO_THIEF_RECLAIM_GAIN[2],""+Settings.NANO_THIEF_RECLAIM_GAIN[3]);
+        tooltip.addPara("When any ship is destroyed in combat, harvest a Reclaim Package worth %s/%s/%s/%s reclaim multiplied by the number of skills in this attribute other then this one, depending on hullsize. reclaim packages will then go to the nearest ship in the fleet. Any  Reclaim Packages that reaches there target will be converted into reclaim.",0f,Misc.getHighlightColor(), Misc.getHighlightColor(),""+Settings.NANO_THIEF_RECLAIM_GAIN[0],""+Settings.NANO_THIEF_RECLAIM_GAIN[1],""+Settings.NANO_THIEF_RECLAIM_GAIN[2],""+Settings.NANO_THIEF_RECLAIM_GAIN[3]);
         String percent = NANO_THIEF_RECLAIM_RECYCLE_PERCENT *100 +"%";
         tooltip.addPara("When a ship holding any amount of Reclaim is destroyed, add %s of the held Reclaim to the Reclaim Package",0f,Misc.getHighlightColor(), Misc.getHighlightColor(),percent);
         tooltip.addSpacer(10f);
@@ -52,6 +52,10 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
     }
     @Override
     public void applyEffectsAfterShipCreation(SCData data, ShipAPI ship, ShipVariantAPI variant, String id) {
+        if (ship.getParentStation() != null || ship.getParentPieceId() != null){
+            log.info("NOT ADDING LISTENER FOR A SINGLE SHIP, BECAUSE IT IS A MODULE");
+            return;
+        }
         if (ship.hasListenerOfClass(NanoThief_ShipSkillsAdder.class)) return;
             //List<NanoThief_ShipSkillsAdder> a = ship.getListenerManager().getListeners(NanoThief_ShipSkillsAdder.class);
             //listiner = a.get(0);
