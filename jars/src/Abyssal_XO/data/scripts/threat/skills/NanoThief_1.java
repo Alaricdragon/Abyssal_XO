@@ -45,12 +45,12 @@ public class NanoThief_1 extends Nano_Thief_Skill_Base {
     for every 100 hull restored, costs 1 reclaim
          */
 
-        String hullMaxS = (hullMax*100)+"%";
-        String hullMinS = (hullMin*100)+"%";
-        String speedMaxS = (speedMax*100)+"%";
-        String speedMinS = (speedMin*100)+"%";
+        String hullMaxS = (int)(hullMax*100)+"%";
+        String hullMinS = (int)(hullMin*100)+"%";
+        String speedMaxS = (((int)(speedMax*1000))/10f)+"%";
+        String speedMinS = (((int)(speedMin*1000))/10f)+"%";
         String one = "1";
-        String reclaimPerHullS = (hullPerReclaim)+"";
+        String reclaimPerHullS = (int)(hullPerReclaim)+"";
 
 
         tooltip.addPara("Every second recover a small percentage of hull. This effect becomes faster the more missing hull a ship has, restoring %s hull per second at %s hull, and restoring %s hull per second at %s hull",0, Misc.getHighlightColor(), Misc.getHighlightColor(),speedMaxS,hullMaxS,speedMinS,hullMinS);

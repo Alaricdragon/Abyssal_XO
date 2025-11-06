@@ -27,6 +27,8 @@ note: I need to change everything.
 issue: the 'fighter spam' with this attribute can be completely broken. I will take a suggestion and turn the fighter thing into a capstone.
 issue: centralized production is completely fucking overpowered. the issue comes from the faster and faster production that accores.
 
+questions to ask:
+    1) how does one add salvage to the post battle recovery with code?
 
 alturation:
 lower numbers of skills can in theory be more usefull.
@@ -57,6 +59,17 @@ so the skills:
         costs 500 reclaim to use
         increases resistance to damage by 95%. for every point of 100 damage resisted by this ability, uses 1 reclaim
         weapons and other ability's are disabled for the duration.
+        	"jitterUnderColor":[255,165,90,155],
+	"jitterUnderCopies":25,
+	"jitterUnderMinRange":0,
+	"jitterUnderRange":7,
+	"jitterUnderRangeRadiusFraction":0,
+
+	"jitterColor":[255,165,90,55],
+	"jitterCopies":2,
+	"jitterMinRange":0,
+	"jitterRange":5,
+	"jitterRangeRadiusFraction":0,
 
 5) ????
 

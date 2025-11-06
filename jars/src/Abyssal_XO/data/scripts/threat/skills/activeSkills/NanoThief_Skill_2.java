@@ -75,13 +75,13 @@ public class NanoThief_Skill_2 extends NanoThief_SkillBase {
                         b.setAmmo(b.getMaxAmmo());
                         playSoundIfPlayerShip();
                         onCooldown = true;
-                        log.info("forging missile...");
+                        //log.info("forging missile...");
                         return;
                     }
                 }
             }
         }
-        log.info("activating temp cooldown...");
+        //log.info("activating temp cooldown...");
         onCooldown = false;
         cooldown=secondsPerReceack;
     }
@@ -93,10 +93,10 @@ public class NanoThief_Skill_2 extends NanoThief_SkillBase {
     public void displayStats() {
         if (onCooldown){
             Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_2", "graphics/icons/hullsys/temporal_shell.png",
-                    "Missile Forge", "On cooldown for "+((int)cooldown)+" seconds",true);
+                    "Scrapwork Microforge", "On cooldown for "+((int)cooldown)+" seconds",true);
             return;
         }
         Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_2", "graphics/icons/hullsys/temporal_shell.png",
-                "Missile Forge", "Ready to forge missiles",false);
+                "Scrapwork Microforge", "Ready to forge additional ammo",false);
     }
 }
