@@ -68,6 +68,26 @@ public class Nano_Thief_Stats {
     @Getter
     private HashMap<String,ShipAPI> availableShips=new HashMap<>();
     public int deployedDP=0;
+    @Getter
+    private static float playerExstraReclaim = 0;
+    private static Nano_Thief_Stats playerStats;
+    public static void setPlayerExstraReclaimIfRequired(){
+        if (playerStats == null) return;
+        playerExstraReclaim = 0;
+        for (String a : playerStats.availableShips.keySet()){
+            ShipAPI ship = playerStats.availableShips.get(a);
+            NanoThief_ShipSkills listiner = null;
+            if (ship.hasListenerOfClass(NanoThief_ShipSkills.class)){
+                List<NanoThief_ShipSkills> b = ship.getListenerManager().getListeners(NanoThief_ShipSkills.class);
+                listiner = b.get(0);
+                playerExstraReclaim+=listiner.getTotalReclaim();
+            }else{
+                //target.addListener(new NanoThief_ShipSkills(this,target));
+                log.info("WARNING: NO LISTINER! SPOOKY!");
+            }
+        }
+        playerStats = null;
+    }
     public Nano_Thief_Stats(String fighterToBuild) {
         if (fighterToBuild != null) this.fighterToBuild = fighterToBuild;
     }
@@ -92,6 +112,9 @@ public class Nano_Thief_Stats {
         }
         //this.fighterToBuild = "claw_wing";//"warthog_wing";//"warthog_wing";//"trident_wing";//"dagger_wing";//"broadsword_wing";
         getBaseStatsForFighter(Global.getSettings().getFighterWingSpec(this.fighterToBuild),this);
+        if (Global.getSector().getPlayerPerson().getId().equals(commanderID)){
+            playerStats = this;
+        }
     }
     public void spawnReclaim() {
 

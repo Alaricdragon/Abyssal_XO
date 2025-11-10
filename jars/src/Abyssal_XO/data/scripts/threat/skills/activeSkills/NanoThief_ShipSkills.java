@@ -46,6 +46,10 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
     public void suppressListener(NanoThief_SkillBase listiner){
         removedSkills.add(listiner);
     }
+    public void resetReclaim(){
+        reclaim=0;
+        refinedReclaim=0;
+    }
     public double getTotalReclaim(){
         return reclaim+refinedReclaim;
     }

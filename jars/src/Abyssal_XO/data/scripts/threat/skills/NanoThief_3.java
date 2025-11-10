@@ -1,5 +1,7 @@
 package Abyssal_XO.data.scripts.threat.skills;
 
+import Abyssal_XO.data.scripts.threat.listiners.NanoThief_LootListiner;
+import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.ids.Stats;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
@@ -9,8 +11,8 @@ import second_in_command.SCData;
 
 public class NanoThief_3 extends Nano_Thief_Skill_Base {
     private static final String key = "AbyssalXO_Nano_Thief_Skill_3";
-    private static final float reclaimPerSet = 1000f;
-    private static final float suppliesPerSet = 5f;
+    public static final float reclaimPerSet = 1000f;
+    public static final float suppliesPerSet = 5f;
 
     private static final float salvageMod = 0.20f;
     private static final float battleSalvageMod = 0.1f;
@@ -46,6 +48,10 @@ public class NanoThief_3 extends Nano_Thief_Skill_Base {
         super.onActivation(data);
         data.getFleet().getStats().getDynamic().getStat(Stats.SALVAGE_VALUE_MULT_FLEET_NOT_RARE).modifyFlat("AbyssalXO_NanoThief_Salvage",salvageMod);
         data.getFleet().getStats().getDynamic().getStat(Stats.BATTLE_SALVAGE_MULT_FLEET).modifyFlat("AbyssalXO_NanoThief_Salvage",battleSalvageMod);
+        if (data.getCommander().equals(Global.getSector().getPlayerPerson())) {
+            if (Global.getSector().getListenerManager().hasListenerOfClass(NanoThief_LootListiner.class)) return;
+            Global.getSector().getListenerManager().addListener(new NanoThief_LootListiner());
+        }
     }
 
     @Override
@@ -53,5 +59,10 @@ public class NanoThief_3 extends Nano_Thief_Skill_Base {
         super.onDeactivation(data);
         data.getFleet().getStats().getDynamic().getStat(Stats.SALVAGE_VALUE_MULT_FLEET_NOT_RARE).unmodifyFlat("AbyssalXO_NanoThief_Salvage");
         data.getFleet().getStats().getDynamic().getStat(Stats.BATTLE_SALVAGE_MULT_FLEET).unmodifyFlat("AbyssalXO_NanoThief_Salvage");
+        if (data.getCommander().equals(Global.getSector().getPlayerPerson())) {
+            if (Global.getSector().getListenerManager().hasListenerOfClass(NanoThief_LootListiner.class)){
+                Global.getSector().getListenerManager().removeListenerOfClass(NanoThief_LootListiner.class);
+            }
+        }
     }
 }

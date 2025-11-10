@@ -2,12 +2,18 @@ V0.0.8:
     new:
         reclaim stored in ships is now added to newly created reclaim packages when the ship dies. (split between forces if a 'reclaim battle' is going on)
     balance changes:
-        now reclaim is 200/400/600/800 per skill per skill. So the same reclaim at max level, but less reclaim at lower levels.
+        now reclaim is 200/400/600/800 per skill. So the same reclaim at max level, but less reclaim at lower levels.
     changed intier skill try:
-        'Overcharged' (skill for Simulacrum Fighter Wings) -> 'Constant Repairs' (repair hull at the cost of Reclaim)
-        '' -> 'Scrapwork Microforge' (regenerate ammo for limit ammo weapons at a reclaim cost)
-        '' -> 'Thorough Salvaging' (bonus salvage and supplies for reclaim)
-        '' -> 'Scrapy Fortification' (95% damage resistance well taking critical damage.)
+        'Overcharged' -> 'Constant Repairs' (repair hull at the cost of Reclaim)
+        'Mass Manufacturing' -> 'Scrapwork Microforge' (regenerate ammo for limit ammo weapons at a reclaim cost)
+        'Longevity' -> 'Thorough Salvaging' (bonus salvage and supplies for reclaim)
+        'Advanced Installation' -> 'Scrapy Fortification' (95% damage resistance well considerable damage.)
+        'Quality Checks' -> ''
+        'Prepared Deployment' -> ''
+        'Centralized Logistics' -> ''
+        'Desperate Measures' -> ''
+        'Efficient Production' -> ''
+        -new skill- -> ''
 V0.0.7:
     fixes:
         fixed 'threat' creating 2 - 6 times as many reclaim swarms as they should when they die

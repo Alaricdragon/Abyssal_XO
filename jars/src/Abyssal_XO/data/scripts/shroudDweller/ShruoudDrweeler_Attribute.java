@@ -3,6 +3,80 @@ package Abyssal_XO.data.scripts.shroudDweller;
 public class ShruoudDrweeler_Attribute {
     /*addition hints:
     * 1) ship.isSelectableInWarroom(). maybe this is if I can give this ship comamnds?*/
+    /*I am redoing this again.
+    * I feel like the current implementation of this skill try focuses to mush on ships. I want to focus on 'environmental' skills instead.
+    *
+    * considerations:
+    *   I want this to be like inviermental effects, in effect. The issue that comes with this is that it can feel a bit strange.
+    *   a possibility: have the first skill chose out of 2 skills. one will provide one environmental effect, and the other will provide another.
+    *   then the rest of the skills support that 'possability'.
+    *   .... I will think on it.
+    *   something like 'storm' for agression, or arg....
+    *
+    *
+    * new possable skills:
+    *   note: movement and vision restrictions would be frustrating
+    *
+    * ?) 'gatherd charge'
+    *   every 'Entropy'/5000 seconds, a rift forms, firing 1 right lightmean arcs, targeting a random friendly ship in 2000 range
+    *   every ship targeted gains:
+    *       5% increased damage for 5 seconds.
+    *       10% increase mobility for 5 seconds
+    *       5% hard flux dispensation for 5 seconds
+    *   Has deminishing returns when hitting the same ship, only providing an increase of 50%, 25%, 12.5%, 6.25%, 3.125% per additional lightmen strike
+    *
+    * ?) 'warped space'?
+    *   creates a area that sends things to other places?
+    *
+    * ?) 'Thread'
+    *   every 'Entropy'/5000 seconds, manifest a single 'Thread' on a random ship.
+    *   'Threads' are fighter class ships armed with a single 'small rift weapon'. they have low resilience.
+    *   'Threads' rapidly destabilize once manifest, lasting at most 15 seconds before departing.
+    *
+    * ?) 'drag'
+    *
+    * ?) 'darkness'
+    *
+    * 5) 'Breathe'
+    *   for 20 seconds, slowly increase the recharge rate and effect of all 'Controlled Incursion' ability's by up to 100%.
+    *   for 20 seconds afterwords, slowly reduce the recharge rate and effect of all 'Controlled Incursion' ability's to 0%.
+    *   repeats endlessly.
+    *
+    * ?) 'Hunger'
+    *   every 'Entropy'/10000 seconds, a 'entropy field' is created on a random hostile ship with a range of 'Entropy'/`2
+    *   this field will slowly charge over 5 seconds, increasing damage taken by targets by up to 100%.
+    *   this field will hold for 5 seconds, before decaying over another 5 seconds.
+    *
+    * 8) 'Seeking Tendrils'
+    *   every 'Entropy'/5000 seconds, a rift forms, firing 5 right lightmean arcs, targeting a random hostile ship in 2000 range
+    *   deals 250 damage per shot.
+    *   can fire at most 6/12/18/24 times per second, depending on ship size. if more arcs are selected for a ship, instead make the arcs stronger, up to 5 times stronger.
+    *
+     * (at least 4?)
+     * 9) 'Reformation'
+     *   when a ship would die, restore it to full HP, and increase timeflow (like the abyssal ability from rat). costs DP * 5000 'Entropy' per ship?
+     *   240 second cooldown per ship.
+     *   10 second global cooldown.
+     * OR?
+     * 10) 'Manifestation'
+     *   spend ALL gathered 'Entropy' spawn some cool ass ship.
+     *   said cool ass ship gaines 25% of the 'Entropy' spent for itself, and its ability's.
+     *   said cool ass ship keeps up to 25% of all newly gathered 'Entropy' in reserve for itself.
+     *   gains the following ability's: (depending on 'Entropy')
+     *   long range P-Teleporter
+     *   Applied energy
+     *   Lunge
+     *   Entropy Amplification
+     *   if killed, all 'Entropy' stored in reserve for itself is lost.
+     *   cannot have more then one 'Manifestation' active at a time.
+     *   cannot create a new 'Manifestation' until this one dies. must wait 60 seconds after this ones dies to activate again.
+     *
+     *  stored 'Entropy' for this skill will only create anomolys around this Manifestation, instead of the intier battle field.
+     *  drains 5 'Entropy' per second.
+     *  will rapidly repair itself, at the cost of 1 'Entropy' per hull.
+     *  if 'Entropy' reserved for the Manifestation runs out, it will rapidly destabilize, being destroyed in 15 seconds.
+    * */
+
 
     /*I am redoing this.
     * first change: primary 'gimmick' of this attribute is fleet wide abilitys, and 'entropy'.

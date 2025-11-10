@@ -28,12 +28,14 @@ issue: the 'fighter spam' with this attribute can be completely broken. I will t
 issue: centralized production is completely fucking overpowered. the issue comes from the faster and faster production that accores.
 
 questions to ask:
-    1) how does one add salvage to the post battle recovery with code?
 
+random things to do:
+    make it so there is a limited random on recovery. (make it so I dont get salvage from other side of the map)
+    make it so reclaim packages dont have crazy vision (maybe X0.1 vision?)
+    make it so reclaim packages loes value as they are damaged (up to 50% at 0% hull).
+    make it so 'supply forging' counts reclaim packages as reclaim (and assumes they are all refined instantly, provided a centralized fabracator is on the field.)
 alturation:
 lower numbers of skills can in theory be more usefull.
-solution: make it so each skill gained increases the amount of reclaim gained.
-1000/2000/3000/4000 / 5 = 200/400/600/800 reclaim gained per hullsize per skill.
 new skill pholosaphy:
 all new skills will incore effects that will slowly use reclaim. (as to avoid the infinit fighter issue I have right now). the skills will be desinged around improving ship stats, or restoring ships.
 so the skills:
@@ -71,7 +73,8 @@ so the skills:
 	"jitterRange":5,
 	"jitterRangeRadiusFraction":0,
 
-5) ????
+5) ????.. ???????
+    increases the spped of reclaim packages by 100%
 
 6) create escorts:
     create up to 1/1/2/3 Simulacrum Fighter Wings that will defend the ship (like defensive targetting array)
@@ -93,7 +96,7 @@ so the skills:
    Using normal reclaim for skills costs 20% more reclaim.
 
    After the Central Fabricator is assigned, it cannot be changed for the inter combat, even if it is destroyed or retreats.
-   gain the 'Central Fabricator' hullmod, allowing you to chose your Central Fabricator (edited)Sunday, October 19, 2025 12:17 PM
+   gain the 'Central Fabricator' hullmod, allowing you to chose your Central Fabricator
 
 (requires at least 4 lower level skills)
 9) create starships?

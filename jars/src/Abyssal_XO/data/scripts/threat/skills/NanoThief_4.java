@@ -18,8 +18,10 @@ public class NanoThief_4 extends Nano_Thief_Skill_Base {
     public static final float resistance = 0.05f;
     public static final float time = 5;
     public static final float cooldown = 30;
-    public static final float activeCost = 50;
+    public static final float activeCost = 10;
     public static final float damagePerCost = 100;
+
+    //public static final int minReclaimToActavate = 25;
     //private static final float hullMod = 0.95f;
     //private static final float armorMod = 0.95f;
     //private static final float shieldMod = 0.05f;
