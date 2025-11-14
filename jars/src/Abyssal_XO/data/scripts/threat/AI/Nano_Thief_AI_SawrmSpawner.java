@@ -1,7 +1,9 @@
 package Abyssal_XO.data.scripts.threat.AI;
 
+import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
 import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_6;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import org.apache.log4j.Logger;
@@ -10,10 +12,24 @@ import org.lazywizard.lazylib.VectorUtils;
 public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
     private ShipAPI ship;
     private ShipAPI motherShip;
-    private NanoThief_ShipStats stats;
+    private Nano_Thief_Stats stats;
     private String wing;
     private CombatEngineAPI engine;
-    public Nano_Thief_AI_SawrmSpawner(ShipAPI ship,ShipAPI motherShip, String wing, NanoThief_ShipStats stats){
+    public Nano_Thief_AI_SawrmSpawner(ShipAPI ship,ShipAPI motherShip, String wing, Nano_Thief_Stats stats){
+        /*todo: 5 requirements here
+                1) make it so this only spawns one wings of swarms, and no more. NONE. ever. I don't fucking care no no no!.
+                    -in theory, this can be done by copying reserve deployments effects.
+                2) make it so this can set the swarms to attack, the moment they are all deployed.
+                    -and make it so they never fucking stop
+                3) make it so after the TTL is gone, the sawrms return to the carrier
+                    -in theory, stage 1 can handle this maybe?
+                4) make it so when this ship runs out of fighters it dies.
+                    -simple I hope
+                5) make it so this ship TPs to the closest ship to the fighters every 10 seconds
+                    -I hate this one.
+
+
+         */
         this.ship = ship;
         this.motherShip = motherShip;
         this.stats = stats;
@@ -60,6 +76,8 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
     float time;
     private static final float interval = 1;
     protected static Logger log = Global.getLogger(Nano_Thief_Skill_Base.class);
+
+    int stage = 0;
     @Override
     public void advance(float amount) {
         //ship.set
@@ -69,7 +87,28 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
         time+=amount;
         if (time >= interval){
             time = 0;
-            if (/*!ship.equals(stats.getReclaimCore()) && */ship.getLaunchBaysCopy().get(0).getWing() != null && (ship.getLaunchBaysCopy().get(0).getWing().getWingMembers().size()+ship.getLaunchBaysCopy().get(0).getNumLost() >= Global.getSettings().getFighterWingSpec(wing).getNumFighters())){
+            switch (stage){
+                case 0:
+                    stage0();
+                    break;
+                case 1:
+                    stage1(amount);
+                    break;
+                case 2:
+                    stage2();
+                    break;
+                case 3:
+                    stage2();
+                    break;
+            }
+        }
+        if (stage != 0 && ship.getLaunchBaysCopy().get(0).getNumLost() >= stats.OF_wingSize){
+            stage2();
+            //despawn core when all ships are dead =(
+        }
+    }
+    private void stage0(){
+        if (/*!ship.equals(stats.getReclaimCore()) && */ship.getLaunchBaysCopy().get(0).getWing() != null && (ship.getLaunchBaysCopy().get(0).getWing().getWingMembers().size()+ship.getLaunchBaysCopy().get(0).getNumLost() >= stats.OF_wingSize)){
                 /*
                 so this... is interesting.
                 it would seam that the wing cannot be spawned from a hostile force. wether that is all hostile forces, or just this one is unclear.
@@ -100,53 +139,35 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
                     try changing out the fleet spawning logic to use something like 'engine.getFleetManager(23).spawnShipOrWing("",null,0f,0f);'. maybe this will help? who knows!
                  */
 
-                //log.info("attempting to spawn a new wing of intended ID: "+wing);
-                //log.info("The wing ended up with a true ID of: "+ship.getLaunchBaysCopy().get(0).getWing().getSpec().getId());
-                FighterWingAPI wing = ship.getLaunchBaysCopy().get(0).getWing();
-                wing.setSourceShip(ship);
-                //wing.setSourceShip(stats.getReclaimCore());
-                stats.addWingToList(wing.getLeader());
-                stats.removeReclaimCore(ship);
-                Global.getCombatEngine().removeEntity(ship);
-            }else{
-                /*log.info(ship.getId()+"wing does not exist. getting wing data...");
-                log.info("  fighter refit time multi:" + ship.getMutableStats().getFighterRefitTimeMult());
-                log.info("  refit rate right now: " +ship.getLaunchBaysCopy().get(0).getCurrRate());
-                log.info("  time until replacement" + ship.getLaunchBaysCopy().get(0).getTimeUntilNextReplacement());
-                log.info("  Fast replacements" + ship.getLaunchBaysCopy().get(0).getFastReplacements());
-                log.info("  Extra Deploy Limit" + ship.getLaunchBaysCopy().get(0).getExtraDeploymentLimit());
-                log.info("  Extra Deploy" + ship.getLaunchBaysCopy().get(0).getExtraDeployments());
-                log.info("  Extra Duration" + ship.getLaunchBaysCopy().get(0).getExtraDuration());*/
+            //log.info("attempting to spawn a new wing of intended ID: "+wing);
+            //log.info("The wing ended up with a true ID of: "+ship.getLaunchBaysCopy().get(0).getWing().getSpec().getId());
+            FighterWingAPI wing = ship.getLaunchBaysCopy().get(0).getWing();
+            wing.setSourceShip(ship);
 
-                /*ship.setCurrentCR(100);
-                ship.getLaunchBaysCopy().get(0).setFastReplacements(100);
-                ship.getLaunchBaysCopy().get(0).setCurrRate(0.3f);
-                ship.getLaunchBaysCopy().get(0).makeCurrentIntervalFast();
-                ship.getLaunchBaysCopy().get(0);
+            //wing.setSourceShip(stats.getReclaimCore());
+            //stats.addWingToList(wing.getLeader());
+            //stats.removeReclaimCore(ship);
 
-                log.info("--After Reset--");
-                log.info("  fighter refit time multi:" + ship.getMutableStats().getFighterRefitTimeMult());
-                log.info("  refit rate right now: " +ship.getLaunchBaysCopy().get(0).getCurrRate());
-                log.info("  time until replacement" + ship.getLaunchBaysCopy().get(0).getTimeUntilNextReplacement());
-                log.info("  Fast replacements" + ship.getLaunchBaysCopy().get(0).getFastReplacements());
-                log.info("  Extra Deploy Limit" + ship.getLaunchBaysCopy().get(0).getExtraDeploymentLimit());
-                log.info("  Extra Deploy" + ship.getLaunchBaysCopy().get(0).getExtraDeployments());
-                log.info("  Extra Duration" + ship.getLaunchBaysCopy().get(0).getExtraDuration());*/
-
-
-                //ship.getLaunchBaysCopy().get(0).setFastReplacements(100);
-                //ship.getLaunchBaysCopy().get(0).setCurrRate(1);
-                /*data:
-                *     on threat_old:
-                 *       0 refit rate.
-                *       -1 time to refit.
-                *     on player:
-                *       0.30212158 refit rate
-                *       0.60113 time to refit
-                *
-                * */
-            }
+            stage = 1;
+        }else{
         }
+        //spwan ships
+    }
+    float timeAlive = 0;
+    private void stage1(float amount){
+        timeAlive += amount;
+        if (timeAlive >= stats.OF_ttl){
+            stage = 2;
+        }
+        //keep attacking and relocating
+    }
+    public void stage2(){
+        //return to carrier.
+        //afterwords, set stage to 3.
+    }
+    private void stage3(){
+        stats.getOffinciveFighterCores().remove(ship);
+        Global.getCombatEngine().removeEntity(ship);
     }
 
     @Override

@@ -98,11 +98,5 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
 
     @Override
     public void onActivation(SCData data) {
-        if (data.getCommander().equals(Global.getSector().getPlayerPerson())){
-            //Global.getSector().getCampaignUI().showInteractionDialog(new Nano_Thief_dialog(),Global.getSector().getPlayerFleet());
-            /**/CharacterDataAPI character = Global.getSector().getCharacterData();
-            if (character.getAbilities().contains(Settings.NANO_THIEF_ABILITY)) return;
-            character.addAbility(Settings.NANO_THIEF_ABILITY);/**/
-        }
     }
 }

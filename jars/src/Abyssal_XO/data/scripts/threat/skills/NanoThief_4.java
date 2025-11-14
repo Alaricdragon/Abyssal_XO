@@ -28,8 +28,6 @@ public class NanoThief_4 extends Nano_Thief_Skill_Base {
     //private static float hullChange = 0.95f;
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
-        //todo: this effect is just going to be added by a listener. I will need to prepare a damage listener as well.
-
         String activeDamage = (int) NanoThief_4.activeDamage +"";
         String activePercent = (int)(NanoThief_4.activePercent *100)+"%";
         String activeTime = (int) NanoThief_4.activeTime +"";

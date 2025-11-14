@@ -9,6 +9,7 @@ import Abyssal_XO.data.scripts.threat.listiners.NanoThief_RecreationScript;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
 import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_6;
 import Abyssal_XO.data.scripts.threat_old.subsystems.DamageOverTime_System;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
@@ -19,7 +20,6 @@ import com.fs.starfarer.api.impl.combat.threat.RoilingSwarmEffect;
 import com.fs.starfarer.api.impl.combat.threat.SwarmLauncherEffect;
 import com.fs.starfarer.api.loading.FighterWingSpecAPI;
 import com.fs.starfarer.api.loading.VariantSource;
-import com.fs.starfarer.api.loading.WingRole;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import lombok.Getter;
@@ -38,12 +38,18 @@ import java.util.List;
 import static Abyssal_XO.data.scripts.Settings.NANO_THIEF_RECLAIM_RECYCLE_PERCENT;
 
 public class Nano_Thief_Stats {
+    public float OF_productionTime = 1;
+    public float OF_swarmCost = 100;
+    public float OF_recyclePerFighter = 0;
+    public float OF_ttl = 60;
+    @Deprecated
+    public float OF_range;
+    public String OF_fighterToBuild = Settings.NANO_THIEF_BASEWING;//Settings.NANO_THIEF_PALYER_BASEWING;
+    public ShipHullSpecAPI OF_fighterHullSpec;
+    public int OF_wingSize;
+
 
     private boolean wingSet = false;
-    @Getter
-    private float productionTime = 1;
-    @Getter
-    private float swarmCost = 100;
     private static Logger log = Global.getLogger(Nano_Thief_Stats.class);
     private String commanderID;
     private SCOfficer officer;
@@ -54,15 +60,8 @@ public class Nano_Thief_Stats {
     @Getter
     private ArrayList<Nano_Thief_Skill_Base> skills = new ArrayList<>();
 
+    @Deprecated
     private float reclaimPerControl = Settings.NANO_THIEF_ReclaimPerControl_BASE;
-    private float ttl = 60;
-    @Getter
-    private float range;
-
-    @Getter
-    private String fighterToBuild = Settings.NANO_THIEF_BASEWING;//Settings.NANO_THIEF_PALYER_BASEWING;
-    @Getter
-    private ShipHullSpecAPI fighterHullSpec;
     private boolean isAlly = false;
 
     @Getter
@@ -71,6 +70,11 @@ public class Nano_Thief_Stats {
     @Getter
     private static float playerExstraReclaim = 0;
     private static Nano_Thief_Stats playerStats;
+
+    //@Getter
+    //private ArrayList<FighterWingAPI> OffinciveFighterWings = new ArrayList<>();
+    @Getter
+    private ArrayList<ShipAPI> OffinciveFighterCores = new ArrayList<>();//might not be needed we will see.
     public static void setPlayerExstraReclaimIfRequired(){
         if (playerStats == null) return;
         playerExstraReclaim = 0;
@@ -88,15 +92,15 @@ public class Nano_Thief_Stats {
         }
         playerStats = null;
     }
-    public Nano_Thief_Stats(String fighterToBuild) {
-        if (fighterToBuild != null) this.fighterToBuild = fighterToBuild;
+    public Nano_Thief_Stats(String OF_fighterToBuild) {
+        if (OF_fighterToBuild != null) this.OF_fighterToBuild = OF_fighterToBuild;
     }
-    public Nano_Thief_Stats(String commanderID, boolean isAlly, SCOfficer officer, String fighterToBuild){
-        if (fighterToBuild != null) this.fighterToBuild = fighterToBuild;
+    public Nano_Thief_Stats(String commanderID, boolean isAlly, SCOfficer officer, String OF_fighterToBuild){
+        if (OF_fighterToBuild != null) this.OF_fighterToBuild = OF_fighterToBuild;
         this.commanderID = commanderID;
         this.officer = officer;
         this.isAlly = isAlly;
-        log.info("creating commander data for a new commander with "+officer.getActiveSkillPlugins().size()+" skills"+" and a fighter to build of "+this.fighterToBuild);
+        log.info("creating commander data for a new commander with "+officer.getActiveSkillPlugins().size()+" skills"+" and a fighter to build of "+this.OF_fighterToBuild);
         for (SCBaseSkillPlugin a : officer.getActiveSkillPlugins()){
             Nano_Thief_Skill_Base b = (Nano_Thief_Skill_Base) a;
             log.info("  adding skill to commander of: "+b.getName());
@@ -111,7 +115,7 @@ public class Nano_Thief_Stats {
             }
         }
         //this.fighterToBuild = "claw_wing";//"warthog_wing";//"warthog_wing";//"trident_wing";//"dagger_wing";//"broadsword_wing";
-        getBaseStatsForFighter(Global.getSettings().getFighterWingSpec(this.fighterToBuild),this);
+        getBaseStatsForFighter(Global.getSettings().getFighterWingSpec(this.OF_fighterToBuild),this,true);
         if (Global.getSector().getPlayerPerson().getId().equals(commanderID)){
             playerStats = this;
         }
@@ -302,12 +306,12 @@ public class Nano_Thief_Stats {
 
     }
     public float getModifiedCost(ShipAPI target){
-        float quality = this.swarmCost;
+        float quality = this.OF_swarmCost;
         return quality;
 
     }
     public float getModifedProductionTime(ShipAPI target){
-        float prod = this.productionTime;
+        float prod = this.OF_productionTime;
         return prod;
     }
     public float getAvailableControl(){
@@ -316,7 +320,7 @@ public class Nano_Thief_Stats {
 
     }
     public float getModifedTTL(ShipAPI target){
-        float prod = ttl;
+        float prod = OF_ttl;
         return prod;
     }
     public ShipAPI createReclaim(ShipAPI primary,int forceID){
@@ -395,71 +399,6 @@ public class Nano_Thief_Stats {
         }*/
         return fighter;
     }
-    public ShipAPI createCombatSwarmCore(NanoThief_ShipStats stats){//ShipAPI primary){
-        ShipAPI primary = stats.getShip();
-        String wingId = fighterToBuild;//Settings.NANO_THIEF_BASEWING;//SwarmLauncherEffect.RECLAMATION_SWARM_WING;//"attack_swarm_wing"
-        CombatEngineAPI engine = Global.getCombatEngine();
-        //CombatFleetManagerAPI manager = engine.getFleetManager(FleetSide.ENEMY);//engine.getFleetManager(primary.getOwner());
-        CombatFleetManagerAPI manager = engine.getFleetManager(primary.getOwner());
-        manager.setSuppressDeploymentMessages(true);
-
-        Vector2f loc = primary.getLocation();
-        float facing = (float) Math.random() * 360f;
-        //log.info("attempting to create a attack swarm at "+loc.x+", "+loc.y+" at ship of "+primary.getName()+" who's location is "+primary.getLocation().x+", "+primary.getLocation().y);
-        ShipAPI fighter = null;
-        //Global.getSettings().getVariant("");
-
-
-        FleetMemberAPI member = Global.getFactory().createFleetMember(FleetMemberType.SHIP,"Abyssal_XO_ReclaimCore_Blank");
-        //Global.getFactory().createFleetMember
-        ShipVariantAPI OVERWRITER = member.getVariant();//Global.getSettings().getVariant("Abyssal_XO_ReclaimCore_Blank").clone();
-        OVERWRITER.setSource(VariantSource.REFIT);
-        //OVERWRITER.setWingId(0,Settings.NANO_THIEF_BASEWING);//'broadsword_wing' from settings causes strange fragment swarm to spawn??? WTF?
-        //OVERWRITER.setWingId(0,Settings.NANO_THIEF_PALYER_BASEWING);//'broadsword_wing' from settings causes strange fragment swarm to spawn??? WTF?
-        OVERWRITER.setWingId(0,this.fighterToBuild);
-        OVERWRITER.getWing(0).addTag("independent_of_carrier");
-        //OVERWRITER.getWing(0).addTag("auto_fighter");
-        //OVERWRITER.setWingId(1,stats.getFighterToBuild());
-        //OVERWRITER.setWingId(2,stats.getFighterToBuild());
-        member.setOwner(primary.getOwner());
-        member.setVariant(OVERWRITER,false,true);
-
-        fighter = manager.spawnFleetMember(member,loc, facing, 0f);
-        //engine.ship
-        //fighter.setOwner(primary.getOwner());
-        //fighter = manager.spawnShipOrWing(member,loc,facing,0f);
-
-        //if (!isAlly) fighter.setAlly(false);
-        //log.info("spawning spawner with a wing of: "+this.fighterToBuild);
-        //log.info("the fighters ID was given as: "+OVERWRITER.getWing(0).getId());
-        //log.info("temp thing: "+fighter.getWing().getSpec());//no wing...? //maybe wing only exsists a short time after creation?
-        //log.info("temp thing 2:"+fighter.getLaunchBaysCopy().get(0).getTimeUntilNextReplacement());
-        //log.info("got the true ID of the wing as: "+fighter.getLaunchBaysCopy().get(0).getWing().getSpec().getId());
-        fighter.setShipAI(new Nano_Thief_AI_SawrmSpawner(fighter,primary,this.fighterToBuild,stats));
-        //note: this is usefull for making the guys follow your primary ship. not yet compleated.
-        /*if (stats.getReclaimCore() == null){
-            ShipAPI core = manager.spawnShipOrWing("Abyssal_XO_ReclaimCore_Blank",loc, facing, 0f,null);
-            core.setShipAI(new Nano_Thief_AI_ReclaimCoreBlank(core,primary));
-            //core.setAlphaMult(0);
-            stats.setReclaimCore(core);
-        }*/
-        fighter.setCustomData(ReclaimCore.IDOfData,stats);
-
-        manager.removeDeployed(fighter,false);
-
-
-
-        //fighter = manager.spawnShipOrWing(Settings.NANO_THIEF_CREATER_SHIP, loc, facing, 0f, null);
-        //fighter.getWing().setSourceShip(primary);//sets to ifself to prevent min ingagment rage from triggering. might remove if i build a custom AI for the ships.
-        manager.setSuppressDeploymentMessages(false);
-        Vector2f takeoffVel = Misc.getUnitVectorAtDegreeAngle(facing);
-        takeoffVel.scale(fighter.getMaxSpeed() * 1f);
-
-        //Vector2f.add(fighter.getVelocity(), takeoffVel, fighter.getVelocity());
-
-
-        return fighter;//note: note a fighter, but instead something very diffrent.
-    }
 
     public void modifySingleFighter(ShipAPI fighter,ShipAPI frabacator){
         if (fighter.getWing().getSpec().getId().equals(Settings.NANO_THIEF_BASEWING)){
@@ -474,7 +413,7 @@ public class Nano_Thief_Stats {
         /*for (Nano_Thief_Skill_Base b : skills) {
             b.changeCombatSwarmStats(fighter,frabacator,this);
         }*/
-        MagicSubsystemsManager.addSubsystemToShip(fighter, new DamageOverTime_System(fighter, ttl,range));
+        MagicSubsystemsManager.addSubsystemToShip(fighter, new DamageOverTime_System(fighter, ttl, OF_range));
     }
     public void modifiyBaseShip(ShipAPI fighter){
         fighter.setDoNotRender(true);
@@ -485,57 +424,25 @@ public class Nano_Thief_Stats {
         RoilingSwarmEffect swarm = FragmentSwarmHullmod.createSwarmFor(fighter);
 
     }
-    private static void getBaseStatsForFighter(FighterWingSpecAPI a,Nano_Thief_Stats spec){
-        /*if (wingSet) return;
-        wingSet = true;*/
-        spec.fighterHullSpec = a.getVariant().getHullSpec();
-        float range=0;
-        for (String b : a.getVariant().getFittedWeaponSlots()){
-            if (b == null) continue;
-            float c = a.getVariant().getWeaponSpec(b).getMaxRange();
-            if (c > range) range = c;
+
+    public int getDeployedPonits(){
+        int output = 0;
+        for (String a : this.availableShips.keySet()){
+            output += availableShips.get(a).getDeployCost();
         }
-        spec.range = Math.max(1000,range+200);
-        if (a.getId().equals(Settings.NANO_THIEF_BASEWING)){
-            spec.swarmCost = Settings.NANO_THIEF_BASESWARM_COST;
-            spec.productionTime = Settings.NANO_THIEF_BASESWARM_BUILDTIME;
-            spec.ttl = Settings.NANO_THIEF_BASESWARM_TTL;
-            log.info("got swarm of ID: "+a.getId()+" stats as: cost: "+spec.swarmCost+", productionTime: "+spec.productionTime+", time to live"+spec.ttl+", and range: "+spec.range);
+        return output;
+    }
+    private static void getBaseStatsForFighter(FighterWingSpecAPI a,Nano_Thief_Stats spec,boolean offincive){
+        if (offincive){
+            NanoThief_Skill_6.getStats(spec,a);
             return;
         }
-        spec.productionTime = a.getNumFighters() * a.getRefitTime() * Settings.NANO_THIEF_CustomSwarm_BUILDTIME_PREREFIT;
-        if (a.getRole().equals(WingRole.BOMBER)){
-            spec.ttl = Settings.NANO_THIEF_CustomSwarm_Bomber_TTL;
-        }else {
-            spec.ttl = Settings.NANO_THIEF_CustomSwarm_TTL;
-        }
-        spec.swarmCost = (a.getOpCost(a.getVariant().getStatsForOpCosts())*Settings.NANO_THIEF_CustomSwarm_COST_PEROP)+Settings.NANO_THIEF_CustomSwarm_COST_BASE;
-        log.info("got swarm of ID: "+a.getId()+" stats as: cost: "+spec.swarmCost+", productionTime: "+spec.productionTime+", time to live"+spec.ttl+", and range: "+spec.range);
     }
-    public static void displayStatsForFighterWithoutModification(TooltipMakerAPI panel,FighterWingSpecAPI a){
-        Nano_Thief_Stats spec = null;//new Nano_Thief_Stats(a.getId());
-        for (SCOfficer b : SCUtils.getFleetData(Global.getSector().getPlayerFleet()).getActiveOfficers()){
-            //log.info("      checking SiC officer of atrubuteID: "+b.getAptitudeId());
-            if (!b.getAptitudeId().equals("Abyssal_NanoThief")) continue;
-            //log.info("      added Sic officer from fleet "+a.getId()+" to list of commanders....");
-            spec = new Nano_Thief_Stats(a.getId(),true,b,a.getId());
-            break;
+    public static void displayStatsForFighterWithoutModification(TooltipMakerAPI panel,FighterWingSpecAPI a,boolean offincive){
+        if (offincive){
+            NanoThief_Skill_6.displayStats(panel,a);
+            return;
         }
-        if (spec == null){
-            spec = new Nano_Thief_Stats(a.getId());
-        }
-        getBaseStatsForFighter(a,spec);
-        spec.ttl = spec.getModifedTTL(null);
-        spec.productionTime = spec.getModifedProductionTime(null);
-        spec.swarmCost = spec.getModifiedCost(null);
-        //spec.getModifed
-        //I want ttl, swarmCost, and productiontime.
-        panel.addPara("Simulacrum Fighter Wing stats for fleet: ",5);
-        panel.addPara("Time to live: %s",5,Misc.getTextColor(), Misc.getHighlightColor(),""+(int)spec.ttl);
-        panel.addPara("Production time: %s",5,Misc.getTextColor(), Misc.getHighlightColor(),""+(int)spec.productionTime);
-        panel.addPara("Reclaim cost: %s",5,Misc.getTextColor(), Misc.getHighlightColor(),""+(int)spec.swarmCost);
-        panel.addPara("NOTE: This does not incude conditional bonuses, like the 'Centralized Production' skill",5,Misc.getNegativeHighlightColor());
-
     }
 
 }

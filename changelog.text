@@ -8,7 +8,7 @@ V0.0.8:
         'Mass Manufacturing' -> 'Scrapwork Microforge' (regenerate ammo for limit ammo weapons at a reclaim cost)
         'Longevity' -> 'Thorough Salvaging' (bonus salvage and supplies for reclaim)
         'Advanced Installation' -> 'Scrapy Fortification' (95% damage resistance well considerable damage.)
-        'Quality Checks' -> ''
+        'Quality Checks' -> '' (please note I am doing this one after skill 6.)
         'Prepared Deployment' -> ''
         'Centralized Logistics' -> ''
         'Desperate Measures' -> ''

@@ -1,8 +1,12 @@
 package Abyssal_XO.data.scripts.threat.skills;
 
 import Abyssal_XO.data.scripts.Settings;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_SkillBase;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.CharacterDataAPI;
 import com.fs.starfarer.api.campaign.FactionAPI;
+import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
@@ -10,120 +14,69 @@ import org.apache.log4j.Logger;
 import second_in_command.SCData;
 
 public class NanoThief_6 extends Nano_Thief_Skill_Base {
-    private static Logger log = Global.getLogger(NanoThief_6.class);
-    private static final String key = "AbyssalXO_Nano_Thief_Skill_6";
-    private static final float fabCostMod = 0.7f;
-    private static final float fabSpeedMod = 0.8f;
-    private static final float fabSpeedPer1000Mod = 0.95f;
-    private static final float fabControlMod = 0.8f;
-    private static final float centralFabReclaimMultiHullmod = 0.9f;
+    public static final float dpPerFighters = 10;
+    public static final int MINRANGEOFWING = 2000;
 
-    private static final float fabHullMod = 0.1f;
-    private static final float fabArmorMod = 0.1f;
-    private static final float fabShieldMod = 0.9f;
-
-    private static final float fabTTLMod = 1.2f;
+    public static final int BASESWARM_COST = 175;
+    public static final int BASESWARM_BUILDTIME = 10;
+    public static final int BASESWARM_TTL = 120;//swrams get exstea base TTL because they already die from shoting wepons.
 
 
-    private static final float costMod = 1.5f;
-    private static final float speedMod = 1.25f;
-    private static final float tTlMod = 0.8f;
-
-    private static final float hullMod = 0.9f;
-    private static final float armorMod = 0.9f;
-    private static final float shieldMod = 0.1f;
-    private static final float damageMod = 0.95f;
+    public static final int ReclaimPerControl_BASE = 1000;
+    public static final float CustomSwarm_COST_BASE = 20;//swarms cost 100 at 10 op, 200 at 20, 300 at 30.
+    public static final float CustomSwarm_COST_PEROP = 10;//swarms cost 100 at 10 op, 200 at 20, 300 at 30.
+    public static final float CustomSwarm_BUILDTIME_PREREFIT = 1f;//swarms nerfed to build at normal 100% refit rate.
+    public static final float CustomSwarm_RefundPercent = 0.5f;
+    public static final float CustomSwarm_RefundPercent_Bomber = 0.3f;
+    public static final int CustomSwarm_TTL = 60;//swrams get exstea base TTL because they already die from shoting wepons.
+    public static final int CustomSwarm_Bomber_TTL = 30;
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
-        /*6) Centralized Logistics: when the first reclaim package is created, the largest, highest mass ship in your fleet is marked as the 'Central Fabricator'. Reclaim Packages will always attempt to move to the Central Fabricator, provided it exists.
-        for every 1000 Reclaim the Central Fabricator has:
-        produce Simulacrum Fighter Wings 10% faster.
-        Simulacrum Fighter Wings produced by the Central Fabricator:
-            Take 20% less time to build
-            for every 1000 recalim stored in the Central Fabricator, take 10% less time to build
-            cost 33% less.
-            cost 20% less control
-            gain 20% time to live
-            gain 5% max hp
-            shields take 5% less damage.
-        Simulacrum Fighter Wings produced by any ship that is NOT the Central Fabricator:
-            cost 50% more
-            take 25% more time to build
-            lose 20% max hp
-            shields take 20% more damage.
 
-            lose 20% time to live
-            lose 5% damage
-        After the Central Fabricator is assigned, it cannot be changed for the inter combat, even if it is destroyed or retreats.
-        gain the 'Central Fabricator' hullmod, allowing you to chose your Central Fabricator*/
-        /*tooltip.addPara("When the first reclaim package is created, the largest, highest mass ship in your fleet is marked as the Central Fabricator. Reclaim Packages will always attempt to move to the Central Fabricator, provided it exists. \nSwarms produced by the Central Fabricator have the following changes:",0f,Misc.getHighlightColor(), Misc.getHighlightColor());
+        String line3a = ""+(int)CustomSwarm_TTL;
+        String line3b = ""+(int)CustomSwarm_Bomber_TTL;
+        String line4a = ((int)(CustomSwarm_RefundPercent*100))+"%";
+        String line4b = ((int)(CustomSwarm_RefundPercent_Bomber*100))+"%";
 
-        int display = (int) ((1 - fabCostChange)*100);
-        tooltip.addPara("Take %s less time to build",0,Misc.getHighlightColor(),Misc.getHighlightColor(),buildmod);
-        tooltip.addPara("   -Reduce reclaim cost by %s",0f,Misc.getTextColor(), Misc.getHighlightColor(),display+"%");
-        tooltip.addPara("   -Gain %s quality",0f,Misc.getTextColor(), Misc.getHighlightColor(),fabQuality+"");
-        tooltip.addPara("   -Increases the number of swarms that can be deployed at once by %s",0f,Misc.getTextColor(), Misc.getHighlightColor(),fabControlStr);
-        display = (int) (((1/fabProductionSpeed)-1)*100);
-        tooltip.addPara("increases production speed by %s",0f,Misc.getTextColor(), Misc.getHighlightColor(),display+"%");
+        String line6a = ""+(int)dpPerFighters;
+        String line7a = ((int)(CustomSwarm_RefundPercent*100))+"%";
+        String line7b = ((int)(CustomSwarm_RefundPercent_Bomber*100))+"%";
+        String line9a = Settings.NANO_THIEF_ABILITY_NAME;
+        tooltip.addPara("Construct Simulacrum Fighter Wings to assist your fleet in combat.",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        tooltip.addPara("Simulacrum Fighter Wings act as normal fighter wings with the following modifications:",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        tooltip.addPara("Simulacrum Fighter Wings can only be active for %s seconds or %s seconds if a bomber",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line3a,line3b);
+        tooltip.addPara("Simulacrum Fighter Wings refund %s of there reclaim cost when returning to a firendly ship, or %s if a bomber",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line4a,line4b);
+        tooltip.addPara("Simulacrum Fighter Wings do not replace lost fighters in a wing.",0,Misc.getHighlightColor(),Misc.getHighlightColor());
 
+        tooltip.addPara("only one Simulacrum Fighter Wing can be active in your fleet for every %s Deployment Ponits you have active",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        tooltip.addPara("cost %s + %s per op of the fighter wing",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor());
+        tooltip.addPara("has a cooldown equal to the combined replacement rate of every fighter in the wing",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor());
 
-        tooltip.addPara("If the Central Fabricator is destroyed or retreats Reclaim Packages will attempt to move to the nearest capital ship, provided one exists. \nSwarms produced by the Capital Ships that are not the Central Fabricator have the following changes:",0f,Misc.getHighlightColor(), Misc.getHighlightColor());
-        //tooltip.addPara("   -Gain %s quality",0f,Misc.getTextColor(), Misc.getHighlightColor(),capitalQuality+"");*/
-        tooltip.addPara("When the first reclaim package is created, the largest, highest mass ship in your fleet is marked as the Central Fabricator. Reclaim Packages will always chose to be processed at the Central Fabricator, provided it exists.",0,Misc.getHighlightColor(),Misc.getHighlightColor());
-        tooltip.addPara("Simulacrum Fighter Wings produced by the Central Fabricator:",0,Misc.getHighlightColor(),Misc.getHighlightColor());
-        String cost = 100-((int)((fabCostMod)*100))+"%";
-        String control = 100-((int)((fabControlMod)*100))+"%";
-        String time = 100-((int)((fabSpeedMod)*100))+"%";
-        String per1000time = 100-((int)((fabSpeedPer1000Mod)*100))+"%";
-        String ttl = ((int)(fabTTLMod*100))-100+"%";
-        String hp = (int)(fabHullMod*100)+"%";
-        String armor = (int)(fabArmorMod*100)+"%";
-        String shields = 100-(int)((fabShieldMod*100))+"%";
+        tooltip.addPara("Simulacrum Fighter Wings build this way gain infinit engagment range",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        tooltip.addPara("gain the %s ability, that allows you to change your active Offincive Simulacrum Fighter Wing",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor());
 
-        tooltip.addPara("   -Cost %s less",0,Misc.getTextColor(),Misc.getHighlightColor(),cost);
-        tooltip.addPara("   -Use %s less control",0,Misc.getTextColor(),Misc.getHighlightColor(),control);
-        tooltip.addPara("   -Take %s less time to build",0,Misc.getTextColor(),Misc.getHighlightColor(),time);
-        tooltip.addPara("   -For every %s reclaim in the Central Fabricator, take an additional %s less time to build",0,Misc.getTextColor(),Misc.getHighlightColor(),"1000",per1000time);
-        tooltip.addPara("   -Gain %s time to live",0,Misc.getTextColor(),Misc.getHighlightColor(),ttl);
-        tooltip.addPara("   -Gain %s hull",0,Misc.getTextColor(),Misc.getHighlightColor(),hp);
-        tooltip.addPara("   -Gain %s armor rating",0,Misc.getTextColor(),Misc.getHighlightColor(),armor);
-        tooltip.addPara("   -Gain %s shield strength",0,Misc.getTextColor(),Misc.getHighlightColor(),shields);
-
-         cost = ((int)((costMod)*100))-100+"%";
-         time = ((int)((speedMod)*100))-100+"%";
-         ttl = 100-((int)(tTlMod*100))+"%";
-         hp = 100-((int)((hullMod)*100))+"%";
-         armor = 100-((int)((armorMod)*100))+"%";
-         shields = (int)((shieldMod*100))+"%";
-         String damage = 100-((int)((damageMod)*100))+"%";
-
-        tooltip.addPara("Simulacrum Fighter Wings produced by all other ships in your fleet:",0,Misc.getHighlightColor(),Misc.getHighlightColor());
-        tooltip.addPara("   -Cost %s more",0,Misc.getTextColor(),Misc.getNegativeHighlightColor(),cost);
-        tooltip.addPara("   -Take %s more time to build",0,Misc.getTextColor(),Misc.getNegativeHighlightColor(),time);
-        tooltip.addPara("   -Lose %s time to live",0,Misc.getTextColor(),Misc.getNegativeHighlightColor(),ttl);
-        tooltip.addPara("   -Lose %s hull",0,Misc.getTextColor(),Misc.getNegativeHighlightColor(),hp);
-        tooltip.addPara("   -Lose %s armor rating",0,Misc.getTextColor(),Misc.getNegativeHighlightColor(),armor);
-        tooltip.addPara("   -Lose %s shield strength",0,Misc.getTextColor(),Misc.getNegativeHighlightColor(),shields);
-        tooltip.addPara("   -Lose %s damage",0,Misc.getTextColor(),Misc.getNegativeHighlightColor(),damage);
-
-        tooltip.addPara("If the Central Fabracator is destroyed, disabled, or retreates, a new Central Fabractor will not be sellected untill the battle is over",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor());
-        tooltip.addPara("Gain the %s hullmod, allowing you to chose your Central Fabracator",0,Misc.getHighlightColor(),Misc.getHighlightColor(),"Central Fabricator");
 
         tooltip.addSpacer(10f);
 
-        LabelAPI label = tooltip.addPara("\"By having a single, centralized factory we can streamline important production tasks, dramatically improving output and quality and reducing cost. \nNow we just need to worry about the logistics\"", Misc.getTextColor(), 0f);
+        LabelAPI label = tooltip.addPara("\"fighter craft require a dedecated ship to lanch from. This is the teaching of the Domain, the Hegmony, Tri-Tech, and many others. But if you just give up on little things like 'reliability', 'armor', and 'Dedecated Nanoforges', you can lanch fighter craft of basicly anything, from small rocks to capital class ships. They would tell you its impossable. Deadly, even.\nI tell them to watch me.\"", Misc.getTextColor(), 0f);
         tooltip.addPara(" - unknown", Misc.getTextColor(), 0f);
 
         label.italicize();
 
     }
+
+    @Override
+    public NanoThief_SkillBase createListiner(NanoThief_ShipSkills skills, ShipAPI ship) {
+        return super.createListiner(skills, ship);
+    }
+
     @Override
     public void onActivation(SCData data) {
-        if (data.getCommander().equals(Global.getSector().getPlayerPerson())) {
-            FactionAPI faction = Global.getSector().getPlayerFaction();
-            if (!faction.getKnownHullMods().contains(Settings.HULLMOD_CENTRAL_FAB)) {
-                faction.addKnownHullMod(Settings.HULLMOD_CENTRAL_FAB);
-            }
+        if (data.getCommander().equals(Global.getSector().getPlayerPerson())){
+            CharacterDataAPI character = Global.getSector().getCharacterData();
+            if (character.getAbilities().contains(Settings.NANO_THIEF_ABILITY)) return;
+            character.addAbility(Settings.NANO_THIEF_ABILITY);/**/
         }
     }
 }

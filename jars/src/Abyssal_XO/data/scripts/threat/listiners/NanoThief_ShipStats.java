@@ -50,8 +50,8 @@ public class NanoThief_ShipStats implements AdvanceableListener {
             isCentralFabricate = true;
         }
         this.rpc = 0;
-        this.cost = stats.getSwarmCost();
-        this.creationTime = stats.getProductionTime();
+        this.cost = 0;//stats.getSwarmCost();
+        this.creationTime = 0;//stats.getProductionTime();
         this.maxStorge = 0;
     }
     public void addReclaim(float amount){
@@ -134,7 +134,7 @@ public class NanoThief_ShipStats implements AdvanceableListener {
         swarms.add(wingLeader);
     }
     private void processReclaimCore(){
-        ShipAPI ship = stats.createCombatSwarmCore(this);
+        //ShipAPI ship = stats.createCombatSwarmCore(this);
         reclaimCores.add(ship);
         //swarms.add(ship.getLaunchBaysCopy().get(0).getWing().getLeader());
     }
