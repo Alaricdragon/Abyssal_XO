@@ -15,6 +15,7 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.fleet.FleetMemberType;
+import com.fs.starfarer.api.impl.campaign.ids.Stats;
 import com.fs.starfarer.api.impl.combat.threat.FragmentSwarmHullmod;
 import com.fs.starfarer.api.impl.combat.threat.RoilingSwarmEffect;
 import com.fs.starfarer.api.impl.combat.threat.SwarmLauncherEffect;
@@ -22,6 +23,7 @@ import com.fs.starfarer.api.loading.FighterWingSpecAPI;
 import com.fs.starfarer.api.loading.VariantSource;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
+import com.fs.starfarer.util.DynamicStats;
 import lombok.Getter;
 import org.apache.log4j.Logger;
 import org.lwjgl.util.vector.Vector2f;
@@ -77,6 +79,7 @@ public class Nano_Thief_Stats {
     private ArrayList<ShipAPI> OffinciveFighterCores = new ArrayList<>();//might not be needed we will see.
     public static void setPlayerExstraReclaimIfRequired(){
         if (playerStats == null) return;
+        playerStats.makeSureSavedShipsAreAlive();
         playerExstraReclaim = 0;
         for (String a : playerStats.availableShips.keySet()){
             ShipAPI ship = playerStats.availableShips.get(a);
@@ -110,7 +113,7 @@ public class Nano_Thief_Stats {
 
             //SQ_muti *= b.qualityMulti;
             //SQ_add += b.qualityAdd;
-            if (b.getId().equals("SiC_NanoThief_skill_6")){
+            if (b.getId().equals("SiC_NanoThief_skill_7")){
                 closest = false;
             }
         }
@@ -400,7 +403,13 @@ public class Nano_Thief_Stats {
         return fighter;
     }
 
-    public void modifySingleFighter(ShipAPI fighter,ShipAPI frabacator){
+    public static void modifySingleFighter(ShipAPI fighter,ShipAPI frabacator){
+        fighter.getMutableStats().getMinCrewMod().modifyMult("Abyssal_XO",0);
+        if (fighter.getWing().getSpec().getId().equals(Settings.NANO_THIEF_BASEWING)) {
+            modifiyBaseShip(fighter);
+        }
+    }
+    /*public void modifySingleFighter(ShipAPI fighter,ShipAPI frabacator){
         if (fighter.getWing().getSpec().getId().equals(Settings.NANO_THIEF_BASEWING)){
             modifiyBaseShip(fighter);
         }else{
@@ -408,14 +417,9 @@ public class Nano_Thief_Stats {
         }
         float ttl = getModifedTTL(fighter);
         fighter.getMutableStats().getMinCrewMod().modifyMult("Abyssal_XO",0);
-        //log.info("changing swarm stats for a single fighter...");
-
-        /*for (Nano_Thief_Skill_Base b : skills) {
-            b.changeCombatSwarmStats(fighter,frabacator,this);
-        }*/
         MagicSubsystemsManager.addSubsystemToShip(fighter, new DamageOverTime_System(fighter, ttl, OF_range));
-    }
-    public void modifiyBaseShip(ShipAPI fighter){
+    }*/
+    public static void modifiyBaseShip(ShipAPI fighter){
         fighter.setDoNotRender(true);
         fighter.setExplosionScale(0f);
         fighter.setHulkChanceOverride(0f);
@@ -424,12 +428,28 @@ public class Nano_Thief_Stats {
         RoilingSwarmEffect swarm = FragmentSwarmHullmod.createSwarmFor(fighter);
 
     }
-
+    public void makeSureSavedShipsAreAlive(){
+        ArrayList<String> remove = new ArrayList<>();
+        for (String a : this.availableShips.keySet()){
+            ShipAPI b = availableShips.get(a);
+            if (!b.isAlive() || b.isHulk()) remove.add(a);
+        }
+        for (String a : remove){
+            this.availableShips.remove(a);
+        }
+    }
     public int getDeployedPonits(){
+        makeSureSavedShipsAreAlive();
         int output = 0;
         for (String a : this.availableShips.keySet()){
-            output += availableShips.get(a).getDeployCost();
+            output += availableShips.get(a).getMutableStats().getSuppliesToRecover().getModifiedInt();
+            //qoutput += availableShips.get(a).getDeployCost();
+            //availableShips.get(a).getMutableStats().
+            //availableShips.get(a).getMutableStats().getDynamic().getMod(Stats.DEPLOYMENT_POINTS_MOD).computeEffective();
+            //availableShips.get(a).getMutableStats();
+            //log.info("checking ship of: "+availableShips.get(a).getName());
         }
+        //log.info("got total deployed ponits as: "+output);
         return output;
     }
     private static void getBaseStatsForFighter(FighterWingSpecAPI a,Nano_Thief_Stats spec,boolean offincive){

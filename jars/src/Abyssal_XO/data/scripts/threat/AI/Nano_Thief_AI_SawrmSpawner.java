@@ -1,15 +1,15 @@
 package Abyssal_XO.data.scripts.threat.AI;
 
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
-import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
 import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
-import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_6;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
+import com.fs.starfarer.api.impl.campaign.ids.Stats;
 import org.apache.log4j.Logger;
 import org.lazywizard.lazylib.VectorUtils;
 
 public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
+    private static final String idOfModifiers = "AbyssalXO_NanoThief_FighterMods";
     private ShipAPI ship;
     private ShipAPI motherShip;
     private Nano_Thief_Stats stats;
@@ -35,6 +35,8 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
         this.stats = stats;
         this.wing = wing;
         engine = Global.getCombatEngine();
+        stage0();
+        //ship.getMutableStats().fighter
         /*/
         log.info("preparing sawrm spawner for a single wing:");
         log.info("  stats:");
@@ -85,29 +87,63 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
         //float speed = Global.
         engine.headInDirectionWithoutTurning(ship,angle,motherShip.getMaxSpeed());
         time+=amount;
+        logFighterStatus();
+        if (stage == 0) stage0();
         if (time >= interval){
             time = 0;
             switch (stage){
-                case 0:
-                    stage0();
-                    break;
+                //case 0:
+                //    stage0();
                 case 1:
-                    stage1(amount);
+                    stage1();
                     break;
                 case 2:
-                    stage2();
+                    stage2(amount);
                     break;
                 case 3:
-                    stage2();
+                    stage3();
+                    break;
+                case 4:
+                    stage4();
                     break;
             }
         }
         if (stage != 0 && ship.getLaunchBaysCopy().get(0).getNumLost() >= stats.OF_wingSize){
-            stage2();
+            stage3();
             //despawn core when all ships are dead =(
         }
     }
+    private void logFighterStatus(){
+        log.info("getting swarms stats...");
+        FighterLaunchBayAPI bay = ship.getLaunchBaysCopy().get(0);
+        log.info("  fast replacements:"+bay.getFastReplacements());
+        log.info("  cur rate:"+bay.getCurrRate());
+        log.info("  time to replace:"+bay.getTimeUntilNextReplacement());
+        //ship.getMutableStats().getDynamic().getStat(Stats.REPLACEMENT_RATE_DECREASE_MULT).modifyMult(idOfModifiers, 0);
+        //ship.getMutableStats().getDynamic().getStat(Stats.REPLACEMENT_RATE_INCREASE_MULT).modifyMult(idOfModifiers, 0);
+    }
     private void stage0(){
+        if (ship.getLaunchBaysCopy().get(0) == null || ship.getLaunchBaysCopy().get(0).getWing() == null) return;
+        FighterLaunchBayAPI bay = ship.getLaunchBaysCopy().get(0);
+        for (int a = 0; a < bay.getWing().getWingMembers().size(); a++){
+            bay.getWing().getWingMembers().remove(a);
+        }
+        for (ShipAPI a : ship.getLaunchBaysCopy().get(0).getWing().getWingMembers()){
+            engine.removeEntity(a);
+        }
+
+
+        //bay.setExtraDuration(30);
+
+
+
+        /*ship.getLaunchBaysCopy().get(0).setFastReplacements(0);
+        ship.getLaunchBaysCopy().get(0).setCurrRate(0f);
+        ship.getMutableStats().getDynamic().getStat(Stats.REPLACEMENT_RATE_DECREASE_MULT).modifyMult(idOfModifiers, 0);
+        ship.getMutableStats().getDynamic().getStat(Stats.REPLACEMENT_RATE_INCREASE_MULT).modifyMult(idOfModifiers, 0);
+        ship.getMutableStats().getDynamic().getStat(Stats.FIGHTER_REARM_TIME_EXTRA_FLAT_MOD).modifyFlat(idOfModifiers,10000000);*/
+    }
+    private void stage1(){
         if (/*!ship.equals(stats.getReclaimCore()) && */ship.getLaunchBaysCopy().get(0).getWing() != null && (ship.getLaunchBaysCopy().get(0).getWing().getWingMembers().size()+ship.getLaunchBaysCopy().get(0).getNumLost() >= stats.OF_wingSize)){
                 /*
                 so this... is interesting.
@@ -154,18 +190,18 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
         //spwan ships
     }
     float timeAlive = 0;
-    private void stage1(float amount){
+    private void stage2(float amount){
         timeAlive += amount;
         if (timeAlive >= stats.OF_ttl){
             stage = 2;
         }
         //keep attacking and relocating
     }
-    public void stage2(){
+    public void stage3(){
         //return to carrier.
         //afterwords, set stage to 3.
     }
-    private void stage3(){
+    private void stage4(){
         stats.getOffinciveFighterCores().remove(ship);
         Global.getCombatEngine().removeEntity(ship);
     }

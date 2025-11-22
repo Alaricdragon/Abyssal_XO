@@ -1,7 +1,7 @@
 package Abyssal_XO.data.scripts.threat.dialogPlugin;
 
 import Abyssal_XO.data.scripts.Settings;
-import Abyssal_XO.data.scripts.threat_old.Nano_Thief_Stats;
+import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CargoAPI;
 import com.fs.starfarer.api.campaign.CargoPickerListener;
@@ -152,7 +152,7 @@ public class Nano_Thief_Selection_CargoListiner implements CargoPickerListener {
         panel.addPara("",5);
         panel.addPara(fighterSpec.getWingName(),5);
         panel.addImage(sprite,5);
-        Nano_Thief_Stats.displayStatsForFighterWithoutModification(panel,fighterSpec);
+        Nano_Thief_Stats.displayStatsForFighterWithoutModification(panel,fighterSpec,true);
         //panel.addImage("very good stats.",5);
     }
     private void setNewFighter(CargoAPI cargo,CargoStackAPI pickedUp,String newFTemp,String oldFTemp){

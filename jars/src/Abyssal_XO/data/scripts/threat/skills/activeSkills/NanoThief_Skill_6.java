@@ -90,17 +90,24 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         panel.addPara("Reclaim cost: %s",5,Misc.getTextColor(), Misc.getHighlightColor(),""+(int)spec.OF_swarmCost);
         panel.addPara("Reclaim gained when a fighter docks: %s",5,Misc.getTextColor(), Misc.getHighlightColor(),""+(int)spec.OF_recyclePerFighter);
     }
-    private float cooldown = 0;
+    private float cooldown = 1;
     private boolean onCooldown = false;
+    private int maxFighters = 0;
     @Override
     public void advance(float amount) {
         //note: NanoThief_ShipStats handles both the spawning and despawinging of swarm cores. This will require change.
         cooldown -= amount;
         if (cooldown > 0) return;
-        if (skills.getTotalReclaim() < skills.stats.OF_swarmCost || currentFighters() >= maxFighters()){
+        maxFighters = getMaxFighters();
+        if (skills.getTotalReclaim() < skills.stats.OF_swarmCost || currentFighters() >= maxFighters){
+            //if (skills.stats.getReadSavedDP() <= 0) skills.stats.getDeployedPonits();
             cooldown = 1;//skills.stats.OF_productionTime;
             onCooldown = false;
             return;
+        }
+        if (!onCooldown){
+            onCooldown = true;
+            cooldown = skills.stats.OF_productionTime;
         }
         //create a combat swarm
         onCooldown = true;
@@ -116,7 +123,8 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
 
     @Override
     public void displayStats() {
-        int max = maxFighters();
+        maxFighters = getMaxFighters();
+        int max = maxFighters;
         int cur = currentFighters();
         if (max <= cur) {
             Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_6", "graphics/icons/hullsys/temporal_shell.png",
@@ -129,14 +137,14 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
                         "Offencive Fighter Construction Status", cur+" / "+max+", cannot create fighter in phase", true);
             }
             Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_6", "graphics/icons/hullsys/temporal_shell.png",
-                    "Offencive Fighter Construction Status", cur+" / "+max+", "+(int)((skills.stats.OF_productionTime-cooldown) / skills.stats.OF_productionTime)+"% completed new wing...", false);
+                    "Offencive Fighter Construction Status", cur+" / "+max+", "+(int)(((skills.stats.OF_productionTime-cooldown) / skills.stats.OF_productionTime)*100)+"% completed new wing...", false);
             return;
         }
         Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_6", "graphics/icons/hullsys/temporal_shell.png",
                 "Offencive Fighter Construction Status", cur+" / "+max+", cannot build wing do to limited reclaim", true);
     }
-    private int maxFighters(){
-        return  (int) (skills.stats.getDeployedPonits() / NanoThief_6.dpPerFighters);
+    private int getMaxFighters(){
+        return (int)Math.floor((skills.stats.getDeployedPonits() / NanoThief_6.dpPerFighters)+0.5);
     }
     private int currentFighters(){
         return skills.stats.getOffinciveFighterCores().size();// + skills.stats.getOffinciveFighterWings().size();
@@ -144,6 +152,7 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
 
 
     public ShipAPI createCombatSwarmCore(){//ShipAPI primary){
+        skills.stats.getDeployedPonits();
         ShipAPI primary = ship;//stats.getShip();
         String wingId = skills.stats.OF_fighterToBuild;//Settings.NANO_THIEF_BASEWING;//SwarmLauncherEffect.RECLAMATION_SWARM_WING;//"attack_swarm_wing"
         CombatEngineAPI engine = Global.getCombatEngine();

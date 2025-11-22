@@ -3,6 +3,7 @@ package Abyssal_XO.data.scripts.threat.skills;
 import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_SkillBase;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_6;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CharacterDataAPI;
 import com.fs.starfarer.api.campaign.FactionAPI;
@@ -39,8 +40,8 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
         String line4b = ((int)(CustomSwarm_RefundPercent_Bomber*100))+"%";
 
         String line6a = ""+(int)dpPerFighters;
-        String line7a = ((int)(CustomSwarm_RefundPercent*100))+"%";
-        String line7b = ((int)(CustomSwarm_RefundPercent_Bomber*100))+"%";
+        String line7a = ((int)(CustomSwarm_COST_BASE))+"";
+        String line7b = ((int)(CustomSwarm_COST_PEROP))+"";
         String line9a = Settings.NANO_THIEF_ABILITY_NAME;
         tooltip.addPara("Construct Simulacrum Fighter Wings to assist your fleet in combat.",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         tooltip.addPara("Simulacrum Fighter Wings act as normal fighter wings with the following modifications:",0,Misc.getHighlightColor(),Misc.getHighlightColor());
@@ -48,12 +49,12 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
         tooltip.addPara("Simulacrum Fighter Wings refund %s of there reclaim cost when returning to a firendly ship, or %s if a bomber",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line4a,line4b);
         tooltip.addPara("Simulacrum Fighter Wings do not replace lost fighters in a wing.",0,Misc.getHighlightColor(),Misc.getHighlightColor());
 
-        tooltip.addPara("only one Simulacrum Fighter Wing can be active in your fleet for every %s Deployment Ponits you have active",0,Misc.getHighlightColor(),Misc.getHighlightColor());
-        tooltip.addPara("cost %s + %s per op of the fighter wing",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor());
+        tooltip.addPara("only one Simulacrum Fighter Wing can be active in your fleet for every %s Deployment Ponits you have active",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line6a);
+        tooltip.addPara("cost %s + %s per op of the fighter wing",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor(),line7a,line7b);
         tooltip.addPara("has a cooldown equal to the combined replacement rate of every fighter in the wing",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor());
 
         tooltip.addPara("Simulacrum Fighter Wings build this way gain infinit engagment range",0,Misc.getHighlightColor(),Misc.getHighlightColor());
-        tooltip.addPara("gain the %s ability, that allows you to change your active Offincive Simulacrum Fighter Wing",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        tooltip.addPara("gain the %s ability, that allows you to change your active Offincive Simulacrum Fighter Wing",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line9a);
         tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor());
 
 
@@ -68,7 +69,7 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
 
     @Override
     public NanoThief_SkillBase createListiner(NanoThief_ShipSkills skills, ShipAPI ship) {
-        return super.createListiner(skills, ship);
+        return new NanoThief_Skill_6(skills, ship);
     }
 
     @Override
