@@ -22,6 +22,7 @@ public class ReclaimCore extends BaseHullMod {
     public void applyEffectsToFighterSpawnedByShip(ShipAPI fighter, ShipAPI ship, String id) {
         if (!ship.getCustomData().containsKey(IDOfData)) return;
         Nano_Thief_Stats.modifySingleFighter(fighter,ship);
+        fighter.getMutableStats().getMinCrewMod().modifyMult("Abyssal_XO",0);
         //NanoThief_ShipStats stats = (NanoThief_ShipStats) ship.getCustomData().get(IDOfData);
         //stats.getStats().modifySingleFighter(fighter,stats.getShip());
         //todo: I can listin here for when a fighter is launched, allowing for defensive cores to only use reclaim when a fighter is created.

@@ -90,7 +90,7 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         panel.addPara("Reclaim cost: %s",5,Misc.getTextColor(), Misc.getHighlightColor(),""+(int)spec.OF_swarmCost);
         panel.addPara("Reclaim gained when a fighter docks: %s",5,Misc.getTextColor(), Misc.getHighlightColor(),""+(int)spec.OF_recyclePerFighter);
     }
-    private float cooldown = 1;
+    private float cooldown = 0;
     private boolean onCooldown = false;
     private int maxFighters = 0;
     @Override
@@ -108,6 +108,7 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         if (!onCooldown){
             onCooldown = true;
             cooldown = skills.stats.OF_productionTime;
+            return;
         }
         //create a combat swarm
         onCooldown = true;
@@ -132,6 +133,10 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
             return;
         }
         if (skills.getTotalReclaim() >= skills.stats.OF_swarmCost){
+            if (!onCooldown){
+                onCooldown = true;
+                cooldown = skills.stats.OF_productionTime;
+            }
             if (cooldown <= 0 && ship.isPhased()){
                 Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_6", "graphics/icons/hullsys/temporal_shell.png",
                         "Offencive Fighter Construction Status", cur+" / "+max+", cannot create fighter in phase", true);
@@ -174,7 +179,7 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         //OVERWRITER.setWingId(0,Settings.NANO_THIEF_BASEWING);//'broadsword_wing' from settings causes strange fragment swarm to spawn??? WTF?
         //OVERWRITER.setWingId(0,Settings.NANO_THIEF_PALYER_BASEWING);//'broadsword_wing' from settings causes strange fragment swarm to spawn??? WTF?
         OVERWRITER.setWingId(0,skills.stats.OF_fighterToBuild);
-        OVERWRITER.getWing(0).addTag("independent_of_carrier");
+        //OVERWRITER.getWing(0).addTag("independent_of_carrier");
         //OVERWRITER.getWing(0).addTag("auto_fighter");
         //OVERWRITER.setWingId(1,stats.getFighterToBuild());
         //OVERWRITER.setWingId(2,stats.getFighterToBuild());
@@ -192,7 +197,7 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         //log.info("temp thing: "+fighter.getWing().getSpec());//no wing...? //maybe wing only exsists a short time after creation?
         //log.info("temp thing 2:"+fighter.getLaunchBaysCopy().get(0).getTimeUntilNextReplacement());
         //log.info("got the true ID of the wing as: "+fighter.getLaunchBaysCopy().get(0).getWing().getSpec().getId());
-        fighter.setShipAI(new Nano_Thief_AI_SawrmSpawner(fighter,primary,skills.stats.OF_fighterToBuild,skills.stats));
+        fighter.setShipAI(new Nano_Thief_AI_SawrmSpawner(fighter,primary,skills.stats.OF_fighterToBuild,skills.stats,true));
         //note: this is usefull for making the guys follow your primary ship. not yet compleated.
         /*if (stats.getReclaimCore() == null){
             ShipAPI core = manager.spawnShipOrWing("Abyssal_XO_ReclaimCore_Blank",loc, facing, 0f,null);

@@ -6,6 +6,81 @@ public class ShruoudDrweeler_Attribute {
     /*I am redoing this again.
     * I feel like the current implementation of this skill try focuses to mush on ships. I want to focus on 'environmental' skills instead.
     *
+    *
+    * recalculation:
+    *   The idea behind this is weather macanics, but what if I changed it to the idea of fighting sone type of eldritch monster?
+    *   so every skill would evolve some type of 'rift' opining to lanch 'attacks'.
+    *   notes:
+    *       'rifts' would need to be fighters (so they can go over top of other craft without being destroyed)
+    *               also so they can be destroyed, canciling the effect
+    *   examples:
+    *
+    *   1) scratch:
+    *       every ? seconds, X rifts form in a line, facing a enemy. after 3 seconds, from each rift a single attack emerges doing 500 damage each.
+    *       -notes:
+    *           the rifts would be formed in a line, facing the same target. the rifts would maintain possition no matter what.
+    *           the attack would be like a dragon fire. once fired, the rifts would stop moving.
+    *           the rifts would face the target from a random orintation.
+    *
+    *   2) 'effect example'
+    *       every ? seconds ! rift forms 500 - 1000 su away from a enamy. from the rift 5 projectiles emerg.
+    *       if the projectile hits, apply the X effect
+    *       -projectiles would act like hungering rifts.
+    *
+    *   2.1) 'amplified entropy'
+    *   2.2) 'slowdown'
+    *   2.3) 2X energy and bilistic wepon damage. 2X fighter damage (including missiles.)
+    *
+    *   3) 'shield'
+    *       every ? seconds, form a shield that observes 1000/2000/4000/8000 damage around a friendly ship.
+    *       the shield only lasts 15 seconds at most.
+    *       cooldown multiplied by 1/2/4/8 depending on ship size.
+    *       cannot target the same ship withen 5 seconds.
+    *
+    *   4) lesser manifestation
+    *       every ? seconds, a rift manifests 1 wing of 'thread' fighters.
+    *           -thread fighters rapidly decay, only living for 15 seconds at most.
+    *           -thread fighters are armed with the small wepon
+    *           -wing size: X (entropy increases size up to 6)
+    *           -very low HP
+    *
+    *   5) 'Breathe'
+    *       for 20 seconds, slowly increase the recharge rate and effect of all 'Controlled Incursion' ability's by up to 100%.
+    *       for 20 seconds afterwords, slowly reduce the recharge rate and effect of all 'Controlled Incursion' ability's to 0%.
+    *       repeats endlessly.
+    *
+    *   (+2 from 3 'type 2' skills)
+    *
+    *   7) 'smash'
+    *       every X seconds creates a rift.
+    *       from that rift energes a attack that rams the target, forcing the target to move.
+    *
+    *   8) 'rift dance'
+    *       every X seconds create a rift.
+    *       from that rift spawn X hungering rifts (but dont count to the number of hungering rifts in combat, like abbysal light wepons)
+    *       the rifts have infinit range.
+    *
+    *   9) abyssal care:
+    *       every 60 seconds, spend 10% of gatherd entropy to increase the timeflow of one ship by ??? X spend entropy.
+    *       lasts for 10 precised seconds, with a 1.5 seconds spin up and spin down time.
+    *       targets the ship that gathered the most entropy in the past 5 seconds.
+    *
+    *   10) manifestation
+    *
+    *       spend 25% gathered 'Entropy' spawn some cool ass ship.
+    *       said cool ass ship keeps the 25% of the 'Entropy' spent for itself, and its ability's.
+    *       said cool ass ship keeps up to 25% of all newly gathered 'Entropy' in reserve for itself.
+    *       said cool ass ship makes it so 25% of all abyssal abilitys are created around itself (10% at 1000 range, 10% at 2000 randge, 5% at 3000 range). (this calculation stacs. so 1000-0 would be 25%. 2000-1001 would be 15%. 3000-2001 would be 5%)
+    *       gains the following ability's: (depending on 'Entropy')
+    *       long range P-Teleporter
+    *       Applied energy
+    *       Lunge
+    *       Entropy Amplification
+    *       if killed, all 'Entropy' stored in reserve for itself is lost.
+    *       cannot have more then one 'Manifestation' active at a time.
+    *       cannot create a new 'Manifestation' until this one dies. must wait 60 seconds after this ones dies to activate again.
+    *
+    *
     * considerations:
     *   I want this to be like inviermental effects, in effect. The issue that comes with this is that it can feel a bit strange.
     *   a possibility: have the first skill chose out of 2 skills. one will provide one environmental effect, and the other will provide another.

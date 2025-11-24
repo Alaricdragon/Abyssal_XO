@@ -4,9 +4,13 @@ import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
-import com.fs.starfarer.api.impl.campaign.ids.Stats;
+import com.fs.starfarer.api.fleet.FleetMemberAPI;
+import com.fs.starfarer.api.fleet.FleetMemberType;
+import com.fs.starfarer.api.loading.VariantSource;
+import com.fs.starfarer.api.util.Misc;
 import org.apache.log4j.Logger;
 import org.lazywizard.lazylib.VectorUtils;
+import org.lwjgl.util.vector.Vector2f;
 
 public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
     private static final String idOfModifiers = "AbyssalXO_NanoThief_FighterMods";
@@ -15,7 +19,20 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
     private Nano_Thief_Stats stats;
     private String wing;
     private CombatEngineAPI engine;
-    public Nano_Thief_AI_SawrmSpawner(ShipAPI ship,ShipAPI motherShip, String wing, Nano_Thief_Stats stats){
+    private boolean isOffensive;
+    public Nano_Thief_AI_SawrmSpawner(ShipAPI ship,ShipAPI motherShip, String wing, Nano_Thief_Stats stats,boolean isOffensive){
+        /*todo:
+                so, here is the new idea:
+                1) spawn the fighters
+                    -fighter spawner will move to ship that created it at normal speed
+                2) once fighters spawned, create a new craft without a fighter bay (no replacements)
+                    -fighter holder will move to the ship its targeting at distance speed (instant teleportation)
+                    -will retarget target every 10 seconds, or when it orders fighters to return.
+                3) the new craft will count to its timer, then order the fighters to return with bay.getWing().orderReturn(bay.getWing().getWingMembers().get(a));.
+                4) the new craft will despawn, and leave the list when it runs out of fighters to command.
+
+        */
+
         /*todo: 5 requirements here
                 1) make it so this only spawns one wings of swarms, and no more. NONE. ever. I don't fucking care no no no!.
                     -in theory, this can be done by copying reserve deployments effects.
@@ -34,8 +51,9 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
         this.motherShip = motherShip;
         this.stats = stats;
         this.wing = wing;
+        this.isOffensive = isOffensive;
         engine = Global.getCombatEngine();
-        stage0();
+        //stage0();
         //ship.getMutableStats().fighter
         /*/
         log.info("preparing sawrm spawner for a single wing:");
@@ -82,36 +100,38 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
     int stage = 0;
     @Override
     public void advance(float amount) {
+        log.info("runing advance for fighter spwaner...");
         //ship.set
-        float angle = VectorUtils.getAngle(ship.getLocation(),motherShip.getLocation());
         //float speed = Global.
-        engine.headInDirectionWithoutTurning(ship,angle,motherShip.getMaxSpeed());
+        move();
         time+=amount;
-        logFighterStatus();
-        if (stage == 0) stage0();
+        //logFighterStatus();
+        //if (stage == 0) stage0();
         if (time >= interval){
             time = 0;
             switch (stage){
-                //case 0:
-                //    stage0();
+                case 0:
+                    log.info("  runing stage 1...");
+                    stage0();
+                    break;
                 case 1:
+                    log.info("  runing stage 2...");
                     stage1();
-                    break;
-                case 2:
-                    stage2(amount);
-                    break;
-                case 3:
-                    stage3();
-                    break;
-                case 4:
-                    stage4();
                     break;
             }
         }
         if (stage != 0 && ship.getLaunchBaysCopy().get(0).getNumLost() >= stats.OF_wingSize){
-            stage3();
+            //stage3();
             //despawn core when all ships are dead =(
         }
+        log.info("  compleat fighter spawner");
+    }
+    private void move(){
+        //float angle = VectorUtils.getAngle(ship.getLocation(),motherShip.getLocation());
+        //engine.headInDirectionWithoutTurning(ship,angle,motherShip.getMaxSpeed());
+        Vector2f loc = motherShip.getLocation();
+        if (loc == null) loc = ship.getLocation();
+        ship.getLocation().set(loc);
     }
     private void logFighterStatus(){
         log.info("getting swarms stats...");
@@ -123,10 +143,24 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
         //ship.getMutableStats().getDynamic().getStat(Stats.REPLACEMENT_RATE_INCREASE_MULT).modifyMult(idOfModifiers, 0);
     }
     private void stage0(){
+        FighterLaunchBayAPI bay = ship.getLaunchBaysCopy().get(0);
+        if (bay == null || bay.getWing() == null) return;
+        int count = bay.getNumLost();
+        count+=bay.getWing().getWingMembers().size();
+
+        if (count >= stats.OF_wingSize){
+            //log.info("got total number of fighters as "+count+". moving to stage 1.");
+        //if (count >= bay.getWing().getSpec().getNumFighters()){
+            stage = 1;
+        }
+    }
+    private void stage0_old(){
         if (ship.getLaunchBaysCopy().get(0) == null || ship.getLaunchBaysCopy().get(0).getWing() == null) return;
         FighterLaunchBayAPI bay = ship.getLaunchBaysCopy().get(0);
         for (int a = 0; a < bay.getWing().getWingMembers().size(); a++){
             bay.getWing().getWingMembers().remove(a);
+            bay.getWing().orderReturn(bay.getWing().getWingMembers().get(a));
+            //bay.getWing().getWingMembers().get(a).getAIFlags().hasFlag();
         }
         for (ShipAPI a : ship.getLaunchBaysCopy().get(0).getWing().getWingMembers()){
             engine.removeEntity(a);
@@ -144,54 +178,84 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
         ship.getMutableStats().getDynamic().getStat(Stats.FIGHTER_REARM_TIME_EXTRA_FLAT_MOD).modifyFlat(idOfModifiers,10000000);*/
     }
     private void stage1(){
-        if (/*!ship.equals(stats.getReclaimCore()) && */ship.getLaunchBaysCopy().get(0).getWing() != null && (ship.getLaunchBaysCopy().get(0).getWing().getWingMembers().size()+ship.getLaunchBaysCopy().get(0).getNumLost() >= stats.OF_wingSize)){
-                /*
-                so this... is interesting.
-                it would seam that the wing cannot be spawned from a hostile force. wether that is all hostile forces, or just this one is unclear.
-                I will do the following tests tomorrow:
-                1: test and see if this works with other hostile forces (force this atrubute to be used by everyone.)
-                    -if so, ask alex if there is something preventing fighter spawns in hostile forces.
-                    -if not, ask alex if I am suppose to use a diffrent way to handle this.
-                2: test and run the 'wing does not exist' text with a timer for how long that wing is going to take to spawn.
-                    ship.getLaunchBaysCopy().get(0).getTimeUntilNextReplacement();
-                    ship.getLaunchBaysCopy().get(0).getFastReplacements();
-                    ship.getLaunchBaysCopy().get(0).getExtraDeploymentLimit();
-                    ship.getLaunchBaysCopy().get(0).getExtraDeployments();
+        log.info("started stage one...");
+        ShipAPI primary = ship;//stats.getShip();
+        CombatEngineAPI engine = Global.getCombatEngine();
+        //CombatFleetManagerAPI manager = engine.getFleetManager(FleetSide.ENEMY);//engine.getFleetManager(primary.getOwner());
+        CombatFleetManagerAPI manager = engine.getFleetManager(primary.getOwner());
+        manager.setSuppressDeploymentMessages(true);
+
+        Vector2f loc = primary.getLocation();
+        float facing = (float) Math.random() * 360f;
+        //log.info("attempting to create a attack swarm at "+loc.x+", "+loc.y+" at ship of "+primary.getName()+" who's location is "+primary.getLocation().x+", "+primary.getLocation().y);
+        ShipAPI fighter = null;
+        //Global.getSettings().getVariant("");
 
 
-                once I have this issue fixed: make sure to replace the set wing back to swamers in the settings (and also give that a test)
-                also make sure to disable all the logs. it would cause combat lag.
+        FleetMemberAPI member = Global.getFactory().createFleetMember(FleetMemberType.SHIP,"Abyssal_XO_ReclaimCore_Blank");
+        //Global.getFactory().createFleetMember
+        ShipVariantAPI OVERWRITER = member.getVariant();//Global.getSettings().getVariant("Abyssal_XO_ReclaimCore_Blank").clone();
+        OVERWRITER.setSource(VariantSource.REFIT);
+        //OVERWRITER.setWingId(0,Settings.NANO_THIEF_BASEWING);//'broadsword_wing' from settings causes strange fragment swarm to spawn??? WTF?
+        //OVERWRITER.setWingId(0,Settings.NANO_THIEF_PALYER_BASEWING);//'broadsword_wing' from settings causes strange fragment swarm to spawn??? WTF?
+        OVERWRITER.setWingId(0,"abyssal_XO_wasp_wing");
+        //OVERWRITER.getWing(0).addTag("independent_of_carrier");
+        //OVERWRITER.getWing(0).addTag("auto_fighter");
+        //OVERWRITER.setWingId(1,stats.getFighterToBuild());
+        //OVERWRITER.setWingId(2,stats.getFighterToBuild());
+        member.setOwner(primary.getOwner());
+        member.setVariant(OVERWRITER,false,true);
 
-                tests compleated:
-                    1) I know its NOT limited to threat_old. all none player forces get this issue.
-                    2) I know its not limited to the baseWing. the base wing works for me, but not for hostiles.
-                    3) I know its not a additional stat being added to my things.
+        fighter = manager.spawnFleetMember(member,loc, facing, 0f);
+        //engine.ship
+        //fighter.setOwner(primary.getOwner());
+        //fighter = manager.spawnShipOrWing(member,loc,facing,0f);
 
-                    4) I know the refit rare is always 0 when it breaks (normaly it is 33ish)
-                    5) I know the 'Fast Replacements' is 0 when it breaks (normaly its at least one)
+        //if (!isAlly) fighter.setAlly(false);
+        //log.info("spawning spawner with a wing of: "+this.fighterToBuild);
+        //log.info("the fighters ID was given as: "+OVERWRITER.getWing(0).getId());
+        //log.info("temp thing: "+fighter.getWing().getSpec());//no wing...? //maybe wing only exsists a short time after creation?
+        //log.info("temp thing 2:"+fighter.getLaunchBaysCopy().get(0).getTimeUntilNextReplacement());
+        //log.info("got the true ID of the wing as: "+fighter.getLaunchBaysCopy().get(0).getWing().getSpec().getId());
+        //fighter.setShipAI(new Nano_Thief_AI_SawrmSpawner(fighter,primary,skills.stats.OF_fighterToBuild,skills.stats,true));
+        //note: this is usefull for making the guys follow your primary ship. not yet compleated.
+        /*if (stats.getReclaimCore() == null){
+            ShipAPI core = manager.spawnShipOrWing("Abyssal_XO_ReclaimCore_Blank",loc, facing, 0f,null);
+            core.setShipAI(new Nano_Thief_AI_ReclaimCoreBlank(core,primary));
+            //core.setAlphaMult(0);
+            stats.setReclaimCore(core);
+        }*/
+        //fighter.setCustomData(ReclaimCore.IDOfData,this);
 
-                    at this ponit, my only theory is that it has something to do with the command I am useing to spawn in the wing. I will need additional data.
-                    idea:
-                    try changing out the fleet spawning logic to use something like 'engine.getFleetManager(23).spawnShipOrWing("",null,0f,0f);'. maybe this will help? who knows!
-                 */
+        manager.removeDeployed(fighter,false);
 
-            //log.info("attempting to spawn a new wing of intended ID: "+wing);
-            //log.info("The wing ended up with a true ID of: "+ship.getLaunchBaysCopy().get(0).getWing().getSpec().getId());
-            FighterWingAPI wing = ship.getLaunchBaysCopy().get(0).getWing();
-            wing.setSourceShip(ship);
 
-            //wing.setSourceShip(stats.getReclaimCore());
-            //stats.addWingToList(wing.getLeader());
-            //stats.removeReclaimCore(ship);
 
-            stage = 1;
+        //fighter = manager.spawnShipOrWing(Settings.NANO_THIEF_CREATER_SHIP, loc, facing, 0f, null);
+        //fighter.getWing().setSourceShip(primary);//sets to ifself to prevent min ingagment rage from triggering. might remove if i build a custom AI for the ships.
+        manager.setSuppressDeploymentMessages(false);
+        Vector2f takeoffVel = Misc.getUnitVectorAtDegreeAngle(facing);
+        takeoffVel.scale(fighter.getMaxSpeed() * 1f);
+
+
+        if (isOffensive){
+            //OVERWRITER.setWingId(0,"abyssal_XO_wasp_wing");
+            log.info("creating offince xiholder...");
+            FighterLaunchBayAPI bay = ship.getLaunchBaysCopy().get(0);
+            fighter.setShipAI(new Nano_Thief_AI_OffienviveFighterHolder(fighter,motherShip,bay.getWing(),stats));
+            log.info("offince holder created...");
         }else{
+            FighterLaunchBayAPI bay = ship.getLaunchBaysCopy().get(0);
+            fighter.setShipAI(new Nano_Thief_AI_OffienviveFighterHolder(fighter,motherShip,bay.getWing(),stats));
         }
-        //spwan ships
+        stats.getOffinciveFighterCores().remove(ship);
+        engine.removeEntity(ship);
+        stats.getOffinciveFighterCores().add(fighter);
+        stage = 2;
     }
     float timeAlive = 0;
     private void stage2(float amount){
-        timeAlive += amount;
+        //timeAlive += amount;
         if (timeAlive >= stats.OF_ttl){
             stage = 2;
         }

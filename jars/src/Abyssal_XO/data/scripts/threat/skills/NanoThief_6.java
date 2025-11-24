@@ -29,8 +29,9 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
     public static final float CustomSwarm_BUILDTIME_PREREFIT = 1f;//swarms nerfed to build at normal 100% refit rate.
     public static final float CustomSwarm_RefundPercent = 0.5f;
     public static final float CustomSwarm_RefundPercent_Bomber = 0.3f;
-    public static final int CustomSwarm_TTL = 60;//swrams get exstea base TTL because they already die from shoting wepons.
-    public static final int CustomSwarm_Bomber_TTL = 30;
+    @Deprecated
+    public static final int CustomSwarm_TTL = 1;//swrams get exstea base TTL because they already die from shoting wepons.
+    public static final int CustomSwarm_Bomber_TTL = 1;
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
 
