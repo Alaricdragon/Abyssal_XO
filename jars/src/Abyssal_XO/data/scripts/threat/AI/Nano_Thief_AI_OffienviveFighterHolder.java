@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 import org.lwjgl.util.vector.Vector2f;
 
 import java.util.ArrayList;
-
+@Deprecated
 public class Nano_Thief_AI_OffienviveFighterHolder implements ShipAIPlugin {
     protected static Logger log = Global.getLogger(Nano_Thief_Skill_Base.class);
     private ShipAPI ship;
@@ -21,7 +21,9 @@ public class Nano_Thief_AI_OffienviveFighterHolder implements ShipAIPlugin {
     public Nano_Thief_AI_OffienviveFighterHolder(ShipAPI ship, ShipAPI motherShip, FighterWingAPI wing, Nano_Thief_Stats stats){
         /*todo: fuck this is hard.
         *  ok... ok...
-        *  the solution is simple: ask alex if there is a way to stop a ship from rebuilding fighters. if I can do that, I have all the tools to do anything.*/
+        *  the solution is simple: ask alex if there is a way to stop a ship from rebuilding fighters. if I can do that, I have all the tools to do anything.
+        *
+        * theory: in the hullmod, I can detect when a fighter is created. make it so that kills all newly created fighters at will.*/
         this.ship = ship;
         this.motherShip = motherShip;
         this.stats = stats;
@@ -63,7 +65,7 @@ public class Nano_Thief_AI_OffienviveFighterHolder implements ShipAIPlugin {
         if (returnFighters) returnShipsToCarrier();
         log.info("  getting timed items...");
         time+=amount;
-        if (time >= NanoThief_6.CustomSwarm_Bomber_TTL){
+        if (time >= NanoThief_6.CustomSwarm_TTL){
             log.info("      return fighters active");
             returnFighters = true;
             retarget();
@@ -132,8 +134,7 @@ public class Nano_Thief_AI_OffienviveFighterHolder implements ShipAIPlugin {
             apY /= wing.getWingMembers().size();
         }
         ShipAPI newTarget = null;
-        for (String a : stats.getAvailableShips().keySet()){
-            ShipAPI b = stats.getAvailableShips().get(a);
+        for (ShipAPI b : stats.getAvailableShips()){
             Vector2f loc = b.getLocation();
             float d = getDistance(apX,apY,loc);
             if (d < distance){

@@ -29,14 +29,14 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
     public static final float CustomSwarm_BUILDTIME_PREREFIT = 1f;//swarms nerfed to build at normal 100% refit rate.
     public static final float CustomSwarm_RefundPercent = 0.5f;
     public static final float CustomSwarm_RefundPercent_Bomber = 0.3f;
-    @Deprecated
-    public static final int CustomSwarm_TTL = 1;//swrams get exstea base TTL because they already die from shoting wepons.
-    public static final int CustomSwarm_Bomber_TTL = 1;
+    public static final int CustomSwarm_TTL = 15;//swrams get exstea base TTL because they already die from shoting wepons.
+    //@Deprecated
+    //public static final int CustomSwarm_Bomber_TTL = 1;
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
 
         String line3a = ""+(int)CustomSwarm_TTL;
-        String line3b = ""+(int)CustomSwarm_Bomber_TTL;
+        //String line3b = ""+(int)CustomSwarm_Bomber_TTL;
         String line4a = ((int)(CustomSwarm_RefundPercent*100))+"%";
         String line4b = ((int)(CustomSwarm_RefundPercent_Bomber*100))+"%";
 
@@ -46,7 +46,7 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
         String line9a = Settings.NANO_THIEF_ABILITY_NAME;
         tooltip.addPara("Construct Simulacrum Fighter Wings to assist your fleet in combat.",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         tooltip.addPara("Simulacrum Fighter Wings act as normal fighter wings with the following modifications:",0,Misc.getHighlightColor(),Misc.getHighlightColor());
-        tooltip.addPara("Simulacrum Fighter Wings can only be active for %s seconds or %s seconds if a bomber",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line3a,line3b);
+        tooltip.addPara("Simulacrum Fighter Wings can only be active for %s seconds before reutrning to the nearest fiendly ship",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line3a);
         tooltip.addPara("Simulacrum Fighter Wings refund %s of there reclaim cost when returning to a firendly ship, or %s if a bomber",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line4a,line4b);
         tooltip.addPara("Simulacrum Fighter Wings do not replace lost fighters in a wing.",0,Misc.getHighlightColor(),Misc.getHighlightColor());
 

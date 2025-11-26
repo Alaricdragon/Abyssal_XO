@@ -72,26 +72,22 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
     public static double getReclaimInShip(ShipAPI ship){
         if (friendlyCaptions.containsKey(ship.getFleetCommander().getId())){
             Nano_Thief_Stats stats = friendlyCaptions.get(ship.getFleetCommander().getId());
-            if (stats.getAvailableShips().get(ship.getId()) != null) return 0;
-            List<NanoThief_ShipSkills> list = ship.getListenerManager().getListeners(NanoThief_ShipSkills.class);
             double out = 0;
-            if (!list.isEmpty()){
-                NanoThief_ShipSkills trueList = (NanoThief_ShipSkills)list.get(0);
-                out += trueList.getReclaim();
-                out += trueList.getRefinedReclaim();
+            NanoThief_ShipSkills sSkills = stats.getSkills(ship);
+            if (sSkills != null){
+                out += sSkills.getReclaim();
+                out += sSkills.getRefinedReclaim();
             }
             stats.getAvailableShips().remove(ship.getId());
             return out;
 
         }else if (hostileCaptions.containsKey(ship.getFleetCommander().getId())){
             Nano_Thief_Stats stats = hostileCaptions.get(ship.getFleetCommander().getId());
-            if (stats.getAvailableShips().get(ship.getId()) != null) return 0;
-            List<NanoThief_ShipSkills> list = ship.getListenerManager().getListeners(NanoThief_ShipSkills.class);
             double out = 0;
-            if (!list.isEmpty()){
-                NanoThief_ShipSkills trueList = (NanoThief_ShipSkills)list.get(0);
-                out += trueList.getReclaim();
-                out += trueList.getRefinedReclaim();
+            NanoThief_ShipSkills sSkills = stats.getSkills(ship);
+            if (sSkills != null){
+                out += sSkills.getReclaim();
+                out += sSkills.getRefinedReclaim();
             }
             stats.getAvailableShips().remove(ship.getId());
             return out;

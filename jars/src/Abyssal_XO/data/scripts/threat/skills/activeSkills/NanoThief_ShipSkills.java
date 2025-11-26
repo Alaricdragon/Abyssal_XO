@@ -24,7 +24,7 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
         this.ship = ship;
         //set skills here.
         //add in a switch statment to determin data about this ship.
-        stats.getAvailableShips().put(ship.getId(),ship);
+        stats.getAvailableShips().add(ship);
         for (Nano_Thief_Skill_Base a : stats.getSkills()){
             NanoThief_SkillBase listener = a.createListiner(this,this.ship);
             if (listener == null) continue;
@@ -59,6 +59,10 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
             return;
         }
         this.reclaim -= reclaim;
+    }
+    public void addReclaim(double reclaim){
+        boolean a = stats.centralFabAlive();
+        addReclaim(reclaim,a);
     }
     public void addReclaim(double reclaim, boolean refined){
         if (refined){

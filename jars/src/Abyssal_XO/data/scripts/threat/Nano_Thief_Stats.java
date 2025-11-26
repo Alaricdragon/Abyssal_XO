@@ -35,11 +35,21 @@ import second_in_command.specs.SCOfficer;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import static Abyssal_XO.data.scripts.Settings.NANO_THIEF_RECLAIM_RECYCLE_PERCENT;
 
 public class Nano_Thief_Stats {
+    public float DF_productionTime = 1;
+    public float DF_swarmCost = 100;
+    public float DF_recyclePerFighter = 0;
+    public float DF_ttl = 60;
+    public String DF_fighterToBuild = Settings.NANO_THIEF_BASEWING;//Settings.NANO_THIEF_PALYER_BASEWING;
+    public ShipHullSpecAPI DF_fighterHullSpec;
+    public int DF_wingSize;
+
+
     public float OF_productionTime = 1;
     public float OF_swarmCost = 100;
     public float OF_recyclePerFighter = 0;
@@ -55,7 +65,7 @@ public class Nano_Thief_Stats {
     private static Logger log = Global.getLogger(Nano_Thief_Stats.class);
     private String commanderID;
     private SCOfficer officer;
-    private boolean closest = true;
+    public boolean closest = true;
     @Getter
     ShipAPI centralFab = null;
 
@@ -67,7 +77,7 @@ public class Nano_Thief_Stats {
     private boolean isAlly = false;
 
     @Getter
-    private HashMap<String,ShipAPI> availableShips=new HashMap<>();
+    private HashSet<ShipAPI> availableShips=new HashSet<>();
     public int deployedDP=0;
     @Getter
     private static float playerExstraReclaim = 0;
@@ -81,8 +91,7 @@ public class Nano_Thief_Stats {
         if (playerStats == null) return;
         playerStats.makeSureSavedShipsAreAlive();
         playerExstraReclaim = 0;
-        for (String a : playerStats.availableShips.keySet()){
-            ShipAPI ship = playerStats.availableShips.get(a);
+        for (ShipAPI ship : playerStats.availableShips){
             NanoThief_ShipSkills listiner = null;
             if (ship.hasListenerOfClass(NanoThief_ShipSkills.class)){
                 List<NanoThief_ShipSkills> b = ship.getListenerManager().getListeners(NanoThief_ShipSkills.class);
@@ -126,6 +135,22 @@ public class Nano_Thief_Stats {
     public void spawnReclaim() {
 
     }
+    public NanoThief_ShipSkills getSkills(ShipAPI shipAPI){
+        if (!availableShips.contains(shipAPI)) return null;
+        NanoThief_ShipSkills listiner = null;
+        if (shipAPI.hasListenerOfClass(NanoThief_ShipSkills.class)){
+            List<NanoThief_ShipSkills> a = shipAPI.getListenerManager().getListeners(NanoThief_ShipSkills.class);
+            listiner = a.get(0);
+            return listiner;
+        }
+        log.info("WARNING: NO LISTINER! SPOOKY!");
+        return null;
+    }
+    public boolean centralFabAlive(){
+        if (centralFab == null) return false;
+        return centralFab.isAlive() && !centralFab.isHulk();
+    }
+
     public boolean canAcceptReclaim(ShipAPI ship){
         if (ship.getParentStation() != null) return false;
         if (ship.getVariant() != null){
@@ -175,7 +200,7 @@ public class Nano_Thief_Stats {
         ShipAPI output = null;
         Vector2f pointA = reclaim.getLocation();
         float distance = Float.MAX_VALUE;
-        for (ShipAPI curr : availableShips.values()) {
+        for (ShipAPI curr : availableShips) {
             /*if (curr == null) continue;
             if (curr.isHulk()) continue;
             if (curr.equals(reclaim)) continue;
@@ -217,7 +242,7 @@ public class Nano_Thief_Stats {
         if (centralFab == null){
             float priority = 0;
             float mass = 0;
-            for (ShipAPI curr : availableShips.values()) {
+            for (ShipAPI curr : availableShips) {
                 if (!canAcceptReclaim(curr)) continue;
                 if (curr == null) continue;
                 if (curr.isHulk()) continue;
@@ -297,14 +322,7 @@ public class Nano_Thief_Stats {
     //private HashMap<ShipAPI,Integer> reclaimGathered = new HashMap<>();
 
     public void applyEffectsWhenAbsorbed(ShipAPI target,ShipAPI reclaim,int reclaimValue){
-        NanoThief_ShipSkills listiner = null;
-        if (target.hasListenerOfClass(NanoThief_ShipSkills.class)){
-            List<NanoThief_ShipSkills> a = target.getListenerManager().getListeners(NanoThief_ShipSkills.class);
-            listiner = a.get(0);
-        }else{
-           //target.addListener(new NanoThief_ShipSkills(this,target));
-            log.info("WARNING: NO LISTINER! SPOOKY!");
-        }
+        NanoThief_ShipSkills listiner = getSkills(target);
         listiner.addReclaim(reclaimValue,false);
 
     }
@@ -403,6 +421,10 @@ public class Nano_Thief_Stats {
         return fighter;
     }
 
+    public void getShipSkills(ShipAPI ship){
+
+    }
+
     public static void modifySingleFighter(ShipAPI fighter,ShipAPI frabacator){
         fighter.getMutableStats().getMinCrewMod().modifyMult("Abyssal_XO",0);
         if (fighter.getWing().getSpec().getId().equals(Settings.NANO_THIEF_BASEWING)) {
@@ -429,20 +451,19 @@ public class Nano_Thief_Stats {
 
     }
     public void makeSureSavedShipsAreAlive(){
-        ArrayList<String> remove = new ArrayList<>();
-        for (String a : this.availableShips.keySet()){
-            ShipAPI b = availableShips.get(a);
-            if (!b.isAlive() || b.isHulk()) remove.add(a);
+        ArrayList<ShipAPI> remove = new ArrayList<>();
+        for (ShipAPI b : this.availableShips){
+            if (!b.isAlive() || b.isHulk()) remove.add(b);
         }
-        for (String a : remove){
+        for (ShipAPI a : remove){
             this.availableShips.remove(a);
         }
     }
     public int getDeployedPonits(){
         makeSureSavedShipsAreAlive();
         int output = 0;
-        for (String a : this.availableShips.keySet()){
-            output += availableShips.get(a).getMutableStats().getSuppliesToRecover().getModifiedInt();
+        for (ShipAPI a : this.availableShips){
+            output += a.getMutableStats().getSuppliesToRecover().getModifiedInt();
             //qoutput += availableShips.get(a).getDeployCost();
             //availableShips.get(a).getMutableStats().
             //availableShips.get(a).getMutableStats().getDynamic().getMod(Stats.DEPLOYMENT_POINTS_MOD).computeEffective();

@@ -464,7 +464,7 @@ public class Nano_Thief_Stats {
             //core.setAlphaMult(0);
             stats.setReclaimCore(core);
         }*/
-        fighter.setCustomData(ReclaimCore.IDOfData,stats);
+        //fighter.setCustomData(ReclaimCore.IDOfData,stats);
 
         manager.removeDeployed(fighter,false);
 

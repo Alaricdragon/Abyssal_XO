@@ -27,7 +27,7 @@ public class NanoThief_ShipSkillsAdder implements AdvanceableListener {
         if (stats == null){
             return;
         }
-        stats.getAvailableShips().put(ship.getId(),ship);
+        stats.getAvailableShips().add(ship);
         //stats.deployedDP+=ship;
         ship.addListener(new NanoThief_ShipSkills(stats,ship));
         ship.removeListener(this);
