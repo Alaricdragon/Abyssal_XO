@@ -76,13 +76,14 @@ so the skills:
 5) ????.. ???????
     increases the spped of reclaim packages by 100%
 
-6) create escorts:
-    create up to 1/1/2/3 Simulacrum Fighter Wings that will defend the ship (like defensive targetting array)
-    -notes on what a Simulacrum Fighter Wing is here.
 
-7) Simulacrum Fighter Wings
+6) Simulacrum Fighter Wings
     Gain the ability to produce Simulacrum Fighter Wings. Your fleet can only maintain up to deployed DP / 10 Simulacrum Fighter Wings at once.
     Simulacrum Fighter Wings produced by this skill have infinite engagement range. (edited)Sunday, October 19, 2025 12:26 PM
+
+7) create escorts:
+    create up to 1/1/2/3 Simulacrum Fighter Wings that will defend the ship (like defensive targetting array)
+    -notes on what a Simulacrum Fighter Wing is here.
 
 (requires at least one from lower tiers of skill)
 8) Centralized Logistics: when the first reclaim package is created, the largest ship in your fleet is marked as the 'Central Fabricator'. Reclaim Packages will always attempt to move to the Central Fabricator, provided it exists.

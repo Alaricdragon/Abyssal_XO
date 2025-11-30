@@ -29,6 +29,7 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
     public static final String IDOfData1 = "$Nano_Thief_AI_SawrmSpawner_data_1";
     public static final String IDOfData2 = "$Nano_Thief_AI_SawrmSpawner_data_2";
     private double timeToReturn;
+    private double returnReclaim;
     public Nano_Thief_AI_SawrmSpawner(ShipAPI ship,ShipAPI motherShip, String wing, Nano_Thief_Stats stats,boolean isOffensive){
         //todo: please note that removing a fighter from a wing forces it to return to its carrier. possability of useing a holder instead of this mess is present again, but needs testing
         //      example: for (ShipAPI a : fighters) ship.getLaunchBaysCopy().get(0).getWing().removeMember(a); will return a wing to the carrier
@@ -39,10 +40,13 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
         this.isOffensive = isOffensive;
         if (isOffensive){
             timeToReturn = stats.OF_ttl;
+            returnReclaim = stats.OF_recyclePerFighter;
         }else{
             timeToReturn = stats.DF_ttl;
+            returnReclaim = stats.DF_recyclePerFighter;
         }
         log.info("got timeToReturn as: "+timeToReturn);
+        log.info("got return reclaim as: "+returnReclaim);
         engine = Global.getCombatEngine();
         ship.setCustomData(IDOfData2,this);
         //stage0();
@@ -70,7 +74,7 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
             log.info("ERROR: failed to return reclaim to target");
             return;
         }
-        skills.addReclaim(stats.OF_recyclePerFighter);
+        skills.addReclaim(returnReclaim);
     }
     private void displayStats(String startString,String indents,MutableStat stats){
         log.info(indents+startString+"getting multi mods");

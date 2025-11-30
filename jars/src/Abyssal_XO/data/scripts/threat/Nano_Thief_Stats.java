@@ -7,11 +7,13 @@ import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_SawrmSpawner;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_BattleListener;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_RecreationScript;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
+import Abyssal_XO.data.scripts.threat.skills.NanoThief_6;
 import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_6;
 import Abyssal_XO.data.scripts.threat_old.subsystems.DamageOverTime_System;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.fleet.FleetMemberType;
@@ -104,11 +106,23 @@ public class Nano_Thief_Stats {
         }
         playerStats = null;
     }
-    public Nano_Thief_Stats(String OF_fighterToBuild) {
+    /*public Nano_Thief_Stats(String OF_fighterToBuild) {
         if (OF_fighterToBuild != null) this.OF_fighterToBuild = OF_fighterToBuild;
+    }*/
+    public PersonAPI commander;
+    public Nano_Thief_Stats(String fighter,boolean isOffincive){
+        //this is for creating a stat line that only looks has fighter data.
+        if(isOffincive) {
+            OF_fighterToBuild = fighter;
+            log.info("getting 'fake data stats'");
+            NanoThief_Skill_6.getStats(this,Global.getSettings().getFighterWingSpec(OF_fighterToBuild));
+            return;
+        }
+
     }
-    public Nano_Thief_Stats(String commanderID, boolean isAlly, SCOfficer officer, String OF_fighterToBuild){
-        if (OF_fighterToBuild != null) this.OF_fighterToBuild = OF_fighterToBuild;
+
+    public Nano_Thief_Stats(PersonAPI commander, String commanderID, boolean isAlly, SCOfficer officer){
+        this.commander = commander;
         this.commanderID = commanderID;
         this.officer = officer;
         this.isAlly = isAlly;
@@ -117,17 +131,12 @@ public class Nano_Thief_Stats {
             Nano_Thief_Skill_Base b = (Nano_Thief_Skill_Base) a;
             log.info("  adding skill to commander of: "+b.getName());
             skills.add(b);
-            //SC_muti *= b.swarmCostMulti;
-            //SC_add += b.swarmCostAdd;
-
-            //SQ_muti *= b.qualityMulti;
-            //SQ_add += b.qualityAdd;
-            if (b.getId().equals("SiC_NanoThief_skill_7")){
+            b.initStats(this);
+            if (b.getId().equals("SiC_NanoThief_skill_8")){
                 closest = false;
             }
         }
-        //this.fighterToBuild = "claw_wing";//"warthog_wing";//"warthog_wing";//"trident_wing";//"dagger_wing";//"broadsword_wing";
-        getBaseStatsForFighter(Global.getSettings().getFighterWingSpec(this.OF_fighterToBuild),this,true);
+        //getBaseStatsForFighter(Global.getSettings().getFighterWingSpec(this.OF_fighterToBuild),this,true);
         if (Global.getSector().getPlayerPerson().getId().equals(commanderID)){
             playerStats = this;
         }
@@ -475,15 +484,13 @@ public class Nano_Thief_Stats {
     }
     private static void getBaseStatsForFighter(FighterWingSpecAPI a,Nano_Thief_Stats spec,boolean offincive){
         if (offincive){
+            log.info("getting 'display stats'");
             NanoThief_Skill_6.getStats(spec,a);
             return;
         }
     }
     public static void displayStatsForFighterWithoutModification(TooltipMakerAPI panel,FighterWingSpecAPI a,boolean offincive){
-        if (offincive){
-            NanoThief_Skill_6.displayStats(panel,a);
-            return;
-        }
+        NanoThief_6.displayStats(panel,a,offincive);
     }
 
 }

@@ -5,7 +5,7 @@
 	"variantId":"Abyssal_XO_ReclaimCore_Blank",
 	"fluxVents":0,
 	"fluxCapacitors":0,
-	"hullMods":["Abyssal_XO_RC"], # array of strings
+	"hullMods":["Abyssal_XO_RC_B"], # array of strings
 	
 	# mode is either LINKED or ALTERNATING
 	# slot ids (WS ***) must match what's in the .ship file

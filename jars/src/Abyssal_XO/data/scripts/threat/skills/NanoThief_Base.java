@@ -1,6 +1,7 @@
 package Abyssal_XO.data.scripts.threat.skills;
 
 import Abyssal_XO.data.scripts.Settings;
+import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipSkillsAdder;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_BattleListener;
 import com.fs.starfarer.api.Global;
@@ -21,7 +22,6 @@ import static Abyssal_XO.data.scripts.Settings.NANO_THIEF_RECLAIM_RECYCLE_PERCEN
 
 public class NanoThief_Base extends Nano_Thief_Skill_Base {
     private static final String key = "AbyssalXO_Nano_Thief_Skill_0";
-
     @Override
     public String getAffectsString() {
         return "every ship destroyed in combat";

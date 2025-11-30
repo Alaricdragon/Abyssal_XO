@@ -104,15 +104,7 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
             CampaignFleetAPI fleet;
             if (a.isPlayer()){
                 fleet = Global.getSector().getPlayerFleet();
-                if(Global.getSector().getPlayerPerson().getMemoryWithoutUpdate().contains(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY)) {
-                    customFighter = Global.getSector().getPlayerPerson().getMemoryWithoutUpdate().getString(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY);
-                }else{
-                    customFighter = Settings.NANO_THIEF_PALYER_BASEWING;
-                }
             }else{
-                if(a.getMemoryWithoutUpdate().contains(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY)) {
-                    customFighter = a.getMemoryWithoutUpdate().getString(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY);
-                }
                 fleet = a.getFleet();
                 if (fleet == null && a.getStats() != null) fleet = a.getStats().getFleet();
                 if (fleet == null && a.getFleetCommanderStats() != null) fleet = a.getFleetCommanderStats().getFleet();
@@ -123,7 +115,7 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
                 log.info("      checking SiC officer of attributeID: "+b.getAptitudeId());
                 if (!b.getAptitudeId().equals("Abyssal_NanoThief")) continue;
                 log.info("      added Sic officer from fleet "+a.getId()+" to list of commanders....");
-                output.put(a.getId(),new Nano_Thief_Stats(a.getId(),isPlayerAllied,b,customFighter));//a.getFleet() is required.
+                output.put(a.getId(),new Nano_Thief_Stats(a,a.getId(),isPlayerAllied,b));//a.getFleet() is required.
                 break;
             }
             log.info("  finished check for commander");

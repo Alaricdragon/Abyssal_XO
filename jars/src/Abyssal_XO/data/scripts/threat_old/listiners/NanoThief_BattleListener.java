@@ -69,14 +69,14 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
             CampaignFleetAPI fleet;
             if (a.isPlayer()){
                 fleet = Global.getSector().getPlayerFleet();
-                if(Global.getSector().getPlayerPerson().getMemoryWithoutUpdate().contains(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY)) {
-                    customFighter = Global.getSector().getPlayerPerson().getMemoryWithoutUpdate().getString(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY);
+                if(Global.getSector().getPlayerPerson().getMemoryWithoutUpdate().contains(Settings.NANO_THIEF_CUSTOM_WING_ATK_MEMORY_KEY)) {
+                    customFighter = Global.getSector().getPlayerPerson().getMemoryWithoutUpdate().getString(Settings.NANO_THIEF_CUSTOM_WING_ATK_MEMORY_KEY);
                 }else{
                     customFighter = Settings.NANO_THIEF_PALYER_BASEWING;
                 }
             }else{
-                if(a.getMemoryWithoutUpdate().contains(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY)) {
-                    customFighter = a.getMemoryWithoutUpdate().getString(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY);
+                if(a.getMemoryWithoutUpdate().contains(Settings.NANO_THIEF_CUSTOM_WING_ATK_MEMORY_KEY)) {
+                    customFighter = a.getMemoryWithoutUpdate().getString(Settings.NANO_THIEF_CUSTOM_WING_ATK_MEMORY_KEY);
                 }
                 fleet = a.getFleet();
                 if (fleet == null && a.getStats() != null) fleet = a.getStats().getFleet();

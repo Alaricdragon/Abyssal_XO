@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+@Deprecated
 public class Nano_Thief_AI_OVERRIDE {
     private static Logger log = Global.getLogger(Nano_Thief_AI_OVERRIDE.class);
     private static ArrayList<Nano_Thief_AI_OVERRIDE> wings;

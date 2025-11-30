@@ -23,37 +23,24 @@ import second_in_command.SCUtils;
 import second_in_command.specs.SCOfficer;
 
 public class NanoThief_Skill_6 extends NanoThief_SkillBase{
-    //todo: hold a list of all sim fighters in the Stats.
-    //      get fighters to spawn again.
-    //      make it so I can detect when a fighter lands somwhow, (and gain reclaim)
-    //      make it so I can instantly relocate any 'swarm spawner' to any other ship instantly.
-    //      make it so I can force the fighters to land whenever I want them to.
-    //      make it so if they refuse they take massive damage and die instantly.
-    //      note: I don't need to worry about holding more then one wing in one swarm yet. let them TP at will.
     public NanoThief_Skill_6(NanoThief_ShipSkills skills, ShipAPI ship) {
         super(skills, ship);
     }
     public static void getStats(Nano_Thief_Stats spec, FighterWingSpecAPI a){
         spec.OF_fighterHullSpec = a.getVariant().getHullSpec();
-        float range=0;
-        for (String b : a.getVariant().getFittedWeaponSlots()){
-            if (b == null) continue;
-            float c = a.getVariant().getWeaponSpec(b).getMaxRange();
-            if (c > range) range = c;
-        }
-        //spec.OF_range = Math.max(1000,range+200);
         spec.OF_wingSize = a.getNumFighters();
+        spec.OF_fighterToBuild = a.getId();
         if (a.getId().equals(Settings.NANO_THIEF_BASEWING)){
             spec.OF_swarmCost = NanoThief_6.BASESWARM_COST;
             spec.OF_productionTime = NanoThief_6.BASESWARM_BUILDTIME;
             spec.OF_ttl = NanoThief_6.BASESWARM_TTL;
-            spec.OF_recyclePerFighter = (spec.OF_swarmCost / spec.OF_wingSize)*NanoThief_6.CustomSwarm_RefundPercent;
+            spec.OF_recyclePerFighter = (spec.OF_swarmCost / Math.max(spec.OF_wingSize,1))*NanoThief_6.CustomSwarm_RefundPercent;
             logStats(spec);
             return;
         }
-        spec.OF_recyclePerFighter = spec.OF_swarmCost / spec.OF_wingSize;
+        spec.OF_swarmCost = (a.getOpCost(a.getVariant().getStatsForOpCosts())*NanoThief_6.CustomSwarm_COST_PEROP)+NanoThief_6.CustomSwarm_COST_BASE;
         spec.OF_productionTime = a.getNumFighters() * a.getRefitTime() * NanoThief_6.CustomSwarm_BUILDTIME_PREREFIT;
-        spec.OF_recyclePerFighter = (spec.OF_swarmCost / spec.OF_wingSize);
+        spec.OF_recyclePerFighter = (spec.OF_swarmCost / Math.max(spec.OF_wingSize,1));
         spec.OF_ttl = NanoThief_6.CustomSwarm_TTL;
         if (a.getRole().equals(WingRole.BOMBER)){
             //spec.OF_ttl = NanoThief_6.CustomSwarm_Bomber_TTL;
@@ -61,37 +48,15 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         }else {
             spec.OF_recyclePerFighter *= NanoThief_6.CustomSwarm_RefundPercent;
         }
-        spec.OF_swarmCost = (a.getOpCost(a.getVariant().getStatsForOpCosts())*NanoThief_6.CustomSwarm_COST_PEROP)+NanoThief_6.CustomSwarm_COST_BASE;
         logStats(spec);
     }
     private static void logStats(Nano_Thief_Stats spec){
         log.info("got swarm of ID: "+spec.OF_fighterToBuild +" stats as: cost: "+spec.OF_swarmCost +", productionTime: "+spec.OF_productionTime +", time to live"+spec.OF_ttl +", and refund per fighter: "+spec.OF_recyclePerFighter);
 
     }
-    public static void displayStats(TooltipMakerAPI panel, FighterWingSpecAPI a){
-        Nano_Thief_Stats spec = null;//new Nano_Thief_Stats(a.getId());
-        for (SCOfficer b : SCUtils.getFleetData(Global.getSector().getPlayerFleet()).getActiveOfficers()){
-            //log.info("      checking SiC officer of atrubuteID: "+b.getAptitudeId());
-            if (!b.getAptitudeId().equals("Abyssal_NanoThief")) continue;
-            //log.info("      added Sic officer from fleet "+a.getId()+" to list of commanders....");
-            spec = new Nano_Thief_Stats(a.getId(),true,b,a.getId());
-            break;
-        }
-        if (spec == null){
-            spec = new Nano_Thief_Stats(a.getId());
-        }
-        getStats(spec,a);
-        spec.OF_ttl = spec.getModifedTTL(null);
-        spec.OF_productionTime = spec.getModifedProductionTime(null);
-        spec.OF_swarmCost = spec.getModifiedCost(null);
-        panel.addPara("Simulacrum Fighter Wing stats for fleet: ",5);
-        panel.addPara("Time to live: %s",5, Misc.getTextColor(), Misc.getHighlightColor(),""+(int)spec.OF_ttl);
-        panel.addPara("Production time: %s",5,Misc.getTextColor(), Misc.getHighlightColor(),""+(int)spec.OF_productionTime);
-        panel.addPara("Reclaim cost: %s",5,Misc.getTextColor(), Misc.getHighlightColor(),""+(int)spec.OF_swarmCost);
-        panel.addPara("Reclaim gained when a fighter docks: %s",5,Misc.getTextColor(), Misc.getHighlightColor(),""+(int)spec.OF_recyclePerFighter);
-    }
     private float cooldown = 0;
     private boolean onCooldown = false;
+    private boolean waiting = false;
     private int maxFighters = 0;
     @Override
     public void advance(float amount) {
@@ -99,10 +64,11 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         cooldown -= amount;
         if (cooldown > 0) return;
         maxFighters = getMaxFighters();
-        if (skills.getTotalReclaim() < skills.stats.OF_swarmCost || currentFighters() >= maxFighters){
+        if (skills.getTotalReclaim() < skills.stats.OF_swarmCost && !waiting){// || currentFighters() >= maxFighters){
             //if (skills.stats.getReadSavedDP() <= 0) skills.stats.getDeployedPonits();
             cooldown = 1;//skills.stats.OF_productionTime;
             onCooldown = false;
+            waiting = false;
             return;
         }
         if (!onCooldown){
@@ -111,14 +77,15 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
             return;
         }
         //create a combat swarm
+        if (currentFighters() >= maxFighters || ship.isPhased()){
+            waiting = true;
+            cooldown = 1;
+            return;
+        }
+        waiting = false;
         onCooldown = true;
         cooldown = skills.stats.OF_productionTime;
         skills.useReclaim(skills.stats.OF_swarmCost);
-        /*todo: I need to apply the following to the combat cores:
-                I need to make the core its fighters to the 'stats'. (note: I dont need to save fighters. only cores. because the cores dont despawn untill the fighters are all dead now.)
-                I need to find a way to make the fighters return to the fucking carrier when its time to go and rest.
-
-         */
         createCombatSwarmCore();
     }
 
@@ -127,22 +94,28 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         maxFighters = getMaxFighters();
         int max = maxFighters;
         int cur = currentFighters();
-        if (max <= cur) {
+        /*if (max <= cur) {
             Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_6", "graphics/icons/hullsys/temporal_shell.png",
                     "Offencive Fighter Construction Status", cur+" / "+max, true);
             return;
-        }
+        }*/
         if (skills.getTotalReclaim() >= skills.stats.OF_swarmCost){
-            if (!onCooldown){
+            if (!onCooldown && !waiting){
                 onCooldown = true;
                 cooldown = skills.stats.OF_productionTime;
             }
-            if (cooldown <= 0 && ship.isPhased()){
+            if (waiting){
+                if (ship.isPhased()) {
+                    Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_6", "graphics/icons/hullsys/temporal_shell.png",
+                            "Offencive Fighter Construction Status", cur + " / " + max + ", cannot create fighter while phased", true);
+                    return;
+                }
                 Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_6", "graphics/icons/hullsys/temporal_shell.png",
-                        "Offencive Fighter Construction Status", cur+" / "+max+", cannot create fighter in phase", true);
+                        "Offencive Fighter Construction Status", cur+" / "+max+", cannot control additional fighters", true);
+                return;
             }
             Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_6", "graphics/icons/hullsys/temporal_shell.png",
-                    "Offencive Fighter Construction Status", cur+" / "+max+", "+(int)(((skills.stats.OF_productionTime-cooldown) / skills.stats.OF_productionTime)*100)+"% completed new wing...", false);
+                    "Offencive Fighter Construction Status", cur+" / "+max+", "+(int)(((skills.stats.OF_productionTime-cooldown) / skills.stats.OF_productionTime)*100)+"% prepared to create wing...", false);
             return;
         }
         Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_6", "graphics/icons/hullsys/temporal_shell.png",

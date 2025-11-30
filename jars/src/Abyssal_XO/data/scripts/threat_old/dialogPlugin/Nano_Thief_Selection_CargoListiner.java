@@ -42,11 +42,11 @@ public class Nano_Thief_Selection_CargoListiner implements CargoPickerListener {
         oldFighter = null;
         selectedFighters = cargo;
         String customFighter = Settings.NANO_THIEF_PALYER_BASEWING;//"talon_wing";
-        if(Global.getSector().getPlayerPerson().getMemory().contains(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY)) {
-            if (Global.getSector().getPlayerPerson().getMemory().getString(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY).equals("null")){
+        if(Global.getSector().getPlayerPerson().getMemory().contains(Settings.NANO_THIEF_CUSTOM_WING_ATK_MEMORY_KEY)) {
+            if (Global.getSector().getPlayerPerson().getMemory().getString(Settings.NANO_THIEF_CUSTOM_WING_ATK_MEMORY_KEY).equals("null")){
 
             }else {
-                customFighter = Global.getSector().getPlayerPerson().getMemory().getString(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY);
+                customFighter = Global.getSector().getPlayerPerson().getMemory().getString(Settings.NANO_THIEF_CUSTOM_WING_ATK_MEMORY_KEY);
                 cargo.addFighters(customFighter, 1);
                 oldFighter = customFighter;
                 currentFighter = customFighter;
@@ -63,7 +63,7 @@ public class Nano_Thief_Selection_CargoListiner implements CargoPickerListener {
         //log.info("this was a 'picked cargo'.");
         if (oldFighter != null) Global.getSector().getPlayerFleet().getCargo().addFighters(oldFighter, 1);
         Global.getSector().getPlayerFleet().getCargo().removeFighters(currentFighter,1);
-        Global.getSector().getPlayerPerson().getMemory().set(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY, currentFighter);
+        Global.getSector().getPlayerPerson().getMemory().set(Settings.NANO_THIEF_CUSTOM_WING_ATK_MEMORY_KEY, currentFighter);
         Nano_Thief_dialog.dialog.dismiss();
     }
 

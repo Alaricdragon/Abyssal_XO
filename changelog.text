@@ -1,4 +1,6 @@
 V0.0.8:
+    todo: before update, remove the 'banned' tags, or at least make it an option in the mod settings. I want to play with NanoThief on my wingCom ships.
+
     new:
         reclaim stored in ships is now added to newly created reclaim packages when the ship dies. (split between forces if a 'reclaim battle' is going on)
     balance changes:
@@ -9,7 +11,7 @@ V0.0.8:
         'Longevity' -> 'Thorough Salvaging' (bonus salvage and supplies for reclaim)
         'Advanced Installation' -> 'Scrapy Fortification' (95% damage resistance well considerable damage.)
         'Quality Checks' -> '' (please note I am doing this one after skill 6.)
-        'Prepared Deployment' -> ''
+        'Prepared Deployment' -> 'Offencive Fighter Construction'
         'Centralized Logistics' -> ''
         'Desperate Measures' -> ''
         'Efficient Production' -> ''

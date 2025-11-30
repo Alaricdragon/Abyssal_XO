@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 
+@Deprecated
 public class NanoThief_ShipStats implements AdvanceableListener {
     /*so, here is the plan:
     * first, every time I spawn a ship, I will spawn a specal ship that is invinsable, and deploys a single fighter wing.
