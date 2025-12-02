@@ -12,6 +12,13 @@ public class ReclaimCoreDefensive extends ReclaimCore{
     @Override
     public void applyEffectsToFighterSpawnedByShip(ShipAPI fighter, ShipAPI ship, String id) {
         super.applyEffectsToFighterSpawnedByShip(fighter, ship, id);
-        fighter.addTag(Tags.WING_STAY_IN_FRONT_OF_SHIP);
+        if (fighter.getWing() != null && fighter.getWing().getSpec() != null) {
+            if (fighter.getWing().getSpec().isRegularFighter() ||
+                    fighter.getWing().getSpec().isAssault() ||
+                    fighter.getWing().getSpec().isBomber() ||
+                    fighter.getWing().getSpec().isInterceptor()) {
+                fighter.addTag(Tags.WING_STAY_IN_FRONT_OF_SHIP);
+            }
+        }
     }
 }

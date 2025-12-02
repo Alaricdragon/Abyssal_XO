@@ -6,7 +6,7 @@ public class ReclaimCoreOffincive extends ReclaimCore{
     @Override
     public void applyEffectsAfterShipAddedToCombatEngine(ShipAPI ship, String id) {
         super.applyEffectsAfterShipAddedToCombatEngine(ship, id);
-        ship.getMutableStats().getFighterWingRange().modifyFlat("Abussal_XO",500000);
+        ship.getMutableStats().getFighterWingRange().modifyFlat("Abyssal_XO",500000);
     }
     @Override
     public void applyEffectsToFighterSpawnedByShip(ShipAPI fighter, ShipAPI ship, String id) {

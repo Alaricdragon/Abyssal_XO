@@ -11,6 +11,7 @@ import Abyssal_XO.data.scripts.threat.skills.NanoThief_6;
 import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_6;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_7;
 import Abyssal_XO.data.scripts.threat_old.subsystems.DamageOverTime_System;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.characters.PersonAPI;
@@ -114,10 +115,11 @@ public class Nano_Thief_Stats {
         //this is for creating a stat line that only looks has fighter data.
         if(isOffincive) {
             OF_fighterToBuild = fighter;
-            log.info("getting 'fake data stats'");
             NanoThief_Skill_6.getStats(this,Global.getSettings().getFighterWingSpec(OF_fighterToBuild));
             return;
         }
+        DF_fighterToBuild = fighter;
+        NanoThief_Skill_7.getStats(this,Global.getSettings().getFighterWingSpec(DF_fighterToBuild));
 
     }
 

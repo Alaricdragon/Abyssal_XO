@@ -46,7 +46,7 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
     public static final int BASESWARM_TTL = CustomSwarm_TTL;//swrams get exstea base TTL because they already die from shoting wepons.
 
     public static void displayStats(TooltipMakerAPI panel, FighterWingSpecAPI a,boolean offincive){
-        Nano_Thief_Stats spec = new Nano_Thief_Stats(a.getId(),true);//new Nano_Thief_Stats(a.getId());
+        Nano_Thief_Stats spec = new Nano_Thief_Stats(a.getId(),offincive);//new Nano_Thief_Stats(a.getId());
         //NanoThief_6.getFighterID();
         //NanoThief_Skill_6.getStats(spec,a);
         //spec.OF_ttl = spec.getModifedTTL(null);
@@ -135,13 +135,12 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
         //String line4b = ((int)(CustomSwarm_RefundPercent_Bomber*100))+"%";
         String line7a = ((int)(CustomSwarm_COST_BASE))+"";
         String line7b = ((int)(CustomSwarm_COST_PEROP))+"";
-        tooltip.addPara("Simulacrum Fighter Wings act as normal fighter wings with the following modifications:",0,Misc.getHighlightColor(),Misc.getHighlightColor());
-        tooltip.addPara("   -can only be active for %s seconds before reutrning to the nearest fiendly ship",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line3a);
-        tooltip.addPara("   -will refund %s of there reclaim cost when returning to a firendly ship",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line4a);
-        tooltip.addPara("   -do not replace lost fighters in a wing.",0,Misc.getHighlightColor(),Misc.getHighlightColor());
-        tooltip.addPara("   -cost %s + %s per op of the fighter wing",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor(),line7a,line7b);
-        tooltip.addPara("   -buildtime is equal to the combined replacement rate of every fighter in the wing",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor());
-        displayBuildingFighter(scData, tooltip,offincive);
+        tooltip.addPara("Simulacrum Fighter Wings act as normal fighter wings with the following modifications:",0,Misc.getGrayColor(),Misc.getHighlightColor());
+        tooltip.addPara("   -can only be active for %s seconds before reutrning to the nearest fiendly ship",0,Misc.getGrayColor(),Misc.getHighlightColor(),line3a);
+        tooltip.addPara("   -will refund %s of there reclaim cost when returning to a firendly ship",0,Misc.getGrayColor(),Misc.getHighlightColor(),line4a);
+        tooltip.addPara("   -do not replace lost fighters in a wing.",0,Misc.getGrayColor(),Misc.getHighlightColor());
+        tooltip.addPara("   -cost %s + %s per op of the fighter wing",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line7a,line7b);
+        tooltip.addPara("   -buildtime is equal to the combined replacement rate of every fighter in the wing",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor());
     }
     public void displayBuildingFighter(SCData scData, TooltipMakerAPI tooltip,boolean offincive){
         tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor());
@@ -159,16 +158,17 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
         tooltip.addPara("only one Offencive Simulacrum Fighter Wing can be active in your fleet for every %s Deployment Ponits you have active",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line6a);
 
         tooltip.addPara("Offencive Simulacrum Fighter Wings build this way gain infinit engagment range",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        displayBuildingFighter(scData, tooltip,true);
+        tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         this.addNewAbilityText(scData, tooltip);
-        tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor());
-        this.addSimWinFactorsToTooltip(scData, tooltip,true);
-        tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor());
 
         tooltip.addSpacer(10f);
 
         LabelAPI label = tooltip.addPara("\"fighter craft require a dedicated ship to launch from. This is the teaching of the Domain, the Hegemony, Tri-Tech, and many others. But if you just give up on little things like 'reliability', 'armor', and 'Dedicated Nanoforges', you can launch fighter craft of basically anything, from small rocks to capital class ships. They would tell you its impossible. Deadly, even.\nI tell them to watch me.\"", Misc.getTextColor(), 0f);
         tooltip.addPara(" - unknown", Misc.getTextColor(), 0f);
 
+        tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        this.addSimWinFactorsToTooltip(scData, tooltip,false);
         label.italicize();
     }
     public void addNewAbilityText(SCData scData, TooltipMakerAPI tooltip){

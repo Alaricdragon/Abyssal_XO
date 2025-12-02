@@ -52,7 +52,6 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
     }
     private static void logStats(Nano_Thief_Stats spec){
         log.info("got swarm of ID: "+spec.OF_fighterToBuild +" stats as: cost: "+spec.OF_swarmCost +", productionTime: "+spec.OF_productionTime +", time to live"+spec.OF_ttl +", and refund per fighter: "+spec.OF_recyclePerFighter);
-
     }
     private float cooldown = 0;
     private boolean onCooldown = false;
@@ -149,48 +148,18 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         //Global.getFactory().createFleetMember
         ShipVariantAPI OVERWRITER = member.getVariant();//Global.getSettings().getVariant("Abyssal_XO_ReclaimCore_Blank").clone();
         OVERWRITER.setSource(VariantSource.REFIT);
-        //OVERWRITER.setWingId(0,Settings.NANO_THIEF_BASEWING);//'broadsword_wing' from settings causes strange fragment swarm to spawn??? WTF?
-        //OVERWRITER.setWingId(0,Settings.NANO_THIEF_PALYER_BASEWING);//'broadsword_wing' from settings causes strange fragment swarm to spawn??? WTF?
         OVERWRITER.setWingId(0,skills.stats.OF_fighterToBuild);
-        //OVERWRITER.getWing(0).addTag("independent_of_carrier");
-        //OVERWRITER.getWing(0).addTag("auto_fighter");
-        //OVERWRITER.setWingId(1,stats.getFighterToBuild());
-        //OVERWRITER.setWingId(2,stats.getFighterToBuild());
         member.setOwner(primary.getOwner());
         member.setVariant(OVERWRITER,false,true);
 
         fighter = manager.spawnFleetMember(member,loc, facing, 0f);
-        //engine.ship
-        //fighter.setOwner(primary.getOwner());
-        //fighter = manager.spawnShipOrWing(member,loc,facing,0f);
-
-        //if (!isAlly) fighter.setAlly(false);
-        //log.info("spawning spawner with a wing of: "+this.fighterToBuild);
-        //log.info("the fighters ID was given as: "+OVERWRITER.getWing(0).getId());
-        //log.info("temp thing: "+fighter.getWing().getSpec());//no wing...? //maybe wing only exsists a short time after creation?
-        //log.info("temp thing 2:"+fighter.getLaunchBaysCopy().get(0).getTimeUntilNextReplacement());
-        //log.info("got the true ID of the wing as: "+fighter.getLaunchBaysCopy().get(0).getWing().getSpec().getId());
-        fighter.setShipAI(new Nano_Thief_AI_SawrmSpawner(fighter,primary,skills.stats.OF_fighterToBuild,skills.stats,true));
-        //note: this is usefull for making the guys follow your primary ship. not yet compleated.
-        /*if (stats.getReclaimCore() == null){
-            ShipAPI core = manager.spawnShipOrWing("Abyssal_XO_ReclaimCore_Blank",loc, facing, 0f,null);
-            core.setShipAI(new Nano_Thief_AI_ReclaimCoreBlank(core,primary));
-            //core.setAlphaMult(0);
-            stats.setReclaimCore(core);
-        }*/
-        //fighter.setCustomData(ReclaimCore.IDOfData,this);
+        fighter.setShipAI(new Nano_Thief_AI_SawrmSpawner(fighter,primary,skills.stats.OF_fighterToBuild,skills.stats,true,this));
 
         manager.removeDeployed(fighter,false);
 
-
-
-        //fighter = manager.spawnShipOrWing(Settings.NANO_THIEF_CREATER_SHIP, loc, facing, 0f, null);
-        //fighter.getWing().setSourceShip(primary);//sets to ifself to prevent min ingagment rage from triggering. might remove if i build a custom AI for the ships.
         manager.setSuppressDeploymentMessages(false);
         Vector2f takeoffVel = Misc.getUnitVectorAtDegreeAngle(facing);
         takeoffVel.scale(fighter.getMaxSpeed() * 1f);
-
-        //Vector2f.add(fighter.getVelocity(), takeoffVel, fighter.getVelocity());
 
         skills.stats.getOffinciveFighterCores().add(fighter);
         return fighter;//note: not a fighter, but instead something very diffrent.

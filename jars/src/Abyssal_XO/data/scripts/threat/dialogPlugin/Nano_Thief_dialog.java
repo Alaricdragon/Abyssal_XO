@@ -69,7 +69,7 @@ public class Nano_Thief_dialog implements InteractionDialogPlugin {
         if (hasSimAtk) dialog.getOptionPanel().addOption("attack","attack");
         if (hasSimDef) dialog.getOptionPanel().addOption("defense","defense");
         if (hasMastery) dialog.getOptionPanel().addOption("mastery","master");
-        dialog.getOptionPanel().addOption("exit","exit");
+        dialog.getOptionPanel().addOption("exit (escape)","exit");
         dialog.setOptionOnEscape("exit","exit");
 
         //dialog.get
@@ -81,66 +81,6 @@ public class Nano_Thief_dialog implements InteractionDialogPlugin {
         dialog.showCargoPickerDialog("cargo","Conferm", "Cancal",true,400, Nano_Thief_Selection_Sfw_Attack_CargoListiner.prepareForSelection(false),new Nano_Thief_Selection_Sfw_Def_CargoListiner());
     }
     public void attemptShowMastery(InteractionDialogAPI dialog){
-    }
-    public void attemptThing2(InteractionDialogAPI dialog){
-        log.info("attempting to add images of number: "+Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy().size());
-        TooltipMakerAPI info = dialog.getTextPanel().beginTooltip();
-        for (FleetMemberAPI a : Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy()) {
-            log.info("looking at ship of name: "+a.getHullSpec().getHullName());
-            //info.addButton("selectShip","HAHAHAHAHA",20,12,5);
-            info.beginImageWithText(a.getHullSpec().getSpriteName(), 5, 200, true);
-            //info.addPara(a.getShipName(),5);
-            //info.addImageWithText(5);
-            dialog.getTextPanel().addImage(a.getHullSpec().getSpriteName());
-        }
-        dialog.getTextPanel().addTooltip();
-
-    }
-    public void attemptShipThing(InteractionDialogAPI dialog){
-        int pad = 10;
-        TooltipMakerAPI info = dialog.getTextPanel().beginTooltip();
-        info.beginImageWithText("",5,200,true);
-        info.addImageWithText(pad);
-
-        Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy().get(0).getHullSpec();
-        ArrayList<ShipHullSpecAPI> hullList = new ArrayList<>();
-        for (FleetMemberAPI a : Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy()){
-            hullList.add(a.getHullSpec());
-        }
-        UIPanelAPI firstItem = null;
-        UIPanelAPI prevItem = null;
-        UIPanelAPI newItem = null;
-        Map<ShipHullSpecAPI,Integer> hullIdQtyMap = new LinkedHashMap<>();
-        for (ShipHullSpecAPI ship : hullList) {
-            TooltipMakerAPI image = info.beginImageWithText(ship.getSpriteName(),40,40,false);
-            if (firstItem == null) {
-                firstItem = info.addImageWithText(pad);;
-                prevItem = firstItem;
-            }
-            else
-            {
-                newItem = info.addImageWithText(pad);
-                newItem.getPosition().rightOfTop(prevItem, pad);
-                prevItem = newItem;;
-            }
-
-           // String tooltipStr = (int) Math.ceil((hullIdQtyMap.get(ship) / totalChance) * 30f)  + " x " + ship.getNameWithDesignationWithDashClass();
-            //info.addTooltipToPrevious( new ToolTip(200, ship.getHullName(), Color.WHITE, CodexDataV2.getShipEntryId(ship.getHullId())), TooltipMakerAPI.TooltipLocation.LEFT);
-
-            info.addPara(ship.getHullName(),pad);
-            info.setCodexEntryId(CodexDataV2.getShipEntryId(ship.getHullId()));
-        }
-        info.beginImageWithText("",5,200,true);
-        newItem = info.addImageWithText(pad);
-        newItem.getPosition().belowLeft(firstItem, pad);
-    }
-    public void addOptionsForAllShips(){
-        TooltipMakerAPI tooltip = dialog.getTextPanel().beginTooltip();
-        tooltip.addSectionHeading("the things", Alignment.MID,10);
-        //tooltip.addIconGroup();
-    }
-    public void addOptionForFighter(ShipAPI shipAPI){
-
     }
     public static void reset(){
         if (exitOnReset){
