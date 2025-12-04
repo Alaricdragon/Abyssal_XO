@@ -300,12 +300,13 @@ or
         //section1.addSkill("SiC_NanoThief_skill_9");
 
         addSection(section1);
-        /*SCAptitudeSection section2 = new SCAptitudeSection(false, 3, "technology2");
-        addSection(section2);*/
+        SCAptitudeSection section2 = new SCAptitudeSection(true, 1, "technology2");
+        section2.addSkill("SiC_NanoThief_skill_8");
+        addSection(section2);
 
         SCAptitudeSection section3 = new SCAptitudeSection(false, 4, "technology4");
-        section3.addSkill("SiC_NanoThief_skill_8");
         section3.addSkill("SiC_NanoThief_skill_9");
+        section3.addSkill("SiC_NanoThief_skill_10");
         addSection(section3);
     }
 

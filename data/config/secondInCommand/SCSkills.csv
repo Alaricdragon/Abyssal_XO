@@ -9,5 +9,6 @@ SiC_NanoThief_skill_4,Scrapy Fortification,graphics/secondInCommand/improvisatio
 SiC_NanoThief_skill_5,unused,graphics/secondInCommand/improvisation/mobilization.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_5
 SiC_NanoThief_skill_6,Decentralized Swarm Production,graphics/secondInCommand/improvisation/enhanced_overrides.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_6
 SiC_NanoThief_skill_7,Defensive Swarms,graphics/secondInCommand/improvisation/redistribution.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_7
-SiC_NanoThief_skill_8,Desperate Measures,graphics/secondInCommand/improvisation/derelict_fortifications.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_8
-SiC_NanoThief_skill_9,Efficient Production,graphics/secondInCommand/improvisation/derelict_operations.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_9
+SiC_NanoThief_skill_8,Centralized Production,graphics/secondInCommand/improvisation/derelict_fortifications.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_8
+SiC_NanoThief_skill_9,Desperate Measures,graphics/secondInCommand/improvisation/derelict_operations.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_9
+SiC_NanoThief_skill_10,Mastery,graphics/secondInCommand/improvisation/derelict_operations.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_10

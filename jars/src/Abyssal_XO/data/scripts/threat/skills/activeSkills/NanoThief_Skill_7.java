@@ -182,7 +182,7 @@ public class NanoThief_Skill_7 extends NanoThief_SkillBase{
         //Global.getSettings().getVariant("");
 
 
-        FleetMemberAPI member = Global.getFactory().createFleetMember(FleetMemberType.SHIP,"Abyssal_XO_ReclaimCore_Blank");
+        FleetMemberAPI member = Global.getFactory().createFleetMember(FleetMemberType.SHIP,"Abyssal_XO_ReclaimCore_Blank_2");
         //Global.getFactory().createFleetMember
         ShipVariantAPI OVERWRITER = member.getVariant();//Global.getSettings().getVariant("Abyssal_XO_ReclaimCore_Blank").clone();
         OVERWRITER.setSource(VariantSource.REFIT);

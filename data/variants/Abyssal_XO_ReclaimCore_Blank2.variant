@@ -2,7 +2,7 @@
 	"quality":0.0,
 	"displayName":"Fighter",
 	"hullId":"Abyssal_XO_ReclaimCore",
-	"variantId":"Abyssal_XO_ReclaimCore_Blank",
+	"variantId":"Abyssal_XO_ReclaimCore_Blank_2",
 	"fluxVents":0,
 	"fluxCapacitors":0,
 	"hullMods":["Abyssal_XO_RC_B"], # array of strings

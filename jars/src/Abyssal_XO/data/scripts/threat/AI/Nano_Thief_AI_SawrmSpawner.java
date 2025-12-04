@@ -261,10 +261,11 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
         forceRetarget();
     }
     private void retargetDef(){
-        if (!(!motherShip.isAlive() || motherShip.isHulk())) return;
-        forceRetarget();
-        stage = 2;
-
+        if (!motherShip.isAlive() || motherShip.isHulk()) {
+            log.info("force retargeting...");
+            forceRetarget();
+            stage = 2;
+        }
     }
     private void forceRetarget(){
         float distance = Float.MAX_VALUE;
@@ -278,6 +279,7 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
         apX /= fighters.size();
         apY /= fighters.size();
         ShipAPI newTarget = null;
+        stats.makeSureSavedShipsAreAlive();
         for (ShipAPI b : stats.getAvailableShips()){
             Vector2f loc = b.getLocation();
             float d = getDistance(apX,apY,loc);
