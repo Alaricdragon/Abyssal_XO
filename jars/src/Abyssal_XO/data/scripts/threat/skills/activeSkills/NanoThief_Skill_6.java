@@ -164,4 +164,9 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         skills.stats.getOffinciveFighterCores().add(fighter);
         return fighter;//note: not a fighter, but instead something very diffrent.
     }
+
+    @Override
+    public double getMaxCost() {
+        return skills.stats.OF_swarmCost;
+    }
 }

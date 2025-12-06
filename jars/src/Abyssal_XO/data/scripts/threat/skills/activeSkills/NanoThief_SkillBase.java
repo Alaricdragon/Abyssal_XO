@@ -12,6 +12,12 @@ public class NanoThief_SkillBase {
     public boolean applyToModules(){
         return false;
     }
+    public boolean alwaysAdvance(){
+        return false;
+    }
+    public boolean shouldUse(ShipAPI ship){
+        return true;
+    }
     public NanoThief_SkillBase(NanoThief_ShipSkills skills,ShipAPI ship){
         this.skills = skills;//only the skills are needed. everything else can be gotten form it.
         this.ship = ship;
@@ -22,4 +28,7 @@ public class NanoThief_SkillBase {
     public void advance(float amount){
     }
     public void displayStats(){}
+    public double getMaxCost(){
+        return 0;
+    }
 }

@@ -201,4 +201,8 @@ public class NanoThief_Skill_7 extends NanoThief_SkillBase{
         this.defenders.add(fighter);
         return fighter;//note: not a fighter, but instead something very diffrent.
     }
+    @Override
+    public double getMaxCost() {
+        return skills.stats.DF_swarmCost;
+    }
 }

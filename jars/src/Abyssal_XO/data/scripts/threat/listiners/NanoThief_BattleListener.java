@@ -75,8 +75,8 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
             double out = 0;
             NanoThief_ShipSkills sSkills = stats.getSkills(ship);
             if (sSkills != null){
-                out += sSkills.getReclaim();
-                out += sSkills.getRefinedReclaim();
+                out += sSkills.getTotalReclaim();
+                //out += sSkills.getRefinedReclaim();
             }
             stats.getAvailableShips().remove(ship.getId());
             return out;
@@ -86,8 +86,8 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
             double out = 0;
             NanoThief_ShipSkills sSkills = stats.getSkills(ship);
             if (sSkills != null){
-                out += sSkills.getReclaim();
-                out += sSkills.getRefinedReclaim();
+                out += sSkills.getTotalReclaim();
+                //out += sSkills.getRefinedReclaim();
             }
             stats.getAvailableShips().remove(ship.getId());
             return out;

@@ -1,5 +1,6 @@
 package Abyssal_XO.data.scripts.threat.AI;
 
+import Abyssal_XO.data.scripts.Utils;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
@@ -249,7 +250,7 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
             Vector2f loc2 = motherShip.getLocation();
             for (ShipAPI a : fighters) {
                 Vector2f loc = a.getLocation();
-                float d = getDistance(loc,loc2);
+                float d = Misc.getDistance(loc,loc2);
                 if (d <= forceNoTargetChangeRange){
                     return;
                 }
@@ -282,7 +283,7 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
         stats.makeSureSavedShipsAreAlive();
         for (ShipAPI b : stats.getAvailableShips()){
             Vector2f loc = b.getLocation();
-            float d = getDistance(apX,apY,loc);
+            float d = Utils.getDistance(apX,apY,loc);
             if (d < distance){
                 distance = d;
                 newTarget = b;
@@ -293,18 +294,7 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
             return;
         }
     }
-    private float getDistance(float x, float y, Vector2f loc2){
-        return getDistance(new Vector2f(x,y),loc2);
-    }
-    private float getDistance(Vector2f loc,Vector2f loc2){
-        //float angle = VectorUtils.getAngle(loc, loc2);
-        float x2 = loc.x - loc2.x;
-        x2 = Math.max(x2, -x2);
-        float y2 = loc.y - loc2.y;
-        y2 = Math.max(y2, -y2);
-        float d = x2+y2;
-        return d;
-    }
+
 
 
     @Override

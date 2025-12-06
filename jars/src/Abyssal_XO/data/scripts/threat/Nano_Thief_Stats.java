@@ -8,10 +8,9 @@ import Abyssal_XO.data.scripts.threat.listiners.NanoThief_BattleListener;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_RecreationScript;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_6;
+import Abyssal_XO.data.scripts.threat.skills.NanoThief_8;
 import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
-import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
-import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_6;
-import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_7;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.*;
 import Abyssal_XO.data.scripts.threat_old.subsystems.DamageOverTime_System;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.characters.PersonAPI;
@@ -26,6 +25,7 @@ import com.fs.starfarer.api.loading.FighterWingSpecAPI;
 import com.fs.starfarer.api.loading.VariantSource;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
+import com.fs.starfarer.api.util.SkillData;
 import com.fs.starfarer.util.DynamicStats;
 import lombok.Getter;
 import org.apache.log4j.Logger;
@@ -208,6 +208,7 @@ public class Nano_Thief_Stats {
         return getPriorityClosest(reclaim, engine);
     }
     private ShipAPI getTargetClosest(ShipAPI reclaim, CombatEngineAPI engine){
+        makeSureSavedShipsAreAlive();
         ShipAPI output = null;
         Vector2f pointA = reclaim.getLocation();
         float distance = Float.MAX_VALUE;
@@ -240,6 +241,11 @@ public class Nano_Thief_Stats {
             float b = pointA.y - pointB.y;
             float c = (float) Math.sqrt( a*a + b*b);*/
             c *= getReclaimTargetDistanceMulti(curr);
+            NanoThief_ShipSkills data = getSkills(curr);
+            double rangeChange = 0;
+            if (data != null) rangeChange = data.getTotalReclaimIncludingIncomeing() / 100;
+            c+=rangeChange;
+
             if (c < distance){
                 //log.info("  getting a new valid reclaim target of distance "+c);
                 distance = c;
@@ -251,6 +257,7 @@ public class Nano_Thief_Stats {
     }
     private ShipAPI getPriorityClosest(ShipAPI reclaim, CombatEngineAPI engine){
         if (centralFab == null){
+            makeSureSavedShipsAreAlive();
             float priority = 0;
             float mass = 0;
             for (ShipAPI curr : availableShips) {
@@ -273,6 +280,10 @@ public class Nano_Thief_Stats {
                     mass = pTemp;
                     priority = curr.getMassWithModules();
                 }
+            }
+            if (centralFab != null){
+                log.info("adding on the listiner...");
+                getSkills(centralFab).addListener(new NanoThief_Skill_8(getSkills(centralFab),centralFab),centralFab);
             }
         }
         if (centralFab.isAlive() && !centralFab.isHulk()){
@@ -332,19 +343,26 @@ public class Nano_Thief_Stats {
     private static final String NanoThiefStorgeKey = "$NanoThief_StoredReclaim_Base";
     //private HashMap<ShipAPI,Integer> reclaimGathered = new HashMap<>();
 
-    public void applyEffectsWhenAbsorbed(ShipAPI target,ShipAPI reclaim,int reclaimValue){
+    public void applyEffectsWhenAbsorbed(ShipAPI target,ShipAPI reclaim,int reclaimValue,boolean isRefined){
         NanoThief_ShipSkills listiner = getSkills(target);
-        listiner.addReclaim(reclaimValue,false);
+        if (!closest){
+            if (target.equals(centralFab)){
+                if (isRefined){
+                    listiner.addReclaim(reclaimValue);
+                    return;
+                }
+                for (NanoThief_SkillBase a : getSkills(target).getAlwaysSkills()){
+                    if (a instanceof NanoThief_Skill_8){
+                        ((NanoThief_Skill_8) a).fakeReclaim+=reclaimValue;
+                        break;
+                    }
+                }
+                return;
+            }
+            if (!isRefined) reclaimValue *= NanoThief_8.baseReclaimEfficiencyMod;
+        }
+        listiner.addReclaim(reclaimValue);//,false);
 
-    }
-    public float getModifiedCost(ShipAPI target){
-        float quality = this.OF_swarmCost;
-        return quality;
-
-    }
-    public float getModifedProductionTime(ShipAPI target){
-        float prod = this.OF_productionTime;
-        return prod;
     }
     public float getAvailableControl(){
         float prod = reclaimPerControl;
@@ -355,7 +373,8 @@ public class Nano_Thief_Stats {
         float prod = OF_ttl;
         return prod;
     }
-    public ShipAPI createReclaim(ShipAPI primary,int forceID){
+    public ShipAPI createReclaim(ShipAPI primary,int forceID,int amount, boolean isRefined,ShipAPI targetOverride){
+        if (amount == 0) return null;
         String wingId = SwarmLauncherEffect.RECLAMATION_SWARM_WING;//"attack_swarm_wing";SwarmLauncherEffect.RECLAMATION_SWARM_WING;//"attack_swarm_wing"
 
         CombatEngineAPI engine = Global.getCombatEngine();
@@ -368,9 +387,8 @@ public class Nano_Thief_Stats {
         ShipAPI fighter = manager.spawnShipOrWing(wingId, loc, facing, 0f, null);
         fighter.getWing().setSourceShip(primary);
         //fighter.removeTag(Tags.THREAT_SWARM_AI);
-        int amount = getReclaimValue(primary);
         log.info("calculated reclaim as: "+amount);
-        fighter.setShipAI(new Nano_Thief_AI_Reclaim(fighter,this,amount));//todo: learn if this is even doing anything I guess????
+        fighter.setShipAI(new Nano_Thief_AI_Reclaim(fighter,this,amount,false,targetOverride));//todo: learn if this is even doing anything I guess????
         manager.setSuppressDeploymentMessages(false);
 
         fighter.getMutableStats().getMaxSpeed().modifyMult("construction_swarm", NanoThief_RecreationScript.RECLAMATION_SWARM_SPEED_MULT);
@@ -422,14 +440,19 @@ public class Nano_Thief_Stats {
 
         swarm.getParams().maxOffset *= NanoThief_RecreationScript.RECLAMATION_SWARM_RADIUS_MULT;
 
-        int maxSwarmSize = (amount / 1000) - 20;//-10,0,??? no....
+        int maxSwarmSize = (amount / 100) + 20;//base size is 20. + 10 per 1k size. so its 30,40,50,60 in size.
         swarm.getParams().initialMembers = 0;
-        swarm.getParams().baseMembersToMaintain = 40;
+        swarm.getParams().baseMembersToMaintain = amount;
 
+        fighter.getMutableStats().getSightRadiusMod().modifyMult("Abyssal_XO",0.1f);
+        return fighter;
+    }
+    public ShipAPI createReclaim(ShipAPI primary,int forceID){
         /*for (Nano_Thief_Skill_Base a : skills){
             a.changeReclaimStats(fighter,this);
         }*/
-        return fighter;
+        int amount = getReclaimValue(primary);
+        return createReclaim(primary,forceID,amount,false,null);
     }
 
     public void getShipSkills(ShipAPI ship){
@@ -442,16 +465,6 @@ public class Nano_Thief_Stats {
             modifiyBaseShip(fighter);
         }
     }
-    /*public void modifySingleFighter(ShipAPI fighter,ShipAPI frabacator){
-        if (fighter.getWing().getSpec().getId().equals(Settings.NANO_THIEF_BASEWING)){
-            modifiyBaseShip(fighter);
-        }else{
-            //modifiyCustomShip(fighter);
-        }
-        float ttl = getModifedTTL(fighter);
-        fighter.getMutableStats().getMinCrewMod().modifyMult("Abyssal_XO",0);
-        MagicSubsystemsManager.addSubsystemToShip(fighter, new DamageOverTime_System(fighter, ttl, OF_range));
-    }*/
     public static void modifiyBaseShip(ShipAPI fighter){
         fighter.setDoNotRender(true);
         fighter.setExplosionScale(0f);

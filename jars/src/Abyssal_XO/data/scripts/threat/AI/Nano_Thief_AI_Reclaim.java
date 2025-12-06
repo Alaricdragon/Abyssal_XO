@@ -1,6 +1,7 @@
 package Abyssal_XO.data.scripts.threat.AI;
 
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.impl.combat.threat.*;
@@ -84,10 +85,16 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 	private int reclaimValue;
 
 	private static Logger log = Global.getLogger(Nano_Thief_AI_Reclaim.class);
-	public Nano_Thief_AI_Reclaim(ShipAPI ship, Nano_Thief_Stats stats,int reclam) {
+	private boolean isRefined;
+	public Nano_Thief_AI_Reclaim(ShipAPI ship, Nano_Thief_Stats stats,int reclam,boolean isRefined,ShipAPI targetOverride) {
 		this.ship = ship;
 		this.stats = stats;
 		this.reclaimValue = reclam;
+		this.isRefined = isRefined;
+		if (targetOverride != null){
+			this.fabricator = targetOverride;
+			stats.getSkills(targetOverride).getIncomingReclaim().put(ship,reclaimValue);
+		}
 
 		isReclamationSwarm(ship);
 
@@ -243,9 +250,10 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 				if (reclamationReturnInterval.intervalElapsed()) {
 					CombatEngineAPI engine = Global.getCombatEngine();
 					fabricator = stats.getTargetForReclaim(ship,engine);
+					NanoThief_ShipSkills skills = stats.getSkills(fabricator);
+					if (skills != null) skills.getIncomingReclaim().put(ship,reclaimValue);
 					if (fabricator == null){
-						ship.setShipAI(new ThreatSwarmAI(ship));
-						//todo: change to combat AI.
+						ship.setShipAI(new Nano_Thief_AI_ReclaimCombat(ship,stats,this));
 					}
 				}
 			} else if(canGather()){
@@ -255,7 +263,7 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 					if (fabricator.isAlive()) {
 						//todo: HERE. this is were I apply effects to ships! I have no fucking clue how it works.
 						//fabricator.setCurrentCR(Math.min(1f, fabricator.getCurrentCR() + 0.01f * ship.getHullLevel()));
-						stats.applyEffectsWhenAbsorbed(fabricator,ship,reclaimValue);
+						stats.applyEffectsWhenAbsorbed(fabricator,ship,reclaimValue,isRefined);
 						RoilingSwarmEffect swarm = RoilingSwarmEffect.getSwarmFor(ship);
 						RoilingSwarmEffect swarmFabricator = RoilingSwarmEffect.getSwarmFor(fabricator);
 						if (swarm != null && swarmFabricator != null) {

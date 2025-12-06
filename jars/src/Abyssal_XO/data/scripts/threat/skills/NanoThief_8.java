@@ -22,25 +22,28 @@ public class NanoThief_8 extends Nano_Thief_Skill_Base {
     public static final double minReclaimToTarget = 0.5;
     public static final double baseReclaimEfficiencyMod = 0.8;
 
+
+    public static final double reclaimRaito = reclaimRefined / reclaimCost;
+
     /*todo list:
-        1) add a function onto all 'activeSkills' that gets the highest reclaim cost for a single charge of its ability.
-        2) create a Utils class with a 'calculate distance' function (current form is broken)
-        3) update the 'get closest ship' calculation in 'Nano_Thief_Stats' to use the new 'Available ships'
-            -also make it so every 1000 reclaim adds 10su to distance.
-            -also make it update 'Available ships' whenever it runs.
-        4) update the 'get fabricator' eq to include mass calculations.
-        5) update reclaim packages stats:
+        1) (done) add a function onto all 'activeSkills' that gets the highest reclaim cost for a single charge of its ability.
+        2) (done)create a Utils class with a 'calculate distance' function (current form is broken)
+        3) (done)update the 'get closest ship' calculation in 'Nano_Thief_Stats' to use the new 'Available ships'
+            -(done)also make it so every 1000 reclaim adds 10su to distance.
+            -(done)also make it update 'Available ships' whenever it runs.
+        4) (done)update the 'get fabricator' eq to include mass calculations.
+        5) (done, untested)update reclaim packages stats:
             -change vision range to 0.1X what it is.
             -change them so they return to 'normal' mode if a new valid fiendly target enters the battle field.
-        6) update NanoThief_ShipSkills EQ to no longer hold both 'reclaim' and 'refined reclaim'.
-        7) update 'Nano_Thief_AI_Reclaim' to remember the type of reclaim package.
-        8) update the 'add reclaim' eq (wherever it is not located) to be modified by Centralized Fabricator if normal reclaim is taken by another ship.
+        6) (done)update NanoThief_ShipSkills EQ to no longer hold both 'reclaim' and 'refined reclaim'.
+        7) (done)update 'Nano_Thief_AI_Reclaim' to remember the type of reclaim package.
+        8) (done)update the 'add reclaim' eq (wherever it is not located) to be modified by Centralized Fabricator if normal reclaim is taken by another ship.
         9) create the new 'Centralized Fabricator' listener.
             -needs to know how mush reclaim it must hold.
             -needs to look over friendly ships for reclaim target
             -needs to constantly refine reclaim.
-            -NEEDS TO HAVE HARVESTED RECLAIM PACKAGES -not- give reclaim. instead give some other useless stat.
-            -needs to display 'real' reclaim as 'refined reclaim'
+            -(done)NEEDS TO HAVE HARVESTED RECLAIM PACKAGES -not- give reclaim. instead give some other useless stat.
+            -(done)needs to display 'real' reclaim as 'refined reclaim'
             -needs to create reclaim packages with preset targets.
 
 

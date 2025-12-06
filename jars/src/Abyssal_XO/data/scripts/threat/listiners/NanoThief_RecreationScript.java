@@ -251,7 +251,7 @@ public class NanoThief_RecreationScript extends BaseEveryFrameCombatPlugin {
 
 			for (int i = 0; i < numSwarms; i++) {
 				ShipAPI curr = launchSwarm();
-				swarms.add(curr);
+				if (curr != null) swarms.add(curr);
 			}
 			spawnedSwarms = true;
 		}

@@ -5,6 +5,9 @@ V0.0.8:
         reclaim stored in ships is now added to newly created reclaim packages when the ship dies. (split between forces if a 'reclaim battle' is going on)
     balance changes:
         now reclaim is 200/400/600/800 per skill. So the same reclaim at max level, but less reclaim at lower levels.
+        reclaim will now treat ships as though they are 1 distance farther away for every 100 reclaim in storge when cosing what ship to travel to.
+        reclaim packages reduced sight to 10% of what it was
+        reclaim packages in 'combat' mode will switch back to 'reclaim' mode if a valid target for reclaim is found
     changed intier skill try:
         'Overcharged' -> 'Constant Repairs' (repair hull at the cost of Reclaim)
         'Mass Manufacturing' -> 'Scrapwork Microforge' (regenerate ammo for limit ammo weapons at a reclaim cost)
@@ -16,6 +19,8 @@ V0.0.8:
         'Desperate Measures' -> 'Centralized Logistics' (changed to increase the amount of reclaim available after a production process.)
         'Efficient Production' -> 'Desperate Measures'
         -new skill- -> 'Mastery' (in combat starship creation (like threat))
+    graphics and effects:
+        reclaim packages now get bigger depending on the amount of reclaim inside of them. at max level, reclaim packages are 30,40,50,60 in size. at min level, they are 22,24,26,28 in size. (from 40 size flat.)
 V0.0.7:
     fixes:
         fixed 'threat' creating 2 - 6 times as many reclaim swarms as they should when they die
