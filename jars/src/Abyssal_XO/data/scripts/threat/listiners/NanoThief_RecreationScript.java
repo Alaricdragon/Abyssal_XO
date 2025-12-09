@@ -88,10 +88,6 @@ public class NanoThief_RecreationScript extends BaseEveryFrameCombatPlugin {
 		}
 	}
 
-	public List<ShipAPI> getPieces() {
-		return pieces;
-	}
-
 	@Override
 	public void advance(float amount, List<InputEventAPI> events) {
 		if (Global.getCombatEngine().isPaused()) return;

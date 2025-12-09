@@ -139,7 +139,7 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
             }
             int trueReclaim = (int) reclaim;
             Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_1", "graphics/icons/hullsys/temporal_shell.png",
-                    "Reclaim Processing", basicReclaim +" / "+trueReclaim+ " Reclaim / Refined Reclaim", false);
+                    "Reclaim Processing", basicReclaim +" Reclaim / "+trueReclaim+ " Refined Reclaim", false);
         }else {
             Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_1", "graphics/icons/hullsys/temporal_shell.png",
                     "Stored Reclaim", (int) getTotalReclaim() + " Reclaim available", false);
