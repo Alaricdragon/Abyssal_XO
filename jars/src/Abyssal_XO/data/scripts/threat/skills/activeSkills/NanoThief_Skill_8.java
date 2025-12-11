@@ -113,7 +113,6 @@ public class NanoThief_Skill_8 extends NanoThief_SkillBase{
         }
     }
     public void createReclaimPackage(int spendPerTarget, ShipAPI target){
-        //todo: make it so the reclaim package calls little nano swarms from the fabracator. (like it does for salvage)
         Pair<Nano_Thief_Stats,Integer> data = new Pair<>();
         data.one = skills.stats;
         data.two = ship.getOriginalOwner();

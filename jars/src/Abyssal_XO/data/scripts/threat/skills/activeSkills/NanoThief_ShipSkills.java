@@ -2,6 +2,7 @@ package Abyssal_XO.data.scripts.threat.skills.activeSkills;
 
 import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
+import Abyssal_XO.data.scripts.threat.skills.NanoThief_8;
 import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.ShipAPI;
@@ -15,7 +16,7 @@ import java.util.HashMap;
 public class NanoThief_ShipSkills implements AdvanceableListener {
     private static Logger log = Global.getLogger(Nano_Thief_Stats.class);
     @Getter
-    private HashMap<ShipAPI,Integer> incomingReclaim = new HashMap<>();
+    private HashMap<ShipAPI,reclaim> incomingReclaim = new HashMap<>();
     protected Nano_Thief_Stats stats;
     @Getter
     private ArrayList<NanoThief_SkillBase> skills = new ArrayList<>();
@@ -72,16 +73,35 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
         reclaim=0;
         //refinedReclaim=0;
     }
-    public double getTotalReclaim(){
-        return reclaim;//+refinedReclaim;
-    }
-    public double getTotalReclaimIncludingIncomeing(){
+    public double getIncomingReclaimValue(){
+        //todo: modify this for a missing central fabricator as well.
         int incoming = 0;
         ArrayList<ShipAPI> toRemove = new ArrayList<>();
         for (ShipAPI a : incomingReclaim.keySet()) if (a.isHulk() || !a.isAlive()) toRemove.add(a);
         for (ShipAPI a : toRemove) incomingReclaim.remove(a);
-        for (ShipAPI a : incomingReclaim.keySet()) incoming += incomingReclaim.get(a);
-        return getTotalReclaim()+incoming;
+        for (ShipAPI a : incomingReclaim.keySet()){
+            double mod = 1;
+            if (stats.getCentralFab() != null) {
+                //Object ai = a.getAI();
+                //Nano_Thief_AI_Reclaim ai2;
+                //log.info("getting AI of: "+ai.getClass().getName() +", "+ai.getClass().getCanonicalName());
+                //if (ai instanceof Nano_Thief_AI_ReclaimCombat) {
+                //    ai2 = ((Nano_Thief_AI_ReclaimCombat) ai).getOldAI();
+                //} else {
+                //    ai2 = (Nano_Thief_AI_Reclaim) ai;
+                //}
+                if (ship.equals(stats.getCentralFab())) if (!incomingReclaim.get(a).isRefined) mod = NanoThief_8.reclaimRaito;
+                else if (!incomingReclaim.get(a).isRefined) mod = NanoThief_8.baseReclaimEfficiencyMod;
+            }
+            incoming += (int) (incomingReclaim.get(a).value*mod);
+        }
+        return incoming;
+    }
+    public double getTotalReclaim(){
+        return reclaim;//+refinedReclaim;
+    }
+    public double getTotalReclaimIncludingIncomeing(){
+        return getTotalReclaim()+ getIncomingReclaimValue();
     }
     public void useReclaim(double reclaim){
         //if (refinedReclaim > 0){
@@ -155,5 +175,17 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
         for (NanoThief_SkillBase a : skills){
             a.displayStats();
         }
+    }
+    public void addIncomingReclaim(ShipAPI reclaim, int value, boolean isRefined){
+        incomingReclaim.put(reclaim,new reclaim(value, isRefined));
+    }
+}
+
+class reclaim{
+    public int value;
+    public boolean isRefined;
+    reclaim(int value, boolean isRefined){
+        this.value = value;
+        this.isRefined = isRefined;
     }
 }

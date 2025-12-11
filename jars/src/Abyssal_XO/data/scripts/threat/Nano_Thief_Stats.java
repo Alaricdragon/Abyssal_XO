@@ -86,6 +86,7 @@ public class Nano_Thief_Stats {
     private static float playerExstraReclaim = 0;
     private static Nano_Thief_Stats playerStats;
 
+    private boolean centralFabAlive = true;
     //@Getter
     //private ArrayList<FighterWingAPI> OffinciveFighterWings = new ArrayList<>();
     @Getter
@@ -99,7 +100,17 @@ public class Nano_Thief_Stats {
             if (ship.hasListenerOfClass(NanoThief_ShipSkills.class)){
                 List<NanoThief_ShipSkills> b = ship.getListenerManager().getListeners(NanoThief_ShipSkills.class);
                 listiner = b.get(0);
-                playerExstraReclaim+=listiner.getTotalReclaim();
+                if (playerStats.centralFabAlive && ship.equals(playerStats.centralFab)){
+                    playerExstraReclaim += listiner.getTotalReclaimIncludingIncomeing();
+                    int toRefine = 0;
+                    for (NanoThief_SkillBase a : listiner.getAlwaysSkills()) if (a instanceof NanoThief_Skill_8){
+                        toRefine += ((NanoThief_Skill_8) a).fakeReclaim * NanoThief_8.reclaimRaito;
+                        break;
+                    }
+                    playerExstraReclaim += (toRefine*NanoThief_8.reclaimRaito);
+                }else {
+                    playerExstraReclaim += listiner.getTotalReclaimIncludingIncomeing();
+                }
             }else{
                 //target.addListener(new NanoThief_ShipSkills(this,target));
                 log.info("WARNING: NO LISTINER! SPOOKY!");
@@ -289,6 +300,8 @@ public class Nano_Thief_Stats {
         if (centralFab.isAlive() && !centralFab.isHulk()){
             log.info("found central fabricator, avoiding question of target.");
             return centralFab;
+        }else{
+            centralFabAlive = false;
         }
         ShipAPI output = null;
         return getTargetClosest(reclaim,engine);
@@ -388,7 +401,7 @@ public class Nano_Thief_Stats {
         fighter.getWing().setSourceShip(primary);
         //fighter.removeTag(Tags.THREAT_SWARM_AI);
         log.info("calculated reclaim as: "+amount);
-        fighter.setShipAI(new Nano_Thief_AI_Reclaim(fighter,this,amount,false,targetOverride));//todo: learn if this is even doing anything I guess????
+        fighter.setShipAI(new Nano_Thief_AI_Reclaim(fighter,this,amount,isRefined,targetOverride));//todo: learn if this is even doing anything I guess????
         manager.setSuppressDeploymentMessages(false);
 
         fighter.getMutableStats().getMaxSpeed().modifyMult("construction_swarm", NanoThief_RecreationScript.RECLAMATION_SWARM_SPEED_MULT);
@@ -445,6 +458,7 @@ public class Nano_Thief_Stats {
         swarm.getParams().baseMembersToMaintain = amount;
 
         fighter.getMutableStats().getSightRadiusMod().modifyMult("Abyssal_XO",0.1f);
+        if (isRefined) fighter.getMutableStats().getMaxSpeed().modifyMult("Abyssal_XO", (float) NanoThief_8.speedMod);
         return fighter;
     }
     public ShipAPI createReclaim(ShipAPI primary,int forceID){

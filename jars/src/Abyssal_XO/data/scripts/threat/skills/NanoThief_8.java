@@ -58,7 +58,7 @@ public class NanoThief_8 extends Nano_Thief_Skill_Base {
 
         tooltip.addSpacer(10f);
 
-        LabelAPI label = tooltip.addPara("\"By having a single, centralized factory we can streamline important production tasks, dramatically improving output and quality and reducing cost. \nNow we just need to worry about the logistics\"", Misc.getTextColor(), 0f);
+        LabelAPI label = tooltip.addPara("\"By having a single, centralized factory we can streamline important production tasks, dramatically improving output and quality well reducing cost. \nNow we just need to worry about the logistics\"", Misc.getTextColor(), 0f);
         tooltip.addPara(" - unknown", Misc.getTextColor(), 0f);
 
         label.italicize();

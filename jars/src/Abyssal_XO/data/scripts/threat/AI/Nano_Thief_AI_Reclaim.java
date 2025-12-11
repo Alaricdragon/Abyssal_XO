@@ -8,6 +8,7 @@ import com.fs.starfarer.api.impl.combat.threat.*;
 import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.api.util.WeightedRandomPicker;
+import lombok.Getter;
 import org.apache.log4j.Logger;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -82,9 +83,11 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 	protected boolean reclamationSwarm = true;
 
 	private Nano_Thief_Stats stats;
+	@Getter
 	private int reclaimValue;
 
 	private static Logger log = Global.getLogger(Nano_Thief_AI_Reclaim.class);
+	@Getter
 	private boolean isRefined;
 	public Nano_Thief_AI_Reclaim(ShipAPI ship, Nano_Thief_Stats stats,int reclam,boolean isRefined,ShipAPI targetOverride) {
 		this.ship = ship;
@@ -93,7 +96,7 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 		this.isRefined = isRefined;
 		if (targetOverride != null){
 			this.fabricator = targetOverride;
-			stats.getSkills(targetOverride).getIncomingReclaim().put(ship,reclaimValue);
+			stats.getSkills(targetOverride).addIncomingReclaim(ship,reclaimValue,isRefined);
 		}
 
 		isReclamationSwarm(ship);
@@ -251,7 +254,7 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 					CombatEngineAPI engine = Global.getCombatEngine();
 					fabricator = stats.getTargetForReclaim(ship,engine);
 					NanoThief_ShipSkills skills = stats.getSkills(fabricator);
-					if (skills != null) skills.getIncomingReclaim().put(ship,reclaimValue);
+					if (skills != null) skills.addIncomingReclaim(ship,reclaimValue,isRefined);
 					if (fabricator == null){
 						ship.setShipAI(new Nano_Thief_AI_ReclaimCombat(ship,stats,this));
 					}
