@@ -1,5 +1,6 @@
 package Abyssal_XO.data.scripts.threat.skills;
 
+import Abyssal_XO.data.scripts.Utils;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_SkillBase;
 import com.fs.starfarer.api.combat.ShipAPI;
@@ -12,8 +13,8 @@ import second_in_command.SCData;
 public class NanoThief_9 extends Nano_Thief_Skill_Base {
 
     public static double crStart = 0.4;
-    private static double crStartForEq = crStart*100;
-    public static double crReginSpeed = 0.001;//0.25%. speed at min value. is increased by eq.
+    private static final double crStartForEq = crStart*100;
+    public static double crReginSpeed = 0.06;//0.25%. speed at min value. is increased by eq.
     public static double crSkillSpeed = 0.01;//2.5%. speed at min value. is increase by eq
     public static double crSkillCost = 0.005;//2.5%. speed at min value. is increase by eq
 
@@ -28,29 +29,48 @@ public class NanoThief_9 extends Nano_Thief_Skill_Base {
     public static double overloadEffectTime = 5;
     public static double overloadSkillCost = 0.05;
     public static double overloadSkillSpeed = 0.1;
-    public static void main(String[] args){
+    /*public static void main(String[] args){
         double cr = 0.0;
         System.out.println("cr: "+cr*100);
-        System.out.println("cr gain speed: "+crRegenSpeed(cr)*100);
+        System.out.println("cr gain speed: "+crRegenSpeed(cr));//this is X 100 because the value is really small and hard to read.
+        System.out.println("displayd CR gain speed: 1 cr every: "+((int)((1/crRegenSpeed(cr))*100))/100+" seconds");
         System.out.println("skill speed: "+crSkillSpeed(cr));
+        System.out.println("displayed skill speed: "+(int)(crSkillSpeed(cr)*100)+"%");
         System.out.println("skill cost: "+crSkillCost(cr));
-    }
+        System.out.println("displayed skill cost: "+(int)(crSkillCost(cr)*100)+"%");
+
+
+        System.out.println("--");
+        cr = 0.4;
+        System.out.println("cr: "+cr*100);
+        System.out.println("cr gain speed: "+crRegenSpeed(cr));//this is X 100 because the value is really small and hard to read.
+        System.out.println("displayd CR gain speed: 1 cr every: "+((int)((1/crRegenSpeed(cr))*100))/100+" seconds");
+        System.out.println("skill speed: "+crSkillSpeed(cr));
+        System.out.println("displayed skill speed: "+((int)(crSkillSpeed(cr)*10000))/100+"%");
+        System.out.println("skill cost: "+crSkillCost(cr));
+        System.out.println("displayed skill cost: "+((int)(crSkillCost(cr)*10000))/100d+"%");
+    }*/
     public static double crRegenSpeed(double cr){
+        //please note: the EQ is more stable at * 100. intigers mult better then doubles.
         double cr2 = (cr*100);
+        return Utils.getExpenseValue(cr2,crStartForEq,10,crReginSpeed);
         //System.out.println("    cr: "+cr2);
-        double a = ((crStartForEq+10)-cr2) /10;//so max cr is 1, -10 is 2, -20 is 4, -30 is 8.
+        //double a = ((crStartForEq+10)-cr2) /10;//so max cr is 1, -10 is 2, -20 is 4, -30 is 8.
         //System.out.println("    a: "+a);
-        return crReginSpeed *(Math.pow(2,a)/2);
+        //return crReginSpeed *(Math.pow(2,a)/2);
     }
     public static double crSkillSpeed(double cr){
         double cr2 = (cr*100);
-        double a = ((crStartForEq+10)-cr2) /10;//so max cr is 1, -10 is 2, -20 is 4, -30 is 8.
-        return crSkillSpeed *(Math.pow(2,a)/2);//so at max cr it is bonus*1, -10 it is bonus*2, -20 it is bonus*4, -30 it is bonus*8
+        return Utils.getExpenseValue(cr2,crStartForEq,10,crSkillSpeed);
+        //double a = ((crStartForEq+10)-cr2) /10;//so max cr is 1, -10 is 2, -20 is 4, -30 is 8.
+        //return crSkillSpeed *(Math.pow(2,a)/2);//so at max cr it is bonus*1, -10 it is bonus*2, -20 it is bonus*4, -30 it is bonus*8
     }
     public static double crSkillCost(double cr){
         double cr2 = (cr*100);
-        double a = ((crStartForEq+10)-cr2) /10;//so max cr is 1, -10 is 2, -20 is 4, -30 is 8.
-        return crSkillCost *(Math.pow(2,a)/2);//so at max cr it is bonus*1, -10 it is bonus*2, -20 it is bonus*4, -30 it is bonus*8
+        return Utils.getExpenseValue(cr2,crStartForEq,10,crSkillCost);
+
+        //double a = ((crStartForEq+10)-cr2) /10;//so max cr is 1, -10 is 2, -20 is 4, -30 is 8.
+        //return crSkillCost *(Math.pow(2,a)/2);//so at max cr it is bonus*1, -10 it is bonus*2, -20 it is bonus*4, -30 it is bonus*8
     }
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
@@ -127,12 +147,13 @@ public class NanoThief_9 extends Nano_Thief_Skill_Base {
         String line3a = (int)(hpCost*100)+"%";
 
         String line4a = (int)(crStart*100)+"%";
-        String line5a = ((int)(crRegenSpeed(crStart)*10000))/100f+"%";
-        String line5b = (((int)(1/(crRegenSpeed(0))*10000))/100f)+"%";
-        String line6a = ((int)(1/(crSkillSpeed(crStart))*10000))/100f+"%";
-        String line6b = ((int)(crSkillSpeed(0)*10000))/100f+"%";
+        //String line5a = ((int)(crRegenSpeed(crStart)*100))/100+"%";
+        String line5a = (((int)(1/(crRegenSpeed(crStart))*100))/100)+"";
+        String line5b = (((int)(1/(crRegenSpeed(0))*100))/100)+"";
+        String line6a = ((int)((crSkillSpeed(crStart))*10000))/100+"%";
+        String line6b = ((int)(crSkillSpeed(0)*10000))/100+"%";
         String line7a = ((int)(crSkillCost(crStart)*10000))/100f+"%";
-        String line7b = ((int)(crSkillCost(0)*10000))/100f+"%";
+        String line7b = ((int)(crSkillCost(0)*10000))/100+"%";
 
         String line8a = (int)overloadMinTime+"";
         String line8b = (int)(overloadRemoved*100)+"%";
@@ -149,7 +170,7 @@ public class NanoThief_9 extends Nano_Thief_Skill_Base {
         tooltip.addPara("   -increase the cost of all Nano Thief skills by %s - %s",0,Misc.getTextColor(),Misc.getNegativeHighlightColor(),line7a,line7b);
         tooltip.addPara("   -this effect becomes mush more powerful as your cr reaches 0",0,Misc.getTextColor(),Misc.getHighlightColor());
         tooltip.addPara("If overloaded:",0,Misc.getHighlightColor(),Misc.getHighlightColor());
-        tooltip.addPara("   -reduce overload duration past %s second %s",0,Misc.getTextColor(),Misc.getHighlightColor(),line8a,line8b);
+        tooltip.addPara("   -reduce overload duration past %s second by %s",0,Misc.getTextColor(),Misc.getHighlightColor(),line8a,line8b);
         tooltip.addPara("   -costs %s reclaim per second reduced",0,Misc.getTextColor(),Misc.getNegativeHighlightColor(),line8c);
         tooltip.addPara("For %s seconds after overloading:",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line9a);
         tooltip.addPara("   -increase the speed of all Nano Thief skills by %s",0,Misc.getTextColor(),Misc.getHighlightColor(),line10a);

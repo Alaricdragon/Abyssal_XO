@@ -1,5 +1,6 @@
 package Abyssal_XO.data.scripts.threat.skills.activeSkills;
 
+import Abyssal_XO.data.scripts.Utils;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_1;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.ShipAPI;
@@ -36,7 +37,7 @@ public class NanoThief_Skill_1 extends NanoThief_SkillBase {
         skills.useReclaim(repairSpeed/NanoThief_1.getHullPerReclaim());
 
     }
-    public static double currentSpeedLogs(float hull,float maxHull){//this is HP per second.
+    /*public static double currentSpeedLogs(float hull,float maxHull){//this is HP per second.
         //this returns the hull repaired every second.
         double percent = hull / maxHull; //200 / 50 = 4. //50 / 200 = 0.25
         if (percent >= NanoThief_1.getHullMax()) return NanoThief_1.getSpeedMin()*maxHull;
@@ -60,37 +61,17 @@ public class NanoThief_Skill_1 extends NanoThief_SkillBase {
         //log.info("      CS: final: "+percent);//((int)(percent*1000))/1000d);//to get rid of long values.
         log.info("      CS: final: "+((int)(percent*1000))/1000d);//to get rid of long values.
         return percent * maxHull;
-        // H / maxH  *  ? / thing.
-        //thing * H / maxH = percent of total value.
-        /*
-         * what do I want? I want to get what % of the way the percent of hull is through hullmax - hullmin. (example: max = 0.9, min = 0.05, total = 0.85)
-         * so first thing: take percent-hullMin and / by 'range' to get the percent of effect.
-         * secondly, to get effect it is maxRepair + minRepair / 2 to get advradge repair
-         *
-         *
-         * */
-    }
+    }*/
     public static double currentSpeed(float hull,float maxHull){//this is HP per second.
         //this returns the hull repaired every second.
         double percent = hull / maxHull; //200 / 50 = 4. //50 / 200 = 0.25
-        if (percent >= NanoThief_1.getHullMax()) return NanoThief_1.getSpeedMin()*maxHull;
+        percent = NanoThief_1.getSpeed()*Utils.getExpenseValue(percent,1,NanoThief_1.getRepairExspensalThreshold(),NanoThief_1.getRepairExspensal());
+        /*if (percent >= NanoThief_1.getHullMax()) return NanoThief_1.getSpeedMin()*maxHull;
         if (percent <= NanoThief_1.getHullMin()) return NanoThief_1.getSpeedMax()*maxHull;
-        //float thing  = NanoThief_1.getHullMax() - NanoThief_1.getHullMin();
-        // range / 100 * percent / ?
-        //note: percent needs to be reduced by min.
         percent -= NanoThief_1.getHullMin();//
         percent = 1 - percent;
         percent = (percent) * NanoThief_1.getHullRange();
-        percent = (percent * NanoThief_1.getHullRepairThing())+NanoThief_1.getSpeedMin();
+        percent = (percent * NanoThief_1.getHullRepairThing())+NanoThief_1.getSpeedMin();*/
         return percent * maxHull;
-        // H / maxH  *  ? / thing.
-        //thing * H / maxH = percent of total value.
-        /*
-        * what do I want? I want to get what % of the way the percent of hull is through hullmax - hullmin. (example: max = 0.9, min = 0.05, total = 0.85)
-        * so first thing: take percent-hullMin and / by 'range' to get the percent of effect.
-        * secondly, to get effect it is maxRepair + minRepair / 2 to get advradge repair
-        *
-        *
-        * */
     }
 }
