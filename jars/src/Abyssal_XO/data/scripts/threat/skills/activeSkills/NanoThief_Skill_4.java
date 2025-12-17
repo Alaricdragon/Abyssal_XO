@@ -55,7 +55,7 @@ public class NanoThief_Skill_4 extends NanoThief_SkillBase{
                     "Scrapy Fortification", "is active for "+(int)(NanoThief_4.time-timeActive)+" seconds",false);
             return;
         }
-        if (skills.getTotalReclaim() < NanoThief_4.activeCost){
+        if (skills.getTotalReclaim() < skills.getModifiedCost(NanoThief_4.activeCost)){
             Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_4", "graphics/icons/hullsys/temporal_shell.png",
                     "Scrapy Fortification", "Cannot activate well under "+NanoThief_4.activeCost+" reclaim",true);
             return;
@@ -97,7 +97,7 @@ class DamageModifier implements DamageTakenModifier{
     public String modifyDamageTaken(Object param, CombatEntityAPI target, DamageAPI damage, Vector2f point, boolean shieldHit) {
         if (shieldHit) return null;
         if (skill.isActive){
-            float cost = (damage.getDamage()*(1-NanoThief_4.resistance))/NanoThief_4.damagePerCost;
+            double cost = skill.skills.getModifiedCost((damage.getDamage()*(1-NanoThief_4.resistance))/NanoThief_4.damagePerCost);
             if (cost >= skill.skills.getTotalReclaim()){
                 skill.skills.resetReclaim();
                 return null;
@@ -130,7 +130,7 @@ class trueTimeListener implements AdvanceableListener{
         if (!skill.isActive){
             //todo: this line needs work. it is always active. also I need tow ork on the other systems
             if (!(skill.damageLastFewSeconds >= NanoThief_4.activeDamage || ((1+skill.damageLastFewSeconds)/ skill.totalHull) >= NanoThief_4.activePercent)) return;
-            if (skill.skills.getTotalReclaim() < NanoThief_4.activeCost) return;
+            if (skill.skills.getTotalReclaim() < skill.skills.getModifiedCost(NanoThief_4.activeCost)) return;
             activate();
             //log.info("DLS: "+skill.damageLastFewSeconds+", totalHull: "+skill.totalHull);
             //log.info("damage ratio: " + ((1+skill.damageLastFewSeconds)/ skill.totalHull));
@@ -155,7 +155,7 @@ class trueTimeListener implements AdvanceableListener{
         for (ShipAPI b : skill.ship.getChildModulesCopy()){
             activate(b);
         }
-        skill.skills.useReclaim(NanoThief_4.activeCost);
+        skill.skills.useReclaim(skill.skills.getModifiedCost(NanoThief_4.activeCost));
         //skill.animate();
         //log.info("activate");
     }

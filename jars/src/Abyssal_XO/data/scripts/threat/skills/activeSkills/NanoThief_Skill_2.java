@@ -58,8 +58,8 @@ public class NanoThief_Skill_2 extends NanoThief_SkillBase {
                 for (WeaponAPI b : a) {
                     if (b.getAmmo() != 0) continue;
                     Pair<Double,Float> pair = getStatsForGun(b);
-                    if (skills.getTotalReclaim() >= pair.one) {
-                        skills.useReclaim(pair.one);
+                    if (skills.getTotalReclaim() >= skills.getModifiedCost(pair.one)) {
+                        skills.useReclaim(skills.getModifiedCost(pair.one));
                         cooldown = pair.two;
                         //b.getAmmoTracker().setAmmo(b.getAmmoTracker().getMaxAmmo());
                         b.setAmmo(b.getMaxAmmo());

@@ -23,8 +23,9 @@ public class NanoThief_Skill_1 extends NanoThief_SkillBase {
     private void advanceSingle(float amount, ShipAPI ship){
         if (ship.getHitpoints() >= ship.getMaxHitpoints()) return;
         double repairSpeed = currentSpeed(ship.getHitpoints(),ship.getMaxHitpoints()) * amount;
-        if (repairSpeed / NanoThief_1.getHullPerReclaim() > skills.getTotalReclaim()){
-            repairSpeed = (double) (NanoThief_1.getHullPerReclaim() * skills.getTotalReclaim());//(skills.getTotalReclaim() * NanoThief_1.getHullPerReclaim());
+        double costPerHull = skills.getModifiedCost(NanoThief_1.getHullPerReclaim());
+        if (repairSpeed / costPerHull > skills.getTotalReclaim()){
+            repairSpeed = (double) (costPerHull * skills.getTotalReclaim());//(skills.getTotalReclaim() * NanoThief_1.getHullPerReclaim());
         }
         if (repairSpeed <= 0) return;
         //log.info("repairing at: amount, repairSpeed, speedPerSecond: "+amount+", "+repairSpeed+", "+(repairSpeed/amount));
@@ -34,7 +35,7 @@ public class NanoThief_Skill_1 extends NanoThief_SkillBase {
         repairSpeed = Math.min(ship.getMaxHitpoints()-ship.getHitpoints(),repairSpeed);
         ship.setHitpoints((float) (ship.getHitpoints() + repairSpeed));//Math.min(ship.getMaxHitpoints(),ship.getHitpoints() + repairSpeed));
         //log.info("  got final HP as: "+ship.getHitpoints());
-        skills.useReclaim(repairSpeed/NanoThief_1.getHullPerReclaim());
+        skills.useReclaim(repairSpeed/costPerHull);
 
     }
     /*public static double currentSpeedLogs(float hull,float maxHull){//this is HP per second.

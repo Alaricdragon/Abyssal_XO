@@ -103,7 +103,8 @@ public class NanoThief_Skill_7 extends NanoThief_SkillBase{
         cooldown -= amount;
         if (cooldown > 0) return;
         //maxFighters = getMaxFighters();
-        if (skills.getTotalReclaim() < skills.stats.DF_swarmCost && !waiting){// || currentFighters() >= maxFighters){
+        double cost = skills.getModifiedCost(skills.stats.DF_swarmCost);
+        if (skills.getTotalReclaim() < cost && !waiting){// || currentFighters() >= maxFighters){
             //if (skills.stats.getReadSavedDP() <= 0) skills.stats.getDeployedPonits();
             cooldown = 1;//skills.stats.OF_productionTime;
             onCooldown = false;
@@ -124,7 +125,7 @@ public class NanoThief_Skill_7 extends NanoThief_SkillBase{
         waiting = false;
         onCooldown = true;
         cooldown = recharge;
-        skills.useReclaim(skills.stats.DF_swarmCost);
+        skills.useReclaim(cost);
         createCombatSwarmCore();
     }
 
@@ -138,7 +139,7 @@ public class NanoThief_Skill_7 extends NanoThief_SkillBase{
                     "Offencive Fighter Construction Status", cur+" / "+max, true);
             return;
         }*/
-        if (skills.getTotalReclaim() >= skills.stats.DF_swarmCost){
+        if (skills.getTotalReclaim() >= skills.getModifiedCost(skills.stats.DF_swarmCost)){
             if (!onCooldown && !waiting){
                 onCooldown = true;
                 cooldown = recharge;

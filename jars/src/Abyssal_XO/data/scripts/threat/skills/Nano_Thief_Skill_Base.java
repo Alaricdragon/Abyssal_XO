@@ -18,6 +18,9 @@ public class Nano_Thief_Skill_Base extends SCBaseSkillPlugin {
     public NanoThief_SkillBase createListiner(NanoThief_ShipSkills skills, ShipAPI ship){
         return null;
     }
+    public NanoThief_SkillBase[] createListiners(NanoThief_ShipSkills skills, ShipAPI ship){
+        return null;
+    }
     @Override
     public String getAffectsString() {
         return "All Ships In Fleet";//"Simulacrum Fighter Wings produced by your fleet";

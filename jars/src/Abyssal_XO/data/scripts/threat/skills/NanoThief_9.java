@@ -1,8 +1,7 @@
 package Abyssal_XO.data.scripts.threat.skills;
 
 import Abyssal_XO.data.scripts.Utils;
-import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
-import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_SkillBase;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.*;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
@@ -16,10 +15,11 @@ public class NanoThief_9 extends Nano_Thief_Skill_Base {
     private static final double crStartForEq = crStart*100;
     public static double crReginSpeed = 0.06;//0.25%. speed at min value. is increased by eq.
     public static double crSkillSpeed = 0.01;//2.5%. speed at min value. is increase by eq
-    public static double crSkillCost = 0.005;//2.5%. speed at min value. is increase by eq
+    public static double crSkillCost = 0.0025;//2.5%. speed at min value. is increase by eq
+    public static double reclaimCostPerCR = 50*100;//*100 because cr is messerd in percents. makes math faster.
 
     public static double hpSpeed = 0.02;//2% speed per missing hull.
-    public static double hpCost = 0.01;
+    public static double hpCost = 0.005;
 
     //ship.getFluxTracker().getOverloadTimeRemaining();
     //ship.getFluxTracker().setOverloadDuration();
@@ -27,11 +27,14 @@ public class NanoThief_9 extends Nano_Thief_Skill_Base {
     public static double overloadRemoved = 0.5;
     public static double overloadCostPerSecond = 50;
     public static double overloadEffectTime = 5;
-    public static double overloadSkillCost = 0.05;
+    public static double overloadSkillCost = 0.025;
     public static double overloadSkillSpeed = 0.1;
-    /*public static void main(String[] args){
+    public static void main(String[] args){
         double cr = 0.0;
-        System.out.println("cr: "+cr*100);
+        System.out.println("got CR: "+cr+" regen speed as:" + crRegenSpeed(cr));
+        cr = 0.4;
+        System.out.println("got CR: "+cr+" regen speed as:" + crRegenSpeed(cr));
+        /*System.out.println("cr: "+cr*100);
         System.out.println("cr gain speed: "+crRegenSpeed(cr));//this is X 100 because the value is really small and hard to read.
         System.out.println("displayd CR gain speed: 1 cr every: "+((int)((1/crRegenSpeed(cr))*100))/100+" seconds");
         System.out.println("skill speed: "+crSkillSpeed(cr));
@@ -48,8 +51,8 @@ public class NanoThief_9 extends Nano_Thief_Skill_Base {
         System.out.println("skill speed: "+crSkillSpeed(cr));
         System.out.println("displayed skill speed: "+((int)(crSkillSpeed(cr)*10000))/100+"%");
         System.out.println("skill cost: "+crSkillCost(cr));
-        System.out.println("displayed skill cost: "+((int)(crSkillCost(cr)*10000))/100d+"%");
-    }*/
+        System.out.println("displayed skill cost: "+((int)(crSkillCost(cr)*10000))/100d+"%");*/
+    }
     public static double crRegenSpeed(double cr){
         //please note: the EQ is more stable at * 100. intigers mult better then doubles.
         double cr2 = (cr*100);
@@ -150,6 +153,7 @@ public class NanoThief_9 extends Nano_Thief_Skill_Base {
         //String line5a = ((int)(crRegenSpeed(crStart)*100))/100+"%";
         String line5a = (((int)(1/(crRegenSpeed(crStart))*100))/100)+"";
         String line5b = (((int)(1/(crRegenSpeed(0))*100))/100)+"";
+        String line5c = (int)(reclaimCostPerCR/100)+"";
         String line6a = ((int)((crSkillSpeed(crStart))*10000))/100+"%";
         String line6b = ((int)(crSkillSpeed(0)*10000))/100+"%";
         String line7a = ((int)(crSkillCost(crStart)*10000))/100f+"%";
@@ -165,9 +169,10 @@ public class NanoThief_9 extends Nano_Thief_Skill_Base {
         tooltip.addPara("   -increase the speed of all Nano Thief skills by %s",0,Misc.getTextColor(),Misc.getHighlightColor(),line2a);
         tooltip.addPara("   -increase the cost of all Nano Thief skills by %s",0,Misc.getTextColor(),Misc.getNegativeHighlightColor(),line3a);
         tooltip.addPara("When below %s Combat Readyness:",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line4a);
-        tooltip.addPara("   -regenerate 1 cr every %s - %s second",0,Misc.getTextColor(),Misc.getHighlightColor(),line5a,line5b);
         tooltip.addPara("   -increase the speed of all Nano Thief skills by %s - %s",0,Misc.getTextColor(),Misc.getHighlightColor(),line6a,line6b);
         tooltip.addPara("   -increase the cost of all Nano Thief skills by %s - %s",0,Misc.getTextColor(),Misc.getNegativeHighlightColor(),line7a,line7b);
+        tooltip.addPara("   -regenerate 1 cr every %s - %s second",0,Misc.getTextColor(),Misc.getHighlightColor(),line5a,line5b);
+        tooltip.addPara("   -costs %s reclaim per CR regained",0,Misc.getTextColor(),Misc.getNegativeHighlightColor(),line5c);
         tooltip.addPara("   -this effect becomes mush more powerful as your cr reaches 0",0,Misc.getTextColor(),Misc.getHighlightColor());
         tooltip.addPara("If overloaded:",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         tooltip.addPara("   -reduce overload duration past %s second by %s",0,Misc.getTextColor(),Misc.getHighlightColor(),line8a,line8b);
@@ -185,7 +190,7 @@ public class NanoThief_9 extends Nano_Thief_Skill_Base {
     }
 
     @Override
-    public NanoThief_SkillBase createListiner(NanoThief_ShipSkills skills, ShipAPI ship) {
-        return super.createListiner(skills, ship);
+    public NanoThief_SkillBase[] createListiners(NanoThief_ShipSkills skills, ShipAPI ship) {
+        return new NanoThief_SkillBase[]{new NanoThief_Skill_9_0(skills,ship), new NanoThief_Skill_9_1(skills, ship), new NanoThief_Skill_9_2(skills, ship)};
     }
 }

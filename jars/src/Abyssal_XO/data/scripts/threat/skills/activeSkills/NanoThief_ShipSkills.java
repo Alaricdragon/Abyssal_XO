@@ -3,6 +3,7 @@ package Abyssal_XO.data.scripts.threat.skills.activeSkills;
 import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_8;
+import Abyssal_XO.data.scripts.threat.skills.NanoThief_9;
 import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.ShipAPI;
@@ -25,6 +26,9 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
     protected ShipAPI ship;
     protected float timeflow=1f;
     protected double reclaim = 0;
+    public HashMap<String,Double> costMods = new HashMap<>();
+    public HashMap<String,Float> speedMods = new HashMap<>();
+    boolean activeWellOverloaded = false;
     //@Getter
     //protected double refinedReclaim = 0;
     public NanoThief_ShipSkills(Nano_Thief_Stats stats, ShipAPI ship){
@@ -34,8 +38,15 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
         //add in a switch statment to determin data about this ship.
         stats.getAvailableShips().add(ship);
         for (Nano_Thief_Skill_Base a : stats.getSkills()){
+            if (a instanceof NanoThief_9) activeWellOverloaded = true;
             NanoThief_SkillBase listener = a.createListiner(this,this.ship);
-            addListener(listener,ship);
+            if (listener != null) {
+                addListener(listener, ship);
+            }
+
+            NanoThief_SkillBase[] listeners = a.createListiners(this,this.ship);
+            if (listeners == null) continue;
+            addListeners(listeners,ship);
             //if (listener == null) continue;
             //skills.add(listener);
             /*if (listener.applyToModules()){
@@ -58,16 +69,20 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
     }
     public void addListener(NanoThief_SkillBase listiner, ShipAPI ship){
         if (listiner == null || !listiner.shouldUse(ship)){
-            log.info("cannot add this listiner to this ship...");
+            log.info("cannot add this listiner to this ship..."+listiner.getClass().getCanonicalName());
             return;
         }
         if (listiner.alwaysAdvance()){
-            log.info("adding skill to 'always'");
+            log.info("adding skill to 'always' of class: "+listiner.getClass().getCanonicalName());
             alwaysSkills.add(listiner);
         }else{
-            log.info("adding skill to 'only when reclaim'");
+            log.info("adding skill to 'only when reclaim'"+listiner.getClass().getCanonicalName());
             skills.add(listiner);
         }
+    }
+    public void addListeners(NanoThief_SkillBase[] listiner, ShipAPI ship){
+        log.info("attempting to add a list of listiners of size: "+listiner.length);
+        for (NanoThief_SkillBase a : listiner) addListener(a,ship);
     }
     public void resetReclaim(){
         reclaim=0;
@@ -96,6 +111,22 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
             incoming += (int) (incomingReclaim.get(a).value*mod);
         }
         return incoming;
+    }
+    public double getModifiedCost(double cost){
+        return cost * costMulti;
+    }
+    protected double costMulti=1;
+    public double getCostMulti(){
+        double mult = 1;
+        for (double a : costMods.values()) mult *= a;
+        costMulti = mult;
+        return mult;
+    }
+    public float getTimeMulti(){
+        float mult = 1;
+        for (float a : speedMods.values()) mult *= a;
+        timeflow = mult;
+        return mult;
     }
     public double getTotalReclaim(){
         return reclaim;//+refinedReclaim;
@@ -130,7 +161,11 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
     }
     @Override
     public void advance(float amount) {
+        getCostMulti();
+        getTimeMulti();
         attemptToDisplayStats();
+        if (ship.isHulk()) return;
+        if (!activeWellOverloaded && (ship.getFluxTracker().isOverloaded() || ship.getFluxTracker().isVenting())) return;
         for (NanoThief_SkillBase a : alwaysSkills) a.advance(amount);
         if (getTotalReclaim() == 0) return;
         amount *= timeflow;
@@ -172,6 +207,9 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
                 "Prepared Simulacrum Fighter Wing", stored+"/"+maxStorge, false);*/
 
 
+        for (NanoThief_SkillBase a : alwaysSkills){
+            a.displayStats();
+        }
         for (NanoThief_SkillBase a : skills){
             a.displayStats();
         }
