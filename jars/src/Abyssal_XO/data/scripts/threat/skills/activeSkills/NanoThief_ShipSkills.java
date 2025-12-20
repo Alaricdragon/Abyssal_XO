@@ -25,9 +25,10 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
     private ArrayList<NanoThief_SkillBase> alwaysSkills = new ArrayList<>();
     protected ShipAPI ship;
     protected float timeflow=1f;
+    protected double costMulti=1;
     protected double reclaim = 0;
-    public HashMap<String,Double> costMods = new HashMap<>();
-    public HashMap<String,Float> speedMods = new HashMap<>();
+    private HashMap<String,Double> costMods = new HashMap<>();
+    private HashMap<String,Float> speedMods = new HashMap<>();
     boolean activeWellOverloaded = false;
     //@Getter
     //protected double refinedReclaim = 0;
@@ -115,18 +116,33 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
     public double getModifiedCost(double cost){
         return cost * costMulti;
     }
-    protected double costMulti=1;
     public double getCostMulti(){
         double mult = 1;
-        for (double a : costMods.values()) mult *= a;
+        for (double a : costMods.values()) mult += a;
         costMulti = mult;
         return mult;
     }
     public float getTimeMulti(){
         float mult = 1;
-        for (float a : speedMods.values()) mult *= a;
+        for (float a : speedMods.values()) mult += a;
         timeflow = mult;
         return mult;
+    }
+    public void addSpeedMod(String id, float value){
+        speedMods.put(id,value);
+        getTimeMulti();
+    }
+    public void removeSpeedMod(String id){
+        speedMods.remove(id);
+        getTimeMulti();
+    }
+    public void addCostMod(String id, double value){
+        costMods.put(id,value);
+        getCostMulti();
+    }
+    public void removeCostMod(String id){
+        costMods.remove(id);
+        getCostMulti();
     }
     public double getTotalReclaim(){
         return reclaim;//+refinedReclaim;
@@ -161,8 +177,8 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
     }
     @Override
     public void advance(float amount) {
-        getCostMulti();
-        getTimeMulti();
+        //getCostMulti();
+        //getTimeMulti();
         attemptToDisplayStats();
         if (ship.isHulk()) return;
         if (!activeWellOverloaded && (ship.getFluxTracker().isOverloaded() || ship.getFluxTracker().isVenting())) return;

@@ -147,7 +147,7 @@ public class NanoThief_9 extends Nano_Thief_Skill_Base {
                 3) keep in mind that skills that reduce skill cooldown should not be effected by themselves (so they unmodified themself.)
         */
         String line2a = (int)(hpSpeed*100)+"%";
-        String line3a = (int)(hpCost*100)+"%";
+        String line3a = ((int)(hpCost*100000d)/1000d)+"%";
 
         String line4a = (int)(crStart*100)+"%";
         //String line5a = ((int)(crRegenSpeed(crStart)*100))/100+"%";
@@ -156,7 +156,7 @@ public class NanoThief_9 extends Nano_Thief_Skill_Base {
         String line5c = (int)(reclaimCostPerCR/100)+"";
         String line6a = ((int)((crSkillSpeed(crStart))*10000))/100+"%";
         String line6b = ((int)(crSkillSpeed(0)*10000))/100+"%";
-        String line7a = ((int)(crSkillCost(crStart)*10000))/100f+"%";
+        String line7a = ((int)((crSkillCost(crStart)*100000))/1000d)+"%";
         String line7b = ((int)(crSkillCost(0)*10000))/100+"%";
 
         String line8a = (int)overloadMinTime+"";
@@ -164,16 +164,16 @@ public class NanoThief_9 extends Nano_Thief_Skill_Base {
         String line8c = (int)(overloadCostPerSecond)+"";
         String line9a = (int)(overloadEffectTime)+"";
         String line10a = (int)(overloadSkillSpeed * 100)+"%";
-        String line11a = (int)(overloadSkillCost*100)+"%";
+        String line11a = ((int)(overloadSkillCost*100000)/1000d)+"%";
         tooltip.addPara("For every %s missing hull:",0,Misc.getHighlightColor(),Misc.getHighlightColor(),"1%");
         tooltip.addPara("   -increase the speed of all Nano Thief skills by %s",0,Misc.getTextColor(),Misc.getHighlightColor(),line2a);
         tooltip.addPara("   -increase the cost of all Nano Thief skills by %s",0,Misc.getTextColor(),Misc.getNegativeHighlightColor(),line3a);
         tooltip.addPara("When below %s Combat Readyness:",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line4a);
         tooltip.addPara("   -increase the speed of all Nano Thief skills by %s - %s",0,Misc.getTextColor(),Misc.getHighlightColor(),line6a,line6b);
         tooltip.addPara("   -increase the cost of all Nano Thief skills by %s - %s",0,Misc.getTextColor(),Misc.getNegativeHighlightColor(),line7a,line7b);
-        tooltip.addPara("   -regenerate 1 cr every %s - %s second",0,Misc.getTextColor(),Misc.getHighlightColor(),line5a,line5b);
+        tooltip.addPara("   -regenerate %s cr every %s - %s second",0,Misc.getTextColor(),Misc.getHighlightColor(),"1",line5a,line5b);
         tooltip.addPara("   -costs %s reclaim per CR regained",0,Misc.getTextColor(),Misc.getNegativeHighlightColor(),line5c);
-        tooltip.addPara("   -this effect becomes mush more powerful as your cr reaches 0",0,Misc.getTextColor(),Misc.getHighlightColor());
+        tooltip.addPara("   -this effect becomes mush more powerful as your cr reaches %s",0,Misc.getTextColor(),Misc.getHighlightColor(),"0");
         tooltip.addPara("If overloaded:",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         tooltip.addPara("   -reduce overload duration past %s second by %s",0,Misc.getTextColor(),Misc.getHighlightColor(),line8a,line8b);
         tooltip.addPara("   -costs %s reclaim per second reduced",0,Misc.getTextColor(),Misc.getNegativeHighlightColor(),line8c);

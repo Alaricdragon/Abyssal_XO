@@ -92,8 +92,8 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
         //CampaignFleetAPI fleet;
         if (commander.isPlayer()){
             //fleet = Global.getSector().getPlayerFleet();
-            if(Global.getSector().getPlayerPerson().getMemoryWithoutUpdate().contains(memKey)) {
-                customFighter = Global.getSector().getPlayerPerson().getMemoryWithoutUpdate().getString(memKey);
+            if(commander.getMemoryWithoutUpdate().contains(memKey)) {
+                customFighter = commander.getMemoryWithoutUpdate().getString(memKey);
             }else{
                 customFighter = Settings.NANO_THIEF_PALYER_BASEWING;
             }

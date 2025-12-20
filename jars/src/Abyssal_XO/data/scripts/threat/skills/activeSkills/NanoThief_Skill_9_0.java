@@ -24,12 +24,12 @@ public class NanoThief_Skill_9_0 extends NanoThief_SkillBase{
         timeLeft = 1;*/
         float hp = ship.getHitpoints() / ship.getMaxHitpoints(); // 10 / 5 = 2. 5 / 10 = 0.5
         hp = Math.min(hp,1);
-        skills.costMods.put("9_0",(NanoThief_9.hpCost*((1-hp)*100))+1);
-        skills.speedMods.put("9_0", ((float) (NanoThief_9.hpSpeed*((1-hp)*100)))+1);
+        skills.addCostMod("9_0",(NanoThief_9.hpCost*((1-hp)*100)));
+        skills.addSpeedMod("9_0", ((float) (NanoThief_9.hpSpeed*((1-hp)*100))));
     }
     @Override
     public void displayStats() {
-        log.info("displaying stats for skill 9...");
+        log.info("displaying stats for skill 9 as cost: "+skills.costMulti+", "+"speed: "+skills.timeflow);
         Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_9", "graphics/icons/hullsys/temporal_shell.png",
                 "ReclaimSpeedAndCost", "cost multi: "+((int)(skills.costMulti*100))/100d+" speed multi: "+((int)(skills.timeflow*100))/100d, false);
     }

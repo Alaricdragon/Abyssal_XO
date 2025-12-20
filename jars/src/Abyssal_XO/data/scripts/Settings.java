@@ -47,6 +47,9 @@ public class Settings {
     public static final String NANO_THIEF_ABILITY_NAME = "Adjust NanoThief Settings";
     public static final String NANO_THIEF_CUSTOM_WING_ATK_MEMORY_KEY = "$Abyssal_XO_NANO_THIEF_CUSTOMWING";
     public static final String NANO_THIEF_CUSTOM_WING_DEF_MEMORY_KEY = "$Abyssal_XO_NANO_THIEF_CUSTOMWING_DEF";
+    public static final String NANO_THIEF_CUSTOM_MASTERY_MEMORY_KEY = "$Abyssal_XO_NANO_MASTERY_SHIP";
+    public static final String NANO_THIEF_CUSTOM_MASTERY_NUMBERS_MEMORY_KEY = "$Abyssal_XO_NANO_MASTERY_NUMBERS";
+    public static final String NANO_THIEF_MASTERY_BASESHIP = "kite_pirates_Raider";
     public static final String NANO_THIEF_BASEWING = "attack_swarm_wing";//"attack_swarm_wing";
     public static final String NANO_THIEF_PALYER_BASEWING = "talon_wing";//"broadsword_wing";
     public static final String DISPLAYID_NANOTHIEF = "Abyssal_XO_DisplayKey";
