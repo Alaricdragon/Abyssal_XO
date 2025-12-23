@@ -1,16 +1,26 @@
 package Abyssal_XO.data.scripts.threat.dialogPlugin;
 
+import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
+import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.InteractionDialogAPI;
 import com.fs.starfarer.api.campaign.InteractionDialogPlugin;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.combat.EngagementResultAPI;
+import com.fs.starfarer.api.ui.CustomPanelAPI;
+import com.fs.starfarer.api.ui.TooltipMakerAPI;
+import org.apache.log4j.Logger;
 
 import java.util.Map;
 
 public class Nano_Thief_SelectMastery implements InteractionDialogPlugin {
+    private static Logger log = Global.getLogger(Nano_Thief_Stats.class);
     @Override
     public void init(InteractionDialogAPI dialog) {
-        dialog.getVisualPanel();
+        log.info("attempting to inti dialog.... help.");
+        //dialog.getVisualPanel();
+        dialog.getOptionPanel().clearOptions();
+        dialog.getTextPanel().clear();
+        dialog.getTextPanel().addPara("did it work?");
         /*
         --new questions--
         so, I want to create a interface with two parts. At the top, a list of ships the player has, with a button next to each that I use to add that ship to memory.
@@ -18,6 +28,25 @@ public class Nano_Thief_SelectMastery implements InteractionDialogPlugin {
         the issue is: I have no idea how to start. I have attempted to look at mods that do things like this, but have found that the interfaces are very completed and attempting to understand them has been difficult.
         does anyone have any advice on were to start with this mess?
         */
+        /*so my plan:
+        * 1: remember that I can force a givin item to be next to another item by milipulating its position stat.
+        * -!and you define what logic each button fires in your plugin's buttonPressed method (the param there is the data param of addButton)!-
+        *
+        * 2: read the text in 'Nano_Thief_ThingTemp' to understand that system.
+        * */
+
+
+        //basics on how to get a my interface.
+        fuckYou asdsada = new fuckYou();
+        //applying my interface
+        CustomPanelAPI THE_THING = dialog.getVisualPanel().showCustomPanel(100,100,asdsada);
+        //getting a tooltip from my interface (this is were I get buttons. I have used tooltips before. this could fucking work lets goooo)
+        TooltipMakerAPI tooltip = THE_THING.createUIElement(asdsada.p.getWidth(), asdsada.p.getHeight(), false);
+        //adding a button, and getting the ability to manipulate its position!
+        tooltip.addButton("AAAAAA","ButtonData",5,5,1).getPosition();
+        //setting the position of my data to the top left.
+        asdsada.p.inTL(0,0);
+        log.info("in theory, done initing dialog");
     }
 
     @Override

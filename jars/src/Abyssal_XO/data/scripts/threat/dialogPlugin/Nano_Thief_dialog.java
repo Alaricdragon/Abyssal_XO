@@ -68,7 +68,7 @@ public class Nano_Thief_dialog implements InteractionDialogPlugin {
         exitOnReset = false;
         if (hasSimAtk) dialog.getOptionPanel().addOption("attack","attack");
         if (hasSimDef) dialog.getOptionPanel().addOption("defense","defense");
-        if (hasMastery) dialog.getOptionPanel().addOption("mastery","master");
+        if (hasMastery) dialog.getOptionPanel().addOption("mastery","mastery");
         dialog.getOptionPanel().addOption("exit (escape)","exit");
         dialog.setOptionOnEscape("exit","exit");
 
@@ -81,6 +81,10 @@ public class Nano_Thief_dialog implements InteractionDialogPlugin {
         dialog.showCargoPickerDialog("cargo","Conferm", "Cancal",true,400, Nano_Thief_Selection_Sfw_Attack_CargoListiner.prepareForSelection(false),new Nano_Thief_Selection_Sfw_Def_CargoListiner());
     }
     public void attemptShowMastery(InteractionDialogAPI dialog){
+        log.info("trying to set up mastery dialog plugin...");
+        Nano_Thief_SelectMastery a = new Nano_Thief_SelectMastery();
+        dialog.setPlugin(a);
+        a.init(dialog);
     }
     public static void reset(){
         if (exitOnReset){
