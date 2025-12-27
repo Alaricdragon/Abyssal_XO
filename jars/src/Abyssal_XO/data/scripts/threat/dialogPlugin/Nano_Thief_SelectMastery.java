@@ -1,5 +1,6 @@
 package Abyssal_XO.data.scripts.threat.dialogPlugin;
 
+import Abyssal_XO.data.scripts.CustomUIPannel.OptionsHolder;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.InteractionDialogAPI;
@@ -20,7 +21,7 @@ public class Nano_Thief_SelectMastery implements InteractionDialogPlugin {
         //dialog.getVisualPanel();
         dialog.getOptionPanel().clearOptions();
         dialog.getTextPanel().clear();
-        dialog.getTextPanel().addPara("did it work?");
+        //dialog.getTextPanel().addPara("did it work?");
         /*
         --new questions--
         so, I want to create a interface with two parts. At the top, a list of ships the player has, with a button next to each that I use to add that ship to memory.
@@ -37,16 +38,31 @@ public class Nano_Thief_SelectMastery implements InteractionDialogPlugin {
 
 
         //basics on how to get a my interface.
-        fuckYou asdsada = new fuckYou();
+        OptionsHolder optionsHolder = new OptionsHolder();
+        optionsHolder(optionsHolder,dialog,0.2,0.2,0.8,0.5);
         //applying my interface
-        CustomPanelAPI THE_THING = dialog.getVisualPanel().showCustomPanel(100,100,asdsada);
-        //getting a tooltip from my interface (this is were I get buttons. I have used tooltips before. this could fucking work lets goooo)
-        TooltipMakerAPI tooltip = THE_THING.createUIElement(asdsada.p.getWidth(), asdsada.p.getHeight(), false);
-        //adding a button, and getting the ability to manipulate its position!
-        tooltip.addButton("AAAAAA","ButtonData",5,5,1).getPosition();
-        //setting the position of my data to the top left.
-        asdsada.p.inTL(0,0);
+
         log.info("in theory, done initing dialog");
+
+
+
+        /*Nano_Thief_ThingTemp panel = new Nano_Thief_ThingTemp(){
+
+        };
+        panel.init();
+        dialog.getVisualPanel().showCustomPanel(0,0,panel.getRoot());*/
+    }
+    public void optionsHolder(OptionsHolder optionsHolder, InteractionDialogAPI dialog, double px, double py, double sx, double sy){
+        CustomPanelAPI THE_THING = dialog.getVisualPanel().showCustomPanel(1000,1000,optionsHolder);
+        //setting the position of my data to the top left.
+        optionsHolder.p.inTL(0,0);
+        //getting a tooltip from my interface (this is were I get buttons. I have used tooltips before. this could fucking work lets goooo)
+        TooltipMakerAPI tooltip = THE_THING.createUIElement(optionsHolder.p.getWidth(), optionsHolder.p.getHeight(), false);
+
+        //adding a button, and getting the ability to manipulate its position!
+        //tooltip.addButton("AAAAAA","ButtonData",5,5,1).getPosition();
+        optionsHolder.createOptions(THE_THING,dialog,tooltip);
+        THE_THING.addUIElement(tooltip);
     }
 
     @Override

@@ -98,3 +98,4 @@ public class fuckYou implements CustomUIPanelPlugin {
     public void buttonPressed(Object buttonId) {
     }
 }
+

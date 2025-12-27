@@ -14,9 +14,9 @@ import java.awt.*;
 import java.util.List;
 
 public class Nano_Thief_ThingTemp implements CustomUIPanelPlugin {
-    /*example of how this works:
+/*example of how this works:
 
-baseSelfRefreshingPanel p1 = new baseSelfRefreshingPanel(){
+baseSelfRefreshingPanel p1 = new baseSelfRefreshingPanel(){//new this
 //here insert overrides for methods, like buildTooltip and such
 };
 p1.init();  //this creates the panel internally and makes it work, and ensures it already has the desired size _before_ adding it to parent
