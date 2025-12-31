@@ -21,6 +21,7 @@ public class Nano_Thief_SelectMastery implements InteractionDialogPlugin {
         //dialog.getVisualPanel();
         dialog.getOptionPanel().clearOptions();
         dialog.getTextPanel().clear();
+        dialog.setPromptText("");
         //dialog.getTextPanel().addPara("did it work?");
         /*
         --new questions--
@@ -58,9 +59,9 @@ public class Nano_Thief_SelectMastery implements InteractionDialogPlugin {
         optionsHolder.p.inTL(0,0);
         //getting a tooltip from my interface (this is were I get buttons. I have used tooltips before. this could fucking work lets goooo)
         TooltipMakerAPI tooltip = THE_THING.createUIElement(optionsHolder.p.getWidth(), optionsHolder.p.getHeight(), false);
-
         //adding a button, and getting the ability to manipulate its position!
         //tooltip.addButton("AAAAAA","ButtonData",5,5,1).getPosition();
+        tooltip.addCustom(THE_THING,1);
         optionsHolder.createOptions(THE_THING,dialog,tooltip);
         THE_THING.addUIElement(tooltip);
     }

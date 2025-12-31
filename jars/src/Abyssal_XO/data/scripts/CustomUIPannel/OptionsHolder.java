@@ -1,6 +1,8 @@
 package Abyssal_XO.data.scripts.CustomUIPannel;
 
 import Abyssal_XO.data.scripts.threat.dialogPlugin.Nano_Thief_dialog;
+import ashlib.data.plugins.info.FighterInfoGenerator;
+import ashlib.data.plugins.info.ShipInfoGenerator;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CustomUIPanelPlugin;
 import com.fs.starfarer.api.campaign.InteractionDialogAPI;
@@ -51,12 +53,11 @@ public class OptionsHolder implements CustomUIPanelPlugin {
         UIComponentAPI last_a = pTemp;
         UIComponentAPI last_b;
 
-        for (int a = 0; a < fleetList.size(); a++){
+        for (int a = 0; a < 1; a++){//fleetList.size(); a++){
             FleetMemberAPI ship = fleetList.get(a);
             last_b = addSingleShip(ship,a);
             last_b.getPosition().rightOfMid(last_a,1);
             last_a = last_b;
-
         }
         //tooltip.addTable("",0,1);
         //tooltip.beginTable(Misc.getBasePlayerColor(),Misc.getDarkPlayerColor(),Misc.getBrightPlayerColor(),100,true,false,);
@@ -100,15 +101,18 @@ public class OptionsHolder implements CustomUIPanelPlugin {
         });*/
         //tooltip.addComponent(new ShipSprite(sprite,p));
         //FleetMemberAPI.getSpriteOverride()
-        ButtonAPI labal = tooltip.addButton(ship.getShipName(),"",100,50,1);
-
+        TooltipMakerAPI shipHolder = panel.createUIElement(100,100,false);
+        //ButtonAPI labal = tooltip.addButton(ship.getShipName(),"",100,50,1);
+        LabelAPI labal = ShipInfoGenerator.processShipData(ship.getHullSpec(),shipHolder,false);//how big is this generated
+        panel.addUIElement(shipHolder);
+        shipHolder.
+        //HorizontalTooltipMaker a = new HorizontalTooltipMaker();
         ButtonAPI but = tooltip.addButton("Select Ship","add:"+idInFleet,100,50,1);
         //but.getPosition().belowMid(labal,1);
-        labal.getPosition().belowMid(but,1);
-        return labal;
+        labal.getPosition().aboveMid(but,1);
+        return shipHolder;
 
     }
-    public PositionAPI pos;
     public OptionsHolder(){
         //sprite = Global.getSettings().getSprite("graphics/ships/wolf/wolf_base.png");
 
