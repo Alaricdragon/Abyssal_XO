@@ -1,6 +1,7 @@
 package Abyssal_XO.data.scripts.threat.dialogPlugin;
 
-import Abyssal_XO.data.scripts.CustomUIPannel.OptionsHolder;
+import Abyssal_XO.data.scripts.CustomUIPannel.MasteryHolder;
+import Abyssal_XO.data.scripts.CustomUIPannel.ShipsInFleetHolder;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.InteractionDialogAPI;
@@ -39,8 +40,10 @@ public class Nano_Thief_SelectMastery implements InteractionDialogPlugin {
 
 
         //basics on how to get a my interface.
-        OptionsHolder optionsHolder = new OptionsHolder();
-        optionsHolder(optionsHolder,dialog,0.2,0.2,0.8,0.5);
+        new MasteryHolder(dialog);
+
+        //ShipsInFleetHolder optionsHolder = new ShipsInFleetHolder();
+        //optionsHolder(optionsHolder,dialog,0.2,0.2,0.8,0.5);
         //applying my interface
 
         log.info("in theory, done initing dialog");
@@ -53,18 +56,19 @@ public class Nano_Thief_SelectMastery implements InteractionDialogPlugin {
         panel.init();
         dialog.getVisualPanel().showCustomPanel(0,0,panel.getRoot());*/
     }
-    public void optionsHolder(OptionsHolder optionsHolder, InteractionDialogAPI dialog, double px, double py, double sx, double sy){
+    /*public void optionsHolder(InteractionDialogAPI dialog, double px, double py, double sx, double sy){
         CustomPanelAPI THE_THING = dialog.getVisualPanel().showCustomPanel(1000,1000,optionsHolder);
         //setting the position of my data to the top left.
-        optionsHolder.p.inTL(0,0);
+        THE_THING.getPosition().inTL(0,0);
         //getting a tooltip from my interface (this is were I get buttons. I have used tooltips before. this could fucking work lets goooo)
         TooltipMakerAPI tooltip = THE_THING.createUIElement(optionsHolder.p.getWidth(), optionsHolder.p.getHeight(), false);
         //adding a button, and getting the ability to manipulate its position!
         //tooltip.addButton("AAAAAA","ButtonData",5,5,1).getPosition();
-        tooltip.addCustom(THE_THING,1);
+        //tooltip.addCustom(THE_THING,1);
+        ShipsInFleetHolder optionsHolder = new ShipsInFleetHolder();
         optionsHolder.createOptions(THE_THING,dialog,tooltip);
-        THE_THING.addUIElement(tooltip);
-    }
+        //THE_THING.addUIElement(tooltip);
+    }*/
 
     @Override
     public void optionSelected(String optionText, Object optionData) {
