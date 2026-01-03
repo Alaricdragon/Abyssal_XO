@@ -12,11 +12,14 @@ import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import java.util.List;
 
 public class Master_FinalButtons implements CustomUIPanelPlugin {
-    public Master_FinalButtons(CustomPanelAPI panel, InteractionDialogAPI dialog, TooltipMakerAPI tooltip){
-        ButtonAPI exit = tooltip.addButton("Cancel","exit",100,50,10);
-        ButtonAPI finish = tooltip.addButton("Accept","finish",100,50,10);
+    public Master_FinalButtons(){
+    }
+    public void createOptions(CustomPanelAPI panel){
+        //ButtonAPI finish = tooltip.addButton("Accept","finish",100,50,10);
+        //ButtonAPI exit = tooltip.addButton("Cancel","exit",100,50,10);
 
-        exit.getPosition().leftOfMid(finish,5);
+        //exit.getPosition().leftOfMid(finish,5);
+
     }
     @Override
     public void positionChanged(PositionAPI position) {

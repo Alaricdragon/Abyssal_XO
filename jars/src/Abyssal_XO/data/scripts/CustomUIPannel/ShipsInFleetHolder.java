@@ -39,17 +39,17 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
     private SpriteAPI sprite;
     boolean setOptions = false;
     public CustomPanelAPI panel;
-    private InteractionDialogAPI dialog;
+    public CustomPanelAPI master;
     private TooltipMakerAPI tooltip;
-    public void createOptions(CustomPanelAPI panel,InteractionDialogAPI dialog){
+    public void createOptions(CustomPanelAPI master,CustomPanelAPI panel){
         MasteryHolder.log.info("    runing create options...");
         this.panel = panel;
-        this.dialog = dialog;
+        this.master = master;
         this.tooltip = panel.createUIElement(panel.getPosition().getWidth(),panel.getPosition().getHeight(),true);
         MasteryHolder.log.info("    created UI element...");
         List<FleetMemberAPI> fleetList = Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy();
 
-        ButtonAPI pTemp = tooltip.addButton("","",0,100,2);
+        ButtonAPI pTemp = tooltip.addButton("","",0,150,2);
         UIComponentAPI last_a = pTemp;
         UIComponentAPI last_b;
 
@@ -58,7 +58,7 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
 
         for (int a = 0; a < fleetList.size(); a++){
             FleetMemberAPI ship = fleetList.get(a);
-            last_b = addSingleShip_Working(ship,a);
+            last_b = addSingleShip_asCompoment(ship,a);
             if (last_a != null) last_b.getPosition().rightOfMid(last_a,1);
             last_a = last_b;
         }
@@ -72,6 +72,10 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
 
         panel.addUIElement(tooltip);
         MasteryHolder.log.info("    tooltip added...");
+    }
+    private UIComponentAPI addSingleShip_asCompoment(FleetMemberAPI ship, int idInFleet){
+        return Mastery_FleetShip_Single.createItem(master,panel,tooltip,ship,idInFleet,100,50);
+
     }
     private UIComponentAPI addSingleShip_Working(FleetMemberAPI ship, int idInFleet){
         ArrayList<FleetMemberAPI> ships = new ArrayList<>();

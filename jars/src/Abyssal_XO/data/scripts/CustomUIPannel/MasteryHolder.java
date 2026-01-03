@@ -20,44 +20,50 @@ public class MasteryHolder implements CustomUIPanelPlugin {
         createOptions(dialog);
     }
     public void createOptions(InteractionDialogAPI dialog){
+        log.info("version 0.4");
         float height = Global.getSettings().getScreenHeightPixels();
         float width = Global.getSettings().getScreenWidthPixels();
         this.dialog = dialog;
         CustomPanelAPI THE_THING = dialog.getVisualPanel().showCustomPanel(width,height,this);
+        //THE_THING.getPosition().setLocation(0,0);
         //setting the position of my data to the top left.
-        THE_THING.getPosition().inTL(0,0);
+        //THE_THING.getPosition().inTL(0,50);
         //getting a tooltip from my interface (this is were I get buttons. I have used tooltips before. this could fucking work lets goooo)
         TooltipMakerAPI tooltip = THE_THING.createUIElement(width, height, false);
-        //adding a button, and getting the ability to manipulate its position!
-        //tooltip.addButton("AAAAAA","ButtonData",5,5,1).getPosition();
-        //tooltip.addCustom(THE_THING,1);
         this.panel = THE_THING;
         this.tooltip = tooltip;
 
         float infoWidth = 200;
         float buttonHeight = 50;
-        //UIComponentAPI info = tooltip.addCustom(THE_THING.createCustomPanel(height,infoWidth,new MasterInformationHolder(THE_THING,dialog,tooltip)),5);
-        log.info("stage 1");
+        /*MasterInformationHolder infoTemp2 = new MasterInformationHolder();
+        CustomPanelAPI infoTemp = THE_THING.createCustomPanel(infoWidth,height,infoTemp2);
+        infoTemp2.createOptions(infoTemp,infoWidth,height);
+        UIComponentAPI info = tooltip.addCustom(infoTemp,10);*/
+        //info.getPosition().setLocation(0,0);
+        //note: need to create the internals here.
+
         ShipsInFleetHolder fleetTemp2 = new ShipsInFleetHolder();
-        log.info("stage 2");
         CustomPanelAPI fleetTemp = THE_THING.createCustomPanel(width-infoWidth,(height-buttonHeight)/2,fleetTemp2);
-        log.info("stage 3");
-        fleetTemp2.createOptions(fleetTemp,dialog);
-        log.info("stage 4");
-
+        fleetTemp2.createOptions(THE_THING,fleetTemp);
         UIComponentAPI fleet = tooltip.addCustom(fleetTemp,5);
-        log.info("compleat");
 
-        /*
-        UIComponentAPI selected = tooltip.addCustom(THE_THING.createCustomPanel(width-infoWidth,(height-buttonHeight)/2,new HeldShipsHolder(THE_THING,dialog,tooltip)),5);
 
-        UIComponentAPI bottomButtons = tooltip.addCustom(THE_THING.createCustomPanel(width-infoWidth,buttonHeight,new Master_FinalButtons(THE_THING,dialog,tooltip)),5);
+        /*HeldShipsHolder selectedTemp2 = new HeldShipsHolder();
+        CustomPanelAPI selectedTemp = THE_THING.createCustomPanel(width-infoWidth,(height-buttonHeight)/2,selectedTemp2);
+        selectedTemp2.createOptions(selectedTemp);
+        UIComponentAPI selected = tooltip.addCustom(selectedTemp,5);
 
-        fleet.getPosition().rightOfTop(info,5);
-        selected.getPosition().belowMid(fleet,5);
-        bottomButtons.getPosition().belowMid(selected,5);*/
+
+        Master_FinalButtons bottomButtonsTemp2 = new Master_FinalButtons();
+        CustomPanelAPI bottomButtonsTemp = THE_THING.createCustomPanel(width-infoWidth,buttonHeight,bottomButtonsTemp2);
+        bottomButtonsTemp2.createOptions(bottomButtonsTemp);
+        UIComponentAPI bottomButtons = tooltip.addCustom(bottomButtonsTemp,5);*/
+        //fleet.getPosition().rightOfMid(info,5);
+        //selected.getPosition().belowMid(fleet,5);
+        //bottomButtons.getPosition().belowMid(selected,5);
 
         THE_THING.addUIElement(tooltip);
+        panel.wrapTooltipWithBox(tooltip);
 
     }
     @Override

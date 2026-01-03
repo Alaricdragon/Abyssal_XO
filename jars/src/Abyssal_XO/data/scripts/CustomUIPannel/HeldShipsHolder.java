@@ -10,8 +10,11 @@ import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import java.util.List;
 
 public class HeldShipsHolder implements CustomUIPanelPlugin {
-    public HeldShipsHolder(CustomPanelAPI panel, InteractionDialogAPI dialog, TooltipMakerAPI tooltip){
+    public HeldShipsHolder(){
         //createOptions(panel, dialog, tooltip);
+    }
+    public void createOptions(CustomPanelAPI panel){
+
     }
     @Override
     public void positionChanged(PositionAPI position) {
