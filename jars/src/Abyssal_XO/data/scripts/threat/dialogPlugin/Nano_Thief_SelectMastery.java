@@ -20,9 +20,11 @@ public class Nano_Thief_SelectMastery implements InteractionDialogPlugin {
     public void init(InteractionDialogAPI dialog) {
         log.info("attempting to inti dialog.... help.");
         //dialog.getVisualPanel();
-        dialog.getOptionPanel().clearOptions();
-        dialog.getTextPanel().clear();
-        dialog.setPromptText("");
+
+        //dialog.getOptionPanel().clearOptions();
+        //dialog.getTextPanel().clear();
+        //dialog.setPromptText("");
+
         //dialog.getTextPanel().addPara("did it work?");
         /*
         --new questions--

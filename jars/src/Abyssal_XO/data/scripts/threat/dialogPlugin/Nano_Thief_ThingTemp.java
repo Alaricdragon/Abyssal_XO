@@ -67,14 +67,14 @@ and in buttonPressed you process those inputs, check button id and such
         return root;
     }
 
-    public Nano_Thief_ThingTemp init() {
+    /*public Nano_Thief_ThingTemp init() {
         log.info("running init on button thing?");
         CustomPanelAPI p1 = Global.getSettings().createCustom(0,0, this);
         setRoot(p1);
         skip();
         root.getPosition().setSize(width(), height());
         return this;
-    }
+    }*/
 
     public void skip(){
         //this self advances.

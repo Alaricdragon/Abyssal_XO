@@ -48,14 +48,14 @@ public abstract class Nano_Thief_Thing2_Temp implements CustomUIPanelPlugin {
         return root;
     }
 
-    public Nano_Thief_Thing2_Temp init() {
+    /*public Nano_Thief_Thing2_Temp init() {
         log.info("running init on button thing?");
         CustomPanelAPI p1 = Global.getSettings().createCustom(0,0, this);
         setRoot(p1);
         skip();
         root.getPosition().setSize(width(), height());
         return this;
-    }
+    }*/
 
     public void skip(){
         //this self advances.

@@ -66,30 +66,10 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
         panel.wrapTooltipWithBox(tooltip);
 
     }
-    public CustomPanelAPI createOptions(CustomPanelAPI panel){
-        log.info("version 0.4");
+    public void createOptions(CustomPanelAPI panel,TooltipMakerAPI tooltip){
+        log.info("version 0.5");
         float height = Global.getSettings().getScreenHeightPixels();
         float width = Global.getSettings().getScreenWidthPixels();
-        //this.dialog = dialog;
-        //dialog.dismiss();`
-        CustomPanelAPI THE_THING = Global.getSettings().createCustom(width,height,this);
-        //this.panel = THE_THING;
-        //Global.getSector().getCampaignUI().getCurrentInteractionDialog().showCustomVisualDialog(width, height, new NidavelirMainPanelDelegate(new NidavelirMainPanelPlugin(false, cur, null), Global.getSector().getCampaignUI().getCurrentInteractionDialog()));
-
-        //Global.getSector().getCampaignUI().showInteractionDialog(THE_THING);
-        //Global.getSettings().createCustom();//.showInteractionDialog(THE_THING);
-
-
-        //THE_THING;
-        //HERE: this is the thing as it actually works.
-        //CustomPanelAPI THE_THING = dialog.getVisualPanel().showCustomPanel(width,height,this);
-
-        //THE_THING.getPosition().setLocation(0,0);
-        //setting the position of my data to the top left.
-        //THE_THING.getPosition().inTL(0,50);
-        //getting a tooltip from my interface (this is were I get buttons. I have used tooltips before. this could fucking work lets goooo)
-        TooltipMakerAPI tooltip = THE_THING.createUIElement(width, height, false);
-        this.tooltip = tooltip;
 
         float infoWidth = 200;
         float buttonHeight = 50;
@@ -102,7 +82,7 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
 
         ShipsInFleetHolder fleetTemp2 = new ShipsInFleetHolder();
         CustomPanelAPI fleetTemp = panel.createCustomPanel(width-infoWidth,(height-buttonHeight)/2,fleetTemp2);
-        fleetTemp2.createOptions(THE_THING,fleetTemp);
+        fleetTemp2.createOptions(panel,fleetTemp);
         UIComponentAPI fleet = tooltip.addCustom(fleetTemp,5);
 
 
@@ -116,13 +96,13 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
         CustomPanelAPI bottomButtonsTemp = panel.createCustomPanel(width-infoWidth,buttonHeight,bottomButtonsTemp2);
         bottomButtonsTemp2.createOptions(bottomButtonsTemp);
         UIComponentAPI bottomButtons = tooltip.addCustom(bottomButtonsTemp,5);*/
-        fleet.getPosition().rightOfMid(info,5);
+
+        fleet.getPosition().rightOfBottom(info,5);
         //selected.getPosition().belowMid(fleet,5);
         //bottomButtons.getPosition().belowMid(selected,5);
-
-        THE_THING.addUIElement(tooltip);
-        panel.wrapTooltipWithBox(tooltip);
-        return THE_THING;
+        //THE_THING.addUIElement(tooltip);
+        //panel.wrapTooltipWithBox(tooltip);
+        //return THE_THING;
     }
     @Override
     public void positionChanged(PositionAPI position) {
@@ -149,11 +129,8 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
         float height = Global.getSettings().getScreenHeightPixels();
         float width = Global.getSettings().getScreenWidthPixels();
         TooltipMakerAPI tooltip = panel.createUIElement(width,height,false);
-        CustomPanelAPI newPanel = createOptions(panel);
-        tooltip.addCustom(newPanel,0);
-
+        createOptions(panel,tooltip);
         panel.addUIElement(tooltip);
-        //what are callbacks?
         this.callbacks = callbacks;
     }
 
