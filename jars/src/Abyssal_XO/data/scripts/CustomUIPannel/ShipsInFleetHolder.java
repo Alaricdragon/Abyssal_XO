@@ -1,9 +1,7 @@
 package Abyssal_XO.data.scripts.CustomUIPannel;
 
-import Abyssal_XO.data.scripts.threat.dialogPlugin.Nano_Thief_dialog;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CustomUIPanelPlugin;
-import com.fs.starfarer.api.campaign.InteractionDialogAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.graphics.SpriteAPI;
 import com.fs.starfarer.api.input.InputEventAPI;
@@ -46,11 +44,12 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
         this.panel = panel;
         this.master = master;
         this.tooltip = panel.createUIElement(panel.getPosition().getWidth(),panel.getPosition().getHeight(),true);
+        tooltip.getPosition().setLocation(0,0);
         MasteryHolder.log.info("    created UI element...");
         List<FleetMemberAPI> fleetList = Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy();
 
-        ButtonAPI pTemp = tooltip.addButton("","",0,150,2);
-        UIComponentAPI last_a = pTemp;
+        //ButtonAPI pTemp = tooltip.addButton("","",0,150,2);
+        UIComponentAPI last_a = null;//pTemp;
         UIComponentAPI last_b;
 
         MasteryHolder.log.info("    added button...");
@@ -58,7 +57,8 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
 
         for (int a = 0; a < fleetList.size(); a++){
             FleetMemberAPI ship = fleetList.get(a);
-            last_b = addSingleShip_asCompoment(ship,a);
+            //last_b = addSingleShip_asCompoment(ship,a);
+            last_b = addSingleShip_Working(ship,a);
             if (last_a != null) last_b.getPosition().rightOfMid(last_a,1);
             last_a = last_b;
         }
@@ -74,7 +74,7 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
         MasteryHolder.log.info("    tooltip added...");
     }
     private UIComponentAPI addSingleShip_asCompoment(FleetMemberAPI ship, int idInFleet){
-        return Mastery_FleetShip_Single.createItem(master,panel,tooltip,ship,idInFleet,100,50);
+        return Mastery_HeldShip_Single.createItem(master,tooltip,ship,idInFleet,100,50);
 
     }
     private UIComponentAPI addSingleShip_Working(FleetMemberAPI ship, int idInFleet){
@@ -85,7 +85,7 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
 
 
         ButtonAPI but = tooltip.addButton("Select Ship","add:"+idInFleet,100,50,1);
-        labal.getPosition().aboveMid(but,1);
+        but.getPosition().belowMid(labal,1);
 
         //tooltip.addComponent(panel.createCustomPanel(100,100,new DisplayShip()));
 
@@ -183,79 +183,7 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
 
     @Override
     public void buttonPressed(Object buttonId) {
+
+        MasteryHolder.log.info("button pressed in: ShipsInFleetHolder");
     }
 }
-/*
-
-//fuck ash lib. I dont like it >=(
-//for real, I dont get how this is suppose to be easyer? I am clearly doing something fucking wrong.
-class DisplayShip implements CustomUIPanelPlugin {
-    public static CustomPanelAPI createShip(CustomPanelAPI panel, InteractionDialogAPI dialog, TooltipMakerAPI tooltip,FleetMemberAPI ship){
-        CustomPanelAPI newPannel = panel.createCustomPanel(100,100,new DisplayShip());
-
-        //TooltipMakerAPI shipHolder = newPannel.createUIElement(100,100,false);
-        //LabelAPI labal = ShipInfoGenerator.processShipData(ship.getHullSpec(),shipHolder,false);//how big is this generated
-        //newPannel.addUIElement(shipHolder);
-
-        TooltipMakerAPI shipHolder = newPannel.createUIElement(100,100,false);
-        float width= 990f;
-        CustomPanelAPI panelAPIs = ShipInfoGenerator.getShipImage(ship.getHullSpec(), 100, null).one;
-        ShipInfoGenerator.generate(shipHolder, AshMisc.getFleetMemberFromSpec(ship.getHullSpec()),null,panelAPIs,width);
-
-        newPannel.addUIElement(shipHolder);
-
-        tooltip.addCustom(newPannel,0);
-
-
-        return panelAPIs;
-    }
-    public static CustomPanelAPI createShip_working(CustomPanelAPI panel, InteractionDialogAPI dialog, TooltipMakerAPI tooltip,FleetMemberAPI ship){
-        CustomPanelAPI newPannel = panel.createCustomPanel(100,100,new DisplayShip());
-
-        TooltipMakerAPI shipHolder = newPannel.createUIElement(100,100,false);
-        LabelAPI labal = ShipInfoGenerator.processShipData(ship.getHullSpec(),shipHolder,false);//how big is this generated
-        newPannel.addUIElement(shipHolder);
-
-        tooltip.addCustom(newPannel,0);
-
-
-
-        //float width= 990f;
-        //CustomPanelAPI panelAPIs = ShipInfoGenerator.getShipImage(ship.getHullSpec(), 100, null).one;
-        //ShipInfoGenerator.generate(tooltip, AshMisc.getFleetMemberFromSpec(ship.getHullSpec()),null,panelAPIs,width);
-
-
-        return newPannel;
-    }
-    public DisplayShip(){
-    }
-    @Override
-    public void positionChanged(PositionAPI position) {
-
-    }
-
-    @Override
-    public void renderBelow(float alphaMult) {
-
-    }
-
-    @Override
-    public void render(float alphaMult) {
-
-    }
-
-    @Override
-    public void advance(float amount) {
-
-    }
-
-    @Override
-    public void processInput(List<InputEventAPI> events) {
-
-    }
-
-    @Override
-    public void buttonPressed(Object buttonId) {
-
-    }
-}*/

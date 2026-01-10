@@ -86,20 +86,20 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
         UIComponentAPI fleet = tooltip.addCustom(fleetTemp,5);
 
 
-        /*HeldShipsHolder selectedTemp2 = new HeldShipsHolder();
+        HeldShipsHolder selectedTemp2 = new HeldShipsHolder();
         CustomPanelAPI selectedTemp = panel.createCustomPanel(width-infoWidth,(height-buttonHeight)/2,selectedTemp2);
-        selectedTemp2.createOptions(selectedTemp);
+        selectedTemp2.createOptions(selectedTemp,width-infoWidth,(height-buttonHeight)/2);
         UIComponentAPI selected = tooltip.addCustom(selectedTemp,5);
 
 
         Master_FinalButtons bottomButtonsTemp2 = new Master_FinalButtons();
         CustomPanelAPI bottomButtonsTemp = panel.createCustomPanel(width-infoWidth,buttonHeight,bottomButtonsTemp2);
-        bottomButtonsTemp2.createOptions(bottomButtonsTemp);
-        UIComponentAPI bottomButtons = tooltip.addCustom(bottomButtonsTemp,5);*/
+        bottomButtonsTemp2.createOptions(bottomButtonsTemp,width-infoWidth,buttonHeight);
+        UIComponentAPI bottomButtons = tooltip.addCustom(bottomButtonsTemp,5);
 
-        fleet.getPosition().rightOfBottom(info,5);
-        //selected.getPosition().belowMid(fleet,5);
-        //bottomButtons.getPosition().belowMid(selected,5);
+        fleet.getPosition().rightOfTop(info,5);
+        selected.getPosition().belowMid(fleet,5);
+        bottomButtons.getPosition().belowMid(selected,5);
         //THE_THING.addUIElement(tooltip);
         //panel.wrapTooltipWithBox(tooltip);
         //return THE_THING;
@@ -129,6 +129,7 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
         float height = Global.getSettings().getScreenHeightPixels();
         float width = Global.getSettings().getScreenWidthPixels();
         TooltipMakerAPI tooltip = panel.createUIElement(width,height,false);
+        tooltip.getPosition().inTL(0,0);
         createOptions(panel,tooltip);
         panel.addUIElement(tooltip);
         this.callbacks = callbacks;
