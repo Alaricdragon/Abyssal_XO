@@ -17,6 +17,11 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
     private CustomPanelAPI panel;
     private InteractionDialogAPI dialog;
     private TooltipMakerAPI tooltip;
+
+
+    public HeldShipsHolder heldShips;
+    public ShipsInFleetHolder fleetShips;
+    public MasterInformationHolder infoHolder;
     public MasteryHolder(InteractionDialogAPI dialog){
         this.dialog = dialog;
         float height = Global.getSettings().getScreenHeightPixels();
@@ -67,6 +72,7 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
 
     }
     public void createOptions(CustomPanelAPI panel,TooltipMakerAPI tooltip){
+        masteryHolder = this;
         log.info("version 0.5");
         float height = Global.getSettings().getScreenHeightPixels();
         float width = Global.getSettings().getScreenWidthPixels();
@@ -74,6 +80,7 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
         float infoWidth = 200;
         float buttonHeight = 50;
         MasterInformationHolder infoTemp2 = new MasterInformationHolder();
+        infoHolder = infoTemp2;
         CustomPanelAPI infoTemp = panel.createCustomPanel(infoWidth,height,infoTemp2);
         infoTemp2.createOptions(infoTemp,infoWidth,height);
         UIComponentAPI info = tooltip.addCustom(infoTemp,10);
@@ -81,12 +88,14 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
         //note: need to create the internals here.
 
         ShipsInFleetHolder fleetTemp2 = new ShipsInFleetHolder();
+        fleetShips = fleetTemp2;
         CustomPanelAPI fleetTemp = panel.createCustomPanel(width-infoWidth,(height-buttonHeight)/2,fleetTemp2);
         fleetTemp2.createOptions(panel,fleetTemp);
         UIComponentAPI fleet = tooltip.addCustom(fleetTemp,5);
 
 
         HeldShipsHolder selectedTemp2 = new HeldShipsHolder();
+        heldShips = selectedTemp2;
         CustomPanelAPI selectedTemp = panel.createCustomPanel(width-infoWidth,(height-buttonHeight)/2,selectedTemp2);
         selectedTemp2.createOptions(selectedTemp,width-infoWidth,(height-buttonHeight)/2);
         UIComponentAPI selected = tooltip.addCustom(selectedTemp,5);

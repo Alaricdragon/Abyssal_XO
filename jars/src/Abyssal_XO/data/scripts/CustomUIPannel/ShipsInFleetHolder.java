@@ -73,10 +73,10 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
         panel.addUIElement(tooltip);
         MasteryHolder.log.info("    tooltip added...");
     }
-    private UIComponentAPI addSingleShip_asCompoment(FleetMemberAPI ship, int idInFleet){
+    /*private UIComponentAPI addSingleShip_asCompoment(FleetMemberAPI ship, int idInFleet){
         return Mastery_HeldShip_Single.createItem(master,tooltip,ship,idInFleet,100,50);
 
-    }
+    }*/
     private UIComponentAPI addSingleShip_Working(FleetMemberAPI ship, int idInFleet){
         ArrayList<FleetMemberAPI> ships = new ArrayList<>();
         ships.add(ship);
