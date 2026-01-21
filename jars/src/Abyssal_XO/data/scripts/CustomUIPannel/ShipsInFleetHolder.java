@@ -7,6 +7,7 @@ import com.fs.starfarer.api.graphics.SpriteAPI;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
+import com.fs.starfarer.api.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -183,7 +184,11 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
 
     @Override
     public void buttonPressed(Object buttonId) {
-
+        String[] data = ((String) buttonId).split(":");
+        MasteryHolder.masteryHolder.heldShips.toAdd = new Pair<>();
+        MasteryHolder.masteryHolder.heldShips.toAdd.one = Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy().get(Integer.parseInt(data[1]));
+        MasteryHolder.masteryHolder.heldShips.toAdd.two = 10;
+        MasteryHolder.masteryHolder.heldShips.recreate_full();
         MasteryHolder.log.info("button pressed in: ShipsInFleetHolder");
     }
 }

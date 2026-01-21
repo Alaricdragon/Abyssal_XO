@@ -18,19 +18,20 @@ public class Mastery_HeldShip_Single implements CustomUIPanelPlugin {
     * bugs:
     *   1: right now, the ship is not displaying at the 'right' position. fixes required.*/
     private boolean changed = false;
-    private int chance;
+    public int chance;
     private int totalChance;
 
     private TooltipMakerAPI tooltip;
-    private FleetMemberAPI ship;
+    public FleetMemberAPI ship;
     private float shipSize;
     private float buttonHeight;
 
-    private UIComponentAPI odds;
+    private LabelAPI odds;
     private UIComponentAPI addB;
     private UIComponentAPI reduceB;
 
     public UIComponentAPI thisCompoment;
+
     public Mastery_HeldShip_Single(int chance, int totalChance){
         this.chance = chance;
         this.totalChance = totalChance;
@@ -64,28 +65,22 @@ public class Mastery_HeldShip_Single implements CustomUIPanelPlugin {
         ButtonAPI but = tooltip.addButton("remove Ship","remove",shipSize,buttonSize,1);
         //labal.getPosition().aboveMid(but,1);
         ButtonAPI butMin = tooltip.addButton("-","decrease",shipSize/3,buttonSize,1);
-        tooltip.addPara(chance+"/"+totalChance,1);//value of this ship / total number of ships.
+        odds = tooltip.addPara(chance+"/"+totalChance,1);//value of this ship / total number of ships.
         //maybe have this as a percentage chance?
         //or maybe just have the odds here...
         UIComponentAPI textLabel = tooltip.getPrev();
         //tooltip.removeComponent(textLabel);
         ButtonAPI butAdd = tooltip.addButton("+","increase",shipSize/3,buttonSize,1);
+
         but.getPosition().belowMid(labal,1);
         butMin.getPosition().belowLeft(but,1);
         textLabel.getPosition().rightOfMid(butMin,1);
         butAdd.getPosition().rightOfMid(textLabel,1);
 
-        odds = textLabel;
+        //odds = textLabel;
         reduceB = butMin;
         addB = butAdd;
 
-    }
-    public void clear(){
-        int a = 0;
-        while (tooltip.getPrev() != null && a < 20){
-            tooltip.removeComponent(tooltip.getPrev());
-            a++;
-        }
     }
     public void recreate(int chance, int totalChance){
         MasteryHolder.log.info("checking if change required... (chance, old chance, totalchance, oldtotal, force change):"+chance+", "+this.chance+", "+totalChance+", "+this.totalChance+", "+changed);
@@ -100,16 +95,7 @@ public class Mastery_HeldShip_Single implements CustomUIPanelPlugin {
         }
     }
     public void recreateChanceText(int chance, int totalChance){
-        MasteryHolder.log.info("recreating text....");
-        tooltip.removeComponent(odds);
-        tooltip.removeComponent(addB);
-        tooltip.addPara(chance+"/"+totalChance,1);
-        odds = tooltip.getPrev();
-        //tooltip.removeComponent(odds);
-
-        tooltip.addCustom(addB,0);
-        odds.getPosition().rightOfMid(reduceB,1);
-        addB.getPosition().rightOfMid(odds,1);
+        odds.setText(chance+"/"+totalChance);
     }
     public int getOdds(){
         return this.chance;
@@ -143,25 +129,21 @@ public class Mastery_HeldShip_Single implements CustomUIPanelPlugin {
     public void buttonPressed(Object buttonId) {
         switch ((String) buttonId){
             case "remove":
-                MasteryHolder.log.info("attempting to remove...");
                 MasteryHolder.masteryHolder.heldShips.toRemove.add(this);
-                MasteryHolder.masteryHolder.heldShips.recreate();
+                MasteryHolder.masteryHolder.heldShips.recreate_full();
                 break;
             case "decrease":
-                MasteryHolder.log.info("attempting to decrease...");
-                if (chance <= 0) break;
+                if (chance <= 1) break;
                 chance--;
                 changed = true;
                 MasteryHolder.masteryHolder.heldShips.recreate();
                 break;
             case "increase":
-                MasteryHolder.log.info("attempting to increase...");
                 if (chance >= 20) break;
                 chance++;
                 changed = true;
                 MasteryHolder.masteryHolder.heldShips.recreate();
                 break;
         }
-        MasteryHolder.log.info("button pressed in: singleShipHolder");
     }
 }
