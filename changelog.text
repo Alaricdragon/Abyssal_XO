@@ -1,6 +1,4 @@
 V0.0.8:
-    todo: before update, remove the 'banned' tags, or at least make it an option in the mod settings. I want to play with NanoThief on my wingCom ships.
-
     new:
         reclaim stored in ships is now added to newly created reclaim packages when the ship dies. (split between forces if a 'reclaim battle' is going on)
     balance changes:
@@ -8,17 +6,18 @@ V0.0.8:
         reclaim will now treat ships as though they are 1 distance farther away for every 100 reclaim in storge when cosing what ship to travel to.
         reclaim packages reduced sight to 10% of what it was
         reclaim packages in 'combat' mode will switch back to 'reclaim' mode if a valid target for reclaim is found
-    changed intier skill try:
-        'Overcharged' -> 'Constant Repairs' (repair hull at the cost of Reclaim)
-        'Mass Manufacturing' -> 'Scrapwork Microforge' (regenerate ammo for limit ammo weapons at a reclaim cost)
-        'Longevity' -> 'Thorough Salvaging' (bonus salvage and supplies for reclaim)
-        'Advanced Installation' -> 'Scrapy Fortification' (95% damage resistance well considerable damage.)
-        'Quality Checks' -> '' (please note I am doing this one after skill 6.)
-        'Prepared Deployment' -> 'Offencive Fighter Construction'
-        'Centralized Logistics' -> 'Defensive Fighter Construction'
-        'Desperate Measures' -> 'Centralized Logistics' (changed to increase the amount of reclaim available after a production process.)
-        'Efficient Production' -> 'Desperate Measures'
-        -new skill- -> 'Mastery' (in combat starship creation (like threat))
+        removed armaa armada strickcraft from being exempt from receiving reclaim. You can enable it if you want that to be restricted in the mod settings.
+    changed entier skill try:
+        'Overcharged' ->            'Constant Repairs' (repair hull at the cost of Reclaim)
+        'Mass Manufacturing' ->     'Scrapwork Microforge' (regenerate ammo for limit ammo weapons at a reclaim cost)
+        'Longevity' ->              'Thorough Salvaging' (bonus salvage and supplies for reclaim)
+        'Advanced Installation' ->  'Scrapy Fortification' (95% damage resistance well considerable damage.)
+        'Quality Checks' ->         '' (please note I am doing this one after skill 6.)
+        'Prepared Deployment' ->    'Offencive Fighter Construction'
+        'Centralized Logistics' ->  'Defensive Fighter Construction'
+        'Desperate Measures' ->     'Centralized Logistics' (changed to increase the amount of reclaim available after a production process.)
+        'Efficient Production' ->   'Desperate Measures'
+        -new skill- ->              'Mastery' (in combat starship creation (like threat))
     graphics and effects:
         reclaim packages now get bigger depending on the amount of reclaim inside of them. at max level, reclaim packages are 30,40,50,60 in size. at min level, they are 22,24,26,28 in size. (from 40 size flat.)
 V0.0.7:

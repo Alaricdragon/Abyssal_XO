@@ -55,8 +55,12 @@ public class Master_FinalButtons implements CustomUIPanelPlugin {
         MasteryHolder.log.info("button pressed in: FinalButtons");
         switch ((String) buttonId){
             case "exit":
+                MasteryHolder.masteryHolder.returnToBaseDialog();
                 //panel.removeComponent(tooltip);
-                //Nano_Thief_dialog.reset();
+                break;
+            case "finish":
+                //todo: remember the new fleet composition here.
+                MasteryHolder.masteryHolder.returnToBaseDialog();
                 break;
         }
     }

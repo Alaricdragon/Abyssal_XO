@@ -52,6 +52,18 @@ public class HeldShipsHolder implements CustomUIPanelPlugin {
         this.panel = panel;
         this.tooltip = tooltip;
         //Mastery_HeldShip_Single.createItem(panel,tooltip,Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy().get(0),0,100,10,1,1);
+
+
+        UIComponentAPI last_a = null;//pTemp;
+        UIComponentAPI last_b;
+        for (Mastery_HeldShip_Single a : heldShips){
+            //todo: HERE is were I can mess with my ship positions, allowing for me to youknow, have rows of ships.
+            //FleetMemberAPI ship = fleetList.get(a);
+            //last_b = addSingleShip_asCompoment(ship,a);
+            last_b = a.thisCompoment;
+            if (last_a != null) last_b.getPosition().rightOfMid(last_a,1);
+            last_a = last_b;
+        }
         panel.addUIElement(tooltip);
     }
     private void addShips(){
@@ -70,13 +82,11 @@ public class HeldShipsHolder implements CustomUIPanelPlugin {
     }
     private ArrayList<Pair<FleetMemberAPI,Integer>> getMainShipList(){
         ArrayList<Pair<FleetMemberAPI,Integer>> output = new ArrayList<>();
-        if (heldShips.isEmpty()){
-            Pair<FleetMemberAPI,Integer> data = new Pair<>();
-            data.one = Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy().get(0);
-            data.two = 10;
-            output.add(data);
+        /*if (heldShips.isEmpty()){
+            output.add(getBackupShip());
+            MasteryHolder.log.info("returning a new with only the players flagship available.");
             return output;
-        }
+        }*/
         for (Mastery_HeldShip_Single a : heldShips){
             if (toRemove.contains(a)) continue;
             Pair<FleetMemberAPI,Integer> data = new Pair<>();
@@ -87,8 +97,20 @@ public class HeldShipsHolder implements CustomUIPanelPlugin {
         if (toAdd != null){
             output.add(toAdd);
         }
-
+        toAdd = null;
+        toRemove = new ArrayList<>();
+        MasteryHolder.log.info("after reorganizing the main ship list, we have:");
+        for (Pair<FleetMemberAPI, Integer> a : output){
+            MasteryHolder.log.info("    ship of id, weight: "+a.one.getShipName()+", "+a.two);
+        }
+        if (output.isEmpty()) output.add(getBackupShip());
         return output;
+    }
+    private Pair<FleetMemberAPI,Integer> getBackupShip(){
+        Pair<FleetMemberAPI,Integer> data = new Pair<>();
+        data.one = Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy().get(0);
+        data.two = 10;
+        return data;
     }
     public void recreate(CustomPanelAPI panel,TooltipMakerAPI tooltip){
         for (Mastery_HeldShip_Single a : toRemove){

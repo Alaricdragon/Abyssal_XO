@@ -129,16 +129,19 @@ public class Mastery_HeldShip_Single implements CustomUIPanelPlugin {
     public void buttonPressed(Object buttonId) {
         switch ((String) buttonId){
             case "remove":
+                MasteryHolder.log.info("running button single ship -> remove");
                 MasteryHolder.masteryHolder.heldShips.toRemove.add(this);
                 MasteryHolder.masteryHolder.heldShips.recreate_full();
                 break;
             case "decrease":
+                MasteryHolder.log.info("running button single ship -> decrease");
                 if (chance <= 1) break;
                 chance--;
                 changed = true;
                 MasteryHolder.masteryHolder.heldShips.recreate();
                 break;
             case "increase":
+                MasteryHolder.log.info("running button single ship -> increase");
                 if (chance >= 20) break;
                 chance++;
                 changed = true;

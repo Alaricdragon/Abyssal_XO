@@ -185,7 +185,7 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
         if (data.getCommander().equals(Global.getSector().getPlayerPerson())){
             CharacterDataAPI character = Global.getSector().getCharacterData();
             if (character.getAbilities().contains(Settings.NANO_THIEF_ABILITY)) return;
-            character.addAbility(Settings.NANO_THIEF_ABILITY);/**/
+            character.addAbility(Settings.NANO_THIEF_ABILITY);
         }
     }
 }

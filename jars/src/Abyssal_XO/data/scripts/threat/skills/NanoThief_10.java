@@ -4,6 +4,7 @@ import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_6;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.CharacterDataAPI;
 import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
@@ -176,5 +177,14 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
         }
         log.info(" "+customShips.length);
         return customShips;
+    }
+
+    @Override
+    public void onActivation(SCData data) {
+        if (data.getCommander().equals(Global.getSector().getPlayerPerson())){
+            CharacterDataAPI character = Global.getSector().getCharacterData();
+            if (character.getAbilities().contains(Settings.NANO_THIEF_ABILITY)) return;
+            character.addAbility(Settings.NANO_THIEF_ABILITY);
+        }
     }
 }
