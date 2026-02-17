@@ -16,7 +16,7 @@ public class NanoThief_Skill_2 extends NanoThief_SkillBase {
         super(skills,ship);
         //skills.ship.getVariant().getWeaponGroups().get(0).getSlots();
         prepareForSingleModule(ship);
-        for (ShipAPI b : skills.ship.getChildModulesCopy()){
+        for (ShipAPI b : skills.getChildShips()){
             prepareForSingleModule(b);
         }
         if (wepons.isEmpty()){

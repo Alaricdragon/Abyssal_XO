@@ -30,6 +30,9 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
     private HashMap<String,Double> costMods = new HashMap<>();
     private HashMap<String,Float> speedMods = new HashMap<>();
     boolean activeWellOverloaded = false;
+
+    @Getter
+    private ArrayList<ShipAPI> childShips = new ArrayList<>();
     //@Getter
     //protected double refinedReclaim = 0;
     public NanoThief_ShipSkills(Nano_Thief_Stats stats, ShipAPI ship){
@@ -61,6 +64,15 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
 
         for (NanoThief_SkillBase a : removedSkills){
             skills.remove(a);
+        }
+        addChildShips(ship);
+    }
+    private void addChildShips(ShipAPI ship){
+        for (ShipAPI a : ship.getChildModulesCopy()){
+            if (!childShips.contains(a)){
+                childShips.add(a);
+                addChildShips(a);
+            }
         }
     }
     private ArrayList<NanoThief_SkillBase> removedSkills = new ArrayList<>();
@@ -232,6 +244,11 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
     }
     public void addIncomingReclaim(ShipAPI reclaim, int value, boolean isRefined){
         incomingReclaim.put(reclaim,new reclaim(value, isRefined));
+    }
+
+    public ArrayList<ShipAPI> getChildShips() {
+        for (int a = childShips.size()-1; a >= 0; a--) if (!childShips.get(a).isAlive() || childShips.get(a).isHulk()) childShips.remove(a);
+        return childShips;
     }
 }
 

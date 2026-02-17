@@ -33,7 +33,7 @@ public class NanoThief_Skill_4 extends NanoThief_SkillBase{
         if (!ship.hasListenerOfClass(trueTimeListener.class)){
             ship.addListener(new trueTimeListener(this));
         }
-        for (ShipAPI b : skills.ship.getChildModulesCopy()){
+        for (ShipAPI b : skills.getChildShips()){
             if (!b.hasListenerOfClass(DamageModifier.class)){
                 b.addListener(new DamageModifier(this,b));
                 totalHull+=b.getMaxHitpoints();
@@ -76,7 +76,7 @@ public class NanoThief_Skill_4 extends NanoThief_SkillBase{
     private void animate(ShipAPI ship){
         ship.setJitter(Settings.DISPLAYID_NANOTHIEF+"_skill_4", jitterColor, 1, 2, 0f, 5);
         ship.setJitterUnder(Settings.DISPLAYID_NANOTHIEF+"_skill_4", jitterUnderColor, 1, 25, 0f, 7);
-        for (ShipAPI b : skills.ship.getChildModulesCopy()){
+        for (ShipAPI b : skills.getChildShips()){
             animate(b);
         }
     }
@@ -152,7 +152,7 @@ class trueTimeListener implements AdvanceableListener{
         skill.timeActive = 0;
         skill.damageLastFewSeconds = 0;
         activate(skill.ship);
-        for (ShipAPI b : skill.ship.getChildModulesCopy()){
+        for (ShipAPI b : skill.skills.getChildShips()){
             activate(b);
         }
         skill.skills.useReclaim(skill.skills.getModifiedCost(NanoThief_4.activeCost));
@@ -171,7 +171,7 @@ class trueTimeListener implements AdvanceableListener{
         skill.isActive = false;
         skill.cooldown = NanoThief_4.cooldown;
         deactivate(skill.ship);
-        for (ShipAPI b : skill.ship.getChildModulesCopy()){
+        for (ShipAPI b : skill.skills.getChildShips()){
             activate(b);
         }
         //skill.deanimate();

@@ -56,13 +56,20 @@ public class HeldShipsHolder implements CustomUIPanelPlugin {
 
         UIComponentAPI last_a = null;//pTemp;
         UIComponentAPI last_b;
+        UIComponentAPI last_c = null;
+        //todo: find the currect 'row size' for my ships.
+        int size = 6;
+        int at = 0;
         for (Mastery_HeldShip_Single a : heldShips){
-            //todo: HERE is were I can mess with my ship positions, allowing for me to youknow, have rows of ships.
             //FleetMemberAPI ship = fleetList.get(a);
             //last_b = addSingleShip_asCompoment(ship,a);
             last_b = a.thisCompoment;
-            if (last_a != null) last_b.getPosition().rightOfMid(last_a,1);
+            if (at % size == 0){
+                if (last_c != null) last_b.getPosition().belowMid(last_c,1);
+                last_c = last_b;
+            }else if (last_a != null) last_b.getPosition().rightOfMid(last_a,1);
             last_a = last_b;
+            at++;
         }
         panel.addUIElement(tooltip);
     }

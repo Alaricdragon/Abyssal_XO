@@ -16,7 +16,7 @@ public class NanoThief_Skill_1 extends NanoThief_SkillBase {
     public void advance(float amount) {
         if (amount == 0) return;
         advanceSingle(amount, skills.ship);
-        for (ShipAPI b : skills.ship.getChildModulesCopy()){
+        for (ShipAPI b : skills.getChildShips()){
             advanceSingle(amount,b);
         }
     }
