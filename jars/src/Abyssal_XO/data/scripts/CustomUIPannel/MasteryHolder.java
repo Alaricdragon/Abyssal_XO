@@ -17,11 +17,9 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
         I have forgotten what I am doing... this is a issue.
         so...
         issues:
-            top ship display:
-                -cannot display multiple rows
-                -(moved this to bottom buttons)!the 'add a ship' button should do nothing if I have additonal ships.
             bottom ship display:
-                -cannot display multiple rows
+                -I should have a banner that says '? / max ships' to indecate if I am over capacity.
+                -It should turn red if I am over capacity. (negitive highlight color)
                 -ships are slightly cut off (at the top)
                 -the '-' button is a bit off.
                 -
@@ -30,9 +28,8 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
             info display:
                 -no info yet
             button buttons:
-                -do nothing yet
-                -the 'finish' button should be disabled if I am over the ship limit (for easier editing)
-                    -also I should have a hover over text explain that I am over capacity.
+                -the 'finished' button should set the relevent memory.
+                -when over capacity, a warning should be displayed somewere.
             moving items between displays:
                 -works fine
         other requirements:
@@ -43,6 +40,13 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
             1: how do I switch back to the normal dialog plugin from a visual dialog?
             2: how to I make the - # + have the + not be a tab away?
             3: my ships seems to be cut off a little bit. I think its from having two panels next to each other. (one on top of the other). any advice on fixing this mess?
+            normal thing information:
+                1: larger text box. about 2/5 of the screen?
+                2: every 'item' has a box in player color around it. every single one, even the ones that are empty.
+                3: every 'menu' (top and bottom) has a 'what this is' tab in the top left.
+                4: every 'menu' has a scrollbar.
+                5: the inter interface does not cover the inter screen (for some reason...?)
+                6: the buttons (conform cancel) are in the bottom right. its also confirm - cancel
      */
     public static Logger log = Global.getLogger(Nano_Thief_Stats.class);
     public static MasteryHolder masteryHolder;

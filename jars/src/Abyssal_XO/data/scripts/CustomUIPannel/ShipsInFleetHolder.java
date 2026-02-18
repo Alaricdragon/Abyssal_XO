@@ -49,19 +49,34 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
         MasteryHolder.log.info("    created UI element...");
         List<FleetMemberAPI> fleetList = Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy();
 
+        tooltip.createLabel("HEADER",Misc.getTextColor());
+        //todo: I can do a lot with this header. so thats cool.
+
         //ButtonAPI pTemp = tooltip.addButton("","",0,150,2);
-        UIComponentAPI last_a = null;//pTemp;
+        UIComponentAPI last_a = null;//tooltip.getPrev();//pTemp;
         UIComponentAPI last_b;
+        UIComponentAPI last_c = null;
 
         MasteryHolder.log.info("    added button...");
 
 
+        int size = (int) (panel.getPosition().getWidth() / 100);
+        int at = 0;
         for (int a = 0; a < fleetList.size(); a++){
             FleetMemberAPI ship = fleetList.get(a);
             //last_b = addSingleShip_asCompoment(ship,a);
-            last_b = addSingleShip_Working(ship,a);
-            if (last_a != null) last_b.getPosition().rightOfMid(last_a,1);
+            Pair<UIComponentAPI, UIComponentAPI> z = addSingleShip_Working(ship,a);
+            last_b = z.one;
+            //if (at == 0) {
+            //    last_b.getPosition().belowMid(last_a,1);
+            //    last_c = z.two;
+            //}else
+            if (at % size == 0){
+                if (last_c != null) last_b.getPosition().belowMid(last_c,1);
+                last_c = z.two;
+            }else if (last_a != null) last_b.getPosition().rightOfMid(last_a,1);
             last_a = last_b;
+            at++;
         }
         MasteryHolder.log.info("    finished addding ships...");
         //tooltip.addTable("",0,1);
@@ -78,7 +93,7 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
         return Mastery_HeldShip_Single.createItem(master,tooltip,ship,idInFleet,100,50);
 
     }*/
-    private UIComponentAPI addSingleShip_Working(FleetMemberAPI ship, int idInFleet){
+    private Pair<UIComponentAPI,UIComponentAPI> addSingleShip_Working(FleetMemberAPI ship, int idInFleet){
         ArrayList<FleetMemberAPI> ships = new ArrayList<>();
         ships.add(ship);
         tooltip.addShipList(1,1,100, Misc.getBasePlayerColor(),ships,10);
@@ -90,7 +105,7 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
 
         //tooltip.addComponent(panel.createCustomPanel(100,100,new DisplayShip()));
 
-        return labal;
+        return new Pair<>(labal,but);
 
     }
     /*private UIComponentAPI addSingleShipAshLibAttempt(FleetMemberAPI ship,int idInFleet){
@@ -121,14 +136,6 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
         return labal;
 
     }*/
-    private UIComponentAPI addSingleShip_old(FleetMemberAPI ship, int idInFleet){
-        ButtonAPI labal = tooltip.addButton(ship.getShipName(),"",100,50,1);
-
-        ButtonAPI but = tooltip.addButton("Select Ship","add:"+idInFleet,100,50,1);
-
-        labal.getPosition().aboveMid(but,1);
-        return labal;
-    }
     public ShipsInFleetHolder(){
         //sprite = Global.getSettings().getSprite("graphics/ships/wolf/wolf_base.png");
 

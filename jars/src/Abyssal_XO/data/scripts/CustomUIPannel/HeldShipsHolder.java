@@ -55,16 +55,20 @@ public class HeldShipsHolder implements CustomUIPanelPlugin {
         //Mastery_HeldShip_Single.createItem(panel,tooltip,Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy().get(0),0,100,10,1,1);
 
 
+        if (MasteryHolder.masteryHolder.finalButtons != null) {
+            if (heldShips.size() > Settings.MASTERY_maxShips) {
+                MasteryHolder.masteryHolder.finalButtons.finish.setEnabled(false);
+                MasteryHolder.masteryHolder.finalButtons.finish.flash();
+                //MasteryHolder.masteryHolder.finalButtons.finish.setText("To many ships to use. Max is "+Settings.MASTERY_maxShips);
+            }else {
+                MasteryHolder.masteryHolder.finalButtons.finish.setEnabled(true);
+                //MasteryHolder.masteryHolder.finalButtons.finish.setText("Finish");
+            }
+        }
         UIComponentAPI last_a = null;//pTemp;
         UIComponentAPI last_b;
         UIComponentAPI last_c = null;
-        //todo: find the currect 'row size' for my ships.
-        if (MasteryHolder.masteryHolder.finalButtons != null) {
-            if (heldShips.size() > Settings.MASTERY_maxShips)
-                MasteryHolder.masteryHolder.finalButtons.finish.setEnabled(false);
-            else MasteryHolder.masteryHolder.finalButtons.finish.setEnabled(true);
-        }
-        int size = 6;
+        int size = (int) (width / 100);
         int at = 0;
         for (Mastery_HeldShip_Single a : heldShips){
             //FleetMemberAPI ship = fleetList.get(a);
