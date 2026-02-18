@@ -70,15 +70,15 @@ public class NanoThief_Skill_4 extends NanoThief_SkillBase{
     }
     public void animate(){
         animate(ship);
+        for (ShipAPI b : skills.getChildShips()){
+            animate(b);
+        }
     }
     private static final Color jitterColor = new Color(255,165,90,55);
     private static final Color jitterUnderColor = new Color(255,165,90,155);
     private void animate(ShipAPI ship){
         ship.setJitter(Settings.DISPLAYID_NANOTHIEF+"_skill_4", jitterColor, 1, 2, 0f, 5);
         ship.setJitterUnder(Settings.DISPLAYID_NANOTHIEF+"_skill_4", jitterUnderColor, 1, 25, 0f, 7);
-        for (ShipAPI b : skills.getChildShips()){
-            animate(b);
-        }
     }
     /*public void deanimate(){
         deanimate(ship);

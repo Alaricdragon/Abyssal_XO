@@ -54,6 +54,7 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
     public HeldShipsHolder heldShips;
     public ShipsInFleetHolder fleetShips;
     public MasterInformationHolder infoHolder;
+    public Master_FinalButtons finalButtons;
     public MasteryHolder(InteractionDialogAPI dialog){
         this.dialog = dialog;
         float height = Global.getSettings().getScreenHeightPixels();
@@ -136,6 +137,7 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
 
 
         Master_FinalButtons bottomButtonsTemp2 = new Master_FinalButtons();
+        finalButtons = bottomButtonsTemp2;
         CustomPanelAPI bottomButtonsTemp = panel.createCustomPanel(width-infoWidth,buttonHeight,bottomButtonsTemp2);
         bottomButtonsTemp2.createOptions(bottomButtonsTemp,width-infoWidth,buttonHeight);
         UIComponentAPI bottomButtons = tooltip.addCustom(bottomButtonsTemp,5);

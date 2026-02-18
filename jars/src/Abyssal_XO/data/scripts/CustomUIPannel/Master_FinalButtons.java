@@ -12,6 +12,7 @@ import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import java.util.List;
 
 public class Master_FinalButtons implements CustomUIPanelPlugin {
+    public ButtonAPI finish;
     public Master_FinalButtons(){
     }
     public void createOptions(CustomPanelAPI panel,float width, float height){
@@ -23,6 +24,7 @@ public class Master_FinalButtons implements CustomUIPanelPlugin {
         exit.getPosition().leftOfMid(finish,5);
 
         panel.addUIElement(tooltip);
+        this.finish = finish;
 
     }
     @Override

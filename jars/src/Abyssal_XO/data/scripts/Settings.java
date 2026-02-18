@@ -58,6 +58,9 @@ public class Settings {
     public static final String NANO_THIEF_CREATER_SHIP = "Abyssal_XO_ReclaimCore_Blank";
     public static ArrayList<String> NanoThief_Users = new ArrayList<>();
     public static ArrayList<String> NanoThief_Banned = new ArrayList<>();
+
+
+    public static int MASTERY_maxShips = 4;
     public static void init() throws JSONException {
         JSONArray array = Global.getSettings().getJSONArray("NanoThief_Users");
         NanoThief_Users = new ArrayList<>();

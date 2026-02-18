@@ -1,5 +1,6 @@
 package Abyssal_XO.data.scripts.CustomUIPannel;
 
+import Abyssal_XO.data.scripts.Settings;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.BaseCustomUIPanelPlugin;
 import com.fs.starfarer.api.campaign.CustomUIPanelPlugin;
@@ -58,6 +59,11 @@ public class HeldShipsHolder implements CustomUIPanelPlugin {
         UIComponentAPI last_b;
         UIComponentAPI last_c = null;
         //todo: find the currect 'row size' for my ships.
+        if (MasteryHolder.masteryHolder.finalButtons != null) {
+            if (heldShips.size() > Settings.MASTERY_maxShips)
+                MasteryHolder.masteryHolder.finalButtons.finish.setEnabled(false);
+            else MasteryHolder.masteryHolder.finalButtons.finish.setEnabled(true);
+        }
         int size = 6;
         int at = 0;
         for (Mastery_HeldShip_Single a : heldShips){
