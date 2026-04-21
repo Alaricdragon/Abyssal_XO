@@ -70,6 +70,7 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
         return null;
     }
     public static double getReclaimInShip(ShipAPI ship){
+        if (ship == null || ship.getFleetCommander() == null) return 0;
         if (friendlyCaptions.containsKey(ship.getFleetCommander().getId())){
             Nano_Thief_Stats stats = friendlyCaptions.get(ship.getFleetCommander().getId());
             double out = 0;
