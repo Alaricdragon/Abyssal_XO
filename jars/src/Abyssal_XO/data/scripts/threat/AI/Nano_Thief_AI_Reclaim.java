@@ -10,6 +10,7 @@ import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.api.util.WeightedRandomPicker;
 import lombok.Getter;
 import org.apache.log4j.Logger;
+import org.lwjgl.Sys;
 import org.lwjgl.util.vector.Vector2f;
 
 import java.util.ArrayList;
@@ -35,8 +36,8 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 	}
 
 	public static class FlockingData {
-		public Vector2f loc;
-		public Vector2f vel;
+		public Vector2f loc;//location
+		public Vector2f vel;//velocity
 		public float minA;
 		public float maxA;
 		public float minR;
@@ -62,6 +63,7 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 
 	protected float sinceTurnedOffFlash = 0f;
 	protected ShipAPI fabricator = null;
+	protected boolean lockedOntoTarget = false;
 
 	protected List<FlockingData> flockingData = new ArrayList<>();
 	protected float desiredHeading = 0f;
@@ -341,6 +343,14 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 			ship.giveCommand(ShipCommand.DECELERATE, null, 0);
 			return;
 		}
+		if (lockedOntoTarget){
+			if (fabricator != null){
+				ship.getLocation().set(fabricator.getLocation());
+				return;
+			}else{
+				lockedOntoTarget = false;
+			}
+		}
 
 		String source = "swarm_wingman_catch_up_speed_bonus";
 		MutableShipStatsAPI stats = ship.getMutableStats();
@@ -369,7 +379,7 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 	}
 
 	protected void computeDesiredHeading() {
-
+		log.info("attempting to get heading....");
 		Vector2f loc = ship.getLocation();
 		Vector2f vel = ship.getVelocity();
 		float facing = ship.getFacing();
@@ -377,6 +387,7 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 		Vector2f total = new Vector2f();
 
 		for (FlockingData curr : flockingData) {
+			log.info("	applying a new flocking data ponit....");
 			float dist = Misc.getDistance(curr.loc, loc);
 			if (curr.maxR > 0 && dist < curr.maxR) {
 				float repelWeight = curr.repelWeight;
@@ -404,6 +415,7 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 
 				dir.scale(repelWeight);
 				Vector2f.add(total, dir, total);
+				log.info("		-repeled to: "+dir+" for a total of: "+total);
 			}
 
 			if (curr.maxA > 0 && dist < curr.maxA) {
@@ -418,6 +430,7 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 				Vector2f dir = Misc.getUnitVector(loc, curr.loc);
 				dir.scale(attractWeight);
 				Vector2f.add(total, dir, total);
+				log.info("		-attract to: "+dir+" for a total of: "+total);
 			}
 
 			if (curr.maxC > 0 && dist < curr.maxC) {
@@ -428,23 +441,23 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 					cohesionWeight = 1f - cohesionWeight;
 					cohesionWeight *= curr.cohesionWeight;
 				}
-
+				//if (true) continue;
+				//if (curr.vel.x > 500 || curr.vel.x < -500 || curr.vel.y > 500 || curr.vel.y < -500) continue;//iggnore vel if value is two high
 				Vector2f dir = new Vector2f(curr.vel);
 				Misc.normalise(dir);
 				dir.scale(cohesionWeight);
 				Vector2f.add(total, dir, total);
+				log.info("		-velocity to: "+dir+" for a total of: "+total);
 			}
 		}
-
 		if (total.length() <= 0) {
+			//this is not the issue...
+			log.info("	failed to get the direction I should head in, for unknown reasons.");
 			desiredHeading = ship.getFacing();
 			headingChangeRate = ship.getAngularVelocity() * 0.5f;
 		} else {
-//			Vector2f currDir = new Vector2f(vel);
-//			Misc.normalise(currDir);
-//			currDir.scale(total.length() * 0.25f);
-//			Vector2f.add(total, currDir, total);
-
+			//this is a issue: theory: when a ship is 'landed' the 'total' is equal to some far off point.
+			log.info("	getting direction of angle: "+total);
 			float prev = desiredHeading;
 			desiredHeading = Misc.getAngleInDegrees(total);
 			if (elapsedSincePrevHeadingUpdate > 0) {
@@ -453,6 +466,8 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 				headingChangeRate = ship.getAngularVelocity() * 0.5f;
 			}
 		}
+
+		//desiredHeading = Misc.getAngleInDegrees(ship.getLocation(),fabricator.getLocation());
 	}
 
 
@@ -529,7 +544,7 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 			data.maxA = 1000000f;
 			data.minR = 1000f;
 			data.maxR = 3000f;
-			data.repelAtAngleDist = 1000f;
+			data.repelAtAngleDist = 1000f;//todo: this might be causing issues with small craft. this line is placed in multible locations.
 			flockingData.add(data);
 		}
 
@@ -591,16 +606,38 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 				}
 			}
 		}
+
+		/*
+		* HSS Hero of Eventide: pos: 0.0, -1500.0, facing: 89.73334, vos: Vector2f[0.0, 0.0] raid:146.0
+		* ISS Blueshift: pos: -0.1726014, -1499.6835, facing: 90.6639, vos: Vector2f[-5.178042, 9.496801] raid:35.0
+
+		theory: blueshift is repeling items for some unknown reason? confused confused....?
+		at least it might be?
+		ok: what I should do: I should calculate the 'desired' direction. aka the heading between the two ponits. this should help.
+		because I for real cant see what on earth is going wrong here?!?!?!?!?!?
+		AAAAAAAAAAAAAAAAAAdsjkfhgdsjh
+
+		 */
 	}
 
 	protected boolean canGather(){
-		if (fabricator.isPhased()) return false;
 		Vector2f pointA = fabricator.getLocation();
 		Vector2f pointB = ship.getLocation();
 		float c = Misc.getDistance(pointA,pointB);
 		float size = fabricator.getCollisionRadius();
-		if (c < (size*1.5)+100) return true;
-		return false;
+		log.info("getting reclaim heading to ship of name "+fabricator.getName()+": pos: "+fabricator.getLocation().x+", "+fabricator.getLocation().y+", facing: "+fabricator.getFacing()+", vos: "+fabricator.getVelocity()+" raid:"+fabricator.getCollisionRadius()+", alive: "+fabricator.isAlive()+", is hulk:"+fabricator.isHulk()+", owner: "+fabricator.getOwner());
+		//float fabricatorRadius = fabricator.getCollisionRadius() * 0.5f;
+		//FlockingData data = new FlockingData();
+		//data.facing = fabricator.getFacing();
+		//data.loc = fabricator.getLocation();
+		//data.vel = fabricator.getVelocity();
+		//data.attractWeight = getShipWeight(fabricator) * stats.getReclaimTargetPriority(ship);
+
+		if (!(c < (size*1.5)+100)) return false;
+		lockedOntoTarget = true;
+		if (fabricator.isPhased()) return false;
+		log.info("returning true");
+		return true;
 	}
 
 
@@ -616,17 +653,17 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 		return getShipWeight(ship, true);
 	}
 	public static float getShipWeight(ShipAPI ship, boolean adjustForNonCombat) {
-		boolean nonCombat = ship.isNonCombat(false);
-		float weight = 0;
-		switch (ship.getHullSize()) {
+		//boolean nonCombat = ship.isNonCombat(false);
+		float weight = 1;
+		/*switch (ship.getHullSize()) {
 		case CAPITAL_SHIP: weight += 8; break;
 		case CRUISER: weight += 4; break;
 		case DESTROYER: weight += 2; break;
 		case FRIGATE: weight += 1; break;
 		case FIGHTER: weight += 1; break;
-		}
-		if (nonCombat && adjustForNonCombat) weight *= 0.25f;
-		if (ship.isDrone()) weight *= 0.1f;
+		}*/
+		//if (nonCombat && adjustForNonCombat) weight *= 0.25f;
+		//if (ship.isDrone()) weight *= 0.1f;
 		return weight;
 	}
 

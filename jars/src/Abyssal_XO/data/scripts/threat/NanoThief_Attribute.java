@@ -9,10 +9,12 @@ import second_in_command.specs.SCBaseAptitudePlugin;
 public class NanoThief_Attribute extends SCBaseAptitudePlugin {
     /*so relevent data:
     to do list:
-        2) add in the new icons for the systems (copyed another skill for now)
-        3) make it so the fighters acsualy lanch from the ship. (aka an animation for that)
-        4) add in the quest to allow someone to quire this skill (kill a centen number of fabricates, then just have it.)
-        5) improve the display for the nano-thief stats. something like, a bar that fills as I build fighters, and a bar that fills as I max deployment (and fills more (with a different color) as I max storge)
+        1) make it so reclaim 'locks' onto its target when close enough.
+        2) make it so simulacrum fighter cores's fighters have a speed buff appropriate to the speed of its target.
+        3) make it so offincive fighter production is increased on larger ships
+        4) add in the new icons for the systems (copyed another skill for now)
+        5) add in the quest to allow someone to quire this skill (kill a centen number of fabricates, then just have it.)
+        6) improve the display for the nano-thief stats. something like, a bar that fills as I build fighters, and a bar that fills as I max deployment (and fills more (with a different color) as I max storge)
 
 
         new skill list to do list:
