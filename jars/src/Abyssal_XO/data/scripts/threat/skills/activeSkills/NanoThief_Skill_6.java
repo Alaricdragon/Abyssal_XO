@@ -6,6 +6,7 @@ import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_SawrmSpawner;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_6;
+import Abyssal_XO.data.scripts.threat.skills.NanoThief_7;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.CombatFleetManagerAPI;
@@ -25,6 +26,21 @@ import second_in_command.specs.SCOfficer;
 public class NanoThief_Skill_6 extends NanoThief_SkillBase{
     public NanoThief_Skill_6(NanoThief_ShipSkills skills, ShipAPI ship) {
         super(skills, ship);
+        float speedMult;
+        switch (ship.getHullSize()){
+            case CAPITAL_SHIP:
+                speedMult = 1 + (1-NanoThief_6.speedPerSize[3]);
+                break;
+            case CRUISER:
+                speedMult = 1 + (1-NanoThief_6.speedPerSize[2]);
+                break;
+            case DESTROYER:
+                speedMult = 1 + (1-NanoThief_6.speedPerSize[1]);
+                break;
+            default:
+                speedMult = 1 + (1-NanoThief_6.speedPerSize[0]);
+        }
+        recharge = skills.stats.DF_productionTime*speedMult;
     }
     public static void getStats(Nano_Thief_Stats spec, FighterWingSpecAPI a){
         spec.OF_fighterHullSpec = a.getVariant().getHullSpec();
@@ -57,6 +73,7 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
     private boolean onCooldown = false;
     private boolean waiting = false;
     private int maxFighters = 0;
+    private float recharge;
     @Override
     public void advance(float amount) {
         //note: NanoThief_ShipStats handles both the spawning and despawinging of swarm cores. This will require change.
@@ -73,7 +90,7 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         }
         if (!onCooldown){
             onCooldown = true;
-            cooldown = skills.stats.OF_productionTime;
+            cooldown = skills.stats.OF_productionTime*recharge;
             return;
         }
         //create a combat swarm
@@ -84,7 +101,7 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         }
         waiting = false;
         onCooldown = true;
-        cooldown = skills.stats.OF_productionTime;
+        cooldown = skills.stats.OF_productionTime*recharge;
         skills.useReclaim(cost);
         createCombatSwarmCore();
     }
@@ -102,7 +119,7 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         if (skills.getTotalReclaim() >= skills.getModifiedCost(skills.stats.OF_swarmCost)){
             if (!onCooldown && !waiting){
                 onCooldown = true;
-                cooldown = skills.stats.OF_productionTime;
+                cooldown = skills.stats.OF_productionTime*recharge;
             }
             if (waiting){
                 if (ship.isPhased()) {
@@ -115,7 +132,7 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
                 return;
             }
             Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_6", "graphics/icons/hullsys/temporal_shell.png",
-                    "Offencive Fighter Construction Status", cur+" / "+max+", "+(int)(((skills.stats.OF_productionTime-cooldown) / skills.stats.OF_productionTime)*100)+"% prepared to create wing...", false);
+                    "Offencive Fighter Construction Status", cur+" / "+max+", "+(int)(((skills.stats.OF_productionTime*recharge)-cooldown) / (skills.stats.OF_productionTime*recharge)*100)+"% prepared to create wing...", false);
             return;
         }
         Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_6", "graphics/icons/hullsys/temporal_shell.png",

@@ -38,8 +38,8 @@ public class ReclaimCore extends BaseHullMod {
         if (ship.getCustomData().containsKey(IDOfData1) && (boolean)ship.getCustomData().get(IDOfData1)) {
             Global.getCombatEngine().removeEntity(fighter);
             ship.getLaunchBaysCopy().get(0).getWing().removeMember(fighter);
-            Logger log = Global.getLogger(Nano_Thief_Stats.class);
-            log.info("removed a fighter that would have been spawned in");
+            //Logger log = Global.getLogger(Nano_Thief_Stats.class);
+            //log.info("removed a fighter that would have been spawned in");
             return;
         }
 

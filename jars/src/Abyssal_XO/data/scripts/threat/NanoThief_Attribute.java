@@ -9,13 +9,11 @@ import second_in_command.specs.SCBaseAptitudePlugin;
 public class NanoThief_Attribute extends SCBaseAptitudePlugin {
     /*so relevent data:
     to do list:
-        1) make it so reclaim 'locks' onto its target when close enough.
-        2) make it so simulacrum fighter cores's fighters have a speed buff appropriate to the speed of its target.
-        3) make it so offincive fighter production is increased on larger ships
+
         4) add in the new icons for the systems (copyed another skill for now)
         5) add in the quest to allow someone to quire this skill (kill a centen number of fabricates, then just have it.)
         6) improve the display for the nano-thief stats. something like, a bar that fills as I build fighters, and a bar that fills as I max deployment (and fills more (with a different color) as I max storge)
-
+        -) reinable disabled skills (disabled do to not actualy doing anything yet.
 
         new skill list to do list:
         1) create a type of listiner attached to every ship with this XO on battle start.
@@ -293,7 +291,7 @@ or
         section1.addSkill("SiC_NanoThief_skill_2");
         section1.addSkill("SiC_NanoThief_skill_3");
         section1.addSkill("SiC_NanoThief_skill_4");
-        section1.addSkill("SiC_NanoThief_skill_5");
+        //section1.addSkill("SiC_NanoThief_skill_5");
         section1.addSkill("SiC_NanoThief_skill_6");
         section1.addSkill("SiC_NanoThief_skill_7");
 
@@ -308,7 +306,7 @@ or
 
         SCAptitudeSection section3 = new SCAptitudeSection(false, 4, "technology4");
         section3.addSkill("SiC_NanoThief_skill_9");
-        section3.addSkill("SiC_NanoThief_skill_10");
+        //section3.addSkill("SiC_NanoThief_skill_10");
         addSection(section3);
     }
 

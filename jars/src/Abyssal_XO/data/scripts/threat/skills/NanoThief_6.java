@@ -45,6 +45,7 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
     public static final int BASESWARM_BUILDTIME = 15;
     public static final int BASESWARM_TTL = CustomSwarm_TTL;//swrams get exstea base TTL because they already die from shoting wepons.
 
+    public static final float[] speedPerSize = {0.5f,0.75f,1f,1.25f};
     public static void displayStats(TooltipMakerAPI panel, FighterWingSpecAPI a,boolean offincive){
         Nano_Thief_Stats spec = new Nano_Thief_Stats(a.getId(),offincive);//new Nano_Thief_Stats(a.getId());
         //NanoThief_6.getFighterID();
@@ -152,10 +153,15 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
 
         //String line3b = ""+(int)CustomSwarm_Bomber_TTL;
+        String line3a = (int)(speedPerSize[0]*100)+"%";
+        String line3b = (int)(speedPerSize[1]*100)+"%";
+        String line3c = (int)(speedPerSize[2]*100)+"%";
+        String line3d = (int)(speedPerSize[3]*100)+"%";
 
         String line6a = ""+(int)dpPerFighters;
         tooltip.addPara("Construct Offencive Simulacrum Fighter Wings to assist your fleet in combat.",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         tooltip.addPara("only one Offencive Simulacrum Fighter Wing can be active in your fleet for every %s Deployment Ponits you have active",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line6a);
+        tooltip.addPara("Each ship in your fleet builds Officensive Simulacrum Fighter Wings at %s/%s/%s/%s speed depending on hullsize",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line3a,line3b,line3c,line3d);
 
         tooltip.addPara("Offencive Simulacrum Fighter Wings build this way gain infinit engagment range",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         displayBuildingFighter(scData, tooltip,true);

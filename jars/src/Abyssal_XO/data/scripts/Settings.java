@@ -42,6 +42,7 @@ public class Settings {
     public static final int NANO_THIEF_CustomSwarm_Bomber_TTL = 30;
 
     public static final double NANO_THIEF_RECLAIM_RECYCLE_PERCENT = 0.5;
+    public static final double NANO_THIEF_RECLAIM_GATHER_TIME = 3;
 
     public static final String NANO_THIEF_ABILITY = "Abyssal_XO_NanoThief_setFighters";
     public static final String NANO_THIEF_ABILITY_NAME = "Adjust NanoThief Settings";

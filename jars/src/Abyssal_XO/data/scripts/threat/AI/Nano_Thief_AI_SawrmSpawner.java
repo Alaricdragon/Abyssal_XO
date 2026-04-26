@@ -30,6 +30,9 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
 
     public static final String IDOfData1 = "$Nano_Thief_AI_SawrmSpawner_data_1";
     public static final String IDOfData2 = "$Nano_Thief_AI_SawrmSpawner_data_2";
+    public static final String IDOfData3 = "$Nano_Thief_AI_SawrmSpawner_data_3";
+    public static final String IDOfData4 = "$Nano_Thief_AI_SawrmSpawner_data_4";
+    public static final String IDOfData5 = "$Nano_Thief_AI_SawrmSpawner_data_5";
     private double timeToReturn;
     private double returnReclaim;
     private int wingSize;
@@ -53,9 +56,18 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
             returnReclaim = stats.DF_recyclePerFighter;
             arrayOfCores = ((NanoThief_Skill_7)skill).defenders;
             wingSize = stats.DF_wingSize;
+            float speed = Global.getSettings().getFighterWingSpec(wing).getVariant().getHullSpec().getEngineSpec().getMaxSpeed();
+            float acceleration = Global.getSettings().getFighterWingSpec(wing).getVariant().getHullSpec().getEngineSpec().getAcceleration();
+            float deceleration = Global.getSettings().getFighterWingSpec(wing).getVariant().getHullSpec().getEngineSpec().getDeceleration();
+            speed = Math.max((motherShip.getMaxSpeed()+25) - speed,0);
+            acceleration = Math.max((motherShip.getAcceleration()+5) - acceleration,0);
+            deceleration = Math.max((motherShip.getDeceleration()+5) - deceleration,0);
+            ship.setCustomData(IDOfData3,speed);
+            ship.setCustomData(IDOfData4,acceleration);
+            ship.setCustomData(IDOfData5,deceleration);
         }
-        log.info("got timeToReturn as: "+timeToReturn);
-        log.info("got return reclaim as: "+returnReclaim);
+        //log.info("got timeToReturn as: "+timeToReturn);
+        //log.info("got return reclaim as: "+returnReclaim);
         engine = Global.getCombatEngine();
         ship.setCustomData(IDOfData2,this);
         //stage0();
@@ -124,25 +136,25 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
             if (removeSelfIfRequired()) return;
         }
         if (time >= interval){
-            log.info("runing advance for fighter spwaner...");
+            //log.info("runing advance for fighter spwaner...");
             switch (stage){
                 case 0:
-                    log.info("  runing stage 0...");
+                    //log.info("  runing stage 0...");
                     stage0();
                     break;
                 case 1:
-                    log.info("  runing stage 1...");
+                    //log.info("  runing stage 1...");
                     stage1(time);
                     retargetPredictably();
                     break;
                 case 2:
-                    log.info("  runing stage 2...");
+                    //log.info("  runing stage 2...");
                     stage2();
                     retargetPredictably();
                     break;
             }
             time = 0;
-            log.info("  compleat fighter spawner");
+            //log.info("  compleat fighter spawner");
         }
         /*if (stage != 0 && ship.getLaunchBaysCopy().get(0).getNumLost() >= stats.OF_wingSize){
         }*/
@@ -191,7 +203,7 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
     }
     public void addSpawnedFighter(ShipAPI a){
         fighters.add(a);
-        log.info("added fighter...");
+        //log.info("added fighter...");
         /*fighters.addAll(bay.getWing().getWingMembers());
         for (FighterWingAPI.ReturningFighter a : bay.getWing().getReturning()){
             fighters.add(a.fighter);
@@ -203,13 +215,13 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
             ShipAPI b = fighters.get(a);
             if (!b.isAlive() || b.isHulk() || b.isFinishedLanding()){
                 if (b.isFinishedLanding()) {
-                    log.info("  returned fighter as reclaim. yay!");
+                    //log.info("  returned fighter as reclaim. yay!");
                     returnFighterAsReclaim();
                 }
                 removed.add(b);
                 engine.removeEntity(b);
                 ship.getLaunchBaysCopy().get(0).getWing().removeMember(b);
-                log.info("  removing fighter...");
+                //log.info("  removing fighter...");
             }
         }
         for (ShipAPI a : removed) fighters.remove(a);
@@ -220,7 +232,7 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
         if (fighters.isEmpty()){
             arrayOfCores.remove(ship);//(ship);
             Global.getCombatEngine().removeEntity(ship);
-            log.info("  removing self do to a lack of fighters...");
+            //log.info("  removing self do to a lack of fighters...");
             return true;
         }
         return false;
@@ -263,7 +275,7 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
     }
     private void retargetDef(){
         if (!motherShip.isAlive() || motherShip.isHulk()) {
-            log.info("force retargeting...");
+            //log.info("force retargeting...");
             forceRetarget();
             stage = 2;
         }

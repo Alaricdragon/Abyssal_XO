@@ -8,6 +8,7 @@ V0.0.8:
         reclaim packages in 'combat' mode will switch back to 'reclaim' mode if a valid target for reclaim is found
         removed armaa armada strickcraft from being exempt from receiving reclaim. You can enable it if you want that to be restricted in the data/config/settings file.
         reclaim now 'locks onto' a target when in range, so gathering reclaim should be a bit easier for faster / smaller ships
+        reclaim gather time 2 -> 3 seconds.
     changed entier skill try:
         'Overcharged' ->            'Constant Repairs' (repair hull at the cost of Reclaim)
         'Mass Manufacturing' ->     'Scrapwork Microforge' (regenerate ammo for limit ammo weapons at a reclaim cost)
@@ -21,6 +22,8 @@ V0.0.8:
         (X)-new skill- ->              'Mastery' (in combat starship creation (like threat))
     graphics and effects:
         reclaim packages now get bigger depending on the amount of reclaim inside of them. at max level, reclaim packages are 30,40,50,60 in size. at min level, they are 22,24,26,28 in size. (from 40 size flat.)
+    fixes:
+        reclaim can now follow arma armada strickcraft when docked.
 V0.0.7:
     fixes:
         fixed 'threat' creating 2 - 6 times as many reclaim swarms as they should when they die

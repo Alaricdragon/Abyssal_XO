@@ -1,5 +1,6 @@
 package Abyssal_XO.data.scripts.threat.AI;
 
+import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
 import com.fs.starfarer.api.Global;
@@ -263,7 +264,7 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 				}
 			} else if(canGather()){
 				sinceTurnedOffFlash += amount;
-				if (sinceTurnedOffFlash > 2f) {
+				if (sinceTurnedOffFlash > Settings.NANO_THIEF_RECLAIM_GATHER_TIME) {
 					CombatEngineAPI engine = Global.getCombatEngine();
 					if (fabricator.isAlive()) {
 						//todo: HERE. this is were I apply effects to ships! I have no fucking clue how it works.
@@ -379,7 +380,7 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 	}
 
 	protected void computeDesiredHeading() {
-		log.info("attempting to get heading....");
+		//log.info("attempting to get heading....");
 		Vector2f loc = ship.getLocation();
 		Vector2f vel = ship.getVelocity();
 		float facing = ship.getFacing();
@@ -387,8 +388,10 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 		Vector2f total = new Vector2f();
 
 		for (FlockingData curr : flockingData) {
-			log.info("	applying a new flocking data ponit....");
+			//log.info("	applying a new flocking data point....");
 			float dist = Misc.getDistance(curr.loc, loc);
+			//if (fabricator != null && curr.loc == fabricator.getLocation()) log.info("	got point as fabricator");
+			//else log.info("	 point is not fabricator");
 			if (curr.maxR > 0 && dist < curr.maxR) {
 				float repelWeight = curr.repelWeight;
 				if (dist > curr.minR && curr.maxR > curr.minR) {
@@ -415,7 +418,7 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 
 				dir.scale(repelWeight);
 				Vector2f.add(total, dir, total);
-				log.info("		-repeled to: "+dir+" for a total of: "+total);
+				//log.info("		-repeled to: "+dir+" for a total of: "+total);
 			}
 
 			if (curr.maxA > 0 && dist < curr.maxA) {
@@ -430,7 +433,7 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 				Vector2f dir = Misc.getUnitVector(loc, curr.loc);
 				dir.scale(attractWeight);
 				Vector2f.add(total, dir, total);
-				log.info("		-attract to: "+dir+" for a total of: "+total);
+				//log.info("		-attract to: "+dir+" for a total of: "+total);
 			}
 
 			if (curr.maxC > 0 && dist < curr.maxC) {
@@ -447,17 +450,25 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 				Misc.normalise(dir);
 				dir.scale(cohesionWeight);
 				Vector2f.add(total, dir, total);
-				log.info("		-velocity to: "+dir+" for a total of: "+total);
+				//log.info("		-velocity to: "+dir+" for a total of: "+total);
 			}
 		}
 		if (total.length() <= 0) {
 			//this is not the issue...
-			log.info("	failed to get the direction I should head in, for unknown reasons.");
+			//log.info("	failed to get the direction I should head in, for unknown reasons.");
 			desiredHeading = ship.getFacing();
 			headingChangeRate = ship.getAngularVelocity() * 0.5f;
 		} else {
+			/*
 			//this is a issue: theory: when a ship is 'landed' the 'total' is equal to some far off point.
 			log.info("	getting direction of angle: "+total);
+			if (fabricator != null){//for logs only
+				Vector2f dir = Misc.getUnitVector(ship.getLocation(), fabricator.getLocation());
+				dir.normalise();
+				//total = dir;//this does work as a backup. but why is it not working now???? need additional data.
+				log.info("	getting desired angle of: "+dir);//+". also replacing heading....");
+			}
+			else log.info("	fabricator undesided at this time. cannot get desired angle.");*/
 			float prev = desiredHeading;
 			desiredHeading = Misc.getAngleInDegrees(total);
 			if (elapsedSincePrevHeadingUpdate > 0) {
@@ -468,10 +479,22 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 		}
 
 		//desiredHeading = Misc.getAngleInDegrees(ship.getLocation(),fabricator.getLocation());
+		/*
+		* HSS Hero of Eventide: pos: 0.0, -1500.0, facing: 89.73334, vos: Vector2f[0.0, 0.0] raid:146.0
+		* ISS Blueshift: pos: -0.1726014, -1499.6835, facing: 90.6639, vos: Vector2f[-5.178042, 9.496801] raid:35.0
+
+		theory: blueshift is repeling items for some unknown reason? confused confused....?
+		at least it might be?
+		ok: what I should do: I should calculate the 'desired' direction. aka the heading between the two ponits. this should help.
+		because I for real cant see what on earth is going wrong here?!?!?!?!?!?
+		AAAAAAAAAAAAAAAAAAdsjkfhgdsjh
+
+		 */
 	}
 
 
 	protected void updateFlockingData() {
+		//log.info("updating flocking data...");
 		flockingData.clear();
 		CombatEngineAPI engine = Global.getCombatEngine();
 
@@ -500,18 +523,18 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 		allData.add(flockingData_s2);
 		allData.add(flockingData_s1);
 		allData.add(flockingData_s0);
-		while(true){//please dont ask why.
+		while(true){//please dont ask why. (its basicly a way to break the intiernals easyer. like a function with a lot of returns in it.)
 			if (fabricator == null) break;
 			if (fabricator == ship) break;
-			if (fabricator.isFighter() && (!fabricator.isWingLeader() || fabricator.getOwner() == owner)) break;
+			//if (fabricator.isFighter() && (!fabricator.isWingLeader() || fabricator.getOwner() == owner)){log.info("	fabracator fighter and not wing leader?");break;}
 
-			if (fabricator.isHulk() || fabricator.getOwner() == 100) break;
+			if (fabricator.isHulk() || fabricator.getOwner() == 100)break;// {log.info("	fabricator dead / owner 100");break;}
 
 			// return to Fabricator Units, ignore other ships
 			//NOTE: here is were I can filter what possible targets I want.
-			if (fabricator.getOwner() != owner) break;
-			if (!stats.isValidReclaimTarget(fabricator)) break;
-			if (!fabricator.equals(fabricator)) break;
+			if (fabricator.getOwner() != owner)break;//{log.info("	  fabracator owner mismatch"); break;}
+			if (!stats.isValidReclaimTarget(fabricator))break;//{log.info("	  fabracator invalid target"); break;}
+			if (!fabricator.equals(fabricator))break;//{log.info("	fabracator not fabracator"); break;}
 			float fabricatorRadius = fabricator.getCollisionRadius() * 0.5f;
 			FlockingData data = new FlockingData();
 			data.facing = fabricator.getFacing();
@@ -607,17 +630,6 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 			}
 		}
 
-		/*
-		* HSS Hero of Eventide: pos: 0.0, -1500.0, facing: 89.73334, vos: Vector2f[0.0, 0.0] raid:146.0
-		* ISS Blueshift: pos: -0.1726014, -1499.6835, facing: 90.6639, vos: Vector2f[-5.178042, 9.496801] raid:35.0
-
-		theory: blueshift is repeling items for some unknown reason? confused confused....?
-		at least it might be?
-		ok: what I should do: I should calculate the 'desired' direction. aka the heading between the two ponits. this should help.
-		because I for real cant see what on earth is going wrong here?!?!?!?!?!?
-		AAAAAAAAAAAAAAAAAAdsjkfhgdsjh
-
-		 */
 	}
 
 	protected boolean canGather(){
@@ -625,18 +637,12 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 		Vector2f pointB = ship.getLocation();
 		float c = Misc.getDistance(pointA,pointB);
 		float size = fabricator.getCollisionRadius();
-		log.info("getting reclaim heading to ship of name "+fabricator.getName()+": pos: "+fabricator.getLocation().x+", "+fabricator.getLocation().y+", facing: "+fabricator.getFacing()+", vos: "+fabricator.getVelocity()+" raid:"+fabricator.getCollisionRadius()+", alive: "+fabricator.isAlive()+", is hulk:"+fabricator.isHulk()+", owner: "+fabricator.getOwner());
-		//float fabricatorRadius = fabricator.getCollisionRadius() * 0.5f;
-		//FlockingData data = new FlockingData();
-		//data.facing = fabricator.getFacing();
-		//data.loc = fabricator.getLocation();
-		//data.vel = fabricator.getVelocity();
-		//data.attractWeight = getShipWeight(fabricator) * stats.getReclaimTargetPriority(ship);
+		//log.info("getting reclaim heading to ship of name "+fabricator.getName()+": pos: "+fabricator.getLocation().x+", "+fabricator.getLocation().y+", facing: "+fabricator.getFacing()+", vos: "+fabricator.getVelocity()+" raid:"+fabricator.getCollisionRadius()+", alive: "+fabricator.isAlive()+", is hulk:"+fabricator.isHulk()+", owner: "+fabricator.getOwner());
 
 		if (!(c < (size*1.5)+100)) return false;
 		lockedOntoTarget = true;
 		if (fabricator.isPhased()) return false;
-		log.info("returning true");
+		//log.info("returning true");
 		return true;
 	}
 
