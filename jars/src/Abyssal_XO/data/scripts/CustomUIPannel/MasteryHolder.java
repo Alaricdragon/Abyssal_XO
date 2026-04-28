@@ -18,18 +18,20 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
         so...
         issues:
             bottom ship display:
-                -I should have a banner that says '? / max ships' to indecate if I am over capacity.
-                -It should turn red if I am over capacity. (negitive highlight color)
+                -(moved to info because I don't know how to handle banners yet...)
+                    -I should have a banner that says '? / max ships' to indicate if I am over capacity.
+                    -It should turn red if I am over capacity. (negative highlight color)
                 -ships are slightly cut off (at the top)
-                -the '-' button is a bit off.
-                -
                 - the default ship is not displayed by default.
                     -issues: I assumed I would need a variant file, but I really need a fleetMemberAPI (I think)
+                -'odds' value is offset slightly. possable fixes later...?
             info display:
+                -I should have a banner that says '? / max ships' to indicate if I am over capacity.
+                -It should turn red if I am over capacity. (negative highlight color)
                 -no info yet
             button buttons:
-                -the 'finished' button should set the relevent memory.
-                -when over capacity, a warning should be displayed somewere.
+                -the 'finished' button should set the relevant memory.
+                -when over capacity, a warning should be displayed somewhere.
             moving items between displays:
                 -works fine
         other requirements:
@@ -149,6 +151,8 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
         fleet.getPosition().rightOfTop(info,5);
         selected.getPosition().belowMid(fleet,5);
         bottomButtons.getPosition().belowMid(selected,5);
+
+        infoHolder.recalculateDisplay();
         //THE_THING.addUIElement(tooltip);
         //panel.wrapTooltipWithBox(tooltip);
         //return THE_THING;

@@ -26,6 +26,11 @@ public class HeldShipsHolder implements CustomUIPanelPlugin {
     UIComponentAPI panelThing;
     protected CustomPanelAPI panel;
     protected TooltipMakerAPI tooltip;
+
+    public int getSelectedNumber(){
+        return heldShips.size();
+    }
+
     public void createOptions(CustomPanelAPI panel,float width, float height){
         this.root = panel;
         panel = root.createCustomPanel(width,height,new BaseCustomUIPanelPlugin());

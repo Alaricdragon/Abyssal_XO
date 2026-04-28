@@ -5,6 +5,7 @@ import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Misc;
+import org.lwjgl.Sys;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,8 @@ public class Mastery_HeldShip_Single implements CustomUIPanelPlugin {
     *
     * bugs:
     *   1: right now, the ship is not displaying at the 'right' position. fixes required.*/
+    private int maxChance = 20;
+
     private boolean changed = false;
     public int chance;
     private int totalChance;
@@ -64,17 +67,23 @@ public class Mastery_HeldShip_Single implements CustomUIPanelPlugin {
 
         ButtonAPI but = tooltip.addButton("remove Ship","remove",shipSize,buttonSize,1);
         //labal.getPosition().aboveMid(but,1);
-        ButtonAPI butMin = tooltip.addButton("-","decrease",shipSize/3,buttonSize,1);
+
+        //todo: in theory, this is fixable. IF, and this is a big if, I were to have a bunch of spaces before this chance icon. to better calculate the status of it...?
+        //      or I could devide this into 3... no wait that just moved around the issue (first value would still be shifted to the side).
+        //      I can solve this later.
         odds = tooltip.addPara(chance+"/"+totalChance,1);//value of this ship / total number of ships.
+        UIComponentAPI textLabel = tooltip.getPrev();
+        textLabel.getPosition().setSize((shipSize/9) * 7,buttonSize);
+
+        ButtonAPI butMin = tooltip.addButton("-","decrease",shipSize/9,buttonSize,1);
         //maybe have this as a percentage chance?
         //or maybe just have the odds here...
-        UIComponentAPI textLabel = tooltip.getPrev();
         //tooltip.removeComponent(textLabel);
-        ButtonAPI butAdd = tooltip.addButton("+","increase",shipSize/3,buttonSize,1);
+        ButtonAPI butAdd = tooltip.addButton("+","increase",shipSize/9,buttonSize,1);
 
         but.getPosition().belowMid(labal,1);
-        butMin.getPosition().belowLeft(but,1);
-        textLabel.getPosition().rightOfMid(butMin,1);
+        textLabel.getPosition().belowMid(but,1);
+        butMin.getPosition().leftOfMid(textLabel,1);
         butAdd.getPosition().rightOfMid(textLabel,1);
 
         //odds = textLabel;
@@ -120,9 +129,18 @@ public class Mastery_HeldShip_Single implements CustomUIPanelPlugin {
 
     }
 
+    boolean isShifted = false;
     @Override
     public void processInput(List<InputEventAPI> events) {
-
+        if (events.isEmpty()) return;
+        MasteryHolder.log.info("getting event....");
+        isShifted = false;
+        for (InputEventAPI a : events) if (a.isShiftDown()){
+            isShifted = true;
+            MasteryHolder.log.info("got shifted.");
+            break;
+        }
+        MasteryHolder.log.info("failed to get shifted.");
     }
 
     @Override
@@ -132,18 +150,23 @@ public class Mastery_HeldShip_Single implements CustomUIPanelPlugin {
                 MasteryHolder.log.info("running button single ship -> remove");
                 MasteryHolder.masteryHolder.heldShips.toRemove.add(this);
                 MasteryHolder.masteryHolder.heldShips.recreate_full();
+                MasteryHolder.masteryHolder.infoHolder.recalculateDisplay();
                 break;
             case "decrease":
                 MasteryHolder.log.info("running button single ship -> decrease");
                 if (chance <= 1) break;
-                chance--;
+                if (isShifted) chance = 1;
+                else chance--;
+                MasteryHolder.log.info("shifted as: "+isShifted);
                 changed = true;
                 MasteryHolder.masteryHolder.heldShips.recreate();
                 break;
             case "increase":
                 MasteryHolder.log.info("running button single ship -> increase");
-                if (chance >= 20) break;
-                chance++;
+                if (chance >= maxChance) break;
+                if (isShifted) chance = maxChance;
+                else chance++;
+                MasteryHolder.log.info("shifted as: "+isShifted);
                 changed = true;
                 MasteryHolder.masteryHolder.heldShips.recreate();
                 break;

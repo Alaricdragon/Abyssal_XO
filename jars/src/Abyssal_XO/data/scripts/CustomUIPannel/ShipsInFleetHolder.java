@@ -196,6 +196,7 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
         MasteryHolder.masteryHolder.heldShips.toAdd.one = Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy().get(Integer.parseInt(data[1]));
         MasteryHolder.masteryHolder.heldShips.toAdd.two = 10;
         MasteryHolder.masteryHolder.heldShips.recreate_full();
+        MasteryHolder.masteryHolder.infoHolder.recalculateDisplay();
         MasteryHolder.log.info("button pressed in: ShipsInFleetHolder");
     }
 }
