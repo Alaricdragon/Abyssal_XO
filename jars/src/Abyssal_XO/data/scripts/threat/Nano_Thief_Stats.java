@@ -505,10 +505,15 @@ public class Nano_Thief_Stats {
         }
     }
     public int getDeployedPonits(){
+        Global.getCombatEngine().getFleetManager(0).getDeployedCopyDFM().get(0);
         makeSureSavedShipsAreAlive();
         int output = 0;
         for (ShipAPI a : this.availableShips){
-            output += a.getMutableStats().getSuppliesToRecover().getModifiedInt();
+            if (a.getFleetMember() == null) continue;
+            //a.getMutableStats();
+
+            output += a.getFleetMember().getDeploymentPointsCost();
+            //output += a.getMutableStats().getSuppliesToRecover().getModifiedInt();
             //qoutput += availableShips.get(a).getDeployCost();
             //availableShips.get(a).getMutableStats().
             //availableShips.get(a).getMutableStats().getDynamic().getMod(Stats.DEPLOYMENT_POINTS_MOD).computeEffective();
