@@ -12,6 +12,8 @@ import com.fs.starfarer.api.util.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
+import static Abyssal_XO.data.scripts.Settings.*;
+
 public class ShipsInFleetHolder implements CustomUIPanelPlugin {
     /*notes:
         1: getX and getCenterX are diffrent.
@@ -47,7 +49,6 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
         this.tooltip = panel.createUIElement(panel.getPosition().getWidth(),panel.getPosition().getHeight(),true);
         tooltip.getPosition().setLocation(0,0);
         MasteryHolder.log.info("    created UI element...");
-        List<FleetMemberAPI> fleetList = Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy();
 
         tooltip.createLabel("HEADER",Misc.getTextColor());
         //todo: I can do a lot with this header. so thats cool.
@@ -59,11 +60,10 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
 
         MasteryHolder.log.info("    added button...");
 
-
         int size = (int) (panel.getPosition().getWidth() / 100);
         int at = 0;
-        for (int a = 0; a < fleetList.size(); a++){
-            FleetMemberAPI ship = fleetList.get(a);
+        for (int a = 0; a < activeMembers.size(); a++){
+            FleetMemberAPI ship = activeMembers.get(a);
             //last_b = addSingleShip_asCompoment(ship,a);
             Pair<UIComponentAPI, UIComponentAPI> z = addSingleShip_Working(ship,a);
             last_b = z.one;
@@ -88,6 +88,14 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
 
         panel.addUIElement(tooltip);
         MasteryHolder.log.info("    tooltip added...");
+    }
+    private boolean isApplicable(FleetMemberAPI ship){
+        return  switch (ship.getHullSpec().getHullSize()){
+            case DEFAULT, FIGHTER, FRIGATE -> NANO_THIEF_MASTERY_canFriget;
+            case DESTROYER -> NANO_THIEF_MASTERY_canDestroyer;
+            case CRUISER -> NANO_THIEF_MASTERY_canCrusier;
+            case CAPITAL_SHIP -> NANO_THIEF_MASTERY_canCaptial;
+        };
     }
     /*private UIComponentAPI addSingleShip_asCompoment(FleetMemberAPI ship, int idInFleet){
         return Mastery_HeldShip_Single.createItem(master,tooltip,ship,idInFleet,100,50);
@@ -136,9 +144,15 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
         return labal;
 
     }*/
+    private ArrayList<FleetMemberAPI> activeMembers;
     public ShipsInFleetHolder(){
         //sprite = Global.getSettings().getSprite("graphics/ships/wolf/wolf_base.png");
-
+        activeMembers = new ArrayList<>();
+        List<FleetMemberAPI> fleetList = Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy();
+        for (int a = 0; a < fleetList.size(); a++) {
+            FleetMemberAPI ship = fleetList.get(a);
+            if (isApplicable(ship)) activeMembers.add(ship);
+        }
     }
     public void init(){
 
@@ -193,10 +207,10 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
     public void buttonPressed(Object buttonId) {
         String[] data = ((String) buttonId).split(":");
         MasteryHolder.masteryHolder.heldShips.toAdd = new Pair<>();
-        MasteryHolder.masteryHolder.heldShips.toAdd.one = Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy().get(Integer.parseInt(data[1]));
+        MasteryHolder.masteryHolder.heldShips.toAdd.one = activeMembers.get(Integer.parseInt(data[1]));
         MasteryHolder.masteryHolder.heldShips.toAdd.two = 10;
         MasteryHolder.masteryHolder.heldShips.recreate_full();
-        MasteryHolder.masteryHolder.infoHolder.recalculateDisplay();
+        MasteryHolder.masteryHolder.infoHolder.recreate_full();
         MasteryHolder.log.info("button pressed in: ShipsInFleetHolder");
     }
 }

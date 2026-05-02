@@ -150,7 +150,7 @@ public class Mastery_HeldShip_Single implements CustomUIPanelPlugin {
                 MasteryHolder.log.info("running button single ship -> remove");
                 MasteryHolder.masteryHolder.heldShips.toRemove.add(this);
                 MasteryHolder.masteryHolder.heldShips.recreate_full();
-                MasteryHolder.masteryHolder.infoHolder.recalculateDisplay();
+                MasteryHolder.masteryHolder.infoHolder.recreate_full();
                 break;
             case "decrease":
                 MasteryHolder.log.info("running button single ship -> decrease");

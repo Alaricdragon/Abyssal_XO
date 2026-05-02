@@ -61,7 +61,11 @@ public class Settings {
     public static ArrayList<String> NanoThief_Banned = new ArrayList<>();
 
 
-    public static int MASTERY_maxShips = 4;
+    public static int NANO_THIEF_MASTERY_maxShips = 4;
+    public static boolean NANO_THIEF_MASTERY_canFriget = true;
+    public static boolean NANO_THIEF_MASTERY_canDestroyer = false;
+    public static boolean NANO_THIEF_MASTERY_canCrusier = false;
+    public static boolean NANO_THIEF_MASTERY_canCaptial = false;
     public static void init() throws JSONException {
         JSONArray array = Global.getSettings().getJSONArray("NanoThief_Users");
         NanoThief_Users = new ArrayList<>();

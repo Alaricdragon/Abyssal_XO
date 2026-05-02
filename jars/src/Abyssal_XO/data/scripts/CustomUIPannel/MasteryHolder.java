@@ -18,20 +18,15 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
         so...
         issues:
             bottom ship display:
-                -(moved to info because I don't know how to handle banners yet...)
-                    -I should have a banner that says '? / max ships' to indicate if I am over capacity.
-                    -It should turn red if I am over capacity. (negative highlight color)
                 -ships are slightly cut off (at the top)
                 - the default ship is not displayed by default.
                     -issues: I assumed I would need a variant file, but I really need a fleetMemberAPI (I think)
-                -'odds' value is offset slightly. possable fixes later...?
+                -'odds' value is offset slightly. possible fixes later...?
+                -when loaded, normal ship list is not loaded.
             info display:
-                -I should have a banner that says '? / max ships' to indicate if I am over capacity.
-                -It should turn red if I am over capacity. (negative highlight color)
-                -no info yet
+                -requires more information on the rules of selecting ships, as well as the stats of ships selected.
             button buttons:
                 -the 'finished' button should set the relevant memory.
-                -when over capacity, a warning should be displayed somewhere.
             moving items between displays:
                 -works fine
         other requirements:
@@ -59,7 +54,7 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
 
     public HeldShipsHolder heldShips;
     public ShipsInFleetHolder fleetShips;
-    public MasterInformationHolder infoHolder;
+    public MasteryInformationHolder2 infoHolder;
     public Master_FinalButtons finalButtons;
     public MasteryHolder(InteractionDialogAPI dialog){
         this.dialog = dialog;
@@ -120,7 +115,7 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
 
         float infoWidth = 200;
         float buttonHeight = 50;
-        MasterInformationHolder infoTemp2 = new MasterInformationHolder();
+        MasteryInformationHolder2 infoTemp2 = new MasteryInformationHolder2();
         infoHolder = infoTemp2;
         CustomPanelAPI infoTemp = panel.createCustomPanel(infoWidth,height,infoTemp2);
         infoTemp2.createOptions(infoTemp,infoWidth,height);
@@ -152,7 +147,7 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
         selected.getPosition().belowMid(fleet,5);
         bottomButtons.getPosition().belowMid(selected,5);
 
-        infoHolder.recalculateDisplay();
+        infoHolder.recreate_full();
         //THE_THING.addUIElement(tooltip);
         //panel.wrapTooltipWithBox(tooltip);
         //return THE_THING;

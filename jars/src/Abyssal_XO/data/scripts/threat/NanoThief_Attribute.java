@@ -306,7 +306,7 @@ or
 
         SCAptitudeSection section3 = new SCAptitudeSection(false, 4, "technology4");
         section3.addSkill("SiC_NanoThief_skill_9");
-        //section3.addSkill("SiC_NanoThief_skill_10");
+        section3.addSkill("SiC_NanoThief_skill_10");
         addSection(section3);
     }
 

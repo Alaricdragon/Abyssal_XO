@@ -4,9 +4,9 @@ import Abyssal_XO.data.scripts.Settings;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.BaseCustomUIPanelPlugin;
 import com.fs.starfarer.api.campaign.CustomUIPanelPlugin;
-import com.fs.starfarer.api.campaign.InteractionDialogAPI;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
+import com.fs.starfarer.api.fleet.FleetMemberType;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.*;
 import com.fs.starfarer.api.util.Pair;
@@ -61,7 +61,7 @@ public class HeldShipsHolder implements CustomUIPanelPlugin {
 
 
         if (MasteryHolder.masteryHolder.finalButtons != null) {
-            if (heldShips.size() > Settings.MASTERY_maxShips) {
+            if (heldShips.size() > Settings.NANO_THIEF_MASTERY_maxShips || heldShips.isEmpty()) {
                 MasteryHolder.masteryHolder.finalButtons.finish.setEnabled(false);
                 MasteryHolder.masteryHolder.finalButtons.finish.flash();
                 //MasteryHolder.masteryHolder.finalButtons.finish.setText("To many ships to use. Max is "+Settings.MASTERY_maxShips);
@@ -102,6 +102,7 @@ public class HeldShipsHolder implements CustomUIPanelPlugin {
     public void recreate(){
         recreate(panel,tooltip);
     }
+    private boolean firstCreation = true;
     private ArrayList<Pair<FleetMemberAPI,Integer>> getMainShipList(){
         ArrayList<Pair<FleetMemberAPI,Integer>> output = new ArrayList<>();
         /*if (heldShips.isEmpty()){
@@ -125,12 +126,32 @@ public class HeldShipsHolder implements CustomUIPanelPlugin {
         for (Pair<FleetMemberAPI, Integer> a : output){
             MasteryHolder.log.info("    ship of id, weight: "+a.one.getShipName()+", "+a.two);
         }
-        if (output.isEmpty()) output.add(getBackupShip());
+        if (output.isEmpty() && firstCreation) output.addAll(getSavedShips());
+        firstCreation = false;
         return output;
+    }
+    private ArrayList<Pair<FleetMemberAPI,Integer>> getSavedShips(){
+        ArrayList<Pair<FleetMemberAPI,Integer>> out = new ArrayList<>();
+        if (!Global.getSector().getPlayerPerson().getMemory().contains(Settings.NANO_THIEF_CUSTOM_MASTERY_NUMBERS_MEMORY_KEY)){
+            out.add(getBackupShip());
+            return out;
+        }
+        ArrayList<FleetMemberAPI> variants = (ArrayList<FleetMemberAPI>) Global.getSector().getPlayerPerson().getMemory().get(Settings.NANO_THIEF_CUSTOM_MASTERY_MEMORY_KEY);
+        ArrayList<Integer> numbers = (ArrayList<Integer>) Global.getSector().getPlayerPerson().getMemory().get(Settings.NANO_THIEF_CUSTOM_MASTERY_NUMBERS_MEMORY_KEY);
+        for (int a = 0; a < variants.size(); a++){
+            Pair<FleetMemberAPI,Integer> b = new Pair<>();
+            b.one = variants.get(a);
+            //double c = numbers.get(a);
+            b.two = numbers.get(a);
+            out.add(b);
+        }
+        if (out.isEmpty()) out.add(getBackupShip());
+        return out;
     }
     private Pair<FleetMemberAPI,Integer> getBackupShip(){
         Pair<FleetMemberAPI,Integer> data = new Pair<>();
-        data.one = Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy().get(0);
+        data.one = Global.getFactory().createFleetMember(FleetMemberType.SHIP,"kite_pirates_Raider");
+        //data.one = Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy().get(0);
         data.two = 10;
         return data;
     }

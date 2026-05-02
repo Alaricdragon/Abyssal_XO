@@ -1,14 +1,19 @@
 package Abyssal_XO.data.scripts.CustomUIPannel;
 
+import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat.dialogPlugin.Nano_Thief_dialog;
+import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CustomUIPanelPlugin;
 import com.fs.starfarer.api.campaign.InteractionDialogAPI;
+import com.fs.starfarer.api.combat.ShipVariantAPI;
+import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.ButtonAPI;
 import com.fs.starfarer.api.ui.CustomPanelAPI;
 import com.fs.starfarer.api.ui.PositionAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Master_FinalButtons implements CustomUIPanelPlugin {
@@ -63,6 +68,15 @@ public class Master_FinalButtons implements CustomUIPanelPlugin {
             case "finish":
                 //todo: remember the new fleet composition here.
                 MasteryHolder.masteryHolder.returnToBaseDialog();
+                ArrayList<Integer> numbers = new ArrayList<>();
+                ArrayList<FleetMemberAPI> variants = new ArrayList<>();
+                for (Mastery_HeldShip_Single a : MasteryHolder.masteryHolder.heldShips.heldShips){
+                    numbers.add(a.chance);
+                    //a.ship;
+                    variants.add(a.ship);
+                }
+                Global.getSector().getPlayerPerson().getMemory().set(Settings.NANO_THIEF_CUSTOM_MASTERY_NUMBERS_MEMORY_KEY,numbers);
+                Global.getSector().getPlayerPerson().getMemory().set(Settings.NANO_THIEF_CUSTOM_MASTERY_MEMORY_KEY,variants);
                 break;
         }
     }
