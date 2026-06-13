@@ -103,17 +103,32 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
     }*/
     private Pair<UIComponentAPI,UIComponentAPI> addSingleShip_Working(FleetMemberAPI ship, int idInFleet){
         ArrayList<FleetMemberAPI> ships = new ArrayList<>();
+        UIComponentAPI labal0;
+        UIComponentAPI labal1;
+        UIComponentAPI labal2;
         ships.add(ship);
         tooltip.addShipList(1,1,100, Misc.getBasePlayerColor(),ships,10);
-        UIComponentAPI labal = tooltip.getPrev();
+        labal0 = tooltip.getPrev();
+        labal1 = labal0;
 
+        tooltip.addPara(ship.getShipName(),1);
+        labal2 = tooltip.getPrev();
+        labal2.getPosition().setSize(100,26);
+        labal2.getPosition().belowMid(labal1,2);
+        labal1 = labal2;
+
+        /*tooltip.addPara(ship.getVariant().getDisplayName(),1);
+        labal2 = tooltip.getPrev();
+        labal2.getPosition().setSize(100,26);
+        labal2.getPosition().belowMid(labal1,5);
+        labal1 = labal2;*/
 
         ButtonAPI but = tooltip.addButton("Select Ship","add:"+idInFleet,100,50,1);
-        but.getPosition().belowMid(labal,1);
+        but.getPosition().belowMid(labal1,5);
 
         //tooltip.addComponent(panel.createCustomPanel(100,100,new DisplayShip()));
 
-        return new Pair<>(labal,but);
+        return new Pair<>(labal0,but);
 
     }
     /*private UIComponentAPI addSingleShipAshLibAttempt(FleetMemberAPI ship,int idInFleet){
@@ -206,9 +221,8 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
     @Override
     public void buttonPressed(Object buttonId) {
         String[] data = ((String) buttonId).split(":");
-        MasteryHolder.masteryHolder.heldShips.toAdd = new Pair<>();
-        MasteryHolder.masteryHolder.heldShips.toAdd.one = activeMembers.get(Integer.parseInt(data[1]));
-        MasteryHolder.masteryHolder.heldShips.toAdd.two = 10;
+        FleetMemberAPI fleetmember = activeMembers.get(Integer.parseInt(data[1]));
+        MasteryHolder.masteryHolder.heldShips.toAdd = new HeldShipsSingleShipData(fleetmember,10,fleetmember.getShipName(),fleetmember.getVariant().getDisplayName());
         MasteryHolder.masteryHolder.heldShips.recreate_full();
         MasteryHolder.masteryHolder.infoHolder.recreate_full();
         MasteryHolder.log.info("button pressed in: ShipsInFleetHolder");

@@ -7,6 +7,7 @@ import com.fs.starfarer.api.campaign.CustomUIPanelPlugin;
 import com.fs.starfarer.api.campaign.InteractionDialogAPI;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
+import com.fs.starfarer.api.fleet.FleetMemberType;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.ui.ButtonAPI;
 import com.fs.starfarer.api.ui.CustomPanelAPI;
@@ -67,13 +68,17 @@ public class Master_FinalButtons implements CustomUIPanelPlugin {
                 break;
             case "finish":
                 //todo: remember the new fleet composition here.
+                //      also, remember the ship name and variant.
                 MasteryHolder.masteryHolder.returnToBaseDialog();
                 ArrayList<Integer> numbers = new ArrayList<>();
                 ArrayList<FleetMemberAPI> variants = new ArrayList<>();
                 for (Mastery_HeldShip_Single a : MasteryHolder.masteryHolder.heldShips.heldShips){
                     numbers.add(a.chance);
                     //a.ship;
-                    variants.add(a.ship);
+                    FleetMemberAPI existingMember = a.ship;
+                    //FleetMemberType.SHIP;
+                    FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(existingMember.getType(), existingMember.getVariant().clone());
+                    variants.add(memberCopy);
                 }
                 Global.getSector().getPlayerPerson().getMemory().set(Settings.NANO_THIEF_CUSTOM_MASTERY_NUMBERS_MEMORY_KEY,numbers);
                 Global.getSector().getPlayerPerson().getMemory().set(Settings.NANO_THIEF_CUSTOM_MASTERY_MEMORY_KEY,variants);

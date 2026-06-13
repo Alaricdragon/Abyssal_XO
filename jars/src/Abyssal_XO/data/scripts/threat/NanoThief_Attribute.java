@@ -9,6 +9,16 @@ import second_in_command.specs.SCBaseAptitudePlugin;
 public class NanoThief_Attribute extends SCBaseAptitudePlugin {
     /*so relevent data:
     to do list:
+        1) (for safty overriden nanothief) make it so I can have multible of the same nanothief skills active.
+            -scrapwork fortification: add a tag to the ship when active, preventing more then one instance of this from being active at once (force disabling it if required.
+                                      also, make it so it resits the last bit of damage that caused the skill to actavate.
+            -offensive fighter production: make it so there is a multiplyer to the max number of fighters on Nano_Thief_Stats. so each instance of this adds a multiplyer, and allows for this to be active.
+            -centralized production: make having more then one of this skill provide a multiplyer to recalim gained, instead of anything else.
+            -main stats: make an exception for centralized production so multiple instances of said skill are not active at the same time.
+            -nano-thief stats: needs to beable to look at all xos on fleet and add there skills together, (ignoring the 'base' skill) to
+        2) (for safty overriden nanothief) make it so the display of each skill has the ability to handle more then one display at the same time.
+            -this requires me to change the location of the display, to no longer be fully bound to the skills.
+            -I need to in some occasions (defensive / offincive fighter, missile reload, scrapwork fortifications, centralized production, mastery) make it so it can handle multible items, even if its poorly.
 
         4) add in the new icons for the systems (copyed another skill for now)
         5) add in the quest to allow someone to quire this skill (kill a centen number of fabricates, then just have it.)
@@ -16,12 +26,6 @@ public class NanoThief_Attribute extends SCBaseAptitudePlugin {
         -) reinable disabled skills (disabled do to not actualy doing anything yet.
 
         new skill list to do list:
-        1) create a type of listiner attached to every ship with this XO on battle start.
-            -the stats will need to hold a list of all ships attached to this, for reasons. (such as were to give reclaim with centralized production)
-            -this system will need to hold every 'active skill' and the relevant data for each one. effectively, a special class that handles the battle effects of everything
-            -this system will also need to handle fighter spawning.
-        2) disable fighter spawning in the primary XO.
-        3)
 
 note: I need to change everything.
 issue: the 'fighter spam' with this attribute can be completely broken. I will take a suggestion and turn the fighter thing into a capstone.

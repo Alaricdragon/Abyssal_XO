@@ -15,12 +15,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HeldShipsHolder implements CustomUIPanelPlugin {
+    /*
+    todo:
+        1: make it so I get the name and variant name of the giving ship.
+        2: make it so I save the name and variant name of the giving ship.
+        3: make it so I display the name and variant name of the giving ship.
+
+    */
     public HeldShipsHolder(){
         //createOptions(panel, dialog, tooltip);
     }
     protected ArrayList<Mastery_HeldShip_Single> heldShips = new ArrayList<>();
     protected ArrayList<Mastery_HeldShip_Single> toRemove = new ArrayList<>();
-    protected Pair<FleetMemberAPI,Integer> toAdd = null;
+    protected HeldShipsSingleShipData toAdd = null;
 
     protected CustomPanelAPI root;
     UIComponentAPI panelThing;
@@ -49,11 +56,11 @@ public class HeldShipsHolder implements CustomUIPanelPlugin {
         //tooltip.addPara("putting the ship here lol",5);
         //ShipVariantAPI ship = Global.getSettings().getVariant("legion_Escort");
         //Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy().get(0);
-        ArrayList<Pair<FleetMemberAPI, Integer>> list = getMainShipList();
+        ArrayList<HeldShipsSingleShipData> list = getMainShipList();
         int totalOdds = 0;
-        for (Pair<FleetMemberAPI, Integer> a : list) totalOdds+=a.two;
+        for (HeldShipsSingleShipData a : list) totalOdds+=a.odds;
         heldShips = new ArrayList<>();
-        for (Pair<FleetMemberAPI, Integer> a : list) heldShips.add(Mastery_HeldShip_Single.createItem(panel,tooltip,a.one,0,100,10,a.two,totalOdds));
+        for (HeldShipsSingleShipData a : list) heldShips.add(Mastery_HeldShip_Single.createItem(panel,tooltip,a,0,100,10,totalOdds));
 
         this.panel = panel;
         this.tooltip = tooltip;
@@ -103,8 +110,8 @@ public class HeldShipsHolder implements CustomUIPanelPlugin {
         recreate(panel,tooltip);
     }
     private boolean firstCreation = true;
-    private ArrayList<Pair<FleetMemberAPI,Integer>> getMainShipList(){
-        ArrayList<Pair<FleetMemberAPI,Integer>> output = new ArrayList<>();
+    private ArrayList<HeldShipsSingleShipData> getMainShipList(){
+        ArrayList<HeldShipsSingleShipData> output = new ArrayList<>();
         /*if (heldShips.isEmpty()){
             output.add(getBackupShip());
             MasteryHolder.log.info("returning a new with only the players flagship available.");
@@ -112,9 +119,9 @@ public class HeldShipsHolder implements CustomUIPanelPlugin {
         }*/
         for (Mastery_HeldShip_Single a : heldShips){
             if (toRemove.contains(a)) continue;
-            Pair<FleetMemberAPI,Integer> data = new Pair<>();
-            data.one = a.ship;
-            data.two = a.chance;
+            HeldShipsSingleShipData data = new HeldShipsSingleShipData(a);
+            //data.ship = a.ship;
+            //data.odds = a.chance;
             output.add(data);
         }
         if (toAdd != null){
@@ -123,15 +130,15 @@ public class HeldShipsHolder implements CustomUIPanelPlugin {
         toAdd = null;
         toRemove = new ArrayList<>();
         MasteryHolder.log.info("after reorganizing the main ship list, we have:");
-        for (Pair<FleetMemberAPI, Integer> a : output){
-            MasteryHolder.log.info("    ship of id, weight: "+a.one.getShipName()+", "+a.two);
+        for (HeldShipsSingleShipData a : output){
+            MasteryHolder.log.info("    ship of id, weight: "+a.ship.getShipName()+", "+a.odds);
         }
         if (output.isEmpty() && firstCreation) output.addAll(getSavedShips());
         firstCreation = false;
         return output;
     }
-    private ArrayList<Pair<FleetMemberAPI,Integer>> getSavedShips(){
-        ArrayList<Pair<FleetMemberAPI,Integer>> out = new ArrayList<>();
+    private ArrayList<HeldShipsSingleShipData> getSavedShips(){
+        ArrayList<HeldShipsSingleShipData> out = new ArrayList<>();
         if (!Global.getSector().getPlayerPerson().getMemory().contains(Settings.NANO_THIEF_CUSTOM_MASTERY_NUMBERS_MEMORY_KEY)){
             out.add(getBackupShip());
             return out;
@@ -139,20 +146,18 @@ public class HeldShipsHolder implements CustomUIPanelPlugin {
         ArrayList<FleetMemberAPI> variants = (ArrayList<FleetMemberAPI>) Global.getSector().getPlayerPerson().getMemory().get(Settings.NANO_THIEF_CUSTOM_MASTERY_MEMORY_KEY);
         ArrayList<Integer> numbers = (ArrayList<Integer>) Global.getSector().getPlayerPerson().getMemory().get(Settings.NANO_THIEF_CUSTOM_MASTERY_NUMBERS_MEMORY_KEY);
         for (int a = 0; a < variants.size(); a++){
-            Pair<FleetMemberAPI,Integer> b = new Pair<>();
-            b.one = variants.get(a);
+            HeldShipsSingleShipData b = new HeldShipsSingleShipData(variants.get(a),numbers.get(a),variants.get(a).getShipName(),variants.get(a).getVariant().getDisplayName());
+            //b.one = variants.get(a);
             //double c = numbers.get(a);
-            b.two = numbers.get(a);
+            //b.two = numbers.get(a);
             out.add(b);
         }
         if (out.isEmpty()) out.add(getBackupShip());
         return out;
     }
-    private Pair<FleetMemberAPI,Integer> getBackupShip(){
-        Pair<FleetMemberAPI,Integer> data = new Pair<>();
-        data.one = Global.getFactory().createFleetMember(FleetMemberType.SHIP,"kite_pirates_Raider");
-        //data.one = Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy().get(0);
-        data.two = 10;
+    private HeldShipsSingleShipData getBackupShip(){
+        FleetMemberAPI a = Global.getFactory().createFleetMember(FleetMemberType.SHIP,"kite_pirates_Raider");
+        HeldShipsSingleShipData data = new HeldShipsSingleShipData(a,10,a.getShipName(),a.getVariant().getDisplayName());
         return data;
     }
     public void recreate(CustomPanelAPI panel,TooltipMakerAPI tooltip){
@@ -163,11 +168,11 @@ public class HeldShipsHolder implements CustomUIPanelPlugin {
         }
         int totalOdds = 0;
         for (Mastery_HeldShip_Single a : heldShips) totalOdds+=a.getOdds();
-        if (toAdd != null) totalOdds+=toAdd.two;
+        if (toAdd != null) totalOdds+=toAdd.odds;
         //heldShips.addAll(toAdd);
 
         for (Mastery_HeldShip_Single a : heldShips) /*/a.recreate(totalOdds);/*/a.recreate(a.getOdds(),totalOdds);/**/
-        if (toAdd != null) heldShips.add(Mastery_HeldShip_Single.createItem(panel,tooltip,toAdd.one,0,100,10,toAdd.two,totalOdds));
+        if (toAdd != null) heldShips.add(Mastery_HeldShip_Single.createItem(panel,tooltip,toAdd,0,100,10,totalOdds));
         toAdd = null;
         toRemove = new ArrayList<>();
     }

@@ -23,6 +23,7 @@ public class Mastery_HeldShip_Single implements CustomUIPanelPlugin {
     private boolean changed = false;
     public int chance;
     private int totalChance;
+    private HeldShipsSingleShipData data;
 
     private TooltipMakerAPI tooltip;
     public FleetMemberAPI ship;
@@ -35,22 +36,24 @@ public class Mastery_HeldShip_Single implements CustomUIPanelPlugin {
 
     public UIComponentAPI thisCompoment;
 
-    public Mastery_HeldShip_Single(int chance, int totalChance){
+    public Mastery_HeldShip_Single(int chance, int totalChance,HeldShipsSingleShipData data){
         this.chance = chance;
         this.totalChance = totalChance;
+        this.data = data;
     }
-    public static Mastery_HeldShip_Single createItem(CustomPanelAPI masterPanel, TooltipMakerAPI holderTooltip, FleetMemberAPI ship, int idInFleet, float shipSize, float buttonHieght, int odds, int totalOdds){
-        Mastery_HeldShip_Single fleetTemp2 = new Mastery_HeldShip_Single(odds,totalOdds);
-        CustomPanelAPI fleetTemp = masterPanel.createCustomPanel(shipSize,shipSize+(buttonHieght*2),fleetTemp2);
+    public static Mastery_HeldShip_Single createItem(CustomPanelAPI masterPanel, TooltipMakerAPI holderTooltip, HeldShipsSingleShipData data, int idInFleet, float shipSize, float buttonHieght, int totalOdds){
+        int odds = data.odds;
+        Mastery_HeldShip_Single fleetTemp2 = new Mastery_HeldShip_Single(odds,totalOdds,data);
+        CustomPanelAPI fleetTemp = masterPanel.createCustomPanel(shipSize,shipSize+(buttonHieght*2)+(26),fleetTemp2);
 
         TooltipMakerAPI tooltip = fleetTemp.createUIElement(shipSize,shipSize+(buttonHieght*2),false);
         fleetTemp2.tooltip = tooltip;
         fleetTemp2.buttonHeight = buttonHieght;
         fleetTemp2.shipSize = shipSize;
-        fleetTemp2.ship = ship;
+        fleetTemp2.ship = data.ship;
 
         tooltip.getPosition().setLocation(0,0);
-        fleetTemp2.createOptions(tooltip,ship,shipSize,buttonHieght);
+        fleetTemp2.createOptions(tooltip, data.ship, shipSize,buttonHieght);
         fleetTemp.addUIElement(tooltip);
 
         UIComponentAPI fleet = holderTooltip.addCustom(fleetTemp,5);
@@ -60,10 +63,31 @@ public class Mastery_HeldShip_Single implements CustomUIPanelPlugin {
     public void createOptions(TooltipMakerAPI tooltip,FleetMemberAPI ship, float shipSize, float buttonSize){
         //panel.createUIElement(0,0,false);
 
+        UIComponentAPI labal1;
+        UIComponentAPI labal2;
+        UIComponentAPI text0;
+        UIComponentAPI text1;
+
         ArrayList<FleetMemberAPI> ships = new ArrayList<>();
         ships.add(ship);
         tooltip.addShipList(1,1,shipSize, Misc.getBasePlayerColor(),ships,0);
-        UIComponentAPI labal = tooltip.getPrev();
+        labal1 = tooltip.getPrev();
+
+        tooltip.addTextField(shipSize,26,Fonts.DEFAULT_SMALL,1).setText(ship.getShipName());
+        //tooltip.addPara(ship.getShipName(),1);
+        labal2 = tooltip.getPrev();
+        //labal2.getPosition().setSize(shipSize,26);
+        //labal2.getPosition().belowMid(labal1,1);
+        labal1 = labal2;
+        text0 = labal1;
+
+        /*tooltip.addTextField(shipSize,26,Fonts.DEFAULT_SMALL,1).setText(ship.getVariant().getDisplayName());
+        //tooltip.addPara(ship.getVariant().getDisplayName(),1);
+        labal2 = tooltip.getPrev();
+        //labal2.getPosition().setSize(shipSize,26);
+        //labal2.getPosition().belowMid(labal1,1);
+        labal1 = labal2;
+        text1 = labal1;*/
 
         ButtonAPI but = tooltip.addButton("remove Ship","remove",shipSize,buttonSize,1);
         //labal.getPosition().aboveMid(but,1);
@@ -81,7 +105,7 @@ public class Mastery_HeldShip_Single implements CustomUIPanelPlugin {
         //tooltip.removeComponent(textLabel);
         ButtonAPI butAdd = tooltip.addButton("+","increase",shipSize/9,buttonSize,1);
 
-        but.getPosition().belowMid(labal,1);
+        but.getPosition().belowMid(labal1,1);
         textLabel.getPosition().belowMid(but,1);
         butMin.getPosition().leftOfMid(textLabel,1);
         butAdd.getPosition().rightOfMid(textLabel,1);
