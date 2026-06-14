@@ -36,6 +36,8 @@ public class Mastery_HeldShip_Single implements CustomUIPanelPlugin {
 
     public UIComponentAPI thisCompoment;
 
+    public TextFieldAPI shipNameForced = null;
+
     public Mastery_HeldShip_Single(int chance, int totalChance,HeldShipsSingleShipData data){
         this.chance = chance;
         this.totalChance = totalChance;
@@ -44,23 +46,24 @@ public class Mastery_HeldShip_Single implements CustomUIPanelPlugin {
     public static Mastery_HeldShip_Single createItem(CustomPanelAPI masterPanel, TooltipMakerAPI holderTooltip, HeldShipsSingleShipData data, int idInFleet, float shipSize, float buttonHieght, int totalOdds){
         int odds = data.odds;
         Mastery_HeldShip_Single fleetTemp2 = new Mastery_HeldShip_Single(odds,totalOdds,data);
-        CustomPanelAPI fleetTemp = masterPanel.createCustomPanel(shipSize,shipSize+(buttonHieght*2)+(26),fleetTemp2);
+        float height = shipSize+(buttonHieght*2)+(16)+(5);
+        CustomPanelAPI fleetTemp = masterPanel.createCustomPanel(shipSize,height,fleetTemp2);
 
-        TooltipMakerAPI tooltip = fleetTemp.createUIElement(shipSize,shipSize+(buttonHieght*2),false);
+        TooltipMakerAPI tooltip = fleetTemp.createUIElement(shipSize,height,false);
         fleetTemp2.tooltip = tooltip;
         fleetTemp2.buttonHeight = buttonHieght;
         fleetTemp2.shipSize = shipSize;
         fleetTemp2.ship = data.ship;
 
         tooltip.getPosition().setLocation(0,0);
-        fleetTemp2.createOptions(tooltip, data.ship, shipSize,buttonHieght);
+        fleetTemp2.createOptions(tooltip, data.ship,data, shipSize,buttonHieght);
         fleetTemp.addUIElement(tooltip);
 
         UIComponentAPI fleet = holderTooltip.addCustom(fleetTemp,5);
         fleetTemp2.thisCompoment = fleet;
         return fleetTemp2;
     }
-    public void createOptions(TooltipMakerAPI tooltip,FleetMemberAPI ship, float shipSize, float buttonSize){
+    public void createOptions(TooltipMakerAPI tooltip,FleetMemberAPI ship,HeldShipsSingleShipData data, float shipSize, float buttonSize){
         //panel.createUIElement(0,0,false);
 
         UIComponentAPI labal1;
@@ -73,11 +76,15 @@ public class Mastery_HeldShip_Single implements CustomUIPanelPlugin {
         tooltip.addShipList(1,1,shipSize, Misc.getBasePlayerColor(),ships,0);
         labal1 = tooltip.getPrev();
 
-        tooltip.addTextField(shipSize,26,Fonts.DEFAULT_SMALL,1).setText(ship.getShipName());
+        String shipName = shipNameForced == null? data.name:shipNameForced.getText();
+
+        shipNameForced = tooltip.addTextField(shipSize,16,Fonts.DEFAULT_SMALL,1);
+        shipNameForced.setText(shipName);
+                //.setText(ship.getShipName());
         //tooltip.addPara(ship.getShipName(),1);
         labal2 = tooltip.getPrev();
         //labal2.getPosition().setSize(shipSize,26);
-        //labal2.getPosition().belowMid(labal1,1);
+        labal2.getPosition().belowMid(labal1,1);
         labal1 = labal2;
         text0 = labal1;
 

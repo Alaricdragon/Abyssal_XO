@@ -10,7 +10,7 @@ public class HeldShipsSingleShipData {
     public HeldShipsSingleShipData(Mastery_HeldShip_Single single){
         ship = single.ship;
         odds = single.chance;
-        name = single.ship.getShipName();
+        name = single.shipNameForced.getText();//single.ship.getShipName();
         variant = single.ship.getVariant().getDisplayName();
     }
     public HeldShipsSingleShipData(FleetMemberAPI ship, int odds, String name, String variant){

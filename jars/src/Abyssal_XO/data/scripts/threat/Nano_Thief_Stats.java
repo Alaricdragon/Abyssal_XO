@@ -46,7 +46,8 @@ import java.util.List;
 import static Abyssal_XO.data.scripts.Settings.NANO_THIEF_RECLAIM_RECYCLE_PERCENT;
 
 public class Nano_Thief_Stats {
-    public ArrayList<NanoThief_MasteryShipStats> MasteryStats = new ArrayList<>();
+    private static Logger log = Global.getLogger(Nano_Thief_Stats.class);
+    public NanoThief_MasteryShipStats[] masteryShips;
 
     public float DF_productionTime = 1;
     public float DF_swarmCost = 100;
@@ -69,7 +70,6 @@ public class Nano_Thief_Stats {
 
 
     private boolean wingSet = false;
-    private static Logger log = Global.getLogger(Nano_Thief_Stats.class);
     private String commanderID;
     private SCOfficer officer;
     public boolean closest = true;
@@ -126,7 +126,7 @@ public class Nano_Thief_Stats {
         if (OF_fighterToBuild != null) this.OF_fighterToBuild = OF_fighterToBuild;
     }*/
     public PersonAPI commander;
-    public Nano_Thief_Stats(ArrayList<Pair<ShipVariantAPI,Double>> ships){
+    public Nano_Thief_Stats(NanoThief_MasteryShipStats[] ships){
         getBastStatsForMastery(ships,this);
     }
     public Nano_Thief_Stats(String fighter,boolean isOffincive){
@@ -523,11 +523,12 @@ public class Nano_Thief_Stats {
         //log.info("got total deployed ponits as: "+output);
         return output;
     }
-    public static void getBastStatsForMastery(ArrayList<Pair<ShipVariantAPI,Double>> ships,Nano_Thief_Stats stats){
-        stats.MasteryStats = new ArrayList<>();
+    public static void getBastStatsForMastery(NanoThief_MasteryShipStats[] ships,Nano_Thief_Stats stats){
+        //????
+        /*stats.MasteryStats = new ArrayList<>();
         for (Pair<ShipVariantAPI, Double> a : ships) {
-            stats.MasteryStats.add(new NanoThief_MasteryShipStats(a.one,a.two));
-        }
+            //stats.MasteryStats.add(new NanoThief_MasteryShipStats(a.one,a.two));
+        }*/
     }
     private static void getBaseStatsForFighter(FighterWingSpecAPI a,Nano_Thief_Stats spec,boolean offincive){
         if (offincive){

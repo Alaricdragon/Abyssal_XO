@@ -14,14 +14,9 @@ import com.fs.starfarer.api.util.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HeldShipsHolder implements CustomUIPanelPlugin {
-    /*
-    todo:
-        1: make it so I get the name and variant name of the giving ship.
-        2: make it so I save the name and variant name of the giving ship.
-        3: make it so I display the name and variant name of the giving ship.
+import static Abyssal_XO.data.scripts.threat.skills.NanoThief_10.maxShips;
 
-    */
+public class HeldShipsHolder implements CustomUIPanelPlugin {
     public HeldShipsHolder(){
         //createOptions(panel, dialog, tooltip);
     }
@@ -68,7 +63,7 @@ public class HeldShipsHolder implements CustomUIPanelPlugin {
 
 
         if (MasteryHolder.masteryHolder.finalButtons != null) {
-            if (heldShips.size() > Settings.NANO_THIEF_MASTERY_maxShips || heldShips.isEmpty()) {
+            if (heldShips.size() > maxShips || heldShips.isEmpty()) {
                 MasteryHolder.masteryHolder.finalButtons.finish.setEnabled(false);
                 MasteryHolder.masteryHolder.finalButtons.finish.flash();
                 //MasteryHolder.masteryHolder.finalButtons.finish.setText("To many ships to use. Max is "+Settings.MASTERY_maxShips);
@@ -145,8 +140,9 @@ public class HeldShipsHolder implements CustomUIPanelPlugin {
         }
         ArrayList<FleetMemberAPI> variants = (ArrayList<FleetMemberAPI>) Global.getSector().getPlayerPerson().getMemory().get(Settings.NANO_THIEF_CUSTOM_MASTERY_MEMORY_KEY);
         ArrayList<Integer> numbers = (ArrayList<Integer>) Global.getSector().getPlayerPerson().getMemory().get(Settings.NANO_THIEF_CUSTOM_MASTERY_NUMBERS_MEMORY_KEY);
+        ArrayList<String> names = (ArrayList<String>) Global.getSector().getPlayerPerson().getMemory().get(Settings.NANO_THIEF_CUSTOM_MASTERY_NAMES_MEMORY_KEY);
         for (int a = 0; a < variants.size(); a++){
-            HeldShipsSingleShipData b = new HeldShipsSingleShipData(variants.get(a),numbers.get(a),variants.get(a).getShipName(),variants.get(a).getVariant().getDisplayName());
+            HeldShipsSingleShipData b = new HeldShipsSingleShipData(variants.get(a),numbers.get(a),names.get(a),variants.get(a).getVariant().getDisplayName());
             //b.one = variants.get(a);
             //double c = numbers.get(a);
             //b.two = numbers.get(a);

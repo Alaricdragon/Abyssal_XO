@@ -1,15 +1,19 @@
 package Abyssal_XO.data.scripts.threat.skills;
 
+import Abyssal_XO.data.scripts.Settings;
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.combat.ShipVariantAPI;
+import com.fs.starfarer.api.fleet.FleetMemberAPI;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NanoThief_MasteryShipStats {
-    public ShipVariantAPI ship;
+    public FleetMemberAPI ship;
     public double weight;
     public double cost;
+    public String name;
+    public double reloadTime;
+    public double buildTime;
     private static final String[] dmos = {
             //"comp_armor",
             //"comp_hull",
@@ -31,18 +35,26 @@ public class NanoThief_MasteryShipStats {
             //"degraded_life_support",
             //"degraded_shields"
     };
-    public NanoThief_MasteryShipStats(ShipVariantAPI ship,double weight){
+    public NanoThief_MasteryShipStats(FleetMemberAPI ship, double weight,String name){
         ArrayList<String> temp = new ArrayList<>(List.of(dmos));
         this.ship = ship;
         this.weight = weight;
-        double costIncrease = 1 + (ship.getSMods().size()*NanoThief_10.sModCost);
+        double costIncrease = (ship.getVariant().getSMods().size()*NanoThief_10.sModCost);
         int dmods = 0;
-        for (String a : ship.getPermaMods()){
+        for (String a : ship.getVariant().getPermaMods()){
             if (Global.getSettings().getHullModSpec(a).getTags().contains("dmod") && !temp.contains(a)) dmods++;
         }
-        double costDecrease = 1 - (dmods*NanoThief_10.dModDiscount);
+        double costDecrease = (dmods*NanoThief_10.dModDiscount);
         costDecrease = Math.min(costDecrease,NanoThief_10.dModmin);
         cost = ship.getHullSpec().getSuppliesToRecover() * NanoThief_10.costPerDP;
-        cost *= costDecrease*costIncrease;
+        double smodBonus = cost * costIncrease;
+        double dmodNegitive = cost * costDecrease;
+        cost += smodBonus;
+        cost -= dmodNegitive;
+        //Settings.log.info("a: "+ship.getDeployCost()+", b: "+ship.getDeploymentPointsCost()+", c: "+ship.getBaseDeployCost()+", d: "+ship.getDeploymentCostSupplies());
+        reloadTime = Math.max(NanoThief_10.rechargeTimePerDP,ship.getDeploymentPointsCost() * NanoThief_10.rechargeTimePerDP);
+
+        buildTime = Math.max(NanoThief_10.buildTimePerDP,ship.getDeploymentPointsCost() * NanoThief_10.buildTimePerDP);
+        this.name = name;
     }
 }

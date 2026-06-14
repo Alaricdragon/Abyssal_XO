@@ -1,12 +1,15 @@
 package Abyssal_XO.data.scripts;
 
+import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
 
 public class Settings {
+    public static Logger log = Global.getLogger(Settings.class);
     public static final int[] NANO_THIEF_RECLAIM_GAIN = {
             200,
             400,
@@ -50,6 +53,7 @@ public class Settings {
     public static final String NANO_THIEF_CUSTOM_WING_DEF_MEMORY_KEY = "$Abyssal_XO_NANO_THIEF_CUSTOMWING_DEF";
     public static final String NANO_THIEF_CUSTOM_MASTERY_MEMORY_KEY = "$Abyssal_XO_NANO_MASTERY_SHIP";
     public static final String NANO_THIEF_CUSTOM_MASTERY_NUMBERS_MEMORY_KEY = "$Abyssal_XO_NANO_MASTERY_NUMBERS";
+    public static final String NANO_THIEF_CUSTOM_MASTERY_NAMES_MEMORY_KEY = "$Abyssal_XO_NANO_MASTERY_NAMES";
     public static final String NANO_THIEF_MASTERY_BASESHIP = "kite_pirates_Raider";
     public static final String NANO_THIEF_BASEWING = "attack_swarm_wing";//"attack_swarm_wing";
     public static final String NANO_THIEF_PALYER_BASEWING = "talon_wing";//"broadsword_wing";
@@ -61,11 +65,6 @@ public class Settings {
     public static ArrayList<String> NanoThief_Banned = new ArrayList<>();
 
 
-    public static int NANO_THIEF_MASTERY_maxShips = 4;
-    public static boolean NANO_THIEF_MASTERY_canFriget = true;
-    public static boolean NANO_THIEF_MASTERY_canDestroyer = false;
-    public static boolean NANO_THIEF_MASTERY_canCrusier = false;
-    public static boolean NANO_THIEF_MASTERY_canCaptial = false;
     public static void init() throws JSONException {
         JSONArray array = Global.getSettings().getJSONArray("NanoThief_Users");
         NanoThief_Users = new ArrayList<>();

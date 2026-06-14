@@ -13,25 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static Abyssal_XO.data.scripts.Settings.*;
+import static Abyssal_XO.data.scripts.threat.skills.NanoThief_10.*;
 
 public class ShipsInFleetHolder implements CustomUIPanelPlugin {
-    /*notes:
-        1: getX and getCenterX are diffrent.
-            getX is relevant position.
-            getCenterX is the true position
-        2: when useing a 'PositionAPI' releitive position set functions keep in mind that if you want to unset them, you cant just unset one item if it has any child items. You need to unset them all. one by fucking one.
-        3: to add buttons the most striaghtforward way starting out is to call createTooltip on CustomPanelAPI and call addButton on it from there
-            -how the hell do I do that????
-
-
-
-
-    */
-    /*I am getting nowhere.
-    * so: here is what I know
-    * 1) this fjnkbasdijlsbv nmfcjwmknbv mas,vbn fc as,fbnvc
-    * 2) I -can- render items. I can also get the 'position' of a givin item next to another item.
-    * 3) maybe... all I need to do is just... get the relevent position */
     public void note(){
         /*position.belowMid(new ButtonAPI() {},5);
         * is that usefull??A?!?!?!?!?*/
@@ -91,10 +75,10 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
     }
     private boolean isApplicable(FleetMemberAPI ship){
         return  switch (ship.getHullSpec().getHullSize()){
-            case DEFAULT, FIGHTER, FRIGATE -> NANO_THIEF_MASTERY_canFriget;
-            case DESTROYER -> NANO_THIEF_MASTERY_canDestroyer;
-            case CRUISER -> NANO_THIEF_MASTERY_canCrusier;
-            case CAPITAL_SHIP -> NANO_THIEF_MASTERY_canCaptial;
+            case DEFAULT, FIGHTER, FRIGATE -> canFriget;
+            case DESTROYER -> canDestroyer;
+            case CRUISER -> canCrusier;
+            case CAPITAL_SHIP -> canCaptial;
         };
     }
     /*private UIComponentAPI addSingleShip_asCompoment(FleetMemberAPI ship, int idInFleet){
@@ -117,11 +101,11 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
         labal2.getPosition().belowMid(labal1,2);
         labal1 = labal2;
 
-        /*tooltip.addPara(ship.getVariant().getDisplayName(),1);
+        tooltip.addPara(ship.getVariant().getDisplayName(),1);
         labal2 = tooltip.getPrev();
         labal2.getPosition().setSize(100,26);
         labal2.getPosition().belowMid(labal1,5);
-        labal1 = labal2;*/
+        labal1 = labal2;
 
         ButtonAPI but = tooltip.addButton("Select Ship","add:"+idInFleet,100,50,1);
         but.getPosition().belowMid(labal1,5);

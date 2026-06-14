@@ -12,6 +12,8 @@ import com.fs.starfarer.api.util.Misc;
 
 import java.util.List;
 
+import static Abyssal_XO.data.scripts.threat.skills.NanoThief_10.maxShips;
+
 public class MasteryInformationHolder2 implements CustomUIPanelPlugin {
     protected CustomPanelAPI root;
     UIComponentAPI panelThing;
@@ -49,9 +51,9 @@ public class MasteryInformationHolder2 implements CustomUIPanelPlugin {
     }
     private void createDisplay(){
         int selected = MasteryHolder.masteryHolder.heldShips.getSelectedNumber();
-        tooltip.addPara("%s / %s ships selected",5,selected > Settings.NANO_THIEF_MASTERY_maxShips ? Misc.getNegativeHighlightColor() : Misc.getHighlightColor(),""+selected,""+Settings.NANO_THIEF_MASTERY_maxShips);
+        tooltip.addPara("%s / %s ships selected",5,selected > maxShips ? Misc.getNegativeHighlightColor() : Misc.getHighlightColor(),""+selected,""+maxShips);
         //flasher = tooltip.getPrev();
-        if (selected > Settings.NANO_THIEF_MASTERY_maxShips) tooltip.addPara("cannot save ships, because you are over capacity.",5,Misc.getNegativeHighlightColor());
+        if (selected > maxShips) tooltip.addPara("cannot save ships, because you are over capacity.",5,Misc.getNegativeHighlightColor());
         tooltip.addPara("randomness: "+ (Math.random()*2555),5);
     }
     //private UIComponentAPI flasher;

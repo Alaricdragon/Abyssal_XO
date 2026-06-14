@@ -67,11 +67,10 @@ public class Master_FinalButtons implements CustomUIPanelPlugin {
                 //panel.removeComponent(tooltip);
                 break;
             case "finish":
-                //todo: remember the new fleet composition here.
-                //      also, remember the ship name and variant.
                 MasteryHolder.masteryHolder.returnToBaseDialog();
                 ArrayList<Integer> numbers = new ArrayList<>();
                 ArrayList<FleetMemberAPI> variants = new ArrayList<>();
+                ArrayList<String> names = new ArrayList<>();
                 for (Mastery_HeldShip_Single a : MasteryHolder.masteryHolder.heldShips.heldShips){
                     numbers.add(a.chance);
                     //a.ship;
@@ -79,9 +78,11 @@ public class Master_FinalButtons implements CustomUIPanelPlugin {
                     //FleetMemberType.SHIP;
                     FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(existingMember.getType(), existingMember.getVariant().clone());
                     variants.add(memberCopy);
+                    names.add(a.shipNameForced.getText());
                 }
                 Global.getSector().getPlayerPerson().getMemory().set(Settings.NANO_THIEF_CUSTOM_MASTERY_NUMBERS_MEMORY_KEY,numbers);
                 Global.getSector().getPlayerPerson().getMemory().set(Settings.NANO_THIEF_CUSTOM_MASTERY_MEMORY_KEY,variants);
+                Global.getSector().getPlayerPerson().getMemory().set(Settings.NANO_THIEF_CUSTOM_MASTERY_NAMES_MEMORY_KEY,names);
                 break;
         }
     }
