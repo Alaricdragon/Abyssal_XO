@@ -25,19 +25,25 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
     public static boolean canCaptial = false;
 
 
-    public static boolean[] allowedSizesForNPC = {true,false,false,false};
-    public static int maxNumberForNPC = 4;
+    public static boolean[] allowedSizesForNPC = {canFriget,canDestroyer,canCrusier,canCaptial};
+    //public static boolean[] allowedSizesForNPC = {true,false,false,false};
+    public static int maxNumberForNPC = maxShips;
     private static int maxOddsNPC = 20;
     private static int minOddsNPC = 1;
 
     public static final double sModCost = 0.25;//per s-mod, add a
     public static final double dModDiscount = 0.1;
     public static final double dModmin = 0.5;
-
-    public static final double costPerDP = 100;//100 for 1 dp cost, 1000 for 10 dp.
+    public static final double costPerDP = 200;//200 for 1 dp cost, 2000 for 10 dp. (0.5 capitals for 1 dp. 0.5 frigets for 1 dp.)
 
     public static final double rechargeTimePerDP = 10;//10 seconds per dp cost of ship.
     public static final double buildTimePerDP = 2.5;//2.5 seconds per dp cost of ship.
+
+    public static final double minCR = 0.4;//for spawning ships
+    public static final double peakCRDuration = 0.6;
+
+    public static final double forceRechargePerDP = rechargeTimePerDP;//this is for recharging the ship form a new simulacrum fighter.
+    public static final double maxReclaimPercent = 0.75;//max amount of reclaim a simulacrum ship is worth when destroyed.
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
         /*
@@ -46,7 +52,6 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
         every S-mod on the ship increased the reclaim cost by 25%
         when this ship is destroyed, it is worth at 50% of the reclaim it took to create it, or 1000. whatever is lower.
         */
-        String line1a = "";
         /*
         when reclaim is available and this ability is off cooldown, select a random ship from the selected list.
         a nanobot swarm will be deployed to construct this ship in a empty area nearby.
@@ -57,31 +62,60 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
         the smod and dmod cost changes are not multiplicative.
         any ship in your fleet can be chosen as a possible ship to build, up to a maximum of %s ships.
         */
-        String line3_0 = "";
-        String line4_0 = "";
-        String line5_0 = "";
-        String line5_1 = "";
-        String line7_0 = "";
-        tooltip.addPara("When reclaim is available and this ability is off cooldown, select a random ship from the selected list",0,Misc.getHighlightColor());
-        tooltip.addPara("a nanobot swarm will be deployed to construct this ship in a empty area nearby",0,Misc.getHighlightColor());
-        tooltip.addPara("this process takes %s seconds per deployment point",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line3_0);
-        tooltip.addPara("this has a cooldown of %s per deployment point",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line4_0);
-        tooltip.addPara("the reclaim cost is %s per deployment points, reduced by %s per none logistical dmod (up to a reduction of %s),and increased by %s per smod (with no upper limit)",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line5_0,line5_1);
-        tooltip.addPara("the smod and dmod cost changes are not multiplicative.",0,Misc.getHighlightColor());
-        tooltip.addPara("any ship in your fleet can be chosen as a possible ship to build, up to a maximum of %s ships.",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line7_0);
-        tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor(),"");
-        tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor(),"");
-
-
-
-
+        String line4_0 = ""+(int)rechargeTimePerDP;
+        String line7_0 = ""+maxShips;
+        String line8_0 = (int)(minCR*100)+"%";
+        tooltip.addPara("When reclaim is available and this ability is off cooldown, select a random ship from a list of possible ships",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        tooltip.addPara("A nanobot swarm will be deployed to construct this ship as a simulacrum ship in a empty area nearby",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        tooltip.addPara("This has a cooldown of %s per deployment point of the simulacrum ship",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line4_0);
+        tooltip.addPara("The simulacrum ships this skill can build can be selected, up to a maximum of %s ships.",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line7_0);
+        tooltip.addPara("ships with less then %s cr cannot use this ability",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line8_0);
         displayShipStats(tooltip,getShips(scData.getCommander()));
+        tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        this.addNewAbilityText(scData, tooltip);
+
         tooltip.addSpacer(10f);
         LabelAPI label = tooltip.addPara("\"Day in day out I attempt again and again, resalting in only endless iterations, calculations and failures. One stacked on top of another, an endless road with no true destination. That is mastery. To claim its anything else would be the last mistake you ever make 'caption'.\"", Misc.getTextColor(), 0f);
         tooltip.addPara(" - unknown", Misc.getTextColor(), 0f);
 
+        tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        this.displayBaseStats(scData, tooltip);
         label.italicize();
 
+    }
+    private void displayBaseStats(SCData scData, TooltipMakerAPI tooltip){
+        String line3_0 = ""+(int)forceRechargePerDP;
+
+        String line4_0 = ""+(int)costPerDP;
+        String line4_1 = (int)(dModDiscount*100)+"%";
+        String line4_2 = (int)(dModmin*100)+"%";
+        String line4_3 = (int)(sModCost*100)+"%";
+
+        String line5_0 = ""+buildTimePerDP;
+        String line5_1 = "can be damaged";
+        String line5_2 = "move";
+        String line5_3 = "attack";
+        String line5_4 = "otherize defend itself";
+
+        String line6_0 = 100-(int)(peakCRDuration*100)+"%";
+
+        String line7_0 = (int)(maxReclaimPercent*100)+"%";
+        tooltip.addPara("Simulacrum ships act as normal ships with the following modifications:",0,Misc.getGrayColor(),Misc.getHighlightColor());
+        tooltip.addPara("   -cannot be built if you don't have enough spare deployment points to deploy the ship normally",0,Misc.getGrayColor(),Misc.getHighlightColor());
+        tooltip.addPara("   -must be built form a 'construction swarm'",0,Misc.getGrayColor(),Misc.getHighlightColor());
+        tooltip.addPara("   -starting cr is equal to the cr of the ship that spawned the simulacrum ship",0,Misc.getGrayColor(),Misc.getHighlightColor());
+        tooltip.addPara("   -cannot be used to create additional simulacrum ships until %s seconds pass per deployment point",0,Misc.getGrayColor(),Misc.getHighlightColor(),line3_0);
+        tooltip.addPara("   -cost %s reclaim per deployment point, reduced by %s per none logistical d-mod (up to a reduction of %s),and increased by %s per s-mod (with no upper limit). not multiplicative",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line4_0,line4_1,line4_2,line4_3);
+        tooltip.addPara("   -takes %s seconds to build per deployment point. during this time, the ship %s, but cannot %s, %s or %s",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line5_0,line5_1,line5_2,line5_3,line5_4);
+        tooltip.addPara("   -peak performance time is reduced by %s",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line6_0);
+        tooltip.addPara("   -reclaim gained from the ship is caped to %s of the reclaim it cost to build",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line7_0);
+        tooltip.addPara("   -after combat the ships fall apart, being reduced to nothing",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor());
+        //tooltip.addPara("   -The s-mod and d-mod cost changes are not multiplicative with each other.",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor());
+
+    }
+    public void addNewAbilityText(SCData scData, TooltipMakerAPI tooltip){
+        String line9a = Settings.NANO_THIEF_ABILITY_NAME;
+        tooltip.addPara("gain the %s ability, that allows you to change your Simulacrum Ships",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line9a);
     }
     public void initStats(Nano_Thief_Stats stats) {
         stats.masteryShips = getShips(stats.commander);
