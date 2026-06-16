@@ -25,9 +25,9 @@ public class Master_FinalButtons implements CustomUIPanelPlugin {
         TooltipMakerAPI tooltip = panel.createUIElement(width,height,false);
 
         tooltip.getPosition().setLocation(0,0);
-        ButtonAPI finish = tooltip.addButton("Accept","finish",100,50,10);
         ButtonAPI exit = tooltip.addButton("Cancel","exit",100,50,10);
-        exit.getPosition().leftOfMid(finish,5);
+        ButtonAPI finish = tooltip.addButton("Accept","finish",100,50,10);
+        finish.getPosition().rightOfMid(exit,5);
 
         panel.addUIElement(tooltip);
         this.finish = finish;

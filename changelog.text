@@ -11,15 +11,15 @@ V0.0.8:
         reclaim gather time 2 -> 3 seconds.
     changed entier skill try:
         'Overcharged' ->            'Constant Repairs' (repair hull at the cost of Reclaim)
-        'Mass Manufacturing' ->     'Scrapwork Microforge' (regenerate ammo for limit ammo weapons at a reclaim cost)
+        'Mass Manufacturing' ->     'Scrapwork Microforge' (regenerate ammo for limited ammo weapons at a reclaim cost)
         'Longevity' ->              'Thorough Salvaging' (bonus salvage and supplies for reclaim)
-        'Advanced Installation' ->  'Scrapy Fortification' (95% damage resistance well considerable damage.)
+        'Advanced Installation' ->  'Scrapy Fortification' (95% damage resistance well taking considerable damage.)
         (X)'Quality Checks' ->         '' (please note I am doing this one after skill 6.)
         'Prepared Deployment' ->    'Offencive Fighter Construction'
         'Centralized Logistics' ->  'Defensive Fighter Construction'
         'Desperate Measures' ->     'Centralized Logistics' (changed to increase the amount of reclaim available after a production process.)
         'Efficient Production' ->   'Desperate Measures'
-        (X)-new skill- ->              'Mastery' (in combat starship creation (like threat))
+        (X)-new skill- ->              'Mastery' (in combat starship creation (like threat) (but worse in every way because we are not threat))
     graphics and effects:
         reclaim packages now get bigger depending on the amount of reclaim inside of them. at max level, reclaim packages are 30,40,50,60 in size. at min level, they are 22,24,26,28 in size. (from 40 size flat.)
     fixes:

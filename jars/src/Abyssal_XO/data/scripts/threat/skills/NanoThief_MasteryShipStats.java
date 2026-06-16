@@ -57,4 +57,22 @@ public class NanoThief_MasteryShipStats {
         buildTime = Math.max(NanoThief_10.buildTimePerDP,ship.getDeploymentPointsCost() * NanoThief_10.buildTimePerDP);
         this.name = name;
     }
+    public int getBaseCost(){
+        return (int) (ship.getHullSpec().getSuppliesToRecover() * NanoThief_10.costPerDP);
+    }
+    public int getSModCost(){
+        double costIncrease = (ship.getVariant().getSMods().size()*NanoThief_10.sModCost);
+        return (int) (getBaseCost() * costIncrease);
+    }
+    public int getDModReduction(){
+        ArrayList<String> temp = new ArrayList<>(List.of(dmos));
+        int dmods = 0;
+        for (String a : ship.getVariant().getPermaMods()){
+            if (Global.getSettings().getHullModSpec(a).getTags().contains("dmod") && !temp.contains(a)) dmods++;
+        }
+        double costDecrease = (dmods*NanoThief_10.dModDiscount);
+        costDecrease = Math.min(costDecrease,NanoThief_10.dModmin);
+        int cost = getBaseCost();
+        return (int) (cost * costDecrease);
+    }
 }

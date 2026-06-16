@@ -117,8 +117,8 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
         float buttonHeight = 50;
         MasteryInformationHolder2 infoTemp2 = new MasteryInformationHolder2();
         infoHolder = infoTemp2;
-        CustomPanelAPI infoTemp = panel.createCustomPanel(infoWidth,height,infoTemp2);
-        infoTemp2.createOptions(infoTemp,infoWidth,height);
+        CustomPanelAPI infoTemp = panel.createCustomPanel(infoWidth,height-50,infoTemp2);
+        infoTemp2.createOptions(infoTemp,infoWidth,height-50);
         UIComponentAPI info = tooltip.addCustom(infoTemp,10);
         //info.getPosition().setLocation(0,0);
         //note: need to create the internals here.

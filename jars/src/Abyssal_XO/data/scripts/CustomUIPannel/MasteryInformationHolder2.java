@@ -1,6 +1,9 @@
 package Abyssal_XO.data.scripts.CustomUIPannel;
 
 import Abyssal_XO.data.scripts.Settings;
+import Abyssal_XO.data.scripts.threat.skills.NanoThief_10;
+import Abyssal_XO.data.scripts.threat.skills.NanoThief_6;
+import Abyssal_XO.data.scripts.threat.skills.NanoThief_MasteryShipStats;
 import com.fs.starfarer.api.campaign.BaseCustomUIPanelPlugin;
 import com.fs.starfarer.api.campaign.CustomUIPanelPlugin;
 import com.fs.starfarer.api.input.InputEventAPI;
@@ -41,7 +44,7 @@ public class MasteryInformationHolder2 implements CustomUIPanelPlugin {
         //Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy().get(0);
         this.tooltip = tooltip;
         try{
-            MasteryHolder.log.info("doing display...");
+            //MasteryHolder.log.info("doing display...");
             createDisplay();
         }catch (Exception e){
             MasteryHolder.log.info("doing error display....");
@@ -50,11 +53,29 @@ public class MasteryInformationHolder2 implements CustomUIPanelPlugin {
         panel.addUIElement(tooltip);
     }
     private void createDisplay(){
+        //insental data (number of ships over capacity and simaler.
         int selected = MasteryHolder.masteryHolder.heldShips.getSelectedNumber();
         tooltip.addPara("%s / %s ships selected",5,selected > maxShips ? Misc.getNegativeHighlightColor() : Misc.getHighlightColor(),""+selected,""+maxShips);
-        //flasher = tooltip.getPrev();
         if (selected > maxShips) tooltip.addPara("cannot save ships, because you are over capacity.",5,Misc.getNegativeHighlightColor());
-        tooltip.addPara("randomness: "+ (Math.random()*2555),5);
+        //tooltip.addPara("randomness: "+ (Math.random()*2555),5);
+
+        //description:
+        //copy the basic description here?
+        tooltip.addPara("select your Simulacrum Ships here",5);
+        tooltip.addPara("if nothing is selected, a pirate kite raider will be selected for deployment",5);
+        tooltip.addPara("the rules for simulacrum ships are as follows:",5);
+        tooltip.addPara("Reclaim cost is %s per deployment point + (base cost * s-mods * %s) - (base cost * d-mods * %s)",5, Misc.getTextColor(), Misc.getHighlightColor(),""+(int) NanoThief_10.costPerDP,""+NanoThief_10.sModCost,""+NanoThief_10.dModDiscount);
+        tooltip.addPara("Were d-mods only includes combat effecting d-mods, and is caped to %s of the base reclaim cost",5, Misc.getTextColor(), Misc.getHighlightColor(),((int) (NanoThief_10.dModmin*100)) + "%");
+        tooltip.addPara("Build time is deployment point * %s",5,Misc.getTextColor(), Misc.getHighlightColor(),""+(((int)NanoThief_10.buildTimePerDP*10)/10));
+        tooltip.addPara("Loes %s peak performance time",5,Misc.getTextColor(), Misc.getHighlightColor(),(100-(int)(NanoThief_10.peakCRDuration*100)) + "%");
+        //basic rules here (reclaim cost, build time, max numbers of ships selected.)
+
+        //ship data:
+        tooltip.addPara("selected ship stats:",5,Misc.getHighlightColor());
+        for (Mastery_HeldShip_Single a : MasteryHolder.masteryHolder.heldShips.heldShips){
+            NanoThief_MasteryShipStats b = new NanoThief_MasteryShipStats(a.ship,a.chance,a.shipNameForced.getText());
+            NanoThief_10.displayShipStatsStright(tooltip,b,50);
+        }
     }
     //private UIComponentAPI flasher;
     //public void flashMaxShips(){

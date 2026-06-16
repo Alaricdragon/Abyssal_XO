@@ -23,7 +23,7 @@ public class Mastery_HeldShip_Single implements CustomUIPanelPlugin {
     private boolean changed = false;
     public int chance;
     private int totalChance;
-    private HeldShipsSingleShipData data;
+    public HeldShipsSingleShipData data;
 
     private TooltipMakerAPI tooltip;
     public FleetMemberAPI ship;
@@ -191,6 +191,7 @@ public class Mastery_HeldShip_Single implements CustomUIPanelPlugin {
                 MasteryHolder.log.info("shifted as: "+isShifted);
                 changed = true;
                 MasteryHolder.masteryHolder.heldShips.recreate();
+                MasteryHolder.masteryHolder.infoHolder.recreate_full();
                 break;
             case "increase":
                 MasteryHolder.log.info("running button single ship -> increase");
@@ -200,6 +201,7 @@ public class Mastery_HeldShip_Single implements CustomUIPanelPlugin {
                 MasteryHolder.log.info("shifted as: "+isShifted);
                 changed = true;
                 MasteryHolder.masteryHolder.heldShips.recreate();
+                MasteryHolder.masteryHolder.infoHolder.recreate_full();
                 break;
         }
     }

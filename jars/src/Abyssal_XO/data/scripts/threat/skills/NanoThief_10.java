@@ -11,6 +11,7 @@ import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.fleet.FleetMemberType;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
+import com.fs.starfarer.api.ui.UIComponentAPI;
 import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.api.util.Pair;
 import second_in_command.SCData;
@@ -70,7 +71,8 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
         tooltip.addPara("This has a cooldown of %s per deployment point of the simulacrum ship",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line4_0);
         tooltip.addPara("The simulacrum ships this skill can build can be selected, up to a maximum of %s ships.",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line7_0);
         tooltip.addPara("ships with less then %s cr cannot use this ability",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line8_0);
-        displayShipStats(tooltip,getShips(scData.getCommander()));
+        tooltip.addPara("available simulacrum ships in this fleet:",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        displayShipStats(tooltip,getShips(scData.getCommander()),true);
         tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         this.addNewAbilityText(scData, tooltip);
 
@@ -120,23 +122,45 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
     public void initStats(Nano_Thief_Stats stats) {
         stats.masteryShips = getShips(stats.commander);
     }
-    public static void displayShipStats(TooltipMakerAPI panel,NanoThief_MasteryShipStats[] ships){
+    public static void displayShipStats(TooltipMakerAPI panel,NanoThief_MasteryShipStats[] ships,boolean adjustSize){
         //Nano_Thief_Stats spec = new Nano_Thief_Stats(ships);
+        int size = 50;
+        //if (adjustSize) size = size / ships.length;
         for (NanoThief_MasteryShipStats a : ships){//spec.masteryShips){
-            displayShipStats(panel,a);
+            displayShipStats(panel,a,size);
         }
     }
-    private static void displayShipStats(TooltipMakerAPI panel,NanoThief_MasteryShipStats ship){
+    private static void displayShipStats(TooltipMakerAPI panel,NanoThief_MasteryShipStats ship,int size){
         String sprite = ship.ship.getHullSpec().getSpriteName();
-        panel.addPara(ship.name,12);
+        //panel.addPara(,12);
         //panel.addImage(sprite,30,30,0);
-        panel.addImage(sprite,50,50,0);
+        panel.addImage(sprite,size,size,0);
         //panel.addPara(" wing name: %s",0,Misc.getTextColor(),Misc.getHighlightColor(),a.getWingName());
         int cost = (int) ship.cost;
         int weight = (int) (ship.weight);
         int builtTime = ((int)(ship.buildTime*10))/10;
         int rechargeTime = ((int)(ship.reloadTime*10))/10;
-        panel.addPara(" Cost: %s",0, Misc.getTextColor(), Misc.getHighlightColor(),""+cost);
+        panel.addPara("Name: %s Cost: %s, Weight %s, BuildTime %s, RechargeTime: %s",0, Misc.getTextColor(), Misc.getHighlightColor(),ship.name,""+cost,""+weight,""+builtTime,""+rechargeTime);
+        //panel.addPara(" Weight: %s",0,Misc.getTextColor(), Misc.getHighlightColor(),""+weight);
+        //panel.addPara(" BuildTime: %s",0,Misc.getTextColor(), Misc.getHighlightColor(),""+builtTime);
+        //panel.addPara(" RechargeTime: %s",0,Misc.getTextColor(), Misc.getHighlightColor(),""+rechargeTime);
+    }
+    public static void displayShipStatsStright(TooltipMakerAPI panel,NanoThief_MasteryShipStats ship,int size){
+        String sprite = ship.ship.getHullSpec().getSpriteName();
+        panel.addPara(ship.name,12);
+        //panel.addImage(sprite,30,30,0);
+        panel.addImage(sprite,size,size,0);
+        //panel.addPara(" wing name: %s",0,Misc.getTextColor(),Misc.getHighlightColor(),a.getWingName());
+        int cost = (int) ship.cost;
+        int baseCost = ship.getBaseCost();
+        int smod = ship.getSModCost();
+        int dmod = ship.getDModReduction();
+        int weight = (int) (ship.weight);
+        int builtTime = ((int)(ship.buildTime*10))/10;
+        int rechargeTime = ((int)(ship.reloadTime*10))/10;
+        panel.addPara(" Cost: %s (base: %s)",0, Misc.getTextColor(), Misc.getHighlightColor(),""+cost,""+baseCost);
+        if (smod != 0)panel.addPara(" (+ %s from s-mods)",0, Misc.getTextColor(), Misc.getNegativeHighlightColor(),""+smod);
+        if (dmod != 0)panel.addPara(" (- %s from d-mods)",0, Misc.getTextColor(), Misc.getPositiveHighlightColor(),""+dmod);
         panel.addPara(" Weight: %s",0,Misc.getTextColor(), Misc.getHighlightColor(),""+weight);
         panel.addPara(" BuildTime: %s",0,Misc.getTextColor(), Misc.getHighlightColor(),""+builtTime);
         panel.addPara(" RechargeTime: %s",0,Misc.getTextColor(), Misc.getHighlightColor(),""+rechargeTime);
@@ -153,7 +177,7 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
                 ArrayList<Object> temp2 = (ArrayList<Object>) temp;
                 if (temp2.isEmpty()) {
                     FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(FleetMemberType.SHIP, Global.getSettings().getVariant(Settings.NANO_THIEF_MASTERY_BASESHIP));
-                    return new NanoThief_MasteryShipStats[]{new NanoThief_MasteryShipStats(memberCopy, 10, "")};
+                    return new NanoThief_MasteryShipStats[]{new NanoThief_MasteryShipStats(memberCopy, 10, "raider")};
                 }
                 if (temp2.get(0) instanceof FleetMemberAPI) {
                     ArrayList<String> names = new ArrayList<>();
@@ -199,10 +223,10 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
                     return out;
                 }
                 FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(FleetMemberType.SHIP, Global.getSettings().getVariant(Settings.NANO_THIEF_MASTERY_BASESHIP));
-                return new NanoThief_MasteryShipStats[]{new NanoThief_MasteryShipStats(memberCopy, 10, "")};
+                return new NanoThief_MasteryShipStats[]{new NanoThief_MasteryShipStats(memberCopy, 10, "raider")};
             } else {
                 FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(FleetMemberType.SHIP, Global.getSettings().getVariant(Settings.NANO_THIEF_MASTERY_BASESHIP));
-                return new NanoThief_MasteryShipStats[]{new NanoThief_MasteryShipStats(memberCopy, 10, "")};
+                return new NanoThief_MasteryShipStats[]{new NanoThief_MasteryShipStats(memberCopy, 10, "raider")};
             }
         } else {
             if (commander.getMemoryWithoutUpdate().contains(memKey)) {
@@ -240,7 +264,7 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
                         ArrayList<String> temp3 = (ArrayList<String>) commander.getMemoryWithoutUpdate().get(Settings.NANO_THIEF_CUSTOM_MASTERY_NAMES_MEMORY_KEY);
                         for (String a : temp3) names.add(a);
                     } else {
-                        for (int a = 0; a < temp2.size(); a++) names.add("");
+                        for (int a = 0; a < temp2.size(); a++) names.add(Global.getSettings().getVariant((String) temp2.get(a)).getDisplayName());
                     }
                     if (commander.getMemoryWithoutUpdate().contains(Settings.NANO_THIEF_CUSTOM_MASTERY_NUMBERS_MEMORY_KEY)) {
                         ArrayList<Integer> temp3 = (ArrayList<Integer>) commander.getMemoryWithoutUpdate().get(Settings.NANO_THIEF_CUSTOM_MASTERY_NUMBERS_MEMORY_KEY);
@@ -256,7 +280,7 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
                     return out;
                 }
                 FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(FleetMemberType.SHIP, Global.getSettings().getVariant(Settings.NANO_THIEF_MASTERY_BASESHIP));
-                return new NanoThief_MasteryShipStats[]{new NanoThief_MasteryShipStats(memberCopy, 10, "")};
+                return new NanoThief_MasteryShipStats[]{new NanoThief_MasteryShipStats(memberCopy, 10, "raider")};
             }
             ArrayList<String> ships = getRandomShipsForNPC(commander.getFleet().getFaction());
             //ArrayList<String> names;
@@ -265,7 +289,7 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
             for (int a = 0; a < ships.size(); a++){
                 odds.add((int)((Math.random() * (maxOddsNPC-minOddsNPC))+minOddsNPC));
                 FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(FleetMemberType.SHIP, Global.getSettings().getVariant(ships.get(a)));
-                out[a] = new NanoThief_MasteryShipStats(memberCopy,odds.get(a),"");
+                out[a] = new NanoThief_MasteryShipStats(memberCopy,odds.get(a),Global.getSettings().getVariant(ships.get(a)).getDisplayName());
             }
             commander.getMemory().set(memKey,ships);
             commander.getMemory().set(Settings.NANO_THIEF_CUSTOM_MASTERY_NUMBERS_MEMORY_KEY,odds);
