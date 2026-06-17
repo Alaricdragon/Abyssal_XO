@@ -17,6 +17,10 @@ public class NanoThief_Skill_8 extends NanoThief_SkillBase{
 
     public NanoThief_Skill_8(NanoThief_ShipSkills skills, ShipAPI ship) {
         super(skills, ship);
+    }
+
+    @Override
+    public void prepareData() {
         getAmountToHold = (int) Math.max(NanoThief_8.keeptReclaim,skills.getMaxUse()*NanoThief_8.keeptReclaimAbility);
     }
 

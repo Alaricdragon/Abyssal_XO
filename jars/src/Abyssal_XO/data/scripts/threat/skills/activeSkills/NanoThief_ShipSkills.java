@@ -66,6 +66,8 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
             skills.remove(a);
         }
         addChildShips(ship);
+        for (NanoThief_SkillBase a : skills) a.prepareData();
+        for (NanoThief_SkillBase a : alwaysSkills) a.prepareData();
     }
     private void addChildShips(ShipAPI ship){
         for (ShipAPI a : ship.getChildModulesCopy()){

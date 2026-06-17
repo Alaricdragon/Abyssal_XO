@@ -1,8 +1,12 @@
 package Abyssal_XO.data.scripts.threat.AI;
 
+import Abyssal_XO.data.scripts.Settings;
+import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_MasteryShipStats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
+import com.fs.starfarer.api.fleet.FleetMemberAPI;
+import com.fs.starfarer.api.impl.campaign.ids.Stats;
 import com.fs.starfarer.api.impl.combat.threat.*;
 import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
@@ -49,12 +53,26 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
     private NanoThief_MasteryShipStats constructionDatas;
     private ThreatShipConstructionScript constructionScript;
 
-    public Nano_Thief_AI_Construction(ShipAPI ship, NanoThief_MasteryShipStats constructionDatas){
+    private float avoidDistance;
+    private int dp;
+    private Nano_Thief_Stats stats;
+    private float cr;
+    public Nano_Thief_AI_Construction(ShipAPI ship, NanoThief_MasteryShipStats constructionDatas,float cr, Nano_Thief_Stats stats){
         this.ship = ship;
         this.constructionDatas = constructionDatas;
+        avoidDistance = (constructionDatas.ship.getHullSpec().getCollisionRadius() * 20) + 10;//twice raid
+        this.stats = stats;
+        this.dp = constructionDatas.ship.getFleetPointCost();
+        this.cr = cr;
+        ship.setAlphaMult(0);
+        Settings.log.info("attempting to add dp of:"+dp);
+        ship.getMutableStats().getDynamic().getStat(Stats.DEPLOYMENT_POINTS_MOD).setBaseValue(dp);
+        Settings.log.info("got final dp on swarm as: "+ship.getMutableStats().getDynamic().getStat(Stats.DEPLOYMENT_POINTS_MOD).base);
         /*todo:
         *  1: add max reclaim stat (here or elsewere)
-        *  2: adjust swarm size (here or elsewere)*/
+        *  2: adjust swarm size (here or elsewere)
+        *   note: ConstructionSwarmSystemScript.launchSwarm has an example of how this goes
+        * */
     }
     public static boolean isConstructionSwarm(ShipAPI ship) {
         return ship != null && ship.getVariant().getHullVariantId().equals(SwarmLauncherEffect.CONSTRUCTION_SWARM_VARIANT);
@@ -112,23 +130,18 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
         }*/
         //second part: strange. I dont understand why its asking about construction data. can it be null after being set so fast?
         //if (constructionData != null) {
-        if (false){
-            startedConstruction = true;
-            adjustSwarmSizeForConstruction();
-            constructionScript = new ThreatShipConstructionScript(
-                    constructionDatas.ship.getVariant(), ship, 0f, constructionDatas.buildTime);
+        if (isConstructing()) return;
+        boolean canSetup = true;
+        for (ShipAPI a : Global.getCombatEngine().getShips()) if (a != null && a.getFleetMember() != null && a.getFleetMember().getHullSpec() != null && Misc.getDistance(a.getLocation(),ship.getLocation()) < avoidDistance + (a.getFleetMember().getHullSpec().getCollisionRadius()*2)){
+            canSetup = false;
+            break;
+        }
+        if (canSetup){
+            startConstruction();
         }
         int maxTimeUntillBuild = 10;
         if (elapsed > maxTimeUntillBuild && !startedConstruction) {
-            startedConstruction = true;
-            RoilingSwarmEffect swarm = RoilingSwarmEffect.getSwarmFor(ship);
-            if (swarm != null) {
-                //todo: threat construction scrip incombatable with custom variants. must fix >=]
-                constructionScript = new ThreatShipConstructionScript(
-                        constructionDatas.ship.getVariant(), ship, 0f, constructionDatas.buildTime);
-                Global.getCombatEngine().addPlugin(constructionScript);
-                adjustSwarmSizeForConstruction();
-            }
+            startConstruction();
         }
         //}
     }
@@ -137,8 +150,8 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
     }
     protected void giveMovementCommands() {
         //so... this code. is interesting. basicly, this should only actavate when I am building the ship I wanna build right now.
-        //if (constructionScript != null && constructionScript.getShip() != null) {
-        if (isConstructing()){
+        if (constructionScript != null && constructionScript.getShip() != null) {
+        //if (isConstructing()){
             ship.giveCommand(ShipCommand.DECELERATE, null, 0);
             return;
         }
@@ -286,26 +299,6 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
 
     }
 
-    @Override
-    public boolean needsRefit() {
-        return false;
-    }
-
-    @Override
-    public ShipwideAIFlags getAIFlags() {
-        return null;
-    }
-
-    @Override
-    public void cancelCurrentManeuver() {
-
-    }
-
-    @Override
-    public ShipAIConfig getConfig() {
-        return null;
-    }
-
     public static float getShipWeight(ShipAPI ship) {
         return getShipWeight(ship, true);
     }
@@ -326,5 +319,47 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
 
     private boolean isConstructing(){
         return startedConstruction;
+    }
+
+    private void startConstruction(){
+        startedConstruction = true;
+        RoilingSwarmEffect swarm = RoilingSwarmEffect.getSwarmFor(ship);
+        if (swarm != null) {
+            FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(constructionDatas.ship.getType(), constructionDatas.ship.getVariant().clone());
+            memberCopy.setOwner(ship.getOwner());
+            memberCopy.setShipName(constructionDatas.name);
+            //FleetMemberAPI memberCopy = constructionDatas.ship;
+
+            //memberCopy.getStats().getMaxCombatReadiness().setBaseValue(9999);
+            //memberCopy;
+            //memberCopy.getStats().getMaxCombatReadiness().modifyFlat();
+            //memberCopy;
+            constructionScript = new Nano_Thief_MasteryConstructionScript(
+                    memberCopy, ship, 1f, (float) constructionDatas.buildTime,cr);
+            Global.getCombatEngine().addPlugin(constructionScript);
+            adjustSwarmSizeForConstruction();
+        }
+        //stats
+    }
+
+
+    @Override
+    public boolean needsRefit() {
+        return false;
+    }
+
+    @Override
+    public ShipwideAIFlags getAIFlags() {
+        return new ShipwideAIFlags();
+    }
+
+    @Override
+    public void cancelCurrentManeuver() {
+
+    }
+
+    @Override
+    public ShipAIConfig getConfig() {
+        return new ShipAIConfig();
     }
 }

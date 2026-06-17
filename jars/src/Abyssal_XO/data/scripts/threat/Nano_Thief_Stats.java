@@ -19,9 +19,7 @@ import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.fleet.FleetMemberType;
 import com.fs.starfarer.api.impl.campaign.ids.Stats;
-import com.fs.starfarer.api.impl.combat.threat.FragmentSwarmHullmod;
-import com.fs.starfarer.api.impl.combat.threat.RoilingSwarmEffect;
-import com.fs.starfarer.api.impl.combat.threat.SwarmLauncherEffect;
+import com.fs.starfarer.api.impl.combat.threat.*;
 import com.fs.starfarer.api.loading.FighterWingSpecAPI;
 import com.fs.starfarer.api.loading.VariantSource;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
@@ -48,6 +46,7 @@ import static Abyssal_XO.data.scripts.Settings.NANO_THIEF_RECLAIM_RECYCLE_PERCEN
 public class Nano_Thief_Stats {
     private static Logger log = Global.getLogger(Nano_Thief_Stats.class);
     public NanoThief_MasteryShipStats[] masteryShips;
+    //public HashMap<> reservedDP;
 
     public float DF_productionTime = 1;
     public float DF_swarmCost = 100;
@@ -541,4 +540,31 @@ public class Nano_Thief_Stats {
         NanoThief_6.displayStats(panel,a,offincive);
     }
 
+    public boolean hasSpareDP(int dp,int side){
+        Global.getCombatEngine().getFleetManager(side);
+        return true;
+    }
+    public boolean enoughDP(ShipSystemAPI system, ShipAPI ship) {
+        //todo: this was copyed from another area. it looks like a good way to make sure I have anouth dp. lots of good dp code here.
+        CombatEngineAPI engine = Global.getCombatEngine();
+        CombatFleetManagerAPI manager = engine.getFleetManager(ship.getOwner());
+        if (manager == null) {
+            return true;
+        } else {
+            int dpLeft = manager.getMaxStrength() - manager.getCurrStrength();
+
+            for(DeployedFleetMemberAPI dfm : manager.getDeployedCopyDFM()) {
+                ShipAPI ship2 = dfm.getShip();
+                if (ship2 != null && ship2.isFighter() && !ship2.hasTag(ThreatShipConstructionScript.SWARM_CONSTRUCTING_SHIP)) {
+                    RoilingSwarmEffect swarm = RoilingSwarmEffect.getSwarmFor(ship2);
+                    if (swarm != null && swarm.custom1 instanceof ConstructionSwarmSystemScript.SwarmConstructionData) {
+                        ConstructionSwarmSystemScript.SwarmConstructionData data = (ConstructionSwarmSystemScript.SwarmConstructionData)swarm.custom1;
+                        ShipVariantAPI v = Global.getSettings().getVariant(data.variantId);
+                        dpLeft = (int)((float)dpLeft - v.getHullSpec().getSuppliesToRecover());
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
