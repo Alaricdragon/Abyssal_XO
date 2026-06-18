@@ -107,7 +107,12 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
             //get fighter here.
             FactionAPI fac = commander.getFleet().getFaction();
             ArrayList<String> possable = new ArrayList<>();
-            if (fac.getId().equals("threat")) possable.add(Settings.NANO_THIEF_BASEWING);
+            if (fac.getId().equals("threat")){
+                possable.add("broadsword_wing");
+                possable.add("warthog_wing");
+                possable.add("piranha_wing");
+                possable.add("perdition_wing");
+            }
             for (String a : fac.getKnownFighters()){
                 FighterWingSpecAPI spc = Global.getSettings().getFighterWingSpec(a);
                 if ((spc.isRegularFighter() || spc.isAssault() || spc.isBomber() || spc.isInterceptor())
@@ -126,7 +131,7 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
     public void initStats(Nano_Thief_Stats stats) {
         //... what the fuck do you do!?!?!?
         //.... oh wait I remember now.
-        log.info("getting 'init stats'");
+        //log.info("getting 'init stats'");
         NanoThief_Skill_6.getStats(stats,Global.getSettings().getFighterWingSpec(getFighterID(stats.commander,true)));
     }
 

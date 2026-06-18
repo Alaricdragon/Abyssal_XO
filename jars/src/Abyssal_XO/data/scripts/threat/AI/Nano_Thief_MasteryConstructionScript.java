@@ -1,5 +1,7 @@
 package Abyssal_XO.data.scripts.threat.AI;
 
+import Abyssal_XO.data.scripts.Settings;
+import Abyssal_XO.data.scripts.threat.skills.NanoThief_10;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.combat.*;
@@ -9,15 +11,20 @@ import com.fs.starfarer.api.impl.combat.threat.RoilingSwarmEffect;
 import com.fs.starfarer.api.impl.combat.threat.ThreatShipConstructionScript;
 import org.lwjgl.util.vector.Vector2f;
 
+import static Abyssal_XO.data.scripts.Settings.NANO_THIEF_CUSTOM_MASTERY_RECLAIM_MEMERY_KEY;
+
 public class Nano_Thief_MasteryConstructionScript extends ThreatShipConstructionScript {
     private FleetMemberAPI toConstruct;
     private boolean canSpawn = false;
     private float crAtCreation;
-    public Nano_Thief_MasteryConstructionScript(FleetMemberAPI toConstruct, ShipAPI source, float delay, float fadeInTime,float crAtCreation) {
+    public boolean hasCreated = false;
+    private double reclaim;
+    public Nano_Thief_MasteryConstructionScript(FleetMemberAPI toConstruct, ShipAPI source, float delay, float fadeInTime,float crAtCreation,double reclaim) {
         super(toConstruct.getVariant().getHullVariantId(), source, delay, fadeInTime);
         this.toConstruct = toConstruct;
         this.crAtCreation = crAtCreation;
         canSpawn = true;
+        this.reclaim = reclaim;
         spawnShip();
     }
     @Override
@@ -33,8 +40,13 @@ public class Nano_Thief_MasteryConstructionScript extends ThreatShipConstruction
         fleetManager.setSuppressDeploymentMessages(true);
 
         toConstruct.setOwner(source.getOriginalOwner());
+        //ship = engine.getFleetManager(source.getOriginalOwner()).spawnShipOrWing(variantId, loc, facing, 0f, null);
+        //engine.getFleetManager(source.getOriginalOwner()).soawn
         ship = engine.getFleetManager(source.getOriginalOwner()).spawnFleetMember(toConstruct,loc,facing,0f);//spawnShipOrWing(variantId, loc, facing, 0f, null);
         ship.setCurrentCR(crAtCreation);
+        ship.resetDefaultAI();
+        //for (ship.getAIFlags().hasFlag(AIF))
+        //ship;
         if (Global.getCombatEngine().isInCampaign() || Global.getCombatEngine().isInCampaignSim()) {
             FactionAPI faction = Global.getSector().getFaction(Factions.THREAT);
             if (faction != null) {
@@ -61,7 +73,8 @@ public class Nano_Thief_MasteryConstructionScript extends ThreatShipConstruction
                 swarm.getParams().flashFringeColor	= sourceSwarm.getParams().flashFringeColor;
             }
         }
-
+        ship.getCustomData().put(NANO_THIEF_CUSTOM_MASTERY_RECLAIM_MEMERY_KEY,(int)reclaim*NanoThief_10.maxReclaimPercent);
+        ship.setAlphaMult(0);
         ship.addTag(SHIP_UNDER_CONSTRUCTION);
         source.addTag(SWARM_CONSTRUCTING_SHIP);
         source.setCollisionClass(CollisionClass.NONE);
@@ -71,5 +84,6 @@ public class Nano_Thief_MasteryConstructionScript extends ThreatShipConstruction
         for (WeaponGroupAPI g : ship.getWeaponGroupsCopy()) {
             g.toggleOff();
         }
+        hasCreated = true;
     }
 }

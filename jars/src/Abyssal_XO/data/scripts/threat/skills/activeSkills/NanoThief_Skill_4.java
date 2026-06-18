@@ -44,7 +44,7 @@ public class NanoThief_Skill_4 extends NanoThief_SkillBase{
     @Override
     public void advance(float amount) {
         cooldown -= amount;
-        log.info("cooling down to: "+cooldown);
+        //log.info("cooling down to: "+cooldown);
         if (!isActive && cooldown <= 0) ready = true;
     }
 

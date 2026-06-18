@@ -6,8 +6,10 @@ import Abyssal_XO.data.scripts.threat.skills.NanoThief_MasteryShipStats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
+import com.fs.starfarer.api.fleet.FleetMemberType;
 import com.fs.starfarer.api.impl.campaign.ids.Stats;
 import com.fs.starfarer.api.impl.combat.threat.*;
+import com.fs.starfarer.api.loading.VariantSource;
 import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
 import org.lwjgl.util.vector.Vector2f;
@@ -34,7 +36,7 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
         public float facing;
     }
 
-    protected ShipAPI ship;
+    public ShipAPI ship;
 
     protected IntervalUtil updateInterval = new IntervalUtil(0.5f, 1.5f);
     protected IntervalUtil headingInterval = new IntervalUtil(0.5f, 1.5f);
@@ -48,31 +50,45 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
 
     protected float elapsed = 0f;
 
-    protected boolean startedConstruction = false;
+    public boolean startedConstruction = false;
     //private ConstructionSwarmSystemScript.SwarmConstructionData constructionData;
     private NanoThief_MasteryShipStats constructionDatas;
-    private ThreatShipConstructionScript constructionScript;
+    private Nano_Thief_MasteryConstructionScript constructionScript;
 
     private float avoidDistance;
-    private int dp;
+    public int dp;
     private Nano_Thief_Stats stats;
     private float cr;
     public Nano_Thief_AI_Construction(ShipAPI ship, NanoThief_MasteryShipStats constructionDatas,float cr, Nano_Thief_Stats stats){
         this.ship = ship;
         this.constructionDatas = constructionDatas;
-        avoidDistance = (constructionDatas.ship.getHullSpec().getCollisionRadius() * 20) + 10;//twice raid
+        avoidDistance = (constructionDatas.ship.getHullSpec().getCollisionRadius() * 2) + 10;//twice raid
         this.stats = stats;
         this.dp = constructionDatas.ship.getFleetPointCost();
         this.cr = cr;
-        ship.setAlphaMult(0);
-        Settings.log.info("attempting to add dp of:"+dp);
-        ship.getMutableStats().getDynamic().getStat(Stats.DEPLOYMENT_POINTS_MOD).setBaseValue(dp);
-        Settings.log.info("got final dp on swarm as: "+ship.getMutableStats().getDynamic().getStat(Stats.DEPLOYMENT_POINTS_MOD).base);
-        /*todo:
-        *  1: add max reclaim stat (here or elsewere)
-        *  2: adjust swarm size (here or elsewere)
-        *   note: ConstructionSwarmSystemScript.launchSwarm has an example of how this goes
-        * */
+        //ship.setAlphaMult(0);
+        ship.setDoNotRender(true);
+        ship.setExplosionScale(0f);
+        ship.setHulkChanceOverride(0f);
+        ship.setImpactVolumeMult(SwarmLauncherEffect.IMPACT_VOLUME_MULT);
+        ship.getArmorGrid().clearComponentMap(); // no damage to weapons/engines
+        //ship.getMutableStats().getDynamic().getStat(Stats.DEPLOYMENT_POINTS_MOD).setBaseValue(dp);
+        stats.constructors.add(this);
+
+        RoilingSwarmEffect swarm = FragmentSwarmHullmod.createSwarmFor(ship);
+        swarm.getParams().baseMembersToMaintain = (int) (constructionDatas.cost / 50);
+        swarm.getParams().initialMembers = (int) (constructionDatas.cost / 50);
+        swarm.getParams().maxOffset = constructionDatas.ship.getHullSpec().getCollisionRadius();
+
+        RoilingSwarmEffect.getFlockingMap().remove(swarm.getParams().flockingClass, swarm);
+        swarm.getParams().flockingClass = FragmentSwarmHullmod.RECLAMATION_SWARM_FLOCKING_CLASS;
+        RoilingSwarmEffect.getFlockingMap().add(swarm.getParams().flockingClass, swarm);
+        swarm.getParams().memberExchangeClass = FragmentSwarmHullmod.RECLAMATION_SWARM_EXCHANGE_CLASS;
+
+
+        //swarm.params.flashFringeColor = VoltaicDischargeOnFireEffect.EMP_FRINGE_COLOR;
+        //swarm.getParams().flashFrequency = 5f;
+        //swarm.getParams().flashProbability = 1f;
     }
     public static boolean isConstructionSwarm(ShipAPI ship) {
         return ship != null && ship.getVariant().getHullVariantId().equals(SwarmLauncherEffect.CONSTRUCTION_SWARM_VARIANT);
@@ -188,17 +204,18 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
         flockingData.clear();
         float radius = ship.getCollisionRadius() * 0.5f;
         for (ShipAPI curr : engine.getShips()) {
+            if (curr.getOwner() == 100 || curr.isHulk() || !curr.isAlive()) continue;
             float currRadius = curr.getCollisionRadius() * 2f;
             ThreatSwarmAI.FlockingData data = new ThreatSwarmAI.FlockingData();
             data.facing = curr.getFacing();
             data.loc = curr.getLocation();
             data.vel = curr.getVelocity();
             data.attractWeight = 0f;
-            data.repelWeight = getShipWeight(curr) * 1f;
+            data.repelWeight = getShipWeight(curr,ship.getOriginalOwner()) * 1f;
             data.minA = 0f;
             data.maxA = 0f;
-            data.minR = radius + currRadius;
-            data.maxR = radius + currRadius + Math.min(100f, currRadius * 1f);
+            data.minR = radius + currRadius + (avoidDistance * 2);
+            data.maxR = radius + currRadius + Math.min(100f, currRadius * 1f) + (avoidDistance * 2);
             data.repelAtAngleDist = (data.maxR - data.minR) * 0.5f;
             flockingData.add(data);
         }
@@ -210,6 +227,7 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
         float facing = ship.getFacing();
 
         Vector2f total = new Vector2f();
+
 
         for (ThreatSwarmAI.FlockingData curr : flockingData) {
             float dist = Misc.getDistance(curr.loc, loc);
@@ -299,10 +317,10 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
 
     }
 
-    public static float getShipWeight(ShipAPI ship) {
-        return getShipWeight(ship, true);
+    public static float getShipWeight(ShipAPI ship,int owner) {
+        return getShipWeight(ship, owner,true);
     }
-    public static float getShipWeight(ShipAPI ship, boolean adjustForNonCombat) {
+    public static float getShipWeight(ShipAPI ship,int owner, boolean adjustForNonCombat) {
         boolean nonCombat = ship.isNonCombat(false);
         float weight = 0;
         switch (ship.getHullSize()) {
@@ -310,8 +328,16 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
             case CRUISER: weight += 4; break;
             case DESTROYER: weight += 2; break;
             case FRIGATE: weight += 1; break;
-            case FIGHTER: weight += 1; break;
+            case FIGHTER: weight += 0.2f; break;
         }
+        if (ship.getOwner() != owner && Global.getCombatEngine().isAwareOf(owner, ship)) weight *= 5;
+        //ship.getOriginalOwner();
+        //Global.getCombatEngine().getFleetManager();
+        //ship.getOriginalOwner();
+        //Global.getCombatEngine().getFleetManager();
+        //if (this.ship.getOriginalOwner()){
+        //    ship;
+        //}
         if (nonCombat && adjustForNonCombat) weight *= 0.25f;
         if (ship.isDrone()) weight *= 0.1f;
         return weight;
@@ -325,9 +351,18 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
         startedConstruction = true;
         RoilingSwarmEffect swarm = RoilingSwarmEffect.getSwarmFor(ship);
         if (swarm != null) {
-            FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(constructionDatas.ship.getType(), constructionDatas.ship.getVariant().clone());
-            memberCopy.setOwner(ship.getOwner());
+            FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(FleetMemberType.SHIP, constructionDatas.ship.getVariant().clone());
+            //FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(FleetMemberType.SHIP, Global.getSettings().getVariant(Settings.NANO_THIEF_MASTERY_BASESHIP));
+            //memberCopy.setOwner(ship.getOwner());
             memberCopy.setShipName(constructionDatas.name);
+            ShipVariantAPI OVERWRITER = memberCopy.getVariant();//Global.getSettings().getVariant("Abyssal_XO_ReclaimCore_Blank").clone();
+            OVERWRITER.setSource(VariantSource.REFIT);
+            OVERWRITER.addMod("Abyssal_XO_DC");
+            memberCopy.setOwner(ship.getOwner());
+            memberCopy.setVariant(OVERWRITER,false,true);
+            memberCopy.getStats().getMinCrewMod().modifyMult("Abyssal_XO",0);
+            //memberCopy.getStats().getDynamic().getStat()
+            //memberCopy.getStats().
             //FleetMemberAPI memberCopy = constructionDatas.ship;
 
             //memberCopy.getStats().getMaxCombatReadiness().setBaseValue(9999);
@@ -335,7 +370,7 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
             //memberCopy.getStats().getMaxCombatReadiness().modifyFlat();
             //memberCopy;
             constructionScript = new Nano_Thief_MasteryConstructionScript(
-                    memberCopy, ship, 1f, (float) constructionDatas.buildTime,cr);
+                    memberCopy, ship, 1f, (float) constructionDatas.buildTime,cr,constructionDatas.cost);
             Global.getCombatEngine().addPlugin(constructionScript);
             adjustSwarmSizeForConstruction();
         }
@@ -361,5 +396,8 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
     @Override
     public ShipAIConfig getConfig() {
         return new ShipAIConfig();
+    }
+    public boolean getHasCreated(){
+        return constructionScript != null && constructionScript.hasCreated;
     }
 }

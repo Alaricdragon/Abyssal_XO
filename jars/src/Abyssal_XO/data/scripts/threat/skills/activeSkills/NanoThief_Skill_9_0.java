@@ -29,7 +29,7 @@ public class NanoThief_Skill_9_0 extends NanoThief_SkillBase{
     }
     @Override
     public void displayStats() {
-        log.info("displaying stats for skill 9 as cost: "+skills.costMulti+", "+"speed: "+skills.timeflow);
+        //log.info("displaying stats for skill 9 as cost: "+skills.costMulti+", "+"speed: "+skills.timeflow);
         Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_9", "graphics/icons/hullsys/temporal_shell.png",
                 "ReclaimSpeedAndCost", "cost multi: "+((int)(skills.costMulti*100))/100d+" speed multi: "+((int)(skills.timeflow*100))/100d, false);
     }

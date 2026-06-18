@@ -1,4 +1,4 @@
-V0.0.8:
+V0.1.0:
     new:
         reclaim stored in ships is now added to newly created reclaim packages when the ship dies. (split between forces if a 'reclaim battle' is going on)
     balance changes:

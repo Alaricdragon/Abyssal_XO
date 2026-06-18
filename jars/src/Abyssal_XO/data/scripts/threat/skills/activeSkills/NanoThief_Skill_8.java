@@ -41,7 +41,7 @@ public class NanoThief_Skill_8 extends NanoThief_SkillBase{
         amount *= skills.timeflow;//most 'always advanced' skills wont be effected by timeflow. But this one is.
         refineReclaim(amount);
         time+=amount;
-        if (time > 5){
+        if (time >= 10){
             createReclaimIfRequired();
             time = 0;
         }

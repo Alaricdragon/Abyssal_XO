@@ -38,7 +38,7 @@ public class Nano_Thief_AI_OffienviveFighterHolder implements ShipAIPlugin {
         wing.setSourceBay(ship.getLaunchBaysCopy().get(0));
         //if (ship.getLaunchBaysCopy().get(0).getWing() != null){
             //log.info("fighter bay is detected... and its not empty!!!!");
-            log.info("got type of fighter as: "+ship.getLaunchBaysCopy().get(0).getWing().getSpec().getId());
+            //log.info("got type of fighter as: "+ship.getLaunchBaysCopy().get(0).getWing().getSpec().getId());
         //}
     }
     @Override
@@ -55,25 +55,25 @@ public class Nano_Thief_AI_OffienviveFighterHolder implements ShipAIPlugin {
     private static final int timeToRetarget = 5;
     @Override
     public void advance(float amount) {
-        log.info("advancing: "+time);
+        //log.info("advancing: "+time);
         if (removeSelfIfRequired()) return;
-        log.info("  pull back fighters...");
+        //log.info("  pull back fighters...");
         ship.setPullBackFighters(false);
-        log.info("  move");
+        //log.info("  move");
         move();
-        log.info("  return fighters if required");
+        //log.info("  return fighters if required");
         if (returnFighters) returnShipsToCarrier();
-        log.info("  getting timed items...");
+        //log.info("  getting timed items...");
         time+=amount;
         if (time >= NanoThief_6.CustomSwarm_TTL){
-            log.info("      return fighters active");
+            //log.info("      return fighters active");
             returnFighters = true;
             retarget();
             time = 0;
             return;
         }
         if (((int) time) % timeToRetarget == timeToRetarget - 1){
-            log.info("      retarget");
+            //log.info("      retarget");
             retarget();
         }
     }
@@ -81,7 +81,7 @@ public class Nano_Thief_AI_OffienviveFighterHolder implements ShipAIPlugin {
         if (fighters.isEmpty()){
             stats.getOffinciveFighterCores().remove(ship);//(ship);
             Global.getCombatEngine().removeEntity(ship);
-            log.info("removing self do to a lack of fighters...");
+            //log.info("removing self do to a lack of fighters...");
             return true;
         }
         return false;

@@ -65,7 +65,7 @@ public class Nano_Thief_AI_OVERRIDE {
             //curr.getMutableStats().getFighterWingRange().modifyFlat("Abyssal_XO_Range",200000);
             swarmAIAttempt.put(curr,new Nano_Thief_AI_CustomSwarm(curr, stats));
         }
-        log.info("creating a fighter with a range of: "+range);
+        //log.info("creating a fighter with a range of: "+range);
     }
     private static float interval = 1;
     private float time=0;

@@ -24,6 +24,7 @@ import second_in_command.SCData;
 import java.util.ArrayList;
 
 public class NanoThief_10 extends Nano_Thief_Skill_Base {
+
     public static int maxShips = 4;
     public static boolean canFriget = true;
     public static boolean canDestroyer = false;
@@ -42,13 +43,13 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
     public static final double dModmin = 0.5;
     public static final double costPerDP = 200;//200 for 1 dp cost, 2000 for 10 dp. (0.5 capitals for 1 dp. 0.5 frigets for 1 dp.)
 
-    public static final double rechargeTimePerDP = 1;//10;//10 seconds per dp cost of ship.
+    public static final double rechargeTimePerDP = 10;//10 seconds per dp cost of ship.
     public static final double buildTimePerDP = 2.5;//2.5 seconds per dp cost of ship.
 
     public static final double minCR = 0.4;//for spawning ships
     public static final double peakCRDuration = 0.6;
 
-    public static final double forceRechargePerDP = rechargeTimePerDP;//this is for recharging the ship form a new simulacrum fighter.
+    //public static final double forceRechargePerDP = rechargeTimePerDP;//this is for recharging the ship form a new simulacrum fighter.
     public static final double maxReclaimPercent = 0.75;//max amount of reclaim a simulacrum ship is worth when destroyed.
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
@@ -91,7 +92,7 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
 
     }
     private void displayBaseStats(SCData scData, TooltipMakerAPI tooltip){
-        String line3_0 = ""+(int)forceRechargePerDP;
+        //String line3_0 = ""+(int)forceRechargePerDP;
 
         String line4_0 = ""+(int)costPerDP;
         String line4_1 = (int)(dModDiscount*100)+"%";
@@ -111,7 +112,7 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
         tooltip.addPara("   -cannot be built if you don't have enough spare deployment points to deploy the ship normally",0,Misc.getGrayColor(),Misc.getHighlightColor());
         tooltip.addPara("   -must be built form a 'construction swarm'",0,Misc.getGrayColor(),Misc.getHighlightColor());
         tooltip.addPara("   -starting cr is equal to the cr of the ship that spawned the simulacrum ship",0,Misc.getGrayColor(),Misc.getHighlightColor());
-        tooltip.addPara("   -cannot be used to create additional simulacrum ships until %s seconds pass per deployment point",0,Misc.getGrayColor(),Misc.getHighlightColor(),line3_0);
+        //tooltip.addPara("   -cannot be used to create additional simulacrum ships until %s seconds pass per deployment point",0,Misc.getGrayColor(),Misc.getHighlightColor(),line3_0);
         tooltip.addPara("   -cost %s reclaim per deployment point, reduced by %s per none logistical d-mod (up to a reduction of %s),and increased by %s per s-mod (with no upper limit). not multiplicative",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line4_0,line4_1,line4_2,line4_3);
         tooltip.addPara("   -takes %s seconds to build per deployment point. during this time, the ship %s, but cannot %s, %s or %s",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line5_0,line5_1,line5_2,line5_3,line5_4);
         tooltip.addPara("   -peak performance time is reduced by %s",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line6_0);
@@ -248,7 +249,7 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
                         ArrayList<String> temp3 = (ArrayList<String>) commander.getMemoryWithoutUpdate().get(Settings.NANO_THIEF_CUSTOM_MASTERY_NAMES_MEMORY_KEY);
                         for (String a : temp3) names.add(a);
                     } else {
-                        for (int a = 0; a < temp2.size(); a++) names.add("");
+                        for (int a = 0; a < temp2.size(); a++) names.add(Global.getSettings().getVariant((String) temp2.get(a)).getDisplayName());
                     }
                     if (commander.getMemoryWithoutUpdate().contains(Settings.NANO_THIEF_CUSTOM_MASTERY_NUMBERS_MEMORY_KEY)) {
                         ArrayList<Integer> temp3 = (ArrayList<Integer>) commander.getMemoryWithoutUpdate().get(Settings.NANO_THIEF_CUSTOM_MASTERY_NUMBERS_MEMORY_KEY);

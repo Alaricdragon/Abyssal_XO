@@ -2,6 +2,7 @@ package Abyssal_XO.data.scripts.threat;
 
 import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.hullmods.ReclaimCore;
+import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_Construction;
 import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_Reclaim;
 import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_SawrmSpawner;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_BattleListener;
@@ -191,6 +192,7 @@ public class Nano_Thief_Stats {
         return true;
     }
     public boolean isValidReclaimTarget(ShipAPI ship){
+        if (ship.getTags().contains(ThreatShipConstructionScript.SHIP_UNDER_CONSTRUCTION)) return false;//never send reclaim to a ship untill after it is fully built..
         return true;
     }
     public float getReclaimTargetDistanceMulti(ShipAPI ship){
@@ -354,7 +356,10 @@ public class Nano_Thief_Stats {
         }
         double additional = NanoThief_BattleListener.getReclaimInShip(reclaim) * NANO_THIEF_RECLAIM_RECYCLE_PERCENT;
         if (!NanoThief_BattleListener.getHostileCaptions().isEmpty() && !NanoThief_BattleListener.getFriendlyCaptions().isEmpty()){
-            additional /= 2;
+            additional /= 2;//represents reclaim war over additional reclaim
+        }
+        if (reclaim.getCustomData().containsKey(Settings.NANO_THIEF_CUSTOM_MASTERY_RECLAIM_MEMERY_KEY)){
+            amount = Math.min(amount, (int) reclaim.getCustomData().get(Settings.NANO_THIEF_CUSTOM_MASTERY_RECLAIM_MEMERY_KEY));
         }
         return (int) (amount+additional);
     }
@@ -540,31 +545,20 @@ public class Nano_Thief_Stats {
         NanoThief_6.displayStats(panel,a,offincive);
     }
 
-    public boolean hasSpareDP(int dp,int side){
-        Global.getCombatEngine().getFleetManager(side);
-        return true;
-    }
-    public boolean enoughDP(ShipSystemAPI system, ShipAPI ship) {
+    public ArrayList<Nano_Thief_AI_Construction> constructors = new ArrayList<>();
+    public int getDPWithToBeConstructed(int owner){
         //todo: this was copyed from another area. it looks like a good way to make sure I have anouth dp. lots of good dp code here.
         CombatEngineAPI engine = Global.getCombatEngine();
-        CombatFleetManagerAPI manager = engine.getFleetManager(ship.getOwner());
-        if (manager == null) {
-            return true;
-        } else {
-            int dpLeft = manager.getMaxStrength() - manager.getCurrStrength();
-
-            for(DeployedFleetMemberAPI dfm : manager.getDeployedCopyDFM()) {
-                ShipAPI ship2 = dfm.getShip();
-                if (ship2 != null && ship2.isFighter() && !ship2.hasTag(ThreatShipConstructionScript.SWARM_CONSTRUCTING_SHIP)) {
-                    RoilingSwarmEffect swarm = RoilingSwarmEffect.getSwarmFor(ship2);
-                    if (swarm != null && swarm.custom1 instanceof ConstructionSwarmSystemScript.SwarmConstructionData) {
-                        ConstructionSwarmSystemScript.SwarmConstructionData data = (ConstructionSwarmSystemScript.SwarmConstructionData)swarm.custom1;
-                        ShipVariantAPI v = Global.getSettings().getVariant(data.variantId);
-                        dpLeft = (int)((float)dpLeft - v.getHullSpec().getSuppliesToRecover());
-                    }
-                }
+        CombatFleetManagerAPI manager = engine.getFleetManager(owner);//ship.getOwner());
+        int dpLeft = manager.getMaxStrength() - manager.getCurrStrength();
+        for (int a = constructors.size() - 1; a >= 0; a--){
+            Nano_Thief_AI_Construction b = constructors.get(a);
+            if (!b.ship.isAlive() || b.ship.isHulk() || b.getHasCreated()){
+                constructors.remove(a);
+                continue;
             }
+            dpLeft -= b.dp;
         }
-        return false;
+        return dpLeft;
     }
 }

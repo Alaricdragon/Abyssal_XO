@@ -2,17 +2,15 @@ package Abyssal_XO.data.scripts.threat.skills.activeSkills;
 
 import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_Construction;
-import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_SawrmSpawner;
+import Abyssal_XO.data.scripts.threat.skills.NanoThief_10;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_MasteryShipStats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.CombatFleetManagerAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
-import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.fleet.FleetMemberType;
 import com.fs.starfarer.api.impl.combat.threat.SwarmLauncherEffect;
-import com.fs.starfarer.api.loading.VariantSource;
 import com.fs.starfarer.api.util.Misc;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -29,32 +27,52 @@ public class NanoThief_Skill_10 extends NanoThief_SkillBase{
         return maxCost;
     }
     private float cooldown = 0;
+    private float waiting = 0;
     //private boolean onCooldown = false;
     //private boolean waiting = false;
     NanoThief_MasteryShipStats nextShip;
+    private float waitTime = 0.25f;
     @Override
     public void advance(float amount) {
-        cooldown -= amount;
+        waiting+=amount;
+        if (waiting < waitTime) return;//only runs calculations x times.
+        cooldown -= waiting;
+        waiting = 0;
+        //cooldown -= amount;
+        if (!hasEnouthReclaim() || !hasEnouthCR()){
+            cooldown = (float) nextShip.reloadTime;
+            return;
+        }
         if (cooldown > 0) return;
-        if (!canBuildShip()) return;
+        cooldown = 0;
+        if (!hasEnouthDP()) return;
+        if (!inStateOfPrevention()) return;
         buildShip();
         selectNextShip();
     }
     @Override
     public void displayStats() {
-        boolean overDP = false;
+        waitTime = 0.1f;//for player ship waittime. for a faster, smover, interface.
+        if (!hasEnouthCR()){
+            Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_10", "graphics/icons/hullsys/temporal_shell.png",
+                    "Mastery Status", "At least "+(int)(NanoThief_10.minCR*100)+"% cr is required to create construction swarms", true);
+            return;
+        }
+        //cooldown-=waiting;//player gets a faster interface.
+        //waiting = 0;
         if (cooldown <= 0){
-            if (overDP){
+            cooldown = 0;
+            if (!hasEnouthDP()){
                 Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_10", "graphics/icons/hullsys/temporal_shell.png",
                         "Mastery Status", "Construction swarm for "+nextShip.name+" ready. Cannot launch do to limited dp", true);
                 return;
             }
-            if (skills.getTotalReclaim() >= nextShip.cost && ship.isPhased()){
+            if (hasEnouthReclaim() && inStateOfPrevention()){
                 Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_10", "graphics/icons/hullsys/temporal_shell.png",
                         "Mastery Status", "Ready to construct "+nextShip.name+". cannot prepare construction while phased", true);
                 return;
             }
-            if (skills.getTotalReclaim() >= nextShip.cost){
+            if (hasEnouthReclaim()){
                 Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_10", "graphics/icons/hullsys/temporal_shell.png",
                         "Mastery Status", "Ready to construct "+nextShip.name+".", false);
             }else{
@@ -64,8 +82,8 @@ public class NanoThief_Skill_10 extends NanoThief_SkillBase{
         }else{
             //50 - 40 = 10. 10 / 50 = 0.2 = 20%
             int percentDone = (int)(((nextShip.reloadTime-cooldown) / nextShip.reloadTime)*100);
-            Settings.log.info("done eq: (int)((("+nextShip.reloadTime+" - "+cooldown+") / "+nextShip.reloadTime+") * "+100+") = "+percentDone);
-            if (skills.getTotalReclaim() >= nextShip.cost){
+            //Settings.log.info("done eq: (int)((("+nextShip.reloadTime+" - "+cooldown+") / "+nextShip.reloadTime+") * "+100+") = "+percentDone);
+            if (hasEnouthReclaim()){
                 Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_10", "graphics/icons/hullsys/temporal_shell.png",
                         "Mastery Status", percentDone+"% ready to launch construction swarm...", false);
             }else{
@@ -107,10 +125,20 @@ public class NanoThief_Skill_10 extends NanoThief_SkillBase{
         //skills.stats.getOffinciveFighterCores().add(fighter);
         //return fighter;//note: not a fighter, but instead something very diffrent.
     }
-    private boolean canBuildShip(){
-        if (!skills.stats.hasSpareDP(nextShip.ship.getFleetPointCost(),ship.getOwner())) return false;
-        if (ship.isPhased()) return false;
+    private boolean hasEnouthReclaim(){
         if (skills.getTotalReclaim() < nextShip.cost) return false;
+        return true;
+    }
+    private boolean hasEnouthDP(){
+        if (!(skills.stats.getDPWithToBeConstructed(ship.getOriginalOwner()) >= nextShip.ship.getFleetPointCost())) return false;
+        return true;
+    }
+    private boolean inStateOfPrevention(){
+        if (ship.isPhased()) return false;
+        return true;
+    }
+    private boolean hasEnouthCR(){
+        if (ship.getCurrentCR() < NanoThief_10.minCR) return false;
         return true;
     }
     private void selectNextShip(){

@@ -8,6 +8,7 @@ import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.listeners.AdvanceableListener;
+import com.fs.starfarer.api.impl.combat.threat.ThreatShipConstructionScript;
 import lombok.Getter;
 import org.apache.log4j.Logger;
 
@@ -194,6 +195,7 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
         //getCostMulti();
         //getTimeMulti();
         attemptToDisplayStats();
+        if (ship.getTags().contains(ThreatShipConstructionScript.SHIP_UNDER_CONSTRUCTION)) return;//never active on ships being built.
         if (ship.isHulk()) return;
         if (!activeWellOverloaded && (ship.getFluxTracker().isOverloaded() || ship.getFluxTracker().isVenting())) return;
         for (NanoThief_SkillBase a : alwaysSkills) a.advance(amount);
