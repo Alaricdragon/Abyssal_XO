@@ -15,6 +15,7 @@ import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.*;
 import Abyssal_XO.data.scripts.threat_old.subsystems.DamageOverTime_System;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.FleetDataAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
@@ -126,6 +127,7 @@ public class Nano_Thief_Stats {
         if (OF_fighterToBuild != null) this.OF_fighterToBuild = OF_fighterToBuild;
     }*/
     public PersonAPI commander;
+    public FleetDataAPI fleet;
     public Nano_Thief_Stats(NanoThief_MasteryShipStats[] ships){
         getBastStatsForMastery(ships,this);
     }
@@ -141,8 +143,9 @@ public class Nano_Thief_Stats {
 
     }
 
-    public Nano_Thief_Stats(PersonAPI commander, String commanderID, boolean isAlly, SCOfficer officer){
+    public Nano_Thief_Stats(PersonAPI commander, FleetDataAPI fleet, String commanderID, boolean isAlly, SCOfficer officer){
         this.commander = commander;
+        this.fleet = fleet;
         this.commanderID = commanderID;
         this.officer = officer;
         this.isAlly = isAlly;
@@ -262,7 +265,7 @@ public class Nano_Thief_Stats {
             c *= getReclaimTargetDistanceMulti(curr);
             NanoThief_ShipSkills data = getSkills(curr);
             double rangeChange = 0;
-            if (data != null) rangeChange = data.getTotalReclaimIncludingIncomeing() / 100;
+            if (data != null) rangeChange = data.getTotalReclaimIncludingIncomeing() / 5;
             c+=rangeChange;
 
             if (c < distance){

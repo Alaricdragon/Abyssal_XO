@@ -1,6 +1,8 @@
 package Abyssal_XO.data.scripts.threat.AI;
 
 import Abyssal_XO.data.scripts.Settings;
+import Abyssal_XO.data.scripts.hullmods.SICSkillControllerBackup;
+import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_10;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.FactionAPI;
@@ -19,12 +21,14 @@ public class Nano_Thief_MasteryConstructionScript extends ThreatShipConstruction
     private float crAtCreation;
     public boolean hasCreated = false;
     private double reclaim;
-    public Nano_Thief_MasteryConstructionScript(FleetMemberAPI toConstruct, ShipAPI source, float delay, float fadeInTime,float crAtCreation,double reclaim) {
+    private Nano_Thief_Stats stats;
+    public Nano_Thief_MasteryConstructionScript(FleetMemberAPI toConstruct, ShipAPI source, float delay, float fadeInTime,float crAtCreation,double reclaim,Nano_Thief_Stats stats) {
         super(toConstruct.getVariant().getHullVariantId(), source, delay, fadeInTime);
         this.toConstruct = toConstruct;
         this.crAtCreation = crAtCreation;
         canSpawn = true;
         this.reclaim = reclaim;
+        this.stats = stats;
         spawnShip();
     }
     @Override
@@ -47,13 +51,14 @@ public class Nano_Thief_MasteryConstructionScript extends ThreatShipConstruction
         ship.resetDefaultAI();
         //for (ship.getAIFlags().hasFlag(AIF))
         //ship;
-        if (Global.getCombatEngine().isInCampaign() || Global.getCombatEngine().isInCampaignSim()) {
+        /*if (Global.getCombatEngine().isInCampaign() || Global.getCombatEngine().isInCampaignSim()) {
             FactionAPI faction = Global.getSector().getFaction(Factions.THREAT);
             if (faction != null) {
                 String name = faction.pickRandomShipName();
                 ship.setName(toConstruct.getShipName()+name);
             }
-        }
+        }*/
+        ship.setName(toConstruct.getShipName() + "#"+(int)(Math.random() * 10000));
         fleetManager.setSuppressDeploymentMessages(wasSuppressed);
         collisionClass = ship.getCollisionClass();
 

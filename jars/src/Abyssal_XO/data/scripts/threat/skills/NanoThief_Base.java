@@ -53,7 +53,7 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
     @Override
     public void applyEffectsAfterShipCreation(SCData data, ShipAPI ship, ShipVariantAPI variant, String id) {
         if (ship.getParentStation() != null || ship.getParentPieceId() != null){
-            log.info("NOT ADDING LISTENER FOR A SINGLE SHIP, BECAUSE IT IS A MODULE");
+            //log.info("NOT ADDING LISTENER FOR A SINGLE SHIP, BECAUSE IT IS A MODULE");
             return;
         }
         if (ship.hasListenerOfClass(NanoThief_ShipSkillsAdder.class)) return;
@@ -77,7 +77,7 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
         //to do: add this ship into the master list of all ships part of this force. this will be useful =).
         //NanoThief_BattleListener;
         /**/
-        log.info("THIS IS BEFORE SHIP CREATION");
+        //log.info("THIS IS BEFORE SHIP CREATION");
     }
     private static Logger log = Global.getLogger(NanoThief_Base.class);
 
@@ -94,6 +94,7 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
         if (!Global.getCombatEngine().hasPluginOfClass(NanoThief_BattleListener.class)) {
             Global.getCombatEngine().addPlugin(new NanoThief_BattleListener());
         }
+        //Settings.log.info("calculating active ship with this skill: "+ship.getName());
     }
 
     @Override

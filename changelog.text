@@ -3,7 +3,7 @@ V0.1.0:
         reclaim stored in ships is now added to newly created reclaim packages when the ship dies. (split between forces if a 'reclaim battle' is going on)
     balance changes:
         now reclaim is 200/400/600/800 per skill. So the same reclaim at max level, but less reclaim at lower levels.
-        reclaim will now treat ships as though they are 1 distance farther away for every 100 reclaim in storge when cosing what ship to travel to.
+        reclaim will now treat ships as though they are 1 distance farther away for every 5 reclaim in storge when cosing what ship to travel to.
         reclaim packages reduced sight to 10% of what it was
         reclaim packages in 'combat' mode will switch back to 'reclaim' mode if a valid target for reclaim is found
         removed armaa armada strickcraft from being exempt from receiving reclaim. You can enable it if you want that to be restricted in the data/config/settings file.

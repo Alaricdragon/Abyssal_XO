@@ -65,6 +65,7 @@ public class NanoThief_Skill_8 extends NanoThief_SkillBase{
         int maxSpend = (int) ((skills.getTotalReclaim() - getAmountToHold)/1000);
         skills.stats.makeSureSavedShipsAreAlive();
         for (ShipAPI a : skills.stats.getAvailableShips()){
+            if (!skills.stats.canAcceptReclaim(a)) continue;
             if (a.equals(skills.stats.getCentralFab())) continue;
             NanoThief_ShipSkills b = skills.stats.getSkills(a);
             if (b == null) continue;

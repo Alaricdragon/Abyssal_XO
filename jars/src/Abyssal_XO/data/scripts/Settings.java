@@ -9,6 +9,8 @@ import org.json.JSONException;
 import java.util.ArrayList;
 
 public class Settings {
+    public static final String SIC_CONTROL_HULLMOD = "Abussal_XO_SIC_controler";//"sc_skill_controller";
+
     public static Logger log = Global.getLogger(Settings.class);
     public static final int[] NANO_THIEF_RECLAIM_GAIN = {
             200,

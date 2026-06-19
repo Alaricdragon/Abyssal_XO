@@ -1,5 +1,7 @@
 package Abyssal_XO.data.scripts;
+import Abyssal_XO.data.scripts.threat.listiners.NanoThief_EndBattleListiner;
 import com.fs.starfarer.api.BaseModPlugin;
+import com.fs.starfarer.api.Global;
 import org.json.JSONException;
 
 public class SiC_NanoThief_Plugin extends BaseModPlugin {
@@ -15,6 +17,7 @@ public class SiC_NanoThief_Plugin extends BaseModPlugin {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+        //Global.getSector().addListener(new NanoThief_EndBattleListiner(false));
     }
 
     @Override

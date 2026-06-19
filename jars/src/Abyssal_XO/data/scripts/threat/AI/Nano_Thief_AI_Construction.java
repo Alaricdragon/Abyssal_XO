@@ -1,6 +1,8 @@
 package Abyssal_XO.data.scripts.threat.AI;
 
 import Abyssal_XO.data.scripts.Settings;
+import Abyssal_XO.data.scripts.Utils;
+import Abyssal_XO.data.scripts.hullmods.SICSkillControllerBackup;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_MasteryShipStats;
 import com.fs.starfarer.api.Global;
@@ -351,16 +353,31 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
         startedConstruction = true;
         RoilingSwarmEffect swarm = RoilingSwarmEffect.getSwarmFor(ship);
         if (swarm != null) {
+            SICSkillControllerBackup.fleet_global = stats.fleet.getFleet();
             FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(FleetMemberType.SHIP, constructionDatas.ship.getVariant().clone());
             //FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(FleetMemberType.SHIP, Global.getSettings().getVariant(Settings.NANO_THIEF_MASTERY_BASESHIP));
             //memberCopy.setOwner(ship.getOwner());
+            memberCopy.setFleetCommanderForStats(stats.commander,stats.fleet);
             memberCopy.setShipName(constructionDatas.name);
+            //Utils.applyShipIntoFleet(stats.fleet,memberCopy);
+            //stats.fleet.addFleetMember(memberCopy);
+            //stats.fleet.removeFleetMember(memberCopy);
             ShipVariantAPI OVERWRITER = memberCopy.getVariant();//Global.getSettings().getVariant("Abyssal_XO_ReclaimCore_Blank").clone();
             OVERWRITER.setSource(VariantSource.REFIT);
             OVERWRITER.addMod("Abyssal_XO_DC");
+            OVERWRITER.addMod(Settings.SIC_CONTROL_HULLMOD);
             memberCopy.setOwner(ship.getOwner());
             memberCopy.setVariant(OVERWRITER,false,true);
             memberCopy.getStats().getMinCrewMod().modifyMult("Abyssal_XO",0);
+
+            //memberCopy.getFleetData().getFleet();
+            String out = "";
+            //out += "got fleet data name as: "+memberCopy.getFleetData().getFleet().getName()+"";
+            out += ",-got all hull mods on new ship as: ";
+            for (String a : memberCopy.getVariant().getHullMods()){
+                out+=a+", ";
+            }
+            Settings.log.info(out);
             //memberCopy.getStats().getDynamic().getStat()
             //memberCopy.getStats().
             //FleetMemberAPI memberCopy = constructionDatas.ship;
@@ -370,7 +387,7 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
             //memberCopy.getStats().getMaxCombatReadiness().modifyFlat();
             //memberCopy;
             constructionScript = new Nano_Thief_MasteryConstructionScript(
-                    memberCopy, ship, 1f, (float) constructionDatas.buildTime,cr,constructionDatas.cost);
+                    memberCopy, ship, 1f, (float) constructionDatas.buildTime,cr,constructionDatas.cost,stats);
             Global.getCombatEngine().addPlugin(constructionScript);
             adjustSwarmSizeForConstruction();
         }
