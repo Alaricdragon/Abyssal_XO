@@ -81,7 +81,7 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
         panel.addPara(" Reclaim cost: %s",0,Misc.getTextColor(), Misc.getHighlightColor(),""+sc);
         panel.addPara(" Reclaim gained when a fighter docks: %s",0,Misc.getTextColor(), Misc.getHighlightColor(),""+rpf);
     }
-    public static String getFighterID(PersonAPI commander,boolean isOffincive){
+    public static String getFighterID(PersonAPI commander,FactionAPI getFaction,boolean isOffincive){
         //fleetData.getCommander().getMemory();
         String memKey;
         if (isOffincive){
@@ -105,7 +105,7 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
         }
         if (customFighter.isBlank()){
             //get fighter here.
-            FactionAPI fac = commander.getFleet().getFaction();
+            FactionAPI fac = getFaction;//commander.getFleet().getFaction();
             ArrayList<String> possable = new ArrayList<>();
             if (fac.getId().equals("threat")){
                 possable.add("broadsword_wing");
@@ -132,7 +132,7 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
         //... what the fuck do you do!?!?!?
         //.... oh wait I remember now.
         //log.info("getting 'init stats'");
-        NanoThief_Skill_6.getStats(stats,Global.getSettings().getFighterWingSpec(getFighterID(stats.commander,true)));
+        NanoThief_Skill_6.getStats(stats,Global.getSettings().getFighterWingSpec(getFighterID(stats.commander,stats.faction,true)));
     }
 
     public void addSimWinFactorsToTooltip(SCData scData, TooltipMakerAPI tooltip,boolean offincive){
@@ -150,7 +150,7 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
     }
     public void displayBuildingFighter(SCData scData, TooltipMakerAPI tooltip,boolean offincive){
         tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor());
-        String fighter = getFighterID(scData.getCommander(),offincive);
+        String fighter = getFighterID(scData.getCommander(),scData.getFleet().getFaction(),offincive);
         tooltip.addPara("Simulacrum Fighter Wing stats:",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         Nano_Thief_Stats.displayStatsForFighterWithoutModification(tooltip,Global.getSettings().getFighterWingSpec(fighter),offincive);
     }

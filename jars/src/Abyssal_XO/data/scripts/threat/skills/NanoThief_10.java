@@ -14,6 +14,9 @@ import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.fleet.FleetMemberType;
+import com.fs.starfarer.api.impl.campaign.ids.ShipRoles;
+import com.fs.starfarer.api.loading.RoleEntryAPI;
+import com.fs.starfarer.api.loading.VariantSource;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.ui.UIComponentAPI;
@@ -29,7 +32,7 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
     public static boolean canFriget = true;
     public static boolean canDestroyer = false;
     public static boolean canCrusier = false;
-    public static boolean canCaptial = false;
+    public static boolean canCaptial = true;
 
 
     public static boolean[] allowedSizesForNPC = {canFriget,canDestroyer,canCrusier,canCaptial};
@@ -72,13 +75,13 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
         String line4_0 = ""+(int)rechargeTimePerDP;
         String line7_0 = ""+maxShips;
         String line8_0 = (int)(minCR*100)+"%";
-        tooltip.addPara("When reclaim is available and this ability is off cooldown, select a random ship from a list of possible ships",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        tooltip.addPara("When reclaim is available and this ability is ready, select a random ship from a list of possible ships",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         tooltip.addPara("A nanobot swarm will be deployed to construct this ship as a simulacrum ship in a empty area nearby",0,Misc.getHighlightColor(),Misc.getHighlightColor());
-        tooltip.addPara("This has a cooldown of %s per deployment point of the simulacrum ship",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line4_0);
+        tooltip.addPara("The nanobot swarm will take %s seconds to prepare per deployment point of the simulacrum ship",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line4_0);
         tooltip.addPara("The simulacrum ships this skill can build can be selected, up to a maximum of %s ships.",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line7_0);
         tooltip.addPara("ships with less then %s cr cannot use this ability",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line8_0);
         tooltip.addPara("available simulacrum ships in this fleet:",0,Misc.getHighlightColor(),Misc.getHighlightColor());
-        displayShipStats(tooltip,getShips(scData.getCommander()),true);
+        displayShipStats(tooltip,getShips(scData.getCommander(),scData.getFleet().getFaction()),true);
         tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         this.addNewAbilityText(scData, tooltip);
 
@@ -114,7 +117,7 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
         tooltip.addPara("   -starting cr is equal to the cr of the ship that spawned the simulacrum ship",0,Misc.getGrayColor(),Misc.getHighlightColor());
         //tooltip.addPara("   -cannot be used to create additional simulacrum ships until %s seconds pass per deployment point",0,Misc.getGrayColor(),Misc.getHighlightColor(),line3_0);
         tooltip.addPara("   -cost %s reclaim per deployment point, reduced by %s per none logistical d-mod (up to a reduction of %s),and increased by %s per s-mod (with no upper limit). not multiplicative",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line4_0,line4_1,line4_2,line4_3);
-        tooltip.addPara("   -takes %s seconds to build per deployment point. during this time, the ship %s, but cannot %s, %s or %s",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line5_0,line5_1,line5_2,line5_3,line5_4);
+        tooltip.addPara("   -takes %s seconds to build per deployment point. during this time, the ship %s, cannot %s, %s or %s",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line5_0,line5_1,line5_2,line5_3,line5_4);
         tooltip.addPara("   -peak performance time is reduced by %s",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line6_0);
         tooltip.addPara("   -reclaim gained from the ship is caped to %s of the reclaim it cost to build",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line7_0);
         tooltip.addPara("   -after combat the ships fall apart, being reduced to nothing",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor());
@@ -126,7 +129,7 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
         tooltip.addPara("gain the %s ability, that allows you to change your Simulacrum Ships",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line9a);
     }
     public void initStats(Nano_Thief_Stats stats) {
-        stats.masteryShips = getShips(stats.commander);
+        stats.masteryShips = getShips(stats.commander,stats.faction);
     }
     public static void displayShipStats(TooltipMakerAPI panel,NanoThief_MasteryShipStats[] ships,boolean adjustSize){
         //Nano_Thief_Stats spec = new Nano_Thief_Stats(ships);
@@ -171,7 +174,7 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
         panel.addPara(" BuildTime: %s",0,Misc.getTextColor(), Misc.getHighlightColor(),""+builtTime);
         panel.addPara(" RechargeTime: %s",0,Misc.getTextColor(), Misc.getHighlightColor(),""+rechargeTime);
     }
-    private static NanoThief_MasteryShipStats[] getShips(PersonAPI commander) {
+    private static NanoThief_MasteryShipStats[] getShips(PersonAPI commander,FactionAPI faction) {
         //fleetData.getCommander().getMemory();
         String memKey = Settings.NANO_THIEF_CUSTOM_MASTERY_MEMORY_KEY;
         //Global.getSettings().getVariant();
@@ -288,7 +291,7 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
                 FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(FleetMemberType.SHIP, Global.getSettings().getVariant(Settings.NANO_THIEF_MASTERY_BASESHIP));
                 return new NanoThief_MasteryShipStats[]{new NanoThief_MasteryShipStats(memberCopy, 10, "raider")};
             }
-            ArrayList<String> ships = getRandomShipsForNPC(commander.getFleet().getFaction());
+            ArrayList<String> ships = getRandomShipsForNPC(faction);
             //ArrayList<String> names;
             ArrayList<Integer> odds = new ArrayList<>();
             NanoThief_MasteryShipStats[] out = new NanoThief_MasteryShipStats[ships.size()];
@@ -303,24 +306,62 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
         }
     }
     private static ArrayList<String> getRandomShipsForNPC(FactionAPI fac){
+        //fac = Global.getSector().getFaction("tritachyon");
         ArrayList<String> possable = new ArrayList<>();
+        //public static final String HULLTYPE_CARRIER = "CARRIER", HULLTYPE_WARSHIP = "WARSHIP", HULLTYPE_PHASE = "PHASE", HULLTYPE_COMBATCIV = "COMBATCIV", HULLTYPE_TANKER = "TANKER", HULLTYPE_CARGO = "CARGO", HULLTYPE_PERSONNEL = "PERSONNEL", HULLTYPE_LINER = "LINER", HULLTYPE_TUG = "TUG", HULLTYPE_UTILITY = "UTILITY";
         String[] typesAllowed = {
-                "CARRIER",
-                "WARSHIP",
-                "PHASE"
+                ShipRoles.CARRIER_SMALL,
+                ShipRoles.CARRIER_MEDIUM,
+                ShipRoles.CARRIER_LARGE,
+
+                ShipRoles.COMBAT_SMALL_FOR_SMALL_FLEET,
+                ShipRoles.COMBAT_SMALL,
+                ShipRoles.COMBAT_MEDIUM,
+                ShipRoles.COMBAT_LARGE,
+                ShipRoles.COMBAT_CAPITAL,
+
+                ShipRoles.PHASE_SMALL,
+                ShipRoles.PHASE_MEDIUM,
+                ShipRoles.PHASE_LARGE,
+                ShipRoles.PHASE_CAPITAL
         };
-        for (String b : typesAllowed)
-            for (String a : fac.getVariantsForRole(b)) {
-                int size = 0;
-                switch (Global.getSettings().getVariant(a).getHullSize()) {
+        /*if (fac.getId().equals("threat")){
+            typesAllowed = new String[]{
+                    "CARRIER",
+                    "WARSHIP",
+                    "PHASE",
+                    "threatHive",
+                    "threatFabricator",
+                    "threatOverseer"
+            };
+        }*/
+        for (String b : typesAllowed) {
+            Settings.log.info("attempting to get allowed variants of type"+b+"...");
+
+            String temp5 = "possable ships inside of faction....";
+            for (String e : fac.getKnownShips()){
+                temp5+=", "+e;
+            }
+            Settings.log.info(temp5);
+
+            //Global.getSettings().getEntriesForRole();
+            for (RoleEntryAPI d : Global.getSettings().getEntriesForRole(fac.getId(),b)){//fac.getVariantsForRole(b)) {
+                String a = d.getVariantId();
+                int size = switch (Global.getSettings().getVariant(a).getHullSize()) {
                     case FIGHTER, FRIGATE -> size = 0;
                     case DESTROYER -> size = 1;
                     case CRUISER -> size = 2;
                     case CAPITAL_SHIP -> size = 3;
-                }
+                    default -> 0;
+                };
+                Settings.log.info("attempting to get a ship of var id: " + a);
                 if (!allowedSizesForNPC[size]) continue;
                 possable.add(a);
             }
+        }
+        String out2 = "got possable ships as:";
+        for (String a : possable) out2 += ", "+a;
+        Settings.log.info(out2);
 
         if (!possable.isEmpty()) {
             int number = (int) ((Math.random() * (maxNumberForNPC - 1)) + 1);
@@ -330,10 +371,16 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
                 gotten.add(a);
                 possable.remove(a);
             }
+
+            out2 = "got goten ships as:";
+            for (String a : possable) out2 += ", "+a;
+            Settings.log.info(out2);
+
             if (!gotten.isEmpty()) return gotten;
         }
         ArrayList<String> out = new ArrayList<>();
         out.add(Settings.NANO_THIEF_MASTERY_BASESHIP);
+        Settings.log.info("failed to get any ships. returning base ship.... (faction used was: )"+fac.getId());
         return out;
     }
 

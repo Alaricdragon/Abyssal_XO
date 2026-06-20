@@ -1,5 +1,6 @@
 package Abyssal_XO.data.scripts.threat.skills.activeSkills;
 
+import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.animation.NanoThief_A_ReclaimSpawn;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_RecreationScript;
@@ -20,7 +21,7 @@ public class NanoThief_Skill_8 extends NanoThief_SkillBase{
     }
 
     @Override
-    public void prepareData() {
+    public void onAddListener() {
         getAmountToHold = (int) Math.max(NanoThief_8.keeptReclaim,skills.getMaxUse()*NanoThief_8.keeptReclaimAbility);
     }
 
@@ -61,7 +62,7 @@ public class NanoThief_Skill_8 extends NanoThief_SkillBase{
         //log.info("attempting to create reclaim packages");
         if (skills.getTotalReclaim() < getAmountToHold+1000) return;
         ArrayList<ShipAPI> targets = new ArrayList<>();
-        int muti = Integer.MAX_VALUE;
+        int muti = (int) (skills.getTotalReclaim() / 1000) - 1;//cannot give more reclaim them I have.  //Integer.MAX_VALUE;
         int maxSpend = (int) ((skills.getTotalReclaim() - getAmountToHold)/1000);
         skills.stats.makeSureSavedShipsAreAlive();
         for (ShipAPI a : skills.stats.getAvailableShips()){

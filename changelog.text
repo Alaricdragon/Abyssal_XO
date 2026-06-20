@@ -14,12 +14,12 @@ V0.1.0:
         'Mass Manufacturing' ->     'Scrapwork Microforge' (regenerate ammo for limited ammo weapons at a reclaim cost)
         'Longevity' ->              'Thorough Salvaging' (bonus salvage and supplies for reclaim)
         'Advanced Installation' ->  'Scrapy Fortification' (95% damage resistance well taking considerable damage.)
-        (X)'Quality Checks' ->         '' (please note I am doing this one after skill 6.)
+        (X)'Quality Checks' ->         '' (I still have not desided on this, but I know this requires more diverse skills to really be interesting. its at the edge now.)
         'Prepared Deployment' ->    'Offencive Fighter Construction'
         'Centralized Logistics' ->  'Defensive Fighter Construction'
         'Desperate Measures' ->     'Centralized Logistics' (changed to increase the amount of reclaim available after a production process.)
         'Efficient Production' ->   'Desperate Measures'
-        (X)-new skill- ->              'Mastery' (in combat starship creation (like threat) (but worse in every way because we are not threat))
+        -new skill- ->              'Mastery' (in combat starship creation (like threat) (but worse in every way because we are not threat))
     graphics and effects:
         reclaim packages now get bigger depending on the amount of reclaim inside of them. at max level, reclaim packages are 30,40,50,60 in size. at min level, they are 22,24,26,28 in size. (from 40 size flat.)
     fixes:
@@ -29,7 +29,8 @@ V0.0.7:
         fixed 'threat' creating 2 - 6 times as many reclaim swarms as they should when they die
         fixed 'threat' not spawning with the 'Nano-Thief' XO.
         fixed multiple crashes related to none player forces having the 'Nano-Thief' XO.
-        (hopfuly) fixed all bugs related to missing fighter LCPs after selecting what fighter LCP to use.
+        (hopefully) fixed all bugs related to missing fighter LCPs after selecting what fighter LCP to use.
+        fixed a bug were simulacrum fighter wings were not effected by fighter effecting skills.
 V0.0.6:
     balance:
         changed the 'Centralized Logistics' skill to increase speed by 10% per 1000 -> 5% per 1000

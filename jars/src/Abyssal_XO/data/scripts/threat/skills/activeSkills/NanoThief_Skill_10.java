@@ -77,7 +77,7 @@ public class NanoThief_Skill_10 extends NanoThief_SkillBase{
                         "Mastery Status", "Ready to construct "+nextShip.name+".", false);
             }else{
                 Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_10", "graphics/icons/hullsys/temporal_shell.png",
-                        "Mastery Status", "Swarm Prepared. Require at least "+(int)nextShip.cost+" reclaim to build "+nextShip.name+".", true);
+                        "Mastery Status", "Require "+(int)nextShip.cost+" reclaim to build "+nextShip.name+".", true);
             }
         }else{
             //50 - 40 = 10. 10 / 50 = 0.2 = 20%

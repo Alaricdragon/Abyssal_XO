@@ -15,6 +15,7 @@ import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.*;
 import Abyssal_XO.data.scripts.threat_old.subsystems.DamageOverTime_System;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.campaign.FleetDataAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.combat.*;
@@ -128,6 +129,8 @@ public class Nano_Thief_Stats {
     }*/
     public PersonAPI commander;
     public FleetDataAPI fleet;
+    public int owner;
+    public FactionAPI faction;
     public Nano_Thief_Stats(NanoThief_MasteryShipStats[] ships){
         getBastStatsForMastery(ships,this);
     }
@@ -143,12 +146,14 @@ public class Nano_Thief_Stats {
 
     }
 
-    public Nano_Thief_Stats(PersonAPI commander, FleetDataAPI fleet, String commanderID, boolean isAlly, SCOfficer officer){
+    public Nano_Thief_Stats(PersonAPI commander, FleetDataAPI fleet, String commanderID, boolean isAlly, SCOfficer officer, int owner,FactionAPI faction){
         this.commander = commander;
         this.fleet = fleet;
         this.commanderID = commanderID;
         this.officer = officer;
         this.isAlly = isAlly;
+        this.owner = owner;
+        this.faction = faction;
         log.info("creating commander data for a new commander with "+officer.getActiveSkillPlugins().size()+" skills"+" and a fighter to build of "+this.OF_fighterToBuild);
         for (SCBaseSkillPlugin a : officer.getActiveSkillPlugins()){
             Nano_Thief_Skill_Base b = (Nano_Thief_Skill_Base) a;
@@ -185,6 +190,7 @@ public class Nano_Thief_Stats {
 
     public boolean canAcceptReclaim(ShipAPI ship){
         if (ship.getParentStation() != null) return false;
+        if (!isValidReclaimTarget(ship)) return false;
         if (ship.getVariant() != null){
             for (String a : Settings.NanoThief_Banned){
                 if (ship.getVariant().getSMods().contains(a)) return false;
@@ -512,7 +518,12 @@ public class Nano_Thief_Stats {
         }
     }
     public int getDeployedPonits(){
-        Global.getCombatEngine().getFleetManager(0).getDeployedCopyDFM().get(0);
+        /*try {
+            Global.getCombatEngine().getFleetManager(owner).getDeployedCopyDFM().get(0);
+        }catch (Exception e){
+            Settings.log.warn("failed to get deployment ponits. reason unknown.");
+            return 0;
+        }*/
         makeSureSavedShipsAreAlive();
         int output = 0;
         for (ShipAPI a : this.availableShips){

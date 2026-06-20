@@ -533,7 +533,7 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 			// return to Fabricator Units, ignore other ships
 			//NOTE: here is were I can filter what possible targets I want.
 			if (fabricator.getOwner() != owner)break;//{log.info("	  fabracator owner mismatch"); break;}
-			if (!stats.isValidReclaimTarget(fabricator))break;//{log.info("	  fabracator invalid target"); break;}
+			if (!stats.canAcceptReclaim(fabricator))break;//{log.info("	  fabracator invalid target"); break;}
 			if (!fabricator.equals(fabricator))break;//{log.info("	fabracator not fabracator"); break;}
 			float fabricatorRadius = fabricator.getCollisionRadius() * 0.5f;
 			FlockingData data = new FlockingData();

@@ -25,6 +25,9 @@ public class NanoThief_SkillBase {
     public void prepareData(){
 
     }
+    public void onAddListener(){
+        //usefull for central fabracator.
+    }
     public void advance(float amount){
     }
     public void displayStats(){}

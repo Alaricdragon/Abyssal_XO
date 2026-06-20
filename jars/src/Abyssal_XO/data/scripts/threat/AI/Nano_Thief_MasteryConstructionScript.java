@@ -59,6 +59,7 @@ public class Nano_Thief_MasteryConstructionScript extends ThreatShipConstruction
             }
         }*/
         ship.setName(toConstruct.getShipName() + "#"+(int)(Math.random() * 10000));
+        //ship;
         fleetManager.setSuppressDeploymentMessages(wasSuppressed);
         collisionClass = ship.getCollisionClass();
 

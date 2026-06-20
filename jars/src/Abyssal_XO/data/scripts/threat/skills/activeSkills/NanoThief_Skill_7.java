@@ -1,6 +1,7 @@
 package Abyssal_XO.data.scripts.threat.skills.activeSkills;
 
 import Abyssal_XO.data.scripts.Settings;
+import Abyssal_XO.data.scripts.hullmods.SICSkillControllerBackup;
 import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_SawrmSpawner;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_6;
@@ -188,6 +189,10 @@ public class NanoThief_Skill_7 extends NanoThief_SkillBase{
         ShipVariantAPI OVERWRITER = member.getVariant();//Global.getSettings().getVariant("Abyssal_XO_ReclaimCore_Blank").clone();
         OVERWRITER.setSource(VariantSource.REFIT);
         OVERWRITER.setWingId(0,skills.stats.DF_fighterToBuild);
+        if (primary.getFleetMember() != null && primary.getFleetMember().getFleetData() != null && primary.getFleetMember().getFleetData().getFleet() != null) {
+            SICSkillControllerBackup.fleet_global = primary.getFleetMember().getFleetData().getFleet();
+            OVERWRITER.addMod(Settings.SIC_CONTROL_HULLMOD);
+        }
         member.setOwner(primary.getOwner());
         member.setVariant(OVERWRITER,false,true);
 

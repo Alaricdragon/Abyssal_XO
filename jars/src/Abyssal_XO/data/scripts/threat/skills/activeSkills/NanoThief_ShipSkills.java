@@ -85,16 +85,17 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
     }
     public void addListener(NanoThief_SkillBase listiner, ShipAPI ship){
         if (listiner == null || !listiner.shouldUse(ship)){
-            log.info("cannot add this listiner to this ship..."+listiner.getClass().getCanonicalName());
+            //log.info("cannot add this listiner to this ship..."+listiner.getClass().getCanonicalName());
             return;
         }
         if (listiner.alwaysAdvance()){
-            log.info("adding skill to 'always' of class: "+listiner.getClass().getCanonicalName());
+            //log.info("adding skill to 'always' of class: "+listiner.getClass().getCanonicalName());
             alwaysSkills.add(listiner);
         }else{
-            log.info("adding skill to 'only when reclaim'"+listiner.getClass().getCanonicalName());
+            //log.info("adding skill to 'only when reclaim'"+listiner.getClass().getCanonicalName());
             skills.add(listiner);
         }
+        listiner.onAddListener();
     }
     public void addListeners(NanoThief_SkillBase[] listiner, ShipAPI ship){
         log.info("attempting to add a list of listiners of size: "+listiner.length);

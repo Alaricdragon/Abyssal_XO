@@ -23,7 +23,7 @@ public class NanoThief_7 extends NanoThief_6 {
     //public static final double[] speedPerModule = {0.1,0.2,0.3,0.4};
     @Override
     public void initStats(Nano_Thief_Stats stats) {
-        NanoThief_Skill_7.getStats(stats, Global.getSettings().getFighterWingSpec(getFighterID(stats.commander,false)));
+        NanoThief_Skill_7.getStats(stats, Global.getSettings().getFighterWingSpec(getFighterID(stats.commander,stats.faction,false)));
     }
 
     @Override

@@ -369,7 +369,7 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
             memberCopy.setOwner(ship.getOwner());
             memberCopy.setVariant(OVERWRITER,false,true);
             memberCopy.getStats().getMinCrewMod().modifyMult("Abyssal_XO",0);
-
+            Settings.log.info("HERE: GETTING DATA: "+memberCopy.isMothballed()); //get if ship is mothballed?
             //memberCopy.getFleetData().getFleet();
             String out = "";
             //out += "got fleet data name as: "+memberCopy.getFleetData().getFleet().getName()+"";

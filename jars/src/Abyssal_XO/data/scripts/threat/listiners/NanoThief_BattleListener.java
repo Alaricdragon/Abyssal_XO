@@ -8,6 +8,7 @@ import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.combat.BaseEveryFrameCombatPlugin;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
+import com.fs.starfarer.api.combat.CombatFleetManagerAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.impl.combat.threat.ThreatCombatStrategyAI;
 import com.fs.starfarer.api.input.InputEventAPI;
@@ -41,9 +42,21 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
         //Nano_Thief_NoneCombatAI.init();
         CombatEngineAPI engine = Global.getCombatEngine();
         log.info("(NanoThief)attempting to get commanders for friendly fleet...");
-        friendlyCaptions = getCommanders(engine.getFleetManager(FleetSide.PLAYER).getAllFleetCommanders(),true);
+        /*
+        //this was an attempt to handle more 'forces'. I think there is an 'is player' somewhere that I cant see.... arg....
+        friendlyCaptions = new HashMap<>();
+        hostileCaptions = new HashMap<>();
+        for (int a = 0; a < 500; a++){
+            CombatFleetManagerAPI b = engine.getFleetManager(a);
+            if (b == null) continue;
+            HashMap<String, Nano_Thief_Stats> temp = new HashMap<>();
+            temp = getCommanders(b.getAllFleetCommanders(),false,a);
+            b.
+        }*/
+
+        friendlyCaptions = getCommanders(engine.getFleetManager(FleetSide.PLAYER).getAllFleetCommanders(),true,engine.getFleetManager(FleetSide.PLAYER).getOwner());
         log.info("(NanoThief)attempting to get commanders for hostile fleet...");
-        hostileCaptions = getCommanders(engine.getFleetManager(FleetSide.ENEMY).getAllFleetCommanders(),false);
+        hostileCaptions = getCommanders(engine.getFleetManager(FleetSide.ENEMY).getAllFleetCommanders(),false,engine.getFleetManager(FleetSide.ENEMY).getOwner());
         //SCUtils.getFleetData()
         //startup data....
     }
@@ -95,9 +108,10 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
         }
         return 0;
     }
-    private HashMap<String,Nano_Thief_Stats> getCommanders(List<PersonAPI> commanders, boolean isPlayerAllied){
+    private HashMap<String,Nano_Thief_Stats> getCommanders(List<PersonAPI> commanders, boolean isPlayerAllied,int owner){
         HashMap<String,Nano_Thief_Stats> output = new HashMap<>();
         CombatEngineAPI engine = Global.getCombatEngine();
+        engine.getFleetManager(FleetSide.PLAYER).getOwner();
         for (PersonAPI a : commanders){
             if (a == null) continue;
             String customFighter = null;
@@ -116,7 +130,7 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
                 log.info("      checking SiC officer of attributeID: "+b.getAptitudeId());
                 if (!b.getAptitudeId().equals("Abyssal_NanoThief")) continue;
                 log.info("      added Sic officer from fleet "+a.getId()+" to list of commanders....");
-                output.put(a.getId(),new Nano_Thief_Stats(a,fleet.getFleetData(),a.getId(),isPlayerAllied,b));//a.getFleet() is required.
+                output.put(a.getId(),new Nano_Thief_Stats(a,fleet.getFleetData(),a.getId(),isPlayerAllied,b,owner,fleet.getFaction()));//a.getFleet() is required.
                 break;
             }
             log.info("  finished check for commander");

@@ -57,6 +57,14 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
             return;
         }
         if (ship.hasListenerOfClass(NanoThief_ShipSkillsAdder.class)) return;
+        try{
+            if (ship.getHullSpec().getHullId().equals("Abyssal_XO_ReclaimCore")){
+                //Settings.log.info("running logger for fighter calculations =)");
+                return;
+            }
+        }catch (Exception e){
+
+        }
             //List<NanoThief_ShipSkillsAdder> a = ship.getListenerManager().getListeners(NanoThief_ShipSkillsAdder.class);
             //listiner = a.get(0);
         ship.addListener(new NanoThief_ShipSkillsAdder(ship,data));
