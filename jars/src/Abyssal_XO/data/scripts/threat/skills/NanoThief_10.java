@@ -5,23 +5,17 @@ import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_SkillBase;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_10;
-import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_6;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CharacterDataAPI;
 import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
-import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.fleet.FleetMemberType;
 import com.fs.starfarer.api.impl.campaign.ids.ShipRoles;
-import com.fs.starfarer.api.loading.RoleEntryAPI;
-import com.fs.starfarer.api.loading.VariantSource;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
-import com.fs.starfarer.api.ui.UIComponentAPI;
 import com.fs.starfarer.api.util.Misc;
-import com.fs.starfarer.api.util.Pair;
 import second_in_command.SCData;
 
 import java.util.ArrayList;
@@ -29,13 +23,13 @@ import java.util.ArrayList;
 public class NanoThief_10 extends Nano_Thief_Skill_Base {
 
     public static int maxShips = 4;
-    public static boolean canFriget = true;
+    public static boolean canFrigate = true;
     public static boolean canDestroyer = false;
-    public static boolean canCrusier = false;
-    public static boolean canCaptial = true;
+    public static boolean canCruiser = false;
+    public static boolean canCapital = false;
+    public static boolean allowNPCFabricators = false;
 
-
-    public static boolean[] allowedSizesForNPC = {canFriget,canDestroyer,canCrusier,canCaptial};
+    public static boolean[] allowedSizesForNPC = {canFrigate,canDestroyer, canCruiser, canCapital};
     //public static boolean[] allowedSizesForNPC = {true,false,false,false};
     public static int maxNumberForNPC = maxShips;
     private static int maxOddsNPC = 20;
@@ -335,18 +329,23 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
                     "threatOverseer"
             };
         }*/
-        for (String b : typesAllowed) {
-            Settings.log.info("attempting to get allowed variants of type"+b+"...");
 
-            String temp5 = "possable ships inside of faction....";
-            for (String e : fac.getKnownShips()){
-                temp5+=", "+e;
-            }
-            Settings.log.info(temp5);
+        String temp5 = "possable ships inside of faction....";
+        for (String e : fac.getKnownShips()){
+            temp5+=", "+e;
+        }
+        Settings.log.info(temp5);
+
+        for (String b : typesAllowed) {
+
+            Settings.log.info("attempting to get allowed variants of type"+b+". number of entry's is: "+Global.getSettings().getEntriesForRole(fac.getId(),b).size());
+            Settings.log.info("attempting to get allowed variants of type"+b+". (from secondary function) numer of entry's is: "+fac.getVariantsForRole(b).size());
+            Settings.log.info("default entry's for role of type"+b+". number of entry's is: "+Global.getSettings().getDefaultEntriesForRole(b).size());
+
 
             //Global.getSettings().getEntriesForRole();
-            for (RoleEntryAPI d : Global.getSettings().getEntriesForRole(fac.getId(),b)){//fac.getVariantsForRole(b)) {
-                String a = d.getVariantId();
+            for (String a : fac.getVariantsForRole(b)){//fac.getVariantsForRole(b)) {
+                //String a = d.getVariantId();
                 int size = switch (Global.getSettings().getVariant(a).getHullSize()) {
                     case FIGHTER, FRIGATE -> size = 0;
                     case DESTROYER -> size = 1;

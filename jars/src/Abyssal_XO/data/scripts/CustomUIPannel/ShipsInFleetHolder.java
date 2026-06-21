@@ -12,7 +12,6 @@ import com.fs.starfarer.api.util.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Abyssal_XO.data.scripts.Settings.*;
 import static Abyssal_XO.data.scripts.threat.skills.NanoThief_10.*;
 
 public class ShipsInFleetHolder implements CustomUIPanelPlugin {
@@ -75,10 +74,10 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
     }
     private boolean isApplicable(FleetMemberAPI ship){
         return  switch (ship.getHullSpec().getHullSize()){
-            case DEFAULT, FIGHTER, FRIGATE -> canFriget;
+            case DEFAULT, FIGHTER, FRIGATE -> canFrigate;
             case DESTROYER -> canDestroyer;
-            case CRUISER -> canCrusier;
-            case CAPITAL_SHIP -> canCaptial;
+            case CRUISER -> canCruiser;
+            case CAPITAL_SHIP -> canCapital;
         };
     }
     /*private UIComponentAPI addSingleShip_asCompoment(FleetMemberAPI ship, int idInFleet){

@@ -1,0 +1,18 @@
+fieldID,fieldName,fieldType,defaultValue,secondaryValue,fieldDescription,minValue,maxValue,tab
+NA_Mastery_Header,,Header,Mastery,,,,,NF_Mastery
+NA_Mastery_maxShips,Max number of ships one can have selected for mastery,Int,4,,,1,100,NF_Mastery
+NA_Mastery_canFrigate,Allow frigates,Boolean,true,,,,,NF_Mastery
+NA_Mastery_canDestroyer,Allow destroyers,Boolean,false,,,,,NF_Mastery
+NA_Mastery_canCruiser,Allow cruisers,Boolean,false,,,,,NF_Mastery
+NA_Mastery_canCapital,Allow capitals,Boolean,false,,,,,NF_Mastery
+NA_Mastery_canFabricator,Allow NPCs to use fabricators,Boolean,false,,,,,NF_Mastery
+NA_Mastery_oddsVariance,How mush the odds to spawn each ship differs for npcs,Int,20,,,1,100,NF_Mastery
+NA_Mastery_sModCost,Cost incress per smod,Double,0.25,,,0,10,NF_Mastery
+NA_Mastery_dModDiscount,Cost decress per dmod,Double,0.1,,,0,10,NF_Mastery
+NA_Mastery_dModmin,Min cost from dmod decrease,Double,0.5,,,0,10,NF_Mastery
+NA_Mastery_costPerDP,Reclaim cost per deployment point,Int,200,,,1,1000,NF_Mastery
+NA_Mastery_rechargeTimePerDP,Recharge time per deployment ponit,Double,10,,,0.1,100,NF_Mastery
+NA_Mastery_buildTimePerDP,Build time per deployment point,Double,2.5,,,0.1,100,NF_Mastery
+NA_Mastery_minCR,Min cr to build simulacrum ship,Double,0.4,,,0,1,NF_Mastery
+NA_Mastery_peakCRDuration,peak performance multiplyer,Double,0.6,,,0,1,NF_Mastery
+NA_Mastery_maxReclaimPercent,recoved reclaim multiplyer,Double,0.75,,,0,1,NF_Mastery
