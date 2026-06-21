@@ -32,22 +32,22 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
     public static boolean[] allowedSizesForNPC = {canFrigate,canDestroyer, canCruiser, canCapital};
     //public static boolean[] allowedSizesForNPC = {true,false,false,false};
     public static int maxNumberForNPC = maxShips;
-    private static int maxOddsNPC = 20;
-    private static int minOddsNPC = 1;
+    public static int maxOddsNPC = 20;
+    public static int minOddsNPC = 1;
 
-    public static final double sModCost = 0.25;//per s-mod, add a
-    public static final double dModDiscount = 0.1;
-    public static final double dModmin = 0.5;
-    public static final double costPerDP = 200;//200 for 1 dp cost, 2000 for 10 dp. (0.5 capitals for 1 dp. 0.5 frigets for 1 dp.)
+    public static double sModCost = 0.25;//per s-mod, add a
+    public static double dModDiscount = 0.1;
+    public static double dModmin = 0.5;
+    public static double costPerDP = 200;//200 for 1 dp cost, 2000 for 10 dp. (0.5 capitals for 1 dp. 0.5 frigets for 1 dp.)
 
-    public static final double rechargeTimePerDP = 10;//10 seconds per dp cost of ship.
-    public static final double buildTimePerDP = 2.5;//2.5 seconds per dp cost of ship.
+    public static double rechargeTimePerDP = 10;//10 seconds per dp cost of ship.
+    public static double buildTimePerDP = 2.5;//2.5 seconds per dp cost of ship.
 
-    public static final double minCR = 0.4;//for spawning ships
-    public static final double peakCRDuration = 0.6;
+    public static double minCR = 0.4;//for spawning ships
+    public static double peakCRDuration = 0.6;
 
-    //public static final double forceRechargePerDP = rechargeTimePerDP;//this is for recharging the ship form a new simulacrum fighter.
-    public static final double maxReclaimPercent = 0.75;//max amount of reclaim a simulacrum ship is worth when destroyed.
+    //public static double forceRechargePerDP = rechargeTimePerDP;//this is for recharging the ship form a new simulacrum fighter.
+    public static double maxReclaimPercent = 0.75;//max amount of reclaim a simulacrum ship is worth when destroyed.
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
         /*
@@ -338,9 +338,9 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
 
         for (String b : typesAllowed) {
 
-            Settings.log.info("attempting to get allowed variants of type"+b+". number of entry's is: "+Global.getSettings().getEntriesForRole(fac.getId(),b).size());
-            Settings.log.info("attempting to get allowed variants of type"+b+". (from secondary function) numer of entry's is: "+fac.getVariantsForRole(b).size());
-            Settings.log.info("default entry's for role of type"+b+". number of entry's is: "+Global.getSettings().getDefaultEntriesForRole(b).size());
+            //Settings.log.info("attempting to get allowed variants of type"+b+". number of entry's is: "+Global.getSettings().getEntriesForRole(fac.getId(),b).size());
+            //Settings.log.info("attempting to get allowed variants of type"+b+". (from secondary function) numer of entry's is: "+fac.getVariantsForRole(b).size());
+            //Settings.log.info("default entry's for role of type"+b+". number of entry's is: "+Global.getSettings().getDefaultEntriesForRole(b).size());
 
 
             //Global.getSettings().getEntriesForRole();
@@ -353,33 +353,34 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
                     case CAPITAL_SHIP -> size = 3;
                     default -> 0;
                 };
-                Settings.log.info("attempting to get a ship of var id: " + a);
+                //Settings.log.info("attempting to get a ship of var id: " + a);
                 if (!allowedSizesForNPC[size]) continue;
                 possable.add(a);
             }
         }
-        String out2 = "got possable ships as:";
-        for (String a : possable) out2 += ", "+a;
-        Settings.log.info(out2);
+        //String out2 = "got possable ships as:";
+        //for (String a : possable) out2 += ", "+a;
+        //Settings.log.info(out2);
 
         if (!possable.isEmpty()) {
             int number = (int) ((Math.random() * (maxNumberForNPC - 1)) + 1);
             ArrayList<String> gotten = new ArrayList<>();
             while (!possable.isEmpty() && gotten.size() < number) {
                 String a = possable.get((int) (Math.random() * possable.size() - 1));
-                gotten.add(a);
+                Settings.log.info("can use fabs, vs is fab: "+allowNPCFabricators+", "+Global.getSettings().getVariant(a).getHullSpec().getHullId().equals("fabricator_unit"));
+                if (allowNPCFabricators || !Global.getSettings().getVariant(a).getHullSpec().getHullId().equals("fabricator_unit"))gotten.add(a);
                 possable.remove(a);
             }
 
-            out2 = "got goten ships as:";
-            for (String a : possable) out2 += ", "+a;
-            Settings.log.info(out2);
+            //out2 = "got goten ships as:";
+            //for (String a : possable) out2 += ", "+a;
+            //Settings.log.info(out2);
 
             if (!gotten.isEmpty()) return gotten;
         }
         ArrayList<String> out = new ArrayList<>();
         out.add(Settings.NANO_THIEF_MASTERY_BASESHIP);
-        Settings.log.info("failed to get any ships. returning base ship.... (faction used was: )"+fac.getId());
+        //Settings.log.info("failed to get any ships. returning base ship.... (faction used was: )"+fac.getId());
         return out;
     }
 

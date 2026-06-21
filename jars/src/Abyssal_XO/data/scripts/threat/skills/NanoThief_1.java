@@ -33,7 +33,7 @@ public class NanoThief_1 extends Nano_Thief_Skill_Base {
     private static final double speed = 0.0020d;
 
     @Getter
-    private static final int hullPerReclaim = 50;
+    private static final int hullPerReclaim = 12;//100 = 10? 1000 = 100. 10000 = 1000.
 
     //@Getter
     //private static final double hullRange = hullMax-hullMin;//0.01d

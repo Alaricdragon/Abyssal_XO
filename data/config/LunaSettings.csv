@@ -6,7 +6,7 @@ NA_Mastery_canDestroyer,Allow destroyers,Boolean,false,,,,,NF_Mastery
 NA_Mastery_canCruiser,Allow cruisers,Boolean,false,,,,,NF_Mastery
 NA_Mastery_canCapital,Allow capitals,Boolean,false,,,,,NF_Mastery
 NA_Mastery_canFabricator,Allow NPCs to use fabricators,Boolean,false,,,,,NF_Mastery
-NA_Mastery_oddsVariance,How mush the odds to spawn each ship differs for npcs,Int,20,,,1,100,NF_Mastery
+NA_Mastery_oddsVariance,How mush the weight to spawn each ship differs for npc fleets,Int,19,,,1,100,NF_Mastery
 NA_Mastery_sModCost,Cost incress per smod,Double,0.25,,,0,10,NF_Mastery
 NA_Mastery_dModDiscount,Cost decress per dmod,Double,0.1,,,0,10,NF_Mastery
 NA_Mastery_dModmin,Min cost from dmod decrease,Double,0.5,,,0,10,NF_Mastery
