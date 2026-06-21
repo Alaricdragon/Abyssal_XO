@@ -1,59 +1,67 @@
 package Abyssal_XO.data.scripts.threat.skills;
 
+import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
-import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
-import com.fs.starfarer.api.combat.MutableShipStatsAPI;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_SkillBase;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_6;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_7;
+import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.CharacterDataAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
-import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import second_in_command.SCData;
 
-import java.util.List;
-import java.util.Random;
-
-public class NanoThief_7 extends Nano_Thief_SKill_Base{
-    private static final int storgeChange = 1;
-    private static final int storgeIncreasePerReclaim = 5000;
-
+public class NanoThief_7 extends NanoThief_6 {
+    public static final String[] bannedTags = {"independent_of_carrier"};
+    public static final int[] numPerSize = {1,1,2,3};
+    //public static final float[] speedPerSize = {0.35f,0.5f,0.75f,1f};
+    public static final float[] speedPerSize = {0.5f,0.75f,1f,1.25f};
+    //public static final double[] numbPerModule = {0,0.5,0.75,1};
+    //public static final double[] speedPerModule = {0.1,0.2,0.3,0.4};
     @Override
-    public String getAffectsString() {
-        return "all ships in fleet";
-    }
-
-    @Override
-    public float storedSwarmChange(float stored, ShipAPI target, Nano_Thief_Stats stats) {
-        int pow = 0;
-        if (target.hasListenerOfClass(NanoThief_ShipStats.class)) {
-            NanoThief_ShipStats listiner;
-            List<NanoThief_ShipStats> a = target.getListenerManager().getListeners(NanoThief_ShipStats.class);
-            listiner = a.get(0);
-            pow = (int) (listiner.getReclaim() / storgeIncreasePerReclaim);
-        }
-        return stored+storgeChange+pow;
+    public void initStats(Nano_Thief_Stats stats) {
+        NanoThief_Skill_7.getStats(stats, Global.getSettings().getFighterWingSpec(getFighterID(stats.commander,stats.faction,false)));
     }
 
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
-        String stra = ""+storgeChange;
-        String strb = ""+storgeIncreasePerReclaim;
-        String strc = "1";
-        tooltip.addPara("Increase the max number of Simulacrum Fighter Wings that can be stored on the ship by %s",0, Misc.getHighlightColor(), Misc.getHighlightColor(),stra);
-        tooltip.addPara("For every %s reclaim in ship, increase the max number of Simulacrum Fighter Wing that can be stored by an additional %s",0, Misc.getHighlightColor(), Misc.getHighlightColor(),strb,strc);
-        tooltip.addSpacer(10f);
-        tooltip.addPara("'stored' Simulacrum Fighter Wings can be produced even when a given ship has no available control. The stored Simulacrum Fighter Wings can be deployed very quickly when the size of your swarm is less then the number of Simulacrum Fighter Wing this ship can maintain.",0,Misc.getHighlightColor(),Misc.getHighlightColor());
-        //tooltip.addPara("gain %s quality, at random", 0f,Misc.getHighlightColor(), Misc.getHighlightColor(), stringThing);
-        //tooltip.addPara("Increase reclaim cost by %s",0f,Misc.getNegativeHighlightColor(), Misc.getNegativeHighlightColor(),costReduction+"%");
+        String line3a = (int)(speedPerSize[0]*100)+"%";
+        String line3b = (int)(speedPerSize[1]*100)+"%";
+        String line3c = (int)(speedPerSize[2]*100)+"%";
+        String line3d = (int)(speedPerSize[3]*100)+"%";
+        tooltip.addPara("Construct Defensive Simulacrum Fighter Wings to assist your fleet in combat.",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        tooltip.addPara("Each ship in your fleet can support up to %s/%s/%s/%s Simulacrum Fighter Wings depending on hullsize",0,Misc.getHighlightColor(),Misc.getHighlightColor(),numPerSize[0]+"",numPerSize[1]+"",numPerSize[2]+"",numPerSize[3]+"");
+        tooltip.addPara("Each ship in your fleet builds Defensive Simulacrum Fighter Wings at %s/%s/%s/%s speed depending on hullsize",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line3a,line3b,line3c,line3d);
+
+        tooltip.addPara("Defensive Simulacrum Fighter Wings build this cannot stray from the ship that created them",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        displayBuildingFighter(scData, tooltip,false);
+        tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        this.addNewAbilityText(scData, tooltip);
 
         tooltip.addSpacer(10f);
 
-        //LabelAPI label = tooltip.addPara("\"Not all martial is created equal. Some are more useful for advanced, complicated components. Some are better for other things. All we have to do is give up on making everything the same, Because we will never get the same piece of salvage twice.\"", Misc.getTextColor(), 0f);
-        LabelAPI label = tooltip.addPara("\"By creating additional storge areas for our products, we can manufacture in larger amounts, even when logistics is not up to the task of distribution\"", Misc.getTextColor(), 0f);
+//        LabelAPI label = tooltip.addPara("\"fighter craft require a dedicated ship to launch from. This is the teaching of the Domain, the Hegemony, Tri-Tech, and many others. But if you just give up on little things like 'reliability', 'armor', and 'Dedicated Nanoforges', you can launch fighter craft of basically anything, from small rocks to capital class ships. They would tell you its impossible. Deadly, even.\nI tell them to watch me.\"", Misc.getTextColor(), 0f);
+        LabelAPI label = tooltip.addPara("\"In theory, its a terrible idea. The fighters have no real support, no way to replenish, no sensers outside of there motherships range. No dedicated nanoforges ether, so we cant replenish wings with any form of ease. But so long as we are fed constant supplies of materials, we can support this. It could work.\"", Misc.getTextColor(), 0f);
         tooltip.addPara(" - unknown", Misc.getTextColor(), 0f);
 
+        tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        this.addSimWinFactorsToTooltip(scData, tooltip,false);
         label.italicize();
-
     }
 
+    @Override
+    public NanoThief_SkillBase createListiner(NanoThief_ShipSkills skills, ShipAPI ship) {
+        return new NanoThief_Skill_7(skills, ship);
+    }
+    @Override
+    public void onActivation(SCData data) {
+        if (data.getCommander().equals(Global.getSector().getPlayerPerson())){
+            CharacterDataAPI character = Global.getSector().getCharacterData();
+            if (character.getAbilities().contains(Settings.NANO_THIEF_ABILITY)) return;
+            character.addAbility(Settings.NANO_THIEF_ABILITY);
+        }
+    }
 }

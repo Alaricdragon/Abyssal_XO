@@ -2,11 +2,17 @@ package Abyssal_XO.data.scripts.threat.listiners;
 
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.combat.*;
+import com.fs.starfarer.api.combat.BaseEveryFrameCombatPlugin;
+import com.fs.starfarer.api.combat.CombatEngineAPI;
+import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.impl.combat.RiftLanceEffect;
-import com.fs.starfarer.api.impl.combat.threat.*;
+import com.fs.starfarer.api.impl.combat.threat.RoilingSwarmEffect;
+import com.fs.starfarer.api.impl.combat.threat.VoltaicDischargeOnFireEffect;
 import com.fs.starfarer.api.input.InputEventAPI;
-import com.fs.starfarer.api.util.*;
+import com.fs.starfarer.api.util.IntervalUtil;
+import com.fs.starfarer.api.util.Misc;
+import com.fs.starfarer.api.util.Pair;
+import com.fs.starfarer.api.util.WeightedRandomPicker;
 import org.lwjgl.util.vector.Vector2f;
 
 import java.awt.*;
@@ -80,10 +86,6 @@ public class NanoThief_RecreationScript extends BaseEveryFrameCombatPlugin {
 		for (ShipAPI curr : pieces) {
 			curr.addTag(TAG_HASRECLAMED);
 		}
-	}
-
-	public List<ShipAPI> getPieces() {
-		return pieces;
 	}
 
 	@Override
@@ -245,7 +247,7 @@ public class NanoThief_RecreationScript extends BaseEveryFrameCombatPlugin {
 
 			for (int i = 0; i < numSwarms; i++) {
 				ShipAPI curr = launchSwarm();
-				swarms.add(curr);
+				if (curr != null) swarms.add(curr);
 			}
 			spawnedSwarms = true;
 		}

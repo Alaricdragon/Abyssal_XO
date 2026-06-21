@@ -1,76 +1,51 @@
 package Abyssal_XO.data.scripts.threat.skills;
 
-import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
-import com.fs.starfarer.api.combat.MutableShipStatsAPI;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_SkillBase;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_2;
 import com.fs.starfarer.api.combat.ShipAPI;
-import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import lombok.Getter;
 import second_in_command.SCData;
 
-public class NanoThief_2 extends Nano_Thief_SKill_Base{
+public class NanoThief_2 extends Nano_Thief_Skill_Base {
     private static final String key = "AbyssalXO_Nano_Thief_Skill_2";
-    private static final float hullMod = 0.95f;
-    private static final float armorMod = 0.95f;
-    private static final float shieldMod = 0.05f;//note: the shield mod is bugged at this level. so ya.
-    private static final float damageMod = 0.95f;
 
-    private static final float costMod = 0.8f;
-    private static final float buildTimeMod = 0.7f;
-    private static final float controlMod = 0.9f;
+    public static final float timeSmall = 15;
+    public static final float timeMid = 30;
+    public static final float timeLarge = 45;
 
-    @Override
-    public float costChange(float cost, ShipAPI target, Nano_Thief_Stats stats) {
-        return cost * costMod;
-    }
-
-    @Override
-    public float manufactureTimeChange(float time, ShipAPI target, Nano_Thief_Stats stats) {
-        return time * buildTimeMod;
-    }
-
-    @Override
-    public float reclaimPerControlChange(float reclaim, ShipAPI target, Nano_Thief_Stats stats) {
-        return reclaim * controlMod;
-    }
-
+    public static final float costSmall = 10;
+    public static final float costMid = 20;
+    public static final float costLarge = 30;
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
-        String costmod = 100-((int)((costMod)*100))+"%";
-        String buildmod = 100-((int)((buildTimeMod)*100))+"%";
-        String controlmod = 100-((int)((controlMod)*100))+"%";
+        String tSmall = ""+(int)timeSmall;
+        String tMid = ""+(int)timeMid;
+        String tLarge = ""+(int)timeLarge;
 
-        String hullmod = 100-((int)((hullMod)*100))+"%";
-        String armormod = 100-((int)((armorMod)*100))+"%";
-        String shieldmod = "5%";//(int)((shieldMod*100)-100)+"%";
-        String damagemod = 100-((int)((damageMod)*100))+"%";
-        tooltip.addPara("Cost %s less",0,Misc.getHighlightColor(),Misc.getHighlightColor(),costmod);
-        tooltip.addPara("Take %s less time to build",0,Misc.getHighlightColor(),Misc.getHighlightColor(),buildmod);
-        tooltip.addPara("Use %s less control",0,Misc.getHighlightColor(),Misc.getHighlightColor(),controlmod);
-        tooltip.addPara("Lose %s hull",0, Misc.getNegativeHighlightColor(), Misc.getNegativeHighlightColor(),hullmod);
-        tooltip.addPara("Lose %s armor rating",0, Misc.getNegativeHighlightColor(), Misc.getNegativeHighlightColor(),armormod);
-        tooltip.addPara("Lose %s shield strength",0, Misc.getNegativeHighlightColor(), Misc.getNegativeHighlightColor(),shieldmod);
-        tooltip.addPara("Lose %s damage",0, Misc.getNegativeHighlightColor(), Misc.getNegativeHighlightColor(),damagemod);
+        String cSmall = ""+(int)costSmall;
+        String cMid = ""+(int)costMid;
+        String cLarge = ""+(int)costLarge;
+
+        tooltip.addPara("Every %s/%s/%s seconds, fully refill a single empty 'limited ammo' weapons ammo",0,Misc.getHighlightColor(),Misc.getHighlightColor(),tSmall,tMid,tLarge);
+        tooltip.addPara("Will refill smaller weapons first",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        tooltip.addPara("All attached modules share a cooldown with the main ship. Will always refill the main ship first",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+
+        tooltip.addPara("Costs %s/%s/%s reclaim per OP depending on weapon size",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor(),cSmall,cMid,cLarge);
+
         tooltip.addSpacer(10f);
 
-        LabelAPI label = tooltip.addPara("\"I don't care what it takes, I don't even care if the craft explodes the moment we set foot on it. If we cant meet quotas, some safety concerns will be the least of our worry's!.\"", Misc.getTextColor(), 0f);
+        //LabelAPI label = tooltip.addPara("\"I don't care what it takes, I don't even care if the craft explodes the moment we set foot on it. If we cant meet quotas, some safety concerns will be the least of our worry's!.\"", Misc.getTextColor(), 0f);
+        LabelAPI label = tooltip.addPara("\"Using the highest quality materials and proper production cycles is oftentimes unrequired. Especially when there is a deadline to meet.\"", Misc.getTextColor(), 0f);
         tooltip.addPara(" - unknown", Misc.getTextColor(), 0f);
 
         label.italicize();
     }
+
     @Override
-    public void changeCombatSwarmStats(ShipAPI ship,ShipAPI fabricator, Nano_Thief_Stats stats) {
-        ship.getMutableStats().getHullBonus().modifyMult(key,hullMod);
-        ship.getMutableStats().getArmorBonus().modifyMult(key,armorMod);
-
-        ship.getMutableStats().getBeamWeaponDamageMult().modifyMult(key,damageMod);
-        ship.getMutableStats().getMissileWeaponDamageMult().modifyMult(key,damageMod);
-        ship.getMutableStats().getEnergyWeaponDamageMult().modifyMult(key,damageMod);
-        ship.getMutableStats().getBallisticWeaponDamageMult().modifyMult(key,damageMod);
-
-        if (stats.getFighterHullSpec().getShieldSpec() == null) return;
-        ship.getMutableStats().getShieldDamageTakenMult().modifyFlat(key,stats.getFighterHullSpec().getShieldSpec().getFluxPerDamageAbsorbed()*shieldMod);
+    public NanoThief_SkillBase createListiner(NanoThief_ShipSkills skills, ShipAPI ship) {
+        return new NanoThief_Skill_2(skills,ship);
     }
 }

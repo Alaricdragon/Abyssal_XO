@@ -2,7 +2,7 @@
 	"id":"Abyssal_XO", # internal id
 	"name":"Abyssal_XO", # displayed to the player
 	"author":"Alricdragon",
-	"version":"0.0.7",
+	"version":"0.1.0",
 	"description":"Gain a fragment of forbidden power",
 	"gameVersion":"0.98a-RC5",
 	"dependencies": [
@@ -10,6 +10,10 @@
 			"id": "second_in_command",
 			"name": "Second-in-Command",
 		},
+		{
+			"id": "ashlib",
+			"name": "Ashlib"
+		}
 	],
 	"jars":["jars/Abyssal_XO.jar"],
 	"modPlugin":"Abyssal_XO.data.scripts.SiC_NanoThief_Plugin",

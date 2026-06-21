@@ -1,0 +1,306 @@
+package Abyssal_XO.data.scripts.threat_old;
+
+import Abyssal_XO.data.scripts.Settings;
+import com.fs.starfarer.api.campaign.CampaignFleetAPI;
+import second_in_command.SCData;
+import second_in_command.specs.SCAptitudeSection;
+import second_in_command.specs.SCBaseAptitudePlugin;
+
+public class NanoThief_Attribute extends SCBaseAptitudePlugin {
+    /*so relevent data:
+    to do list:
+        2) add in the new icons for the systems (copyed another skill for now)
+        3) make it so the fighters acsualy lanch from the ship. (aka an animation for that)
+        4) add in the quest to allow someone to quire this skill (kill a centen number of fabricates, then just have it.)
+        5) improve the display for the nano-thief stats. something like, a bar that fills as I build fighters, and a bar that fills as I max deployment (and fills more (with a different color) as I max storge)
+
+
+        new skill list to do list:
+        1) create a type of listiner attached to every ship with this XO on battle start.
+            -the stats will need to hold a list of all ships attached to this, for reasons. (such as were to give reclaim with centralized production)
+            -this system will need to hold every 'active skill' and the relevant data for each one. effectively, a special class that handles the battle effects of everything
+            -this system will also need to handle fighter spawning.
+        2) disable fighter spawning in the primary XO.
+        3)
+
+note: I need to change everything.
+issue: the 'fighter spam' with this attribute can be completely broken. I will take a suggestion and turn the fighter thing into a capstone.
+issue: centralized production is completely fucking overpowered. the issue comes from the faster and faster production that accores.
+
+new skill pholosaphy:
+all new skills will incore effects that will slowly use reclaim. (as to avoid the infinit fighter issue I have right now). the skills will be desinged around improving ship stats, or restoring ships.
+so the skills:
+1) recover hull:
+    every second, recover between 5% and 0.5% hull. This skill is fastest when below 5% hull, and slowest past 90% hull.
+    for every 100 hull restored, costs 1 reclaim
+
+2) recover ammo:
+    fully refill a single empty 'limited ammo' weapons ammo
+    has a cool down of  15/30/45 seconds depending on weapon size
+    costs 5/10/20 * op cost reclaim, depending on weapon size
+
+3) supply forging:
+    increase salvage gains by 10%, excluding rare items.
+    at the end of combat, for every 1000 reclaim your fleet holds:
+        gain 5 supplies? (1 per 200)
+        gain 10 fuel? (1 per 100)
+
+4) scrap shield:
+    give the '' ability:
+        lasts 5 seconds
+        required 30 seconds to recharge.
+        costs 500 reclaim to use
+        increases resistance to damage by 95%. for every point of 100 damage resisted by this ability, uses 1 reclaim
+        weapons and other ability's are disabled for the duration.
+
+5) ????
+
+6) create escorts:
+    create up to 1/1/2/3 Simulacrum Fighter Wings that will defend the ship (like defensive targetting array)
+    -notes on what a Simulacrum Fighter Wing is here.
+
+7) Simulacrum Fighter Wings
+    Gain the ability to produce Simulacrum Fighter Wings. Your fleet can only maintain up to deployed DP / 10 Simulacrum Fighter Wings at once.
+    Simulacrum Fighter Wings produced by this skill have infinite engagement range. (edited)Sunday, October 19, 2025 12:26 PM
+
+(requires at least one from lower tiers of skill)
+8) Centralized Logistics: when the first reclaim package is created, the largest ship in your fleet is marked as the 'Central Fabricator'. Reclaim Packages will always attempt to move to the Central Fabricator, provided it exists.
+   every second, produce 60 'Refined Reclaim' from 50 'Reclaim'
+   every second, provided the Central Fabricator has at least 2000 refined reclaim, or enough for a single charge of its most expensive ability, send a reclaim package holding 1000 refined reclaim, or 10% of the Central Fabricator refined reclaim, whatever is larger, to the ship with the least stored reclaim in your fleet.
+   (if the craft with the least reclaim is the centralized fabricator nothing happens.)
+   Refined Reclaim moves 2X as fast as normal reclaim
+   for every 1000 Reclaim the Central Fabricator has:
+    produce Refined Reclaim 5% faster.
+
+   Using normal reclaim for skills costs 20% more reclaim.
+
+   After the Central Fabricator is assigned, it cannot be changed for the inter combat, even if it is destroyed or retreats.
+   gain the 'Central Fabricator' hullmod, allowing you to chose your Central Fabricator (edited)Sunday, October 19, 2025 12:17 PM
+
+(requires at least 4 lower level skills)
+9) create starships?
+    every 60 seconds create a starship (reclaim cost = 500 * DP)
+    every D-mod on the ship (excluding 'degraded drive field', 'erratic field ejector', 'compromised storge') reduces the reclaim cost by 20%, up to a maximum of 50%
+    every S-mod on the ship increased the reclaim cost by 25%
+    when this ship is destroyed, it is worth at 50% of the reclaim it took to create it, or 1000. whatever is lower.
+OR
+10) Desperate Measures:
+    when you take more then 10% hull damage in 5 seconds, or when hull is below 20%
+        if overloaded:
+            reduce overload time by 50%. costs 50 reclaim per second reduced.
+        for 10 seconds, for every 1% of missing hull:
+            increase speed of all nano-thief skills by 2% (excluding desperate measures)
+            increase the cost of all nano-thief skills by 1% (excluding desperate measures)
+        for 10 seconds, well your CR is below 20%:
+            regenerate 1% CR a second. costs 50 reclaim per CR regenerated
+    can only trigger once every 10 seconds
+
+
+
+skills:
+0) base:
+    base:
+    When any ship is destroyed, harvest a Reclaim Package worth 1000/2000/3000/4000 reclaim, depending on hullsize. reclaim packages will then go to the nearest ship in the fleet. any packages that reaches there target will be converted into reclaim.
+    for every 1000 reclaim in a ship, gain 1 control.
+    for every control, gain the ability to control one more Simulacrum Fighter Wings.
+    Each Simulacrum Fighter Wing costs OP cost * ?? reclaim to produce, and can takes refit time * wing size * ?? seconds to produce.
+    Simulacrum Fighters dont benefit from fighter modifiers, and rapidly decay, only being able to stay in combat for 60 seconds before being destroyed.
+    Simulacrum Fighters have infinite engagement range.
+    Simulacrum Fighters have -20% hull, -20% shield efficiency, and -10% damage
+
+    Reclaim packages cannot be collected by a ship is in phase.
+    Simulacrum Fighters cannot be deployed by a ship is in phase.
+
+1) Overcharged:
+    Gain the 'Overcharged' sub system, wish increases precived time flow by 200% for 30 seconds with a very long cooldown.
+    lose 50% time to live, 50% hp, and shields take 100% more damage.
+    or
+    Increased damage by 20%. increase speed and acceleration by 100%. Increase weapon fire and ammunition recharge rate by 500%
+    lose 80% hp, 80% time to live, shields take 500% more damage
+2) Mass Manufacturing:
+    cost 20% less
+    take 30% less time to build
+    use 10% less control
+    5% less HP, armor, and shields.
+    5% less damage
+3) Longevity:
+    gain 10% maximum hull
+    shields take 10% less damage
+    gain 100% Time To Live
+4) Advanced Installation:
+    gain 50su speed.
+    when outside of combat gain:
+        +40% max speed.
+5) Quality Checks:
+    cost 30% more
+    take 10% more time to build
+    gains 10% Time To Live
+    gains 10% max hp
+    gain 10% flux dissipation
+    shields take 10% less damage
+    gains 10% higher fire rate for all weapons
+    gain 10% recharge rate for all weapons
+    gain 5% more damage
+6) Centralized Logistics: when the first reclaim package is created, the largest, highest mass ship in your fleet is marked as the 'Central Fabricator'. Reclaim Packages will always attempt to move to the Central Fabricator, provided it exists.
+   for every 1000 Reclaim the Central Fabricator has:
+    produce Simulacrum Fighter Wings 10% faster.
+   Simulacrum Fighter Wings produced by the Central Fabricator:
+    cost 33% less.
+    cost 50% less control
+    gain 20% time to live
+    gain 5% max hp
+    shields take 5% less damage.
+   Simulacrum Fighter Wings produced by any ship that is NOT the Central Fabricator:
+    cost 50% more
+    take 25% more time to build
+    lose 20% max hp
+    shields take 20% more damage.
+    lose 20% time to live
+    lose 5% damage
+   After the Central Fabricator is assigned, it cannot be changed for the inter combat, even if it is destroyed or retreats.
+   gain the 'Central Fabricator' hullmod, allowing you to chose your Central Fabricator
+-7) Prepared Deployment
+    when a ship has deployed all Simulacrum Fighter Wings it can control, the ship will continue to build Simulacrum Fighter Wings and hold them in storge.
+    The ship can store up to the number of Simulacrum Fighter Wings this ship can control * 0.2 +1.
+    the ship can deploy Simulacrum Fighter Wings extremely quickly when control becomes available.
+
+    what do I need to do to get this working?
+    1) make a new system in ship stats that can add additional ships to 'prepared to be deployed'. by defalt, the value of this will be one.
+    2) whenever the ship is at full capacity for swarms, check and make sure it is not at full capacity for 'stored swrams'.
+
+    3) make it so ship stats and skill base has a way to modify the number of available 'stored ships'
+
+
+
+-OLD) Material Analyses:
+    cost 25% more
+    take 100% more time to build
+
+    40% chance of:
+    25% chance of:
+    15% chance of:
+    15% chance of:
+    5% chance of:
+
+8) Desperate Measures:
+    for every 1000 reclaim gained
+        restore 1% CR
+        gain 10 seconds of PP time
+        gain and 1% of hull, or 500 hull, whatever is higher regenerated over 10 seconds.
+        gain 1% fighter replacement rate
+or
+9) Efficient Production:
+    production time reduced by 30%.
+    cost reduced by 30%.
+    control cost reduced by 50%.
+
+
+
+systems:
+swarms: fighter craft spawned with this skill. cost 100 reclame at base
+reclame package: (like threat_old) fighters that return to a target firendly vessel. if they reach it, the ship gains X reclaim
+	by defalt, a ship is worth 100/200/400/800 reclame.
+reclame: the amount of 'sawrm build power' a ship has.
+quality: how powerfull a given swarm is.
+quality should effect the following:
+	(possable qualitys): 0,1,2,3,4,5,6 (1 by defalt)
+
+
+
+
+HP	flux	defesnes	wepons		hullmods
+0:	0.7X	0.8X	none		tatical lazer	na
+1:	1X	1X	shield?
+2:	1.25X		shield?
+3:	1.5X		shield?
+4:	2X		shield?
+5:	3X		shield?
+6:	5X		shield + dampiner
+
+changed quality:
+for each ponit of quality, gain the following:
++10% hull
++10% attackspeed
+-10% flux cost
++10% max speed
++10% max acseration.
+
+skills:
+base: spawns a Reclaim Package worth 1000/2000/4000/8000 reclaim from destroyed ships. reclaim packages will then go to the nearest ship in the fleet. any packages that reaches there target will be converted into reclaim.
+gain the ability to control reclaim / 1000 Attack Swarms.
+if less Attack Swarms are deployed then you can control, create a single Attack Swarm.
+attack swarms cost 100 reclaim to create. each swarm spawned has a base quality of 1.
+for every point of quality a swarm has gain the following stats:
+10% hull
+10% max speed and manoeuvrability
+10% attack speed on all weapons with no increase in flux cost.
+10% increased weapon charge gain speed
+
+
+1) Overcharged: loss 1 quality, and gain 30% increased damage.
+2) Mass Manufacturing: lose 1 quality, and cost 33% less.
+3) Longevity: loss 1 quality, and gain 50% maximum hull
+4) Condensing: gain 1 quality, and lose 10% maximum hull.
+5) Quality Checks: gain 1 quality, and cost 10% more.
+
+6) Centralized Logistics: when the first reclaim package is created, the largest, highest mass ship in your fleet is marked as the 'Central Fabricator'. Reclaim Packages will always attempt to move to the Central Fabricator, provided it exists.
+   The Central Fabricator produces swarms for 33% less cost.
+   The Central Fabricator produces swarms at +3 quality.
+   The Central Fabricator can control 50% more swarms.
+   IF the Central Fabricator no longer exists, Reclaim Package will prefer go to the nearest capital ship, provided one exists.
+   Capital ships that are not the Central Fabricator produce swarms with +1 quality
+   gain the 'Central Fabricator' hullmod, allowing you to chose your Central Fabricator
+or
+7) Material Analyses: swarms cost 25% more. swarms gain 1(15%),2(20%),3(30%),4(35%) points of quality.
+If this ship is deployed when the 'Central Fabricator' is selected, forces this ship to be the Central Fabricator.
+8) Desperate Measures: for every 100 reclaim gained, restore 0.5 CR, 10 seconds of PP time, and 1% of hull.
+or
+9) Efficient Production: swarm cost is reduced by 50%. Ships can control 100% more swarms.
+    * */
+    @Override
+    public String getOriginSkillId() {
+        return "SiC_NanoThief_NanoThiefBase";
+    }
+
+    @Override
+    public void createSections() {
+        SCAptitudeSection section1 = new SCAptitudeSection(true, 0, "technology1");
+        section1.addSkill("SiC_NanoThief_skill_1");
+        section1.addSkill("SiC_NanoThief_skill_2");
+        section1.addSkill("SiC_NanoThief_skill_3");
+        section1.addSkill("SiC_NanoThief_skill_4");
+        section1.addSkill("SiC_NanoThief_skill_5");
+        section1.addSkill("SiC_NanoThief_skill_6");
+        section1.addSkill("SiC_NanoThief_skill_7");
+
+        //note: this is a temp solution to a very completed issue. I need to be carefull carefull to remove this after~~~
+        //section1.addSkill("SiC_NanoThief_skill_8");
+        //section1.addSkill("SiC_NanoThief_skill_9");
+
+        addSection(section1);
+        /*SCAptitudeSection section2 = new SCAptitudeSection(false, 3, "technology2");
+        addSection(section2);*/
+
+        SCAptitudeSection section3 = new SCAptitudeSection(false, 4, "technology4");
+        section3.addSkill("SiC_NanoThief_skill_8");
+        section3.addSkill("SiC_NanoThief_skill_9");
+        addSection(section3);
+    }
+
+    @Override
+    public Float getNPCFleetSpawnWeight(SCData scData, CampaignFleetAPI campaignFleetAPI) {
+        /*String faction = campaignFleetAPI.getFaction().getId();
+        if (Settings.NanoThief_Users.contains(faction)) return 100f;*/
+        return 0f;
+    }
+
+    @Override
+    public Boolean guaranteePick(CampaignFleetAPI fleet) {
+        String faction = fleet.getFaction().getId();
+        for (String a : Settings.NanoThief_Users){
+            if (a.equals(faction)) return true;
+        }
+        //if (Settings.NanoThief_Users.contains(faction)) return true;
+        return super.guaranteePick(fleet);
+    }
+}

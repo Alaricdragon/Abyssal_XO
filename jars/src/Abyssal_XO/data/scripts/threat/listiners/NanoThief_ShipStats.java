@@ -4,21 +4,15 @@ import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
-import com.fs.starfarer.api.combat.CombatFleetManagerAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
-import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.combat.listeners.AdvanceableListener;
-import com.fs.starfarer.api.fleet.FleetMemberAPI;
-import com.fs.starfarer.api.fleet.FleetMemberType;
-import com.fs.starfarer.api.loading.VariantSource;
-import com.fs.starfarer.combat.entities.Ship;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.log4j.Logger;
-import org.lwjgl.util.vector.Vector2f;
 
 import java.util.ArrayList;
 
+@Deprecated
 public class NanoThief_ShipStats implements AdvanceableListener {
     /*so, here is the plan:
     * first, every time I spawn a ship, I will spawn a specal ship that is invinsable, and deploys a single fighter wing.
@@ -56,10 +50,10 @@ public class NanoThief_ShipStats implements AdvanceableListener {
         if (ship.equals(stats.getCentralFab())){
             isCentralFabricate = true;
         }
-        this.rpc = stats.getModifedReclaimPerControl(ship);
-        this.cost = stats.getModifiedCost(ship);
-        this.creationTime = stats.getModifedProductionTime(ship);
-        this.maxStorge = stats.getModifedStoredSwarms(ship);
+        this.rpc = 0;
+        this.cost = 0;//stats.getSwarmCost();
+        this.creationTime = 0;//stats.getProductionTime();
+        this.maxStorge = 0;
     }
     public void addReclaim(float amount){
         //log.info("increasing reclaim by: "+amount);
@@ -105,8 +99,8 @@ public class NanoThief_ShipStats implements AdvanceableListener {
                 if (progress >= creationTime) {
                     processReclaimCore();
                     reclaim -= cost;
-                    this.creationTime = stats.getModifedProductionTime(ship);
-                    this.maxStorge = stats.getModifedStoredSwarms(ship);
+                    //this.creationTime = stats.getModifedProductionTime(ship);
+                    //this.maxStorge = stats.getModifedStoredSwarms(ship);
                     //log.info("creating time for next swarm gotten as: "+this.creationTime);
                     progress = 0;
                 }
@@ -117,8 +111,8 @@ public class NanoThief_ShipStats implements AdvanceableListener {
                 if (progress >= creationTime) {
                     this.stored++;
                     reclaim -= cost;
-                    this.creationTime = stats.getModifedProductionTime(ship);
-                    this.maxStorge = stats.getModifedStoredSwarms(ship);
+                    //this.creationTime = stats.getModifedProductionTime(ship);
+                    //this.maxStorge = stats.getModifedStoredSwarms(ship);
                     progress = 0;
                 }
                 return;
@@ -141,7 +135,7 @@ public class NanoThief_ShipStats implements AdvanceableListener {
         swarms.add(wingLeader);
     }
     private void processReclaimCore(){
-        ShipAPI ship = stats.createCombatSwarmCore(this);
+        //ShipAPI ship = stats.createCombatSwarmCore(this);
         reclaimCores.add(ship);
         //swarms.add(ship.getLaunchBaysCopy().get(0).getWing().getLeader());
     }

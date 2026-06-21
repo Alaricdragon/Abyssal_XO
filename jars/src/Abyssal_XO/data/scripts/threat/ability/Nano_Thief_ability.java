@@ -1,12 +1,14 @@
 package Abyssal_XO.data.scripts.threat.ability;
 
+import Abyssal_XO.data.scripts.CustomUIPannel.MasteryHolder;
 import Abyssal_XO.data.scripts.threat.dialogPlugin.Nano_Thief_dialog;
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.campaign.CampaignUIAPI;
-import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.campaign.econ.SubmarketAPI;
 import com.fs.starfarer.api.impl.campaign.abilities.BaseDurationAbility;
-import org.lwjgl.opengl.GL11;
+import com.fs.starfarer.api.ui.TooltipMakerAPI;
+import com.fs.starfarer.api.util.Misc;
+
+import java.awt.*;
 
 public class Nano_Thief_ability extends BaseDurationAbility {
     private String memoryKey = "$AbyssalXO_StorgeMemory";
@@ -14,35 +16,9 @@ public class Nano_Thief_ability extends BaseDurationAbility {
     @Override
     protected void activateImpl() {
         //Global.getSector().getCampaignUI().showInteractionDialog(Global.getSector().getEconomy().getMarketsCopy().get(0).getSubmarketsCopy().get(0).getCargo());
+        //new MasteryHolder(null);
         Global.getSector().getCampaignUI().showInteractionDialog(new Nano_Thief_dialog(),Global.getSector().getPlayerFleet());
-        /*Global.getSector().getCampaignUI().showInteractionDialogFromCargo(new Nano_Thief_dialog(), Global.getSector().getPlayerFleet(), new CampaignUIAPI.DismissDialogDelegate() {
-            @Override
-            public void dialogDismissed() {
-                Nano_Thief_dialog.dialog.dismiss();
-            }
-        });*/
-        //Global.getFactory().createMarket(memoryKey,"null",1);
-        //Global.getSector().getEconomy();
-        //CargoAPI.
-        //Global;
     }
-    /*private SubmarketAPI initIfRequired(){
-        //Global.getSector().getCampaignUI().show
-        //Global.getFactory().create
-        if (!Global.getSector().getMemory().contains(memoryKey)){
-            MarketAPI market = Global.getSector().getEconomy().getMarketsCopy().get(0);
-            market.addSubmarket("Abyssal_NanoThief_Storge");
-            SubmarketAPI subMarket = market.getSubmarket("Abyssal_NanoThief_Storge");
-            market.removeSubmarket(subMarket.getSpecId());
-            subMarket.getCargoNullOk();
-
-
-            Global.getSector().getCampaignUI().showInteractionDialog(market.getPrimaryEntity());
-            //subMarket
-            //subMarket.getCargoNullOk();
-            //Global.getSector().getEconomy().getMarketsCopy().get(0).
-        }
-    }*/
     @Override
     protected void applyEffect(float amount, float level) {
 
@@ -57,4 +33,13 @@ public class Nano_Thief_ability extends BaseDurationAbility {
     protected void cleanupImpl() {
 
     }
+    @Override
+    public void createTooltip(TooltipMakerAPI tooltip, boolean expanded) {
+        //tooltip.addPara("",1,Misc.getHighlightColor(),"");
+        tooltip.addPara("Lets you modify what fighters and ships nano-thief spawns.",1);
+    }
+
+    @Override
+    public boolean hasTooltip() { return true; }
+
 }

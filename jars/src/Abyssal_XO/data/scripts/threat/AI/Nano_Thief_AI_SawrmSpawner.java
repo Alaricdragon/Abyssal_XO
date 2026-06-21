@@ -1,25 +1,77 @@
 package Abyssal_XO.data.scripts.threat.AI;
 
-import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
-import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_SKill_Base;
+import Abyssal_XO.data.scripts.Utils;
+import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
+import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_SkillBase;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_7;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
-import com.fs.starfarer.api.impl.campaign.ids.Stats;
+import com.fs.starfarer.api.fleet.FleetMemberAPI;
+import com.fs.starfarer.api.fleet.FleetMemberType;
+import com.fs.starfarer.api.loading.VariantSource;
+import com.fs.starfarer.api.util.Misc;
+import lombok.Getter;
 import org.apache.log4j.Logger;
-import org.lazywizard.lazylib.VectorUtils;
+import org.lwjgl.util.vector.Vector2f;
+
+import java.util.ArrayList;
 
 public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
+    private static final String idOfModifiers = "AbyssalXO_NanoThief_FighterMods";
     private ShipAPI ship;
     private ShipAPI motherShip;
-    private NanoThief_ShipStats stats;
+    private Nano_Thief_Stats stats;
     private String wing;
     private CombatEngineAPI engine;
-    public Nano_Thief_AI_SawrmSpawner(ShipAPI ship,ShipAPI motherShip, String wing, NanoThief_ShipStats stats){
+    private final boolean isOffensive;
+    public ArrayList<ShipAPI> fighters = new ArrayList<>();
+
+    public static final String IDOfData1 = "$Nano_Thief_AI_SawrmSpawner_data_1";
+    public static final String IDOfData2 = "$Nano_Thief_AI_SawrmSpawner_data_2";
+    public static final String IDOfData3 = "$Nano_Thief_AI_SawrmSpawner_data_3";
+    public static final String IDOfData4 = "$Nano_Thief_AI_SawrmSpawner_data_4";
+    public static final String IDOfData5 = "$Nano_Thief_AI_SawrmSpawner_data_5";
+    private double timeToReturn;
+    private double returnReclaim;
+    private int wingSize;
+
+    private ArrayList<ShipAPI> arrayOfCores;
+    public Nano_Thief_AI_SawrmSpawner(ShipAPI ship, ShipAPI motherShip, String wing, Nano_Thief_Stats stats, boolean isOffensive, NanoThief_SkillBase skill){
+        //todo: please note that removing a fighter from a wing forces it to return to its carrier. possability of useing a holder instead of this mess is present again, but needs testing
+        //      example: for (ShipAPI a : fighters) ship.getLaunchBaysCopy().get(0).getWing().removeMember(a); will return a wing to the carrier
         this.ship = ship;
         this.motherShip = motherShip;
         this.stats = stats;
         this.wing = wing;
+        this.isOffensive = isOffensive;
+        if (isOffensive){
+            timeToReturn = stats.OF_ttl;
+            returnReclaim = stats.OF_recyclePerFighter;
+            arrayOfCores = stats.getOffinciveFighterCores();
+            wingSize = stats.OF_wingSize;
+        }else{
+            timeToReturn = stats.DF_ttl;
+            returnReclaim = stats.DF_recyclePerFighter;
+            arrayOfCores = ((NanoThief_Skill_7)skill).defenders;
+            wingSize = stats.DF_wingSize;
+            float speed = Global.getSettings().getFighterWingSpec(wing).getVariant().getHullSpec().getEngineSpec().getMaxSpeed();
+            float acceleration = Global.getSettings().getFighterWingSpec(wing).getVariant().getHullSpec().getEngineSpec().getAcceleration();
+            float deceleration = Global.getSettings().getFighterWingSpec(wing).getVariant().getHullSpec().getEngineSpec().getDeceleration();
+            speed = Math.max((motherShip.getMaxSpeed()+25) - speed,0);
+            acceleration = Math.max((motherShip.getAcceleration()+5) - acceleration,0);
+            deceleration = Math.max((motherShip.getDeceleration()+5) - deceleration,0);
+            ship.setCustomData(IDOfData3,speed);
+            ship.setCustomData(IDOfData4,acceleration);
+            ship.setCustomData(IDOfData5,deceleration);
+        }
+        //log.info("got timeToReturn as: "+timeToReturn);
+        //log.info("got return reclaim as: "+returnReclaim);
         engine = Global.getCombatEngine();
+        ship.setCustomData(IDOfData2,this);
+        //stage0();
+        //ship.getMutableStats().fighter
         /*/
         log.info("preparing sawrm spawner for a single wing:");
         log.info("  stats:");
@@ -36,6 +88,14 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
         ship.getLaunchBaysCopy().get(0).setCurrRate(0.3f);*/
         //log.info("getting a new spawner with a wing of: "+wing);
         //log.info("the fighters ID was given as: "+ship.getLaunchBaysCopy().get(0).getWing().getSpec().getId());
+    }
+    public void returnFighterAsReclaim(){
+        NanoThief_ShipSkills skills = stats.getSkills(motherShip);
+        if (skills == null){
+            log.info("ERROR: failed to return reclaim to target");
+            return;
+        }
+        skills.addReclaim(returnReclaim);
     }
     private void displayStats(String startString,String indents,MutableStat stats){
         log.info(indents+startString+"getting multi mods");
@@ -60,95 +120,194 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
     }
     float time;
     private static final float interval = 1;
-    protected static Logger log = Global.getLogger(Nano_Thief_SKill_Base.class);
+    protected static Logger log = Global.getLogger(Nano_Thief_Skill_Base.class);
+
+    int stage = 0;
+    private int tempStage = 0;
     @Override
     public void advance(float amount) {
         //ship.set
-        float angle = VectorUtils.getAngle(ship.getLocation(),motherShip.getLocation());
         //float speed = Global.
-        engine.headInDirectionWithoutTurning(ship,angle,motherShip.getMaxSpeed());
+        move();
         time+=amount;
+        //logFighterStatus();
+        //if (stage == 0) stage0();
+        if (stage >= 1){
+            if (removeSelfIfRequired()) return;
+        }
         if (time >= interval){
-            time = 0;
-            if (/*!ship.equals(stats.getReclaimCore()) && */ship.getLaunchBaysCopy().get(0).getWing() != null && (ship.getLaunchBaysCopy().get(0).getWing().getWingMembers().size()+ship.getLaunchBaysCopy().get(0).getNumLost() >= Global.getSettings().getFighterWingSpec(wing).getNumFighters())){
-                /*
-                so this... is interesting.
-                it would seam that the wing cannot be spawned from a hostile force. wether that is all hostile forces, or just this one is unclear.
-                I will do the following tests tomorrow:
-                1: test and see if this works with other hostile forces (force this atrubute to be used by everyone.)
-                    -if so, ask alex if there is something preventing fighter spawns in hostile forces.
-                    -if not, ask alex if I am suppose to use a diffrent way to handle this.
-                2: test and run the 'wing does not exist' text with a timer for how long that wing is going to take to spawn.
-                    ship.getLaunchBaysCopy().get(0).getTimeUntilNextReplacement();
-                    ship.getLaunchBaysCopy().get(0).getFastReplacements();
-                    ship.getLaunchBaysCopy().get(0).getExtraDeploymentLimit();
-                    ship.getLaunchBaysCopy().get(0).getExtraDeployments();
-
-
-                once I have this issue fixed: make sure to replace the set wing back to swamers in the settings (and also give that a test)
-                also make sure to disable all the logs. it would cause combat lag.
-
-                tests compleated:
-                    1) I know its NOT limited to threat. all none player forces get this issue.
-                    2) I know its not limited to the baseWing. the base wing works for me, but not for hostiles.
-                    3) I know its not a additional stat being added to my things.
-
-                    4) I know the refit rare is always 0 when it breaks (normaly it is 33ish)
-                    5) I know the 'Fast Replacements' is 0 when it breaks (normaly its at least one)
-
-                    at this ponit, my only theory is that it has something to do with the command I am useing to spawn in the wing. I will need additional data.
-                    idea:
-                    try changing out the fleet spawning logic to use something like 'engine.getFleetManager(23).spawnShipOrWing("",null,0f,0f);'. maybe this will help? who knows!
-                 */
-
-                //log.info("attempting to spawn a new wing of intended ID: "+wing);
-                //log.info("The wing ended up with a true ID of: "+ship.getLaunchBaysCopy().get(0).getWing().getSpec().getId());
-                FighterWingAPI wing = ship.getLaunchBaysCopy().get(0).getWing();
-                wing.setSourceShip(ship);
-                //wing.setSourceShip(stats.getReclaimCore());
-                stats.addWingToList(wing.getLeader());
-                stats.removeReclaimCore(ship);
-                Global.getCombatEngine().removeEntity(ship);
-            }else{
-                /*log.info(ship.getId()+"wing does not exist. getting wing data...");
-                log.info("  fighter refit time multi:" + ship.getMutableStats().getFighterRefitTimeMult());
-                log.info("  refit rate right now: " +ship.getLaunchBaysCopy().get(0).getCurrRate());
-                log.info("  time until replacement" + ship.getLaunchBaysCopy().get(0).getTimeUntilNextReplacement());
-                log.info("  Fast replacements" + ship.getLaunchBaysCopy().get(0).getFastReplacements());
-                log.info("  Extra Deploy Limit" + ship.getLaunchBaysCopy().get(0).getExtraDeploymentLimit());
-                log.info("  Extra Deploy" + ship.getLaunchBaysCopy().get(0).getExtraDeployments());
-                log.info("  Extra Duration" + ship.getLaunchBaysCopy().get(0).getExtraDuration());*/
-
-                /*ship.setCurrentCR(100);
-                ship.getLaunchBaysCopy().get(0).setFastReplacements(100);
-                ship.getLaunchBaysCopy().get(0).setCurrRate(0.3f);
-                ship.getLaunchBaysCopy().get(0).makeCurrentIntervalFast();
-                ship.getLaunchBaysCopy().get(0);
-
-                log.info("--After Reset--");
-                log.info("  fighter refit time multi:" + ship.getMutableStats().getFighterRefitTimeMult());
-                log.info("  refit rate right now: " +ship.getLaunchBaysCopy().get(0).getCurrRate());
-                log.info("  time until replacement" + ship.getLaunchBaysCopy().get(0).getTimeUntilNextReplacement());
-                log.info("  Fast replacements" + ship.getLaunchBaysCopy().get(0).getFastReplacements());
-                log.info("  Extra Deploy Limit" + ship.getLaunchBaysCopy().get(0).getExtraDeploymentLimit());
-                log.info("  Extra Deploy" + ship.getLaunchBaysCopy().get(0).getExtraDeployments());
-                log.info("  Extra Duration" + ship.getLaunchBaysCopy().get(0).getExtraDuration());*/
-
-
-                //ship.getLaunchBaysCopy().get(0).setFastReplacements(100);
-                //ship.getLaunchBaysCopy().get(0).setCurrRate(1);
-                /*data:
-                *     on threat:
-                 *       0 refit rate.
-                *       -1 time to refit.
-                *     on player:
-                *       0.30212158 refit rate
-                *       0.60113 time to refit
-                *
-                * */
+            //log.info("runing advance for fighter spwaner...");
+            switch (stage){
+                case 0:
+                    //log.info("  runing stage 0...");
+                    stage0();
+                    break;
+                case 1:
+                    //log.info("  runing stage 1...");
+                    stage1(time);
+                    retargetPredictably();
+                    break;
+                case 2:
+                    //log.info("  runing stage 2...");
+                    stage2();
+                    retargetPredictably();
+                    break;
             }
+            time = 0;
+            //log.info("  compleat fighter spawner");
+        }
+        /*if (stage != 0 && ship.getLaunchBaysCopy().get(0).getNumLost() >= stats.OF_wingSize){
+        }*/
+    }
+    private void move(){
+        //float angle = VectorUtils.getAngle(ship.getLocation(),motherShip.getLocation());
+        //engine.headInDirectionWithoutTurning(ship,angle,motherShip.getMaxSpeed());
+        Vector2f loc = motherShip.getLocation();
+        if (loc == null) loc = ship.getLocation();
+        ship.getLocation().set(loc);
+    }
+    private void logFighterStatus(){
+        log.info("getting swarms stats...");
+        FighterLaunchBayAPI bay = ship.getLaunchBaysCopy().get(0);
+        log.info("  fast replacements:"+bay.getFastReplacements());
+        log.info("  cur rate:"+bay.getCurrRate());
+        log.info("  time to replace:"+bay.getTimeUntilNextReplacement());
+        //ship.getMutableStats().getDynamic().getStat(Stats.REPLACEMENT_RATE_DECREASE_MULT).modifyMult(idOfModifiers, 0);
+        //ship.getMutableStats().getDynamic().getStat(Stats.REPLACEMENT_RATE_INCREASE_MULT).modifyMult(idOfModifiers, 0);
+    }
+    private void stage0(){
+        FighterLaunchBayAPI bay = ship.getLaunchBaysCopy().get(0);
+        if (bay == null || bay.getWing() == null) return;
+        int count = bay.getNumLost();
+        count+=bay.getWing().getWingMembers().size();
+
+        if (count >= wingSize){
+            stage = 1;
+            ship.setCustomData(IDOfData1,true);
+            ship.setPullBackFighters(false);
         }
     }
+
+    private float timeAlive = 0;
+    private void stage1(float amount){
+        timeAlive += amount;
+
+        if (timeAlive >= timeToReturn){
+            stage = 2;
+            retarget();
+            returnShipsToCarrier();
+        }
+    }
+    private void stage2(){
+        returnShipsToCarrier();
+    }
+    public void addSpawnedFighter(ShipAPI a){
+        fighters.add(a);
+        //log.info("added fighter...");
+        /*fighters.addAll(bay.getWing().getWingMembers());
+        for (FighterWingAPI.ReturningFighter a : bay.getWing().getReturning()){
+            fighters.add(a.fighter);
+        }*/
+    }
+    private void insureIntergityOfFighters(){
+        ArrayList<ShipAPI> removed = new ArrayList<>();
+        for (int a = 0; a < fighters.size(); a++){
+            ShipAPI b = fighters.get(a);
+            if (!b.isAlive() || b.isHulk() || b.isFinishedLanding()){
+                if (b.isFinishedLanding()) {
+                    //log.info("  returned fighter as reclaim. yay!");
+                    returnFighterAsReclaim();
+                }
+                removed.add(b);
+                engine.removeEntity(b);
+                ship.getLaunchBaysCopy().get(0).getWing().removeMember(b);
+                //log.info("  removing fighter...");
+            }
+        }
+        for (ShipAPI a : removed) fighters.remove(a);
+    }
+    private boolean removeSelfIfRequired(){
+        insureIntergityOfFighters();
+        //FighterLaunchBayAPI bay = ship.getLaunchBaysCopy().get(0);
+        if (fighters.isEmpty()){
+            arrayOfCores.remove(ship);//(ship);
+            Global.getCombatEngine().removeEntity(ship);
+            //log.info("  removing self do to a lack of fighters...");
+            return true;
+        }
+        return false;
+    }
+    private void returnShipsToCarrier(){
+        FighterLaunchBayAPI bay = ship.getLaunchBaysCopy().get(0);
+        for (int a = 0; a < bay.getWing().getWingMembers().size(); a++){
+            bay.getWing().orderReturn(bay.getWing().getWingMembers().get(a));
+        }
+    }
+    private void retargetPredictably(){
+        tempStage++;
+        if (tempStage >= 10){
+            retarget();
+            tempStage = 0;
+        }
+    }
+    private void retarget(){
+        if (!isOffensive){
+            retargetDef();
+            return;
+        };
+        boolean needNewTarget = !motherShip.isAlive() || motherShip.isHulk();
+        float distance = Float.MAX_VALUE;
+        if (!needNewTarget) {
+            int forceNoTargetChangeRange = 750;
+            Vector2f loc2 = motherShip.getLocation();
+            for (ShipAPI a : fighters) {
+                Vector2f loc = a.getLocation();
+                float d = Misc.getDistance(loc,loc2);
+                if (d <= forceNoTargetChangeRange){
+                    return;
+                }
+                if (d >= distance){
+                    distance = d;
+                }
+            }
+        }
+        forceRetarget();
+    }
+    private void retargetDef(){
+        if (!motherShip.isAlive() || motherShip.isHulk()) {
+            //log.info("force retargeting...");
+            forceRetarget();
+            stage = 2;
+        }
+    }
+    private void forceRetarget(){
+        float distance = Float.MAX_VALUE;
+        float apX = 0;
+        float apY = 0;
+        for (ShipAPI a : fighters) {
+            Vector2f loc = a.getLocation();
+            apX += loc.x;
+            apY += loc.y;
+        }
+        apX /= fighters.size();
+        apY /= fighters.size();
+        ShipAPI newTarget = null;
+        stats.makeSureSavedShipsAreAlive();
+        for (ShipAPI b : stats.getAvailableShips()){
+            Vector2f loc = b.getLocation();
+            float d = Utils.getDistance(apX,apY,loc);
+            if (d < distance){
+                distance = d;
+                newTarget = b;
+            }
+        }
+        if (newTarget != null){
+            this.motherShip = newTarget;
+            return;
+        }
+    }
+
+
 
     @Override
     public boolean needsRefit() {

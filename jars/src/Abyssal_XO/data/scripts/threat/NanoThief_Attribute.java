@@ -8,34 +8,50 @@ import second_in_command.specs.SCBaseAptitudePlugin;
 
 public class NanoThief_Attribute extends SCBaseAptitudePlugin {
     /*so relevent data:
-    to do list:
-        2) add in the new icons for the systems (copyed another skill for now)
-        3) make it so the fighters acsualy lanch from the ship. (aka an animation for that)
-        4) add in the quest to allow someone to quire this skill (kill a centen number of fabricates, then just have it.)
-        5) improve the display for the nano-thief stats. something like, a bar that fills as I build fighters, and a bar that fills as I max deployment (and fills more (with a different color) as I max storge)
-        6) add graphics to the 'overcharge' sub system
-    -balance:
-        the fighters are way to fucking strong. this is not a issue that can be fixed with deploment time
-        solution: reduce fighter damage by 10%, and hull by 20%, and shields by 20%.
+    todo list:
+        1) (for safty overriden nanothief) make it so I can have multible of the same nanothief skills active.
+            -scrapwork fortification: add a tag to the ship when active, preventing more then one instance of this from being active at once (force disabling it if required.
+                                      also, make it so it resits the last bit of damage that caused the skill to actavate.
+            -offensive fighter production: make it so there is a multiplyer to the max number of fighters on Nano_Thief_Stats. so each instance of this adds a multiplyer, and allows for this to be active.
+            -centralized production: make having more then one of this skill provide a multiplyer to recalim gained, instead of anything else.
+            -main stats: make an exception for centralized production so multiple instances of said skill are not active at the same time.
+            -nano-thief stats: needs to beable to look at all xos on fleet and add there skills together, (ignoring the 'base' skill) to
+        2) (for safty overriden nanothief) make it so the display of each skill has the ability to handle more then one display at the same time.
+            -this requires me to change the location of the display, to no longer be fully bound to the skills.
+            -I need to in some occasions (defensive / offincive fighter, missile reload, scrapwork fortifications, centralized production, mastery) make it so it can handle multible items, even if its poorly.
+        3) skill upgrades:
+            -(done untested)centralized production: make it so refined reclaim gets sent out every 10 or 15 seconds, instead of every 2.
+        4) add in the new icons for the systems (copyed another skill for now)
+        5) add in the quest to allow someone to acquire this skill (kill a centen number of fabricates, then just have it.)
+        6) improve the display for the nano-thief stats. something like, a bar that fills as I build fighters, and a bar that fills as I max deployment (and fills more (with a different color) as I max storge)
+        -) reinable disabled skills (disabled do to not actualy doing anything yet.
 
-    -bugs:
-        1) there is a bug that makes it so if I put in a talen, then cancel, the thing does not give me back my wing / reset the fighter to the old one. this needs looking into.
+        new skill list to do list:
 
 note: I need to change everything.
 issue: the 'fighter spam' with this attribute can be completely broken. I will take a suggestion and turn the fighter thing into a capstone.
 issue: centralized production is completely fucking overpowered. the issue comes from the faster and faster production that accores.
 
+questions to ask:
+
+random things to do:
+    make it so there is a limited random on recovery. (make it so I dont get salvage from other side of the map)
+    make it so reclaim packages dont have crazy vision (maybe X0.1 vision?)
+    make it so reclaim packages loes value as they are damaged (up to 50% at 0% hull).
+    make it so 'supply forging' counts reclaim packages as reclaim (and assumes they are all refined instantly, provided a centralized fabracator is on the field.)
+alturation:
+lower numbers of skills can in theory be more usefull.
 new skill pholosaphy:
 all new skills will incore effects that will slowly use reclaim. (as to avoid the infinit fighter issue I have right now). the skills will be desinged around improving ship stats, or restoring ships.
 so the skills:
-1) recover hull:
+1) recover hull: (done untested)
     every second, recover between 5% and 0.5% hull. This skill is fastest when below 5% hull, and slowest past 90% hull.
     for every 100 hull restored, costs 1 reclaim
 
 2) recover ammo:
     fully refill a single empty 'limited ammo' weapons ammo
     has a cool down of  15/30/45 seconds depending on weapon size
-    costs 5/10/20 * op cost reclaim, depending on weapon size
+    costs 5/10/15 * op cost reclaim, depending on weapon size
 
 3) supply forging:
     increase salvage gains by 10%, excluding rare items.
@@ -50,16 +66,29 @@ so the skills:
         costs 500 reclaim to use
         increases resistance to damage by 95%. for every point of 100 damage resisted by this ability, uses 1 reclaim
         weapons and other ability's are disabled for the duration.
+        	"jitterUnderColor":[255,165,90,155],
+	"jitterUnderCopies":25,
+	"jitterUnderMinRange":0,
+	"jitterUnderRange":7,
+	"jitterUnderRangeRadiusFraction":0,
 
-5) ????
+	"jitterColor":[255,165,90,55],
+	"jitterCopies":2,
+	"jitterMinRange":0,
+	"jitterRange":5,
+	"jitterRangeRadiusFraction":0,
 
-6) create escorts:
-    create up to 1/1/2/3 Simulacrum Fighter Wings that will defend the ship (like defensive targetting array)
-    -notes on what a Simulacrum Fighter Wing is here.
+5) ????.. ???????
+    increases the spped of reclaim packages by 100%
 
-7) Simulacrum Fighter Wings
+
+6) Simulacrum Fighter Wings
     Gain the ability to produce Simulacrum Fighter Wings. Your fleet can only maintain up to deployed DP / 10 Simulacrum Fighter Wings at once.
     Simulacrum Fighter Wings produced by this skill have infinite engagement range. (edited)Sunday, October 19, 2025 12:26 PM
+
+7) create escorts:
+    create up to 1/1/2/3 Simulacrum Fighter Wings that will defend the ship (like defensive targetting array)
+    -notes on what a Simulacrum Fighter Wing is here.
 
 (requires at least one from lower tiers of skill)
 8) Centralized Logistics: when the first reclaim package is created, the largest ship in your fleet is marked as the 'Central Fabricator'. Reclaim Packages will always attempt to move to the Central Fabricator, provided it exists.
@@ -73,7 +102,7 @@ so the skills:
    Using normal reclaim for skills costs 20% more reclaim.
 
    After the Central Fabricator is assigned, it cannot be changed for the inter combat, even if it is destroyed or retreats.
-   gain the 'Central Fabricator' hullmod, allowing you to chose your Central Fabricator (edited)Sunday, October 19, 2025 12:17 PM
+   gain the 'Central Fabricator' hullmod, allowing you to chose your Central Fabricator
 
 (requires at least 4 lower level skills)
 9) create starships?
@@ -196,7 +225,7 @@ or
 
 systems:
 swarms: fighter craft spawned with this skill. cost 100 reclame at base
-reclame package: (like threat) fighters that return to a target firendly vessel. if they reach it, the ship gains X reclaim
+reclame package: (like threat_old) fighters that return to a target firendly vessel. if they reach it, the ship gains X reclaim
 	by defalt, a ship is worth 100/200/400/800 reclame.
 reclame: the amount of 'sawrm build power' a ship has.
 quality: how powerfull a given swarm is.
@@ -267,7 +296,7 @@ or
         section1.addSkill("SiC_NanoThief_skill_2");
         section1.addSkill("SiC_NanoThief_skill_3");
         section1.addSkill("SiC_NanoThief_skill_4");
-        section1.addSkill("SiC_NanoThief_skill_5");
+        //section1.addSkill("SiC_NanoThief_skill_5");
         section1.addSkill("SiC_NanoThief_skill_6");
         section1.addSkill("SiC_NanoThief_skill_7");
 
@@ -276,12 +305,13 @@ or
         //section1.addSkill("SiC_NanoThief_skill_9");
 
         addSection(section1);
-        /*SCAptitudeSection section2 = new SCAptitudeSection(false, 3, "technology2");
-        addSection(section2);*/
+        SCAptitudeSection section2 = new SCAptitudeSection(true, 1, "technology2");
+        section2.addSkill("SiC_NanoThief_skill_8");
+        addSection(section2);
 
         SCAptitudeSection section3 = new SCAptitudeSection(false, 4, "technology4");
-        section3.addSkill("SiC_NanoThief_skill_8");
         section3.addSkill("SiC_NanoThief_skill_9");
+        section3.addSkill("SiC_NanoThief_skill_10");
         addSection(section3);
     }
 

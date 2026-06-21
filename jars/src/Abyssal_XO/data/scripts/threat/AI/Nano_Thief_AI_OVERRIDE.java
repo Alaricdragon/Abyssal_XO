@@ -1,15 +1,11 @@
 package Abyssal_XO.data.scripts.threat.AI;
 
-import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
+import Abyssal_XO.data.scripts.threat_old.Nano_Thief_Stats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.FighterWingAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
-import com.fs.starfarer.api.combat.ShipwideAIFlags;
-import com.fs.starfarer.api.mission.FleetSide;
 import com.fs.starfarer.api.util.Misc;
-import com.fs.starfarer.api.util.WeightedRandomPicker;
-import com.fs.starfarer.combat.entities.Ship;
 import org.apache.log4j.Logger;
 import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.VectorUtils;
@@ -19,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+@Deprecated
 public class Nano_Thief_AI_OVERRIDE {
     private static Logger log = Global.getLogger(Nano_Thief_AI_OVERRIDE.class);
     private static ArrayList<Nano_Thief_AI_OVERRIDE> wings;
@@ -36,7 +33,7 @@ public class Nano_Thief_AI_OVERRIDE {
     FighterWingAPI wing;
     private float range;
     //private ShipAPI target;
-    HashMap<ShipAPI,Nano_Thief_AI_CustomSwarm> swarmAIAttempt;
+    HashMap<ShipAPI, Nano_Thief_AI_CustomSwarm> swarmAIAttempt;
     public Nano_Thief_AI_OVERRIDE(ShipAPI ship, Nano_Thief_Stats stats){
         /*so, I have naerly got this fucking working. at last.
         * what is happening:
@@ -68,7 +65,7 @@ public class Nano_Thief_AI_OVERRIDE {
             //curr.getMutableStats().getFighterWingRange().modifyFlat("Abyssal_XO_Range",200000);
             swarmAIAttempt.put(curr,new Nano_Thief_AI_CustomSwarm(curr, stats));
         }
-        log.info("creating a fighter with a range of: "+range);
+        //log.info("creating a fighter with a range of: "+range);
     }
     private static float interval = 1;
     private float time=0;
