@@ -25,6 +25,7 @@ V0.1.0:
     fixes:
         reclaim can now follow arma armada strickcraft when docked.
         simulacrum fighters now benefit from SIC officers.
+        simulacrum fighters bombers are no longer completely broken and will return to a friendly ship when they need to
     settings:
         started to work on lunasettings. so that one person that really really wanted to beable to create capitals with mastery can.
         only mastery is done for now.
