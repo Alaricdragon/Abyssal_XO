@@ -1,13 +1,10 @@
 package Abyssal_XO.data.scripts.threat.skills.activeSkills;
 
 import Abyssal_XO.data.scripts.Settings;
-import Abyssal_XO.data.scripts.hullmods.ReclaimCore;
 import Abyssal_XO.data.scripts.hullmods.SICSkillControllerBackup;
 import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_SawrmSpawner;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
-import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_6;
-import Abyssal_XO.data.scripts.threat.skills.NanoThief_7;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.CombatFleetManagerAPI;
@@ -18,11 +15,8 @@ import com.fs.starfarer.api.fleet.FleetMemberType;
 import com.fs.starfarer.api.loading.FighterWingSpecAPI;
 import com.fs.starfarer.api.loading.VariantSource;
 import com.fs.starfarer.api.loading.WingRole;
-import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import org.lwjgl.util.vector.Vector2f;
-import second_in_command.SCUtils;
-import second_in_command.specs.SCOfficer;
 
 public class NanoThief_Skill_6 extends NanoThief_SkillBase{
     public NanoThief_Skill_6(NanoThief_ShipSkills skills, ShipAPI ship) {

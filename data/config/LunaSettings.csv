@@ -1,18 +1,34 @@
 fieldID,fieldName,fieldType,defaultValue,secondaryValue,fieldDescription,minValue,maxValue,tab
-NA_Mastery_Header,,Header,Mastery,,,,,NF_Mastery
-NA_Mastery_maxShips,Max number of ships one can have selected for mastery,Int,4,,,1,100,NF_Mastery
-NA_Mastery_canFrigate,Allow frigates,Boolean,true,,,,,NF_Mastery
-NA_Mastery_canDestroyer,Allow destroyers,Boolean,false,,,,,NF_Mastery
-NA_Mastery_canCruiser,Allow cruisers,Boolean,false,,,,,NF_Mastery
-NA_Mastery_canCapital,Allow capitals,Boolean,false,,,,,NF_Mastery
-NA_Mastery_canFabricator,Allow NPCs to use fabricators,Boolean,false,,,,,NF_Mastery
-NA_Mastery_oddsVariance,How mush the weight to spawn each ship differs for npc fleets,Int,19,,,1,100,NF_Mastery
-NA_Mastery_sModCost,Cost incress per smod,Double,0.25,,,0,10,NF_Mastery
-NA_Mastery_dModDiscount,Cost decress per dmod,Double,0.1,,,0,10,NF_Mastery
-NA_Mastery_dModmin,Min cost from dmod decrease,Double,0.5,,,0,10,NF_Mastery
-NA_Mastery_costPerDP,Reclaim cost per deployment point,Int,200,,,1,1000,NF_Mastery
-NA_Mastery_rechargeTimePerDP,Recharge time per deployment ponit,Double,10,,,0.1,100,NF_Mastery
-NA_Mastery_buildTimePerDP,Build time per deployment point,Double,2.5,,,0.1,100,NF_Mastery
-NA_Mastery_minCR,Min cr to build simulacrum ship,Double,0.4,,,0,1,NF_Mastery
-NA_Mastery_peakCRDuration,peak performance multiplyer,Double,0.6,,,0,1,NF_Mastery
-NA_Mastery_maxReclaimPercent,recoved reclaim multiplyer,Double,0.75,,,0,1,NF_Mastery
+NA_DM_Header,,Header,Desperate Measures,,,,,Nano Thief: Desperate Measures
+NA_DM_crStart,max CR for cr bonuses,Double,0.4,,,0,1,Nano Thief: Desperate Measures
+NA_DM_crReginSpeed,cr regen speed,Double,0.06,,,0,1,Nano Thief: Desperate Measures
+NA_DM_crSkillSpeed,cr skill speedup mod,Double,0.1,,,0,1,Nano Thief: Desperate Measures
+NA_DM_crSkillCost,cr skill cost mod,Double,0.025,,,0,1,Nano Thief: Desperate Measures
+NA_DM_reclaimCostPerCR,reclaim cost per cr regenerated,Int,50,,,0,100,Nano Thief: Desperate Measures
+NA_DM_hpSpeed,hp skill speedup mod,Double,0.02,,,0,1,Nano Thief: Desperate Measures
+NA_DM_hpCost,hp skill cost mod,Double,0.005,,,0,1,Nano Thief: Desperate Measures
+NA_DM_overloadMinTime,overload min time,Int,1,,,1,10,Nano Thief: Desperate Measures
+NA_DM_overloadRemoved,overload time multi,Double,0.5,,,0,1,Nano Thief: Desperate Measures
+NA_DM_overloadCostPerSecond,overload cost per second removed,Int,50,,,1,500,Nano Thief: Desperate Measures
+NA_DM_overloadEffectTime,overload skill effect time,Int,5,,,1,20,Nano Thief: Desperate Measures
+NA_DM_overloadSkillCost,overload skill cost mod,Double,0.25,,,0,10,Nano Thief: Desperate Measures
+NA_DM_overloadSkillSpeed,overload skill speed mod,Double,1,,,0,10,Nano Thief: Desperate Measures
+,,,,,,,,
+NA_Mastery_Header,,Header,Mastery,,,,,Nano Thief: Mastery
+NA_Mastery_maxShips,Max number of ships one can have selected for mastery,Int,4,,,1,100,Nano Thief: Mastery
+NA_Mastery_canFrigate,Allow frigates,Boolean,true,,,,,Nano Thief: Mastery
+NA_Mastery_canDestroyer,Allow destroyers,Boolean,false,,,,,Nano Thief: Mastery
+NA_Mastery_canCruiser,Allow cruisers,Boolean,false,,,,,Nano Thief: Mastery
+NA_Mastery_canCapital,Allow capitals,Boolean,false,,,,,Nano Thief: Mastery
+NA_Mastery_canFabricator,Allow NPCs to use fabricators class ships (requires 'Allow capitals' to be true),Boolean,true,,fabracator ships are threats 'big capital' ship. the option to exsclude exsists because they are a bit mush.,,,Nano Thief: Mastery
+NA_Mastery_fabricatorDPOverride,"If threat is allowed to build fabricators, this is used instead of there normal DP cost for mastery calculations",Int,60,,default unmodified value is 20.,1,200,Nano Thief: Mastery
+NA_Mastery_oddsVariance,How mush the weight to spawn each ship differs for npc fleets,Int,19,,,1,100,Nano Thief: Mastery
+NA_Mastery_sModCost,Cost incress per smod,Double,0.25,,,0,10,Nano Thief: Mastery
+NA_Mastery_dModDiscount,Cost decress per dmod,Double,0.1,,,0,10,Nano Thief: Mastery
+NA_Mastery_dModmin,Min cost from dmod decrease,Double,0.5,,,0,10,Nano Thief: Mastery
+NA_Mastery_costPerDP,Reclaim cost per deployment point,Int,200,,,1,1000,Nano Thief: Mastery
+NA_Mastery_rechargeTimePerDP,Recharge time per deployment ponit,Double,10,,,0.1,100,Nano Thief: Mastery
+NA_Mastery_buildTimePerDP,Build time per deployment point,Double,2.5,,,0.1,100,Nano Thief: Mastery
+NA_Mastery_minCR,Min cr to build simulacrum ship,Double,0.4,,,0,1,Nano Thief: Mastery
+NA_Mastery_peakCRDuration,peak performance multiplyer,Double,0.6,,,0,1,Nano Thief: Mastery
+NA_Mastery_maxReclaimPercent,recoved reclaim multiplyer,Double,0.75,,,0,1,Nano Thief: Mastery

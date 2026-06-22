@@ -203,11 +203,11 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
 
     @Override
     public void buttonPressed(Object buttonId) {
+        MasteryHolder.log.info("button pressed in: ShipsInFleetHolder");
         String[] data = ((String) buttonId).split(":");
         FleetMemberAPI fleetmember = activeMembers.get(Integer.parseInt(data[1]));
         MasteryHolder.masteryHolder.heldShips.toAdd = new HeldShipsSingleShipData(fleetmember,10,fleetmember.getShipName(),fleetmember.getVariant().getDisplayName());
         MasteryHolder.masteryHolder.heldShips.recreate_full();
         MasteryHolder.masteryHolder.infoHolder.recreate_full();
-        MasteryHolder.log.info("button pressed in: ShipsInFleetHolder");
     }
 }

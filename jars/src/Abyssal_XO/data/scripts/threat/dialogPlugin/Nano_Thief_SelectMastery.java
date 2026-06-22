@@ -42,7 +42,14 @@ public class Nano_Thief_SelectMastery implements InteractionDialogPlugin {
 
 
         //basics on how to get a my interface.
-        new MasteryHolder(dialog);
+        try {
+            log.info("attempting to add mastery dialog");
+            new MasteryHolder(dialog);
+            log.info("added mastery dialog");
+        }catch (Exception e){
+            log.info("ERROR: failed to get mastery dialog! PLEASE REPORT TO ALARIC DRAGON. error of: \n"+e);
+            MasteryHolder.masteryHolder.returnToBaseDialog();
+        }
 
         //ShipsInFleetHolder optionsHolder = new ShipsInFleetHolder();
         //optionsHolder(optionsHolder,dialog,0.2,0.2,0.8,0.5);

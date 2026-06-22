@@ -1,3 +1,20 @@
+V0.1.2:
+    settings:
+        added in a new setting to override fabricator cost for mastery (they were op as hell otherwise)
+        added settings for desperate measures
+    debugging:
+        added some logs to the mastery interface to help find issues.
+    fixes:
+        removed a number of useless files.
+        fixed broken centralized fabricator selection code
+        hopefully added some protection to automatically exit the dialog if you fail to load mastery.
+    balance:
+        desperate measures:
+            missing cr base speed bonus -> 1% -> 10%
+            missing cr base cost increase -> 0.25% -> 2.5%
+            overload speed bonus -> 10% -> 100%
+            overload cost increase -> 2.5% -> 25%
+    the reason for the changes is because the missing hull part of this equation seemed to give a crazy bonus compaired to the rest of it. (at 200% speed and 50% cost at 0% hull). that feels great, but it should not be the only thing this does...
 V0.1.1:
     fixed ashlib dependency.
     maybe fixed a issue with hostiles having a central fabricator? maybe? I dont know...

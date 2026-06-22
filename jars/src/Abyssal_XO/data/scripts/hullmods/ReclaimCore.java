@@ -2,15 +2,11 @@ package Abyssal_XO.data.scripts.hullmods;
 
 import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_SawrmSpawner;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
-import Abyssal_XO.data.scripts.threat.animation.NanoThief_A_FighterSpawn;
-import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.BaseHullMod;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Stats;
-import com.fs.starfarer.api.impl.campaign.ids.Tags;
-import org.apache.log4j.Logger;
 
 import static Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_SawrmSpawner.IDOfData1;
 import static Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_SawrmSpawner.IDOfData2;

@@ -123,31 +123,39 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
         //info.getPosition().setLocation(0,0);
         //note: need to create the internals here.
 
+        log.info("adding ships in fleet panel...");
         ShipsInFleetHolder fleetTemp2 = new ShipsInFleetHolder();
         fleetShips = fleetTemp2;
         CustomPanelAPI fleetTemp = panel.createCustomPanel(width-infoWidth,(height-buttonHeight)/2,fleetTemp2);
         fleetTemp2.createOptions(panel,fleetTemp);
         UIComponentAPI fleet = tooltip.addCustom(fleetTemp,5);
+        log.info("completed ships in fleet panel.");
 
-
+        log.info("adding selected panel...");
         HeldShipsHolder selectedTemp2 = new HeldShipsHolder();
         heldShips = selectedTemp2;
         CustomPanelAPI selectedTemp = panel.createCustomPanel(width-infoWidth,(height-buttonHeight)/2,selectedTemp2);
         selectedTemp2.createOptions(selectedTemp,width-infoWidth,(height-buttonHeight)/2);
         UIComponentAPI selected = tooltip.addCustom(selectedTemp,5);
+        log.info("complete selected panel.");
 
-
+        log.info("adding final buttons panel...");
         Master_FinalButtons bottomButtonsTemp2 = new Master_FinalButtons();
         finalButtons = bottomButtonsTemp2;
         CustomPanelAPI bottomButtonsTemp = panel.createCustomPanel(width-infoWidth,buttonHeight,bottomButtonsTemp2);
         bottomButtonsTemp2.createOptions(bottomButtonsTemp,width-infoWidth,buttonHeight);
         UIComponentAPI bottomButtons = tooltip.addCustom(bottomButtonsTemp,5);
+        log.info("complete final buttons panel");
 
+        log.info("organizing panels...");
         fleet.getPosition().rightOfTop(info,5);
         selected.getPosition().belowMid(fleet,5);
         bottomButtons.getPosition().belowMid(selected,5);
+        log.info("compleat organizeing panels.");
 
+        log.info("recreating info holder...");
         infoHolder.recreate_full();
+        log.info("compleated recreating info holder.");
         //THE_THING.addUIElement(tooltip);
         //panel.wrapTooltipWithBox(tooltip);
         //return THE_THING;

@@ -63,10 +63,12 @@ public class Master_FinalButtons implements CustomUIPanelPlugin {
         MasteryHolder.log.info("button pressed in: FinalButtons");
         switch ((String) buttonId){
             case "exit":
+                MasteryHolder.log.info("running exit code");
                 MasteryHolder.masteryHolder.returnToBaseDialog();
                 //panel.removeComponent(tooltip);
                 break;
             case "finish":
+                MasteryHolder.log.info("running finished code");
                 MasteryHolder.masteryHolder.returnToBaseDialog();
                 ArrayList<Integer> numbers = new ArrayList<>();
                 ArrayList<FleetMemberAPI> variants = new ArrayList<>();
