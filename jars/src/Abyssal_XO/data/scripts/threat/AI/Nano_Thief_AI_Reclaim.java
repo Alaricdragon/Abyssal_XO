@@ -255,6 +255,7 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 				reclamationReturnInterval.advance(amount);
 				if (reclamationReturnInterval.intervalElapsed()) {
 					CombatEngineAPI engine = Global.getCombatEngine();
+					Settings.log.info("got target for reclaims as (ship commander): "+(fabricator == null ? "N/A" : fabricator.getName())+","+stats.commander);
 					fabricator = stats.getTargetForReclaim(ship,engine);
 					NanoThief_ShipSkills skills = stats.getSkills(fabricator);
 					if (skills != null) skills.addIncomingReclaim(ship,reclaimValue,isRefined);

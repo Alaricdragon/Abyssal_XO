@@ -1,3 +1,6 @@
+V0.1.1:
+    fixed ashlib dependency.
+    maybe fixed a issue with hostiles having a central fabricator? maybe? I dont know...
 V0.1.0:
     new:
         reclaim stored in ships is now added to newly created reclaim packages when the ship dies. (split between forces if a 'reclaim battle' is going on)
