@@ -28,6 +28,7 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
     public static boolean canCruiser = false;
     public static boolean canCapital = false;
     public static boolean allowNPCFabricators = false;
+    public static int fabricatorDPOverride = 60;
 
     public static boolean[] allowedSizesForNPC = {canFrigate,canDestroyer, canCruiser, canCapital};
     //public static boolean[] allowedSizesForNPC = {true,false,false,false};

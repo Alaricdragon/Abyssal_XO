@@ -7,13 +7,11 @@ import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_Reclaim;
 import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_SawrmSpawner;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_BattleListener;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_RecreationScript;
-import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipStats;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_6;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_8;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_MasteryShipStats;
 import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.*;
-import Abyssal_XO.data.scripts.threat_old.subsystems.DamageOverTime_System;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.campaign.FleetDataAPI;
@@ -169,9 +167,6 @@ public class Nano_Thief_Stats {
             playerStats = this;
         }
     }
-    public void spawnReclaim() {
-
-    }
     public NanoThief_ShipSkills getSkills(ShipAPI shipAPI){
         if (!availableShips.contains(shipAPI)) return null;
         NanoThief_ShipSkills listiner = null;
@@ -230,12 +225,14 @@ public class Nano_Thief_Stats {
     }
     public ShipAPI getTargetForReclaim(ShipAPI reclaim, CombatEngineAPI engine){
         //todo: change this to use the intiernal list of ships that can collect reclaim.
-        if (closest){
+        return closest ? getTargetClosest(reclaim, engine) : getPriorityClosest(reclaim, engine);
+        /*if (closest){
             return getTargetClosest(reclaim,engine);
         }
-        return getPriorityClosest(reclaim, engine);
+        return getPriorityClosest(reclaim, engine);*/
     }
     private ShipAPI getTargetClosest(ShipAPI reclaim, CombatEngineAPI engine){
+        log.info("gettig target closest");
         makeSureSavedShipsAreAlive();
         ShipAPI output = null;
         Vector2f pointA = reclaim.getLocation();
@@ -284,6 +281,7 @@ public class Nano_Thief_Stats {
         return output;
     }
     private ShipAPI getPriorityClosest(ShipAPI reclaim, CombatEngineAPI engine){
+        log.info("gettig priority closest");
         if (centralFab == null){
             makeSureSavedShipsAreAlive();
             float priority = 0;
@@ -305,8 +303,8 @@ public class Nano_Thief_Stats {
                 float pTemp = getReclaimTargetPriority(curr);
                 if (pTemp > priority || (pTemp == priority && curr.getMassWithModules() > mass)){
                     centralFab = curr;
-                    mass = pTemp;
-                    priority = curr.getMassWithModules();
+                    mass = curr.getMassWithModules();
+                    priority = pTemp;
                 }
             }
             if (centralFab != null){
@@ -424,7 +422,7 @@ public class Nano_Thief_Stats {
         fighter.getWing().setSourceShip(primary);
         //fighter.removeTag(Tags.THREAT_SWARM_AI);
         log.info("calculated reclaim as: "+amount);
-        fighter.setShipAI(new Nano_Thief_AI_Reclaim(fighter,this,amount,isRefined,targetOverride));//todo: learn if this is even doing anything I guess????
+        fighter.setShipAI(new Nano_Thief_AI_Reclaim(fighter,this,amount,isRefined,targetOverride));
         manager.setSuppressDeploymentMessages(false);
 
         fighter.getMutableStats().getMaxSpeed().modifyMult("construction_swarm", NanoThief_RecreationScript.RECLAMATION_SWARM_SPEED_MULT);

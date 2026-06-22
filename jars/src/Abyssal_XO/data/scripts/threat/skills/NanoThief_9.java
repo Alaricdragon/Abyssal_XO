@@ -14,8 +14,8 @@ public class NanoThief_9 extends Nano_Thief_Skill_Base {
     public static double crStart = 0.4;
     private static final double crStartForEq = crStart*100;
     public static double crReginSpeed = 0.06;//0.25%. speed at min value. is increased by eq.
-    public static double crSkillSpeed = 0.01;//2.5%. speed at min value. is increase by eq
-    public static double crSkillCost = 0.0025;//2.5%. speed at min value. is increase by eq
+    public static double crSkillSpeed = 0.10;//2.5%. speed at min value. is increase by eq
+    public static double crSkillCost = 0.025;//2.5%. speed at min value. is increase by eq
     public static double reclaimCostPerCR = 50*100;//*100 because cr is messerd in percents. makes math faster.
 
     public static double hpSpeed = 0.02;//2% speed per missing hull.
@@ -27,8 +27,8 @@ public class NanoThief_9 extends Nano_Thief_Skill_Base {
     public static double overloadRemoved = 0.5;
     public static double overloadCostPerSecond = 50;
     public static double overloadEffectTime = 5;
-    public static double overloadSkillCost = 0.025;
-    public static double overloadSkillSpeed = 0.1;
+    public static double overloadSkillCost = 0.25;
+    public static double overloadSkillSpeed = 1.0;
     public static void main(String[] args){
         double cr = 0.0;
         System.out.println("got CR: "+cr+" regen speed as:" + crRegenSpeed(cr));

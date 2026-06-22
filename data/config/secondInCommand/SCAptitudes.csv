@@ -1,6 +1,6 @@
 id,name,categories,spawnWeight,color,tags,order,plugin
 #All aptitudes require a matching entry in default_ranks.json: executive_officer_aptitudeId,,#can not use multiple aptitudes of the same category,"#Used for Procgen, not for NPCs. NPCs are decided in the plugin",,#restricted,,
-,,,,,,,
-,,,,,,,
-Abyssal_NanoThief,Nano-Thief,,0,"130,155,145,255","startingOption,",990,Abyssal_XO.data.scripts.threat.NanoThief_Attribute
-,,,,,,,
+Abyssal_NanoThief,Nano-Thief,,0,"130,155,145,255",startingOption,990,Abyssal_XO.data.scripts.threat.NanoThief_Attribute
+"#NOTE: I need to make this ID lowercase. (for consal commands autofill)
+please note that you can just use the lowercase version of the id if you need to [abyssal_nanothief]. when checking the id, it forces it to be lower case for some reason???",,,,,,,
+#abyssal_nanothief,Nano-Thief,,0,"130,155,145,255",startingOption,990,Abyssal_XO.data.scripts.threat.NanoThief_Attribute

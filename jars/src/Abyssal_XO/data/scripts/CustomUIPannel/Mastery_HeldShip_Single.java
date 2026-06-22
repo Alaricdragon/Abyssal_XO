@@ -164,14 +164,14 @@ public class Mastery_HeldShip_Single implements CustomUIPanelPlugin {
     @Override
     public void processInput(List<InputEventAPI> events) {
         if (events.isEmpty()) return;
-        MasteryHolder.log.info("getting event....");
+        //MasteryHolder.log.info("getting event....");
         isShifted = false;
         for (InputEventAPI a : events) if (a.isShiftDown()){
             isShifted = true;
-            MasteryHolder.log.info("got shifted.");
+        //    MasteryHolder.log.info("got shifted.");
             break;
         }
-        MasteryHolder.log.info("failed to get shifted.");
+        //MasteryHolder.log.info("failed to get shifted.");
     }
 
     @Override
