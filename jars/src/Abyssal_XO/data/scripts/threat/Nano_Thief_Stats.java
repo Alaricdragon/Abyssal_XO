@@ -289,8 +289,8 @@ public class Nano_Thief_Stats {
             float priority = 0;
             float mass = 0;
             for (ShipAPI curr : availableShips) {
-                if (!canAcceptReclaim(curr)) continue;
                 if (curr == null) continue;
+                if (!canAcceptReclaim(curr)) continue;
                 if (curr.isHulk()) continue;
                 if (curr.equals(reclaim)) continue;
                 if (curr.isFighter()) continue;
@@ -310,14 +310,17 @@ public class Nano_Thief_Stats {
                 }
             }
             if (centralFab != null){
-                log.info("adding on the listiner...");
+                log.info("found central fabracator as a ship named "+centralFab.getName()+"...");
                 getSkills(centralFab).addListener(new NanoThief_Skill_8(getSkills(centralFab),centralFab),centralFab);
+            }else{
+                log.warn("FAILED TO FIND CENTRAL FABRACATOR FOR FORCE. WARNING WARNING. THIS IS BAD. force was force"+(commander == null ? "ERROR: no command found" : commander.getNameString()));
             }
         }
-        if (centralFab.isAlive() && !centralFab.isHulk()){
+        if (centralFab != null && centralFab.isAlive() && !centralFab.isHulk()){
             log.info("found central fabricator, avoiding question of target.");
             return centralFab;
         }else{
+            log.info("central fab not alive for force of "+reclaim.getOwner()+". is null / allive / hulk?: "+centralFab == null+", "+(centralFab == null ? false : centralFab.isAlive())+", "+(centralFab == null ? false : centralFab.isHulk()));
             centralFabAlive = false;
         }
         ShipAPI output = null;
