@@ -13,6 +13,7 @@ import Abyssal_XO.data.scripts.threat.skills.NanoThief_MasteryShipStats;
 import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.*;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.campaign.FleetDataAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
@@ -71,7 +72,7 @@ public class Nano_Thief_Stats {
 
     private boolean wingSet = false;
     private String commanderID;
-    private SCOfficer officer;
+    //private SCOfficer officer;
     public boolean closest = true;
     @Getter
     ShipAPI centralFab = null;
@@ -143,23 +144,72 @@ public class Nano_Thief_Stats {
         NanoThief_Skill_7.getStats(this,Global.getSettings().getFighterWingSpec(DF_fighterToBuild));
 
     }
-
-    public Nano_Thief_Stats(PersonAPI commander, FleetDataAPI fleet, String commanderID, boolean isAlly, SCOfficer officer, int owner,FactionAPI faction){
+    public int[] skillMulti = new int[10];
+    public int reclaimMulti = 0;
+    public Nano_Thief_Stats(PersonAPI commander, CampaignFleetAPI fleetAPI, FleetDataAPI fleet, String commanderID, boolean isAlly, int owner, FactionAPI faction){
         this.commander = commander;
         this.fleet = fleet;
         this.commanderID = commanderID;
-        this.officer = officer;
+        //this.officer = officer;
         this.isAlly = isAlly;
         this.owner = owner;
         this.faction = faction;
-        log.info("creating commander data for a new commander with "+officer.getActiveSkillPlugins().size()+" skills"+" and a fighter to build of "+this.OF_fighterToBuild);
-        for (SCBaseSkillPlugin a : officer.getActiveSkillPlugins()){
-            Nano_Thief_Skill_Base b = (Nano_Thief_Skill_Base) a;
-            log.info("  adding skill to commander of: "+b.getName());
-            skills.add(b);
-            b.initStats(this);
-            if (b.getId().equals("SiC_NanoThief_skill_8")){
-                closest = false;
+        for (SCOfficer c : SCUtils.getFleetData(fleetAPI).getActiveOfficers()) {
+            if (c.getAptitudeId().equals("Abyssal_NanoThief")){
+                log.info("creating commander data for a new commander with "+c.getActiveSkillPlugins().size()+" skills"+" and a fighter to build of "+this.OF_fighterToBuild);
+                for (SCBaseSkillPlugin a : c.getActiveSkillPlugins()){
+                    Nano_Thief_Skill_Base b = (Nano_Thief_Skill_Base) a;
+                    switch (b.getId()){
+                        case "SiC_NanoThief_NanoThiefBase":
+                            break;
+                        case "SiC_NanoThief_skill_1":
+                            skillMulti[0]++;
+                            reclaimMulti++;
+                            break;
+                        case "SiC_NanoThief_skill_2":
+                            skillMulti[1]++;
+                            reclaimMulti++;
+                            break;
+                        case "SiC_NanoThief_skill_3":
+                            skillMulti[2]++;
+                            reclaimMulti++;
+                            break;
+                        case "SiC_NanoThief_skill_4":
+                            skillMulti[3]++;
+                            reclaimMulti++;
+                            break;
+                        case "SiC_NanoThief_skill_5":
+                            skillMulti[4]++;
+                            reclaimMulti++;
+                            break;
+                        case "SiC_NanoThief_skill_6":
+                            skillMulti[5]++;
+                            reclaimMulti++;
+                            break;
+                        case "SiC_NanoThief_skill_7":
+                            skillMulti[6]++;
+                            reclaimMulti++;
+                            break;
+                        case "SiC_NanoThief_skill_8":
+                            skillMulti[7]++;
+                            reclaimMulti++;
+                            break;
+                        case "SiC_NanoThief_skill_9":
+                            skillMulti[8]++;
+                            reclaimMulti++;
+                            break;
+                        case "SiC_NanoThief_skill_10":
+                            skillMulti[9]++;
+                            reclaimMulti++;
+                            break;
+                    }
+                    log.info("  adding skill to commander of: "+b.getName());
+                    skills.add(b);
+                    b.initStats(this);
+                    if (b.getId().equals("SiC_NanoThief_skill_8")){
+                        closest = false;
+                    }
+                }
             }
         }
         //getBaseStatsForFighter(Global.getSettings().getFighterWingSpec(this.OF_fighterToBuild),this,true);
@@ -357,7 +407,7 @@ public class Nano_Thief_Stats {
         log.info("calculating total increase in reclaim for a "+reclaim.getHullSpec().getHullSize()+" ship");
         log.info("  name:"+reclaim.getName());
         int amount;
-        int skills = getSkills().size()-1;
+        int skills = reclaimMulti;
         switch (reclaim.getHullSpec().getHullSize()){
             case CAPITAL_SHIP -> amount = Settings.NANO_THIEF_RECLAIM_GAIN[3]*skills;
             case CRUISER -> amount = Settings.NANO_THIEF_RECLAIM_GAIN[2]*skills;

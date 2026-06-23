@@ -56,10 +56,11 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
     public ShipsInFleetHolder fleetShips;
     public MasteryInformationHolder2 infoHolder;
     public Master_FinalButtons finalButtons;
+    private final float screenMulti = Global.getSettings().getScreenScaleMult()/2;
     public MasteryHolder(InteractionDialogAPI dialog){
         this.dialog = dialog;
-        float height = Global.getSettings().getScreenHeightPixels();
-        float width = Global.getSettings().getScreenWidthPixels();
+        float height = Global.getSettings().getScreenHeightPixels() * screenMulti;
+        float width = Global.getSettings().getScreenWidthPixels() * screenMulti;
         dialog.hideTextPanel();
         //dialog.getVisualPanel();
         dialog.showCustomVisualDialog(width,height,this);
@@ -108,10 +109,12 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
 
     }
     public void createOptions(CustomPanelAPI panel,TooltipMakerAPI tooltip){
+        //Global.getSettings.getScreenMult
+        Global.getSettings().getScreenScaleMult();
         masteryHolder = this;
         log.info("version 0.5");
-        float height = Global.getSettings().getScreenHeightPixels();
-        float width = Global.getSettings().getScreenWidthPixels();
+        float height = Global.getSettings().getScreenHeightPixels() * screenMulti;
+        float width = Global.getSettings().getScreenWidthPixels() * screenMulti;
 
         float infoWidth = 200;
         float buttonHeight = 50;
@@ -148,6 +151,7 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
         log.info("complete final buttons panel");
 
         log.info("organizing panels...");
+        //infoTemp.getPosition().setLocation(1000,200);
         fleet.getPosition().rightOfTop(info,5);
         selected.getPosition().belowMid(fleet,5);
         bottomButtons.getPosition().belowMid(selected,5);
