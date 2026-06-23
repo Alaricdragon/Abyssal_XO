@@ -144,7 +144,7 @@ public class Nano_Thief_Stats {
         NanoThief_Skill_7.getStats(this,Global.getSettings().getFighterWingSpec(DF_fighterToBuild));
 
     }
-    public int[] skillMulti = new int[10];
+    public int[] skillMulti = new int[11];
     public int reclaimMulti = 0;
     public Nano_Thief_Stats(PersonAPI commander, CampaignFleetAPI fleetAPI, FleetDataAPI fleet, String commanderID, boolean isAlly, int owner, FactionAPI faction){
         this.commander = commander;
@@ -161,45 +161,46 @@ public class Nano_Thief_Stats {
                     Nano_Thief_Skill_Base b = (Nano_Thief_Skill_Base) a;
                     switch (b.getId()){
                         case "SiC_NanoThief_NanoThiefBase":
+                            skillMulti[0]++;
                             break;
                         case "SiC_NanoThief_skill_1":
-                            skillMulti[0]++;
-                            reclaimMulti++;
-                            break;
-                        case "SiC_NanoThief_skill_2":
                             skillMulti[1]++;
                             reclaimMulti++;
                             break;
-                        case "SiC_NanoThief_skill_3":
+                        case "SiC_NanoThief_skill_2":
                             skillMulti[2]++;
                             reclaimMulti++;
                             break;
-                        case "SiC_NanoThief_skill_4":
+                        case "SiC_NanoThief_skill_3":
                             skillMulti[3]++;
                             reclaimMulti++;
                             break;
-                        case "SiC_NanoThief_skill_5":
+                        case "SiC_NanoThief_skill_4":
                             skillMulti[4]++;
                             reclaimMulti++;
                             break;
-                        case "SiC_NanoThief_skill_6":
+                        case "SiC_NanoThief_skill_5":
                             skillMulti[5]++;
                             reclaimMulti++;
                             break;
-                        case "SiC_NanoThief_skill_7":
+                        case "SiC_NanoThief_skill_6":
                             skillMulti[6]++;
                             reclaimMulti++;
                             break;
-                        case "SiC_NanoThief_skill_8":
+                        case "SiC_NanoThief_skill_7":
                             skillMulti[7]++;
                             reclaimMulti++;
                             break;
-                        case "SiC_NanoThief_skill_9":
+                        case "SiC_NanoThief_skill_8":
                             skillMulti[8]++;
                             reclaimMulti++;
                             break;
-                        case "SiC_NanoThief_skill_10":
+                        case "SiC_NanoThief_skill_9":
                             skillMulti[9]++;
+                            reclaimMulti++;
+                            break;
+                        case "SiC_NanoThief_skill_10":
+                            skillMulti[10]++;
                             reclaimMulti++;
                             break;
                     }

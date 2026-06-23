@@ -19,6 +19,7 @@ import net.java.games.input.Controller;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,9 +32,9 @@ public class Master_FinalButtons implements CustomUIPanelPlugin {
 
         tooltip.getPosition().setLocation(0,0);
         ButtonAPI exit = tooltip.addButton("Cancel","exit",100,50,10);
-        exit.setShortcut(Keyboard.KEY_BACK,true);
+        exit.setShortcut(Keyboard.KEY_ESCAPE,true);
         ButtonAPI finish = tooltip.addButton("Accept","finish",100,50,10);
-        finish.setShortcut(Keyboard.KEY_ESCAPE,true);
+        finish.setShortcut(Keyboard.KEY_RETURN,true);
         finish.getPosition().rightOfMid(exit,5);
 
         panel.addUIElement(tooltip);

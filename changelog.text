@@ -1,3 +1,10 @@
+V0.1.3:
+    mastery interface:
+        fixed broken mastery display on some ui scaling settings.
+        added an escape and enter hotkey, for ease of use.
+    prep work:
+        started working on the code that will handle multiple instances of nano-thief in the same fleet. for people with that one very spooky mod.
+        note: not yet working probably a bit buggy. Will be working on it as I go.
 V0.1.2:
     settings:
         added in a new setting to override fabricator cost for mastery (they were op as hell otherwise)
