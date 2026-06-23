@@ -13,7 +13,13 @@ import com.fs.starfarer.api.ui.ButtonAPI;
 import com.fs.starfarer.api.ui.CustomPanelAPI;
 import com.fs.starfarer.api.ui.PositionAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
+import jdk.jfr.EventType;
+import net.java.games.input.Component;
+import net.java.games.input.Controller;
+import org.lwjgl.input.Keyboard;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +32,9 @@ public class Master_FinalButtons implements CustomUIPanelPlugin {
 
         tooltip.getPosition().setLocation(0,0);
         ButtonAPI exit = tooltip.addButton("Cancel","exit",100,50,10);
+        exit.setShortcut(Keyboard.KEY_ESCAPE,true);
         ButtonAPI finish = tooltip.addButton("Accept","finish",100,50,10);
+        finish.setShortcut(Keyboard.KEY_RETURN,true);
         finish.getPosition().rightOfMid(exit,5);
 
         panel.addUIElement(tooltip);
@@ -55,7 +63,17 @@ public class Master_FinalButtons implements CustomUIPanelPlugin {
 
     @Override
     public void processInput(List<InputEventAPI> events) {
+        if (events.isEmpty()) return;
+        //MasteryHolder.log.info("getting event....");
+        for (InputEventAPI a : events){
+            //a.getEventChar();
+            //InputEvent.
+            //a.getEventChar() == Component.Identifier.Key.ESCAPE;
+            //if (a.isControlDownEvent(InputEvent.)){
 
+            //}
+        }
+        //MasteryHolder.log.info("failed to get shifted.");
     }
 
     @Override

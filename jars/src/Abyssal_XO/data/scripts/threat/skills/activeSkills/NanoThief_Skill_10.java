@@ -85,10 +85,10 @@ public class NanoThief_Skill_10 extends NanoThief_SkillBase{
             //Settings.log.info("done eq: (int)((("+nextShip.reloadTime+" - "+cooldown+") / "+nextShip.reloadTime+") * "+100+") = "+percentDone);
             if (hasEnouthReclaim()){
                 Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_10", "graphics/icons/hullsys/temporal_shell.png",
-                        "Mastery Status", percentDone+"% ready to launch construction swarm...", false);
+                        "Mastery Status", percentDone+"% ready to build "+nextShip.name+".", false);
             }else{
                 Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_10", "graphics/icons/hullsys/temporal_shell.png",
-                        "Mastery Status", "Swarm Prepared. Require at least "+(int)nextShip.cost+" reclaim to build "+nextShip.name+".", true);
+                        "Mastery Status", "Require at least "+(int)nextShip.cost+" reclaim to build "+nextShip.name+".", true);
             }
         }
     }
