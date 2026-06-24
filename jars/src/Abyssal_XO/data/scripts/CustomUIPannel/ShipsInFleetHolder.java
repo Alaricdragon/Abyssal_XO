@@ -43,7 +43,7 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
 
         MasteryHolder.log.info("    added button...");
 
-        int size = (int) (panel.getPosition().getWidth() / 100);
+        int size = (int) (panel.getPosition().getWidth() / (100+1));
         int at = 0;
         for (int a = 0; a < activeMembers.size(); a++){
             FleetMemberAPI ship = activeMembers.get(a);
@@ -57,7 +57,10 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
             if (at % size == 0){
                 if (last_c != null) last_b.getPosition().belowMid(last_c,1);
                 last_c = z.two;
-            }else if (last_a != null) last_b.getPosition().rightOfMid(last_a,1);
+            }else if (last_a != null){
+                last_b.getPosition().rightOfMid(last_a,1);
+                tooltip.addSpacer(-lastItemHeight);//-(last_b.getPosition().getHeight()+26+26+50));
+            }
             last_a = last_b;
             at++;
         }
@@ -84,6 +87,7 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
         return Mastery_HeldShip_Single.createItem(master,tooltip,ship,idInFleet,100,50);
 
     }*/
+    private float lastItemHeight = 0;
     private Pair<UIComponentAPI,UIComponentAPI> addSingleShip_Working(FleetMemberAPI ship, int idInFleet){
         ArrayList<FleetMemberAPI> ships = new ArrayList<>();
         UIComponentAPI labal0;
@@ -92,21 +96,25 @@ public class ShipsInFleetHolder implements CustomUIPanelPlugin {
         ships.add(ship);
         tooltip.addShipList(1,1,100, Misc.getBasePlayerColor(),ships,10);
         labal0 = tooltip.getPrev();
+        lastItemHeight = labal0.getPosition().getHeight()+10;
         labal1 = labal0;
 
         tooltip.addPara(ship.getShipName(),1);
         labal2 = tooltip.getPrev();
+        lastItemHeight+=labal2.getPosition().getHeight();
         labal2.getPosition().setSize(100,26);
         labal2.getPosition().belowMid(labal1,2);
         labal1 = labal2;
 
         tooltip.addPara(ship.getVariant().getDisplayName(),1);
         labal2 = tooltip.getPrev();
+        lastItemHeight+=labal2.getPosition().getHeight();
         labal2.getPosition().setSize(100,26);
         labal2.getPosition().belowMid(labal1,5);
         labal1 = labal2;
 
         ButtonAPI but = tooltip.addButton("Select Ship","add:"+idInFleet,100,50,1);
+        lastItemHeight+=but.getPosition().getHeight();
         but.getPosition().belowMid(labal1,5);
 
         //tooltip.addComponent(panel.createCustomPanel(100,100,new DisplayShip()));

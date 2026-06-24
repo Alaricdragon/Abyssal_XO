@@ -2,8 +2,10 @@ package Abyssal_XO.data.scripts.threat.skills.activeSkills;
 
 import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
+import Abyssal_XO.data.scripts.threat.listiners.NanoThief_AddReclaimAtStartListiner;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_8;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_9;
+import Abyssal_XO.data.scripts.threat.skills.NanoThief_Base;
 import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.ShipAPI;
@@ -14,6 +16,8 @@ import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.fs.starfarer.api.impl.combat.threat.ThreatShipConstructionScript.SHIP_UNDER_CONSTRUCTION;
 
 public class NanoThief_ShipSkills implements AdvanceableListener {
     private static Logger log = Global.getLogger(Nano_Thief_Stats.class);
@@ -42,6 +46,11 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
         //set skills here.
         //add in a switch statment to determin data about this ship.
         stats.getAvailableShips().add(ship);
+        if (stats.isValidReclaimTarget(ship)){
+            int op = (int) (ship.getFleetMember() != null ? ship.getFleetMember().getDeploymentPointsCost() : ship.getDeployCost());
+            op = NanoThief_Base.reclaimOnStartPerDP*stats.reclaimMulti*op;
+            ship.addListener(new NanoThief_AddReclaimAtStartListiner(ship,op,stats,this));
+        }
         for (Nano_Thief_Skill_Base a : stats.getSkills()){
             if (a instanceof NanoThief_9) activeWellOverloaded = true;
             NanoThief_SkillBase listener = a.createListiner(this,this.ship);
@@ -196,7 +205,7 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
         //getCostMulti();
         //getTimeMulti();
         attemptToDisplayStats();
-        if (ship.getTags().contains(ThreatShipConstructionScript.SHIP_UNDER_CONSTRUCTION)) return;//never active on ships being built.
+        if (ship.getTags().contains(SHIP_UNDER_CONSTRUCTION)) return;//never active on ships being built.
         if (ship.isHulk()) return;
         if (!activeWellOverloaded && (ship.getFluxTracker().isOverloaded() || ship.getFluxTracker().isVenting())) return;
         for (NanoThief_SkillBase a : alwaysSkills) a.advance(amount);

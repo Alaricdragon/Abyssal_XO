@@ -22,6 +22,7 @@ import static Abyssal_XO.data.scripts.Settings.NANO_THIEF_RECLAIM_RECYCLE_PERCEN
 
 public class NanoThief_Base extends Nano_Thief_Skill_Base {
     private static final String key = "AbyssalXO_Nano_Thief_Skill_0";
+    public static int reclaimOnStartPerDP = 10; //50 * 10 = 500 on a 10 op ship. 5k on a 100 op ship.
     @Override
     public String getAffectsString() {
         return "every ship destroyed in combat";
@@ -41,7 +42,9 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
         * */
         tooltip.addPara("When any ship is destroyed in combat, harvest a Reclaim Package worth %s/%s/%s/%s reclaim multiplied by the number of skills in this attribute other then this one, depending on hullsize. reclaim packages will then go to the nearest ship in the fleet. Any  Reclaim Packages that reaches there target will be converted into reclaim.",0f,Misc.getHighlightColor(), Misc.getHighlightColor(),""+Settings.NANO_THIEF_RECLAIM_GAIN[0],""+Settings.NANO_THIEF_RECLAIM_GAIN[1],""+Settings.NANO_THIEF_RECLAIM_GAIN[2],""+Settings.NANO_THIEF_RECLAIM_GAIN[3]);
         String percent = NANO_THIEF_RECLAIM_RECYCLE_PERCENT *100 +"%";
-        tooltip.addPara("When a ship holding any amount of Reclaim is destroyed, add %s of the held Reclaim to the Reclaim Package",0f,Misc.getHighlightColor(), Misc.getHighlightColor(),percent);
+        tooltip.addPara("When any ship holding any amount of Reclaim is destroyed, add %s of the held Reclaim to the Reclaim Package",0f,Misc.getHighlightColor(), Misc.getHighlightColor(),percent);
+        String reclaimPerOp = "" + reclaimOnStartPerDP;
+        tooltip.addPara("Ships in this fleet enter combat with %s reclaim per deployment point multiplied by the number of skills in this attribute other then this one.",0f,Misc.getHighlightColor(),Misc.getHighlightColor(),reclaimPerOp);
         tooltip.addSpacer(10f);
         LabelAPI label = tooltip.addPara("\"Its an art you know. Salvaging ships on the battlefield, well under fire. There are legends of rebels harvesting whole fleets on the battlefields, sending the patchwork wreckage to attack there oppressors. Its an wonderful thing to watch. \n Makes me want to cry tears of joy. And envy.\"", Misc.getTextColor(), 0f);
         tooltip.addPara(" - unknown", Misc.getTextColor(), 0f);
@@ -67,7 +70,8 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
         }
             //List<NanoThief_ShipSkillsAdder> a = ship.getListenerManager().getListeners(NanoThief_ShipSkillsAdder.class);
             //listiner = a.get(0);
-        ship.addListener(new NanoThief_ShipSkillsAdder(ship,data));
+        NanoThief_ShipSkillsAdder a = new NanoThief_ShipSkillsAdder(ship,data);
+        ship.addListener(a);
         /*/
 
         if (!Global.getCurrentState().equals(GameState.COMBAT)) return;
@@ -92,7 +96,6 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
     @Override
     public void applyEffectsBeforeShipCreation(SCData data, MutableShipStatsAPI stats, ShipVariantAPI variant, ShipAPI.HullSize hullSize, String id) {
         //if (!Global.getCurrentState().equals(GameState.COMBAT)) return;
-
         //log.info("THIS IS AFTER SHIP CREATION");
     }
     @Override

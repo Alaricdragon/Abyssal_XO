@@ -75,7 +75,7 @@ public class HeldShipsHolder implements CustomUIPanelPlugin {
         UIComponentAPI last_a = null;//pTemp;
         UIComponentAPI last_b;
         UIComponentAPI last_c = null;
-        int size = (int) (width / 100);
+        int size = (int) (width / (100+1));// (1050 / 100 = 10.5)
         int at = 0;
         for (Mastery_HeldShip_Single a : heldShips){
             //FleetMemberAPI ship = fleetList.get(a);
@@ -84,7 +84,10 @@ public class HeldShipsHolder implements CustomUIPanelPlugin {
             if (at % size == 0){
                 if (last_c != null) last_b.getPosition().belowMid(last_c,1);
                 last_c = last_b;
-            }else if (last_a != null) last_b.getPosition().rightOfMid(last_a,1);
+            }else if (last_a != null){
+                last_b.getPosition().rightOfMid(last_a,1);
+                tooltip.addSpacer(-(last_b.getPosition().getHeight() + 5));
+            }
             last_a = last_b;
             at++;
         }
