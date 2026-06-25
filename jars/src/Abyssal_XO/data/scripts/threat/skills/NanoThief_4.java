@@ -58,4 +58,9 @@ public class NanoThief_4 extends Nano_Thief_Skill_Base {
     public NanoThief_SkillBase createListiner(NanoThief_ShipSkills skills, ShipAPI ship) {
         return new NanoThief_Skill_4(skills,ship);
     }
+
+    @Override
+    public int getNanoThiefID() {
+        return 4;
+    }
 }

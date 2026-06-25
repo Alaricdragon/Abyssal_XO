@@ -60,8 +60,8 @@ public class NanoThief_Skill_9_2 extends NanoThief_SkillBase{
         rechargeTime = (float) (ct-removedTime);
         recharging = true;
         ship.getFluxTracker().setOverloadDuration((float) (ct-removedTime));
-        skills.addCostMod("9_2",NanoThief_9.overloadSkillCost);
-        skills.addSpeedMod("9_2", (float) (NanoThief_9.overloadSkillSpeed));
+        skills.addCostMod("9_2",NanoThief_9.overloadSkillCost* skills.stats.skillMulti[9]);
+        skills.addSpeedMod("9_2", (float) (NanoThief_9.overloadSkillSpeed* skills.stats.skillMulti[9]));
         //log.info("set overload time to "+(ct-removedTime)+" with "+cost+" reclaim");
     }
 }

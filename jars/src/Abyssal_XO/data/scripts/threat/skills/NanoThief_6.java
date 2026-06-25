@@ -27,25 +27,23 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
     *               3) some type of swarmer
     *           2) make it so basic attack swarms no longer spawn as Sim Fighter Wings
     * */
-    public static final float dpPerFighters = 10;
-    public static final int MINRANGEOFWING = 2000;
+    public static float dpPerFighters = 10;
+    public static int MINRANGEOFWING = 2000;
 
 
 
     //public static final int ReclaimPerControl_BASE = 1000;
-    public static final float CustomSwarm_COST_BASE = 20;//swarms cost 100 at 10 op, 200 at 20, 300 at 30.
-    public static final float CustomSwarm_COST_PEROP = 10;//swarms cost 100 at 10 op, 200 at 20, 300 at 30.
-    public static final float CustomSwarm_BUILDTIME_PREREFIT = 1f;//swarms nerfed to build at normal 100% refit rate.
-    public static final float CustomSwarm_RefundPercent = 0.5f;
-    public static final float CustomSwarm_RefundPercent_Bomber = CustomSwarm_RefundPercent;
-    public static final int CustomSwarm_TTL = 60;//swrams get exstea base TTL because they already die from shoting wepons.
-
-
+    public static float CustomSwarm_COST_BASE = 20;//swarms cost 100 at 10 op, 200 at 20, 300 at 30.
+    public static float CustomSwarm_COST_PEROP = 10;//swarms cost 100 at 10 op, 200 at 20, 300 at 30.
+    public static double CustomSwarm_BUILDTIME_PREREFIT = 1f;//swarms nerfed to build at normal 100% refit rate.
+    public static double CustomSwarm_RefundPercent = 0.5f;
+    public static double CustomSwarm_RefundPercent_Bomber = CustomSwarm_RefundPercent;
+    public static int CustomSwarm_TTL = 60;//swrams get exstea base TTL because they already die from shoting wepons.
     public static final int BASESWARM_COST = 100;
     public static final int BASESWARM_BUILDTIME = 15;
     public static final int BASESWARM_TTL = CustomSwarm_TTL;//swrams get exstea base TTL because they already die from shoting wepons.
 
-    public static final float[] speedPerSize = {0.5f,0.75f,1f,1.25f};
+    public static double[] speedPerSize = {0.5f,0.75f,1f,1.25f};
     public static void displayStats(TooltipMakerAPI panel, FighterWingSpecAPI a,boolean offincive){
         Nano_Thief_Stats spec = new Nano_Thief_Stats(a.getId(),offincive);//new Nano_Thief_Stats(a.getId());
         //NanoThief_6.getFighterID();
@@ -189,6 +187,11 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
     @Override
     public NanoThief_SkillBase createListiner(NanoThief_ShipSkills skills, ShipAPI ship) {
         return new NanoThief_Skill_6(skills, ship);
+    }
+
+    @Override
+    public int getNanoThiefID() {
+        return 6;
     }
 
     @Override

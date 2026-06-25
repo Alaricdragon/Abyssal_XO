@@ -47,6 +47,12 @@ public class NanoThief_1 extends Nano_Thief_Skill_Base {
     public NanoThief_SkillBase createListiner(NanoThief_ShipSkills skills, ShipAPI ship){
         return new NanoThief_Skill_1(skills,ship);
     }
+
+    @Override
+    public int getNanoThiefID() {
+        return 1;
+    }
+
     /*public static void main(String[] args){
         String speedV0 = speed*Utils.getExpenseValue(1,1,repairExspensalThreshold,repairExspensal)*100+"%";
         String speedV1 = speed*Utils.getExpenseValue(0.5,1,repairExspensalThreshold,repairExspensal)*100+"%";

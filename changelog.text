@@ -1,9 +1,25 @@
+V0.1.5:
+    internal:
+        prepared data for a future were I can, for example, have multiple of the same skills over multiple executive officers, and they would stack.
+        -note: not going to go down this root right now. because apparently, that is not what
+    safety overrides (mod):
+        (hopefully) fixed multiple desperate measures not working
+        (hopefully) fixed centralized production not working
+        (hopefully) improved mastery's in combat interface for instances were more then one is active.
+    balance:
+        Centralized Production:
+            now forges at 100 + (50 * (unrefined / 1000)) reclaim a second.
+            this was to make things a bit less confusing. also, to keep the speed of reclaim reasonable.
+    settings:
+        added settings for Centralized Production
+        added settings for Defensive Swarms
+        added settings for Decentralized Swarm Production
 V0.1.4:
     mastery interface:
         fixed some issues with the scrollbar going wayyy to far.
     balance:
         reclaim:
-            all ships now start combat with 10 reclaim per deployment point
+            all ships now start combat with 10 * skills * deployment point reclaim
             base reclaim value of a ship is now ship dp * skills * 25
             multisectional ships ship sections should now give 10% of the reclaim value of its parent ship (stacking per module destroyed).
         mastery:
@@ -14,6 +30,7 @@ V0.1.4:
     fixes:
         mostly fixed some issues with Mastery interface scrollbars
         fixed Scrapy Fortification applying its effects to modules permanently
+        fixed simulacrum ships giving to mush reclaim
     settings:
         added settings for reclaim gain stats.
 V0.1.3:

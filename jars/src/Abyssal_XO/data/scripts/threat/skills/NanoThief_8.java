@@ -9,28 +9,43 @@ import com.fs.starfarer.api.util.Misc;
 import second_in_command.SCData;
 
 public class NanoThief_8 extends Nano_Thief_Skill_Base {
+    //this needs to change.
     //so... what do I need to do here?
-    public static final double reclaimRefined = 60;
-    public static final double reclaimCost = 50;
-    public static final double speedMod = 2;
-    public static final double reclaimPerSpeedBost = 1000;
-    public static final double speedPerBost = 0.2;
+    public static double reclaimRaito = 1.2;
+    public static double reclaimPerSecondBase = 100; // 10 seconds for 1000 reclaim
+    public static double reclaimPerSecondPerBost = 50; // 50 = 20 seconds. 1000 = 150 = 7.5 seconds. 2000 = 200 = 5 seconds. 3000 = 250 = 4 seconds. 4000 = 300 = 3.3~ seconds. 5000 = 350 = 2.4?
 
-    public static final double keeptReclaim = 2000;
-    public static final double keeptReclaimAbility = 2;
+    //public static double reclaimRefined = 60;
+    //public static double reclaimCost = 50;
+    public static double speedMod = 2;
+    public static double reclaimPerSpeedBost = 1000;
+    //public static double speedPerBost = 0.2;//????
 
-    public static final double minReclaimToTarget = 0.5;
-    public static final double baseReclaimEfficiencyMod = 0.8;
+    public static double keeptReclaim = 2000;
+    public static double keeptReclaimAbility = 2;
+
+    public static double minReclaimToTarget = 0.5;
+    public static double baseReclaimEfficiencyMod = 0.8;
 
 
-    public static final double reclaimRaito = reclaimRefined / reclaimCost;
+    //public static double reclaimRaito = reclaimRefined / reclaimCost;
+
+    @Override
+    public int getNanoThiefID() {
+        return 8;
+    }
+
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
-        String line1a = ""+(int)reclaimRefined;
-        String line1b = ""+(int)reclaimCost;
+        //String line1a = ""+(int)reclaimRefined;
+        //String line1b = ""+(int)reclaimCost;
+        String line1a = ""+(int)reclaimPerSecondBase;
+        String line1b = ""+(int)reclaimPerSecondPerBost;
+        String line1c = ""+(int)reclaimPerSpeedBost;
 
-        String line2a = ""+(int)reclaimPerSpeedBost;
-        String line2b = (int)(speedPerBost*100)+"%";
+        //String line2a = ""+(int)reclaimPerSpeedBost;
+        //String line2b = (int)(speedPerBost*100)+"%";
+        String line2a = (int)((reclaimRaito*100))-100 + "%";
 
         String line3a = (int)keeptReclaim+"";
         String line3b = (int)keeptReclaimAbility+"";
@@ -40,8 +55,10 @@ public class NanoThief_8 extends Nano_Thief_Skill_Base {
         String line5a = (int)(100*(1-baseReclaimEfficiencyMod))+"%";
         tooltip.addPara("When the first reclaim package is created, the largest, highest mass ship in your fleet is marked as the Central Fabricator. Reclaim Packages will always chose to be processed at the Central Fabricator, provided it exists.",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         tooltip.addPara("The Central Fabricator will have the following changes:",0,Misc.getHighlightColor(),Misc.getHighlightColor());
-        tooltip.addPara("   -Every second it will produce %s refined reclaim from %s reclaim",0,Misc.getTextColor(),Misc.getHighlightColor(),line1a,line1b);
-        tooltip.addPara("   -For every %s reclaim held, produce refined reclaim %s faster",0,Misc.getTextColor(),Misc.getHighlightColor(),line2a,line2b);
+        //tooltip.addPara("   -Every second it will produce %s refined reclaim from %s reclaim",0,Misc.getTextColor(),Misc.getHighlightColor(),line1a,line1b);
+        tooltip.addPara("   -Every second it will refine %s reclaim. Will refine an additional %s reclaim per second for every %s reclaim in storge",0,Misc.getTextColor(),Misc.getHighlightColor(),line1a,line1b,line1c);
+        //tooltip.addPara("   -For every %s reclaim held, produce refined reclaim %s faster",0,Misc.getTextColor(),Misc.getHighlightColor(),line2a,line2b);
+        tooltip.addPara("   -Refined reclaim will have its value increased by %s",0,Misc.getTextColor(),Misc.getHighlightColor(),line2a);
         tooltip.addPara("   -will hold onto %s refined reclaim, or %s times the cost of its most costly ability, whatever is higher",0,Misc.getTextColor(),Misc.getHighlightColor(),line3a,line3b);
         tooltip.addPara("   -Will send refined reclaim packages to friendly ships, prioritizing ships with less reclaim",0,Misc.getTextColor(),Misc.getHighlightColor());
         tooltip.addPara("   -Only one Central Fabricator can be selected per battle.",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor());

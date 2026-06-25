@@ -45,10 +45,10 @@ public class NanoThief_Skill_9_1 extends NanoThief_SkillBase{
         adjustCRSpeed();
         if (crRegen <= 0) return;
         float crRegen2 = crRegen*amount;
-        double cost = skills.getModifiedCost(crRegen2*NanoThief_9.reclaimCostPerCR);
+        double cost = skills.getModifiedCost(crRegen2*NanoThief_9.reclaimCostPerCR* skills.stats.skillMulti[9]);
         cost = Math.min(cost,skills.getTotalReclaim());
         //double newCR = NanoThief_9.reclaimCostPerCR*(cost - ((skills.costMulti-1)*cost));
-        double newCR = cost / skills.getModifiedCost(NanoThief_9.reclaimCostPerCR);
+        double newCR = cost / skills.getModifiedCost(NanoThief_9.reclaimCostPerCR* skills.stats.skillMulti[9]);
         ship.setCurrentCR((float) (newCR+ship.getCurrentCR()));
         skills.useReclaim(cost);
     }

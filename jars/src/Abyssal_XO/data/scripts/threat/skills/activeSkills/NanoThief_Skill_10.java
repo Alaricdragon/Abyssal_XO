@@ -26,12 +26,12 @@ public class NanoThief_Skill_10 extends NanoThief_SkillBase{
         for (NanoThief_MasteryShipStats a : skills.stats.masteryShips) if (a.cost > maxCost) maxCost = (int) a.cost;
         return maxCost;
     }
-    private float cooldown = 0;
-    private float waiting = 0;
+    public float cooldown = 0;
+    public float waiting = 0;
     //private boolean onCooldown = false;
     //private boolean waiting = false;
-    NanoThief_MasteryShipStats nextShip;
-    private float waitTime = 0.25f;
+    public NanoThief_MasteryShipStats nextShip;
+    public float waitTime = 0.25f;
     @Override
     public void advance(float amount) {
         waiting+=amount;
@@ -52,7 +52,7 @@ public class NanoThief_Skill_10 extends NanoThief_SkillBase{
     }
     @Override
     public void displayStats() {
-        waitTime = 0.1f;//for player ship waittime. for a faster, smover, interface.
+        /*waitTime = 0.1f;//for player ship waittime. for a faster, smover, interface.
         if (!hasEnouthCR()){
             Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_10", "graphics/icons/hullsys/temporal_shell.png",
                     "Mastery Status", "At least "+(int)(NanoThief_10.minCR*100)+"% cr is required to create construction swarms", true);
@@ -90,7 +90,7 @@ public class NanoThief_Skill_10 extends NanoThief_SkillBase{
                 Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_10", "graphics/icons/hullsys/temporal_shell.png",
                         "Mastery Status", "Require at least "+(int)nextShip.cost+" reclaim to build "+nextShip.name+".", true);
             }
-        }
+        }*/
     }
     private void buildShip(){
         skills.useReclaim(nextShip.cost);
@@ -125,19 +125,19 @@ public class NanoThief_Skill_10 extends NanoThief_SkillBase{
         //skills.stats.getOffinciveFighterCores().add(fighter);
         //return fighter;//note: not a fighter, but instead something very diffrent.
     }
-    private boolean hasEnouthReclaim(){
+    public boolean hasEnouthReclaim(){
         if (skills.getTotalReclaim() < nextShip.cost) return false;
         return true;
     }
-    private boolean hasEnouthDP(){
+    public boolean hasEnouthDP(){
         if (!(skills.stats.getDPWithToBeConstructed(ship.getOriginalOwner()) >= nextShip.ship.getFleetPointCost())) return false;
         return true;
     }
-    private boolean inStateOfPrevention(){
+    public boolean inStateOfPrevention(){
         if (ship.isPhased()) return false;
         return true;
     }
-    private boolean hasEnouthCR(){
+    public boolean hasEnouthCR(){
         if (ship.getCurrentCR() < NanoThief_10.minCR) return false;
         return true;
     }

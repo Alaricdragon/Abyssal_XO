@@ -22,6 +22,12 @@ public class NanoThief_5 extends Nano_Thief_Skill_Base {
 
     private static final float costMod = 1.3f;
     private static final float buildTimeMod = 1.3f;
+
+    @Override
+    public int getNanoThiefID() {
+        return 5;
+    }
+
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
         /*

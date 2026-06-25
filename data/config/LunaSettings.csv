@@ -5,6 +5,42 @@ NA_BASE_reclaimFromHostilePerDP,Reclaim dead ships provide per deployment point 
 NA_BASE_reclaimMultiFromParent,Percent of reclaim modules on moduler ships siphin from there main ship when destroyed,Double,0.1,,,0,1,Nano Thief: Base Skill
 NA_BASE_reclaimRecyclePercent,Percent of reclaim adding to reclaim packages when a ship is destroyed (not used for ship module),Double,0.1,,,0,1,Nano Thief: Base Skill
 ,,,,,,,,
+NA_DSP_Header_0,,Header,Base stats for simulacrum fighters,,please note: This also effects Defensive Swarms simulacrum fighter wings,,,Nano Thief: Decentralized Swarms
+NA_DSP_CustomSwarm_COST_BASE,Simulacrum fighter base reclaim cost ,Int,20,,,1,200,Nano Thief: Decentralized Swarms
+NA_DSP_CustomSwarm_COST_PEROP,Simulacrum fighter reclaim cost per ordnace ponit,Int,10,,,1,200,Nano Thief: Decentralized Swarms
+NA_DSP_CustomSwarm_BUILDTIME_PREREFIT,Simulacrum fighter build time multi,Double,1,,base build time is refit time multiplyed by wing size,0.1,5,Nano Thief: Decentralized Swarms
+NA_DSP_CustomSwarm_RefundPercent,Simulacrum fighter refund when landing,Double,0.5,,,0,1,Nano Thief: Decentralized Swarms
+NA_DSP_CustomSwarm_RefundPercent_Bomber,Simulacrum fighter refune when landing for bombers,Double,0.5,,,0,1,Nano Thief: Decentralized Swarms
+#NA_DSP_,Simulacrum fighter base swarm stuff please ignore,Int,2,,,0,10,Nano Thief: Decentralized Swarms
+#NA_DSP_,Simulacrum fighter base swarm stuff please ignore,Int,3,,,0,10,Nano Thief: Decentralized Swarms
+NA_DS_Header_1,,Header,Decentralized Swarm Production,,please note: simulacrum fighter settings are stored in Decentralized Swarm Production,,,Nano Thief: Decentralized Swarms
+NA_DSP_dpPerFighters,Deployment ponits per fighter capacity,Int,10,,,1,100,Nano Thief: Decentralized Swarms
+NA_DSP_MINRANGEOFWING,Min engagment range for wing to be invalid,Int,2000,,,1,10000,Nano Thief: Decentralized Swarms
+NA_DSP_speedPerSize_0,Build speed for frigates,Double,0.5,,,0.1,5,Nano Thief: Decentralized Swarms
+NA_DSP_speedPerSize_1,Build speed for destroyers,Double,0.75,,,0.1,5,Nano Thief: Decentralized Swarms
+NA_DSP_speedPerSize_2,Build speed for cruisers,Double,1,,,0.1,5,Nano Thief: Decentralized Swarms
+NA_DSP_speedPerSize_3,Build speed for capitals,Double,1.25,,,0.1,5,Nano Thief: Decentralized Swarms
+,,,,,,,,
+NA_DS_Header,,Header,Defensive Swarms,,please note: simulacrum fighter settings are stored in Decentralized Swarm Production,,,Nano Thief: Defensive Swarms
+NA_DS_numPerSize_0,Fighters for frigates,Int,1,,,0,10,Nano Thief: Defensive Swarms
+NA_DS_numPerSize_1,Fighters for destroyers,Int,1,,,0,10,Nano Thief: Defensive Swarms
+NA_DS_numPerSize_2,Fighters for cruisers,Int,2,,,0,10,Nano Thief: Defensive Swarms
+NA_DS_numPerSize_3,Fighters for capitals,Int,3,,,0,10,Nano Thief: Defensive Swarms
+NA_DS_speedPerSize_0,Build speed for frigates,Double,0.5,,,0.1,5,Nano Thief: Defensive Swarms
+NA_DS_speedPerSize_1,Build speed for destroyers,Double,0.75,,,0.1,5,Nano Thief: Defensive Swarms
+NA_DS_speedPerSize_2,Build speed for cruisers,Double,1,,,0.1,5,Nano Thief: Defensive Swarms
+NA_DS_speedPerSize_3,Build speed for capitals,Double,1.25,,,0.1,5,Nano Thief: Defensive Swarms
+,,,,,,,,
+NA_CR_Header,,Header,Centralized Production,,,,,Nano Thief: Centralized Production
+NA_CR_reclaimRaito,Refined reclaim created per reclaim,Double,1.2,,,1,10,Nano Thief: Centralized Production
+NA_CR_reclaimPerSecondBase,Reclaim refined per second,Int,100,,,1,1000,Nano Thief: Centralized Production
+NA_CR_reclaimPerSecondPerBost,Reclaim refined per bost,Int,50,,,1,1000,Nano Thief: Centralized Production
+NA_CR_reclaimPerSpeedBost,Reclaim required per bost,Int,1000,,,1,10000,Nano Thief: Centralized Production
+NA_CR_speedMod,Refined reclaim speed multi,Double,2,,,0.1,5,Nano Thief: Centralized Production
+NA_CR_keeptReclaim,Refined reclaim keept on Central Fabracator at minimum,Int,2000,,,1,10000,Nano Thief: Centralized Production
+NA_CR_keeptReclaimAbility,Refined reclaim keept on Central Fabracator multiplyed by the highest cost skill,Double,2,,,0.1,5,Nano Thief: Centralized Production
+NA_CR_baseReclaimEfficiencyMod,How efficant normal reclaim is if the Central Fabracator is destroyed,Double,0.8,,,0,1,Nano Thief: Centralized Production
+,,,,,,,,
 NA_DM_Header,,Header,Desperate Measures,,,,,Nano Thief: Desperate Measures
 NA_DM_crStart,max CR for cr bonuses,Double,0.4,,,0,1,Nano Thief: Desperate Measures
 NA_DM_crReginSpeed,cr regen speed,Double,0.06,,,0,1,Nano Thief: Desperate Measures

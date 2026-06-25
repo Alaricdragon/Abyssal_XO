@@ -26,6 +26,11 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
     }
 
     @Override
+    public int getNanoThiefID() {
+        return 0;
+    }
+
+    @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
         /*
     When any ship is destroyed in combat, harvest a Reclaim Package worth 1000/2000/3000/4000 reclaim, depending on hullsize. reclaim packages will then go to the nearest ship in the fleet. Any  Reclaim Packages that reaches there target will be converted into reclaim.

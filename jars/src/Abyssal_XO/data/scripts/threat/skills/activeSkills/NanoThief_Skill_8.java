@@ -127,8 +127,8 @@ public class NanoThief_Skill_8 extends NanoThief_SkillBase{
 
     }
     public void refineReclaim(float amount){
-        double mutli = 1+(NanoThief_8.speedPerBost * (fakeReclaim / NanoThief_8.reclaimPerSpeedBost));
-        double cost = Math.min(NanoThief_8.reclaimCost*amount*mutli, fakeReclaim);
+        double mutli = (fakeReclaim / NanoThief_8.reclaimPerSpeedBost);
+        double cost = Math.min(skills.stats.skillMulti[8]*amount*((NanoThief_8.reclaimPerSecondPerBost*mutli)+NanoThief_8.reclaimPerSecondBase), fakeReclaim);
         double gain = NanoThief_8.reclaimRaito*cost;
         //log.info("get refined stats as: "+mutli+", "+cost+", "+gain);
         if (gain <= 0) return;

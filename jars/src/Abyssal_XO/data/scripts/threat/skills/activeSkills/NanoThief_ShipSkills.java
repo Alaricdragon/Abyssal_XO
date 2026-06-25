@@ -7,6 +7,7 @@ import Abyssal_XO.data.scripts.threat.skills.NanoThief_8;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_9;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_Base;
 import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
+import Abyssal_XO.data.scripts.threat.skills.interfaces.NanoThief_InterfaceBase;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.listeners.AdvanceableListener;
@@ -16,6 +17,7 @@ import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import static com.fs.starfarer.api.impl.combat.threat.ThreatShipConstructionScript.SHIP_UNDER_CONSTRUCTION;
 
@@ -23,11 +25,12 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
     private static Logger log = Global.getLogger(Nano_Thief_Stats.class);
     @Getter
     private HashMap<ShipAPI,reclaim> incomingReclaim = new HashMap<>();
-    protected Nano_Thief_Stats stats;
+    public Nano_Thief_Stats stats;
     @Getter
     private ArrayList<NanoThief_SkillBase> skills = new ArrayList<>();
     @Getter
     private ArrayList<NanoThief_SkillBase> alwaysSkills = new ArrayList<>();
+    private ArrayList<NanoThief_InterfaceBase> interfaces = new ArrayList<>();
     protected ShipAPI ship;
     protected float timeflow=1f;
     protected double costMulti=1;
@@ -51,25 +54,20 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
             op = NanoThief_Base.reclaimOnStartPerDP*stats.reclaimMulti*op;
             Global.getCombatEngine().addPlugin(new NanoThief_AddReclaimAtStartListiner(ship,op,stats,this));
         }
+
+        boolean[] added = new boolean[11];
         for (Nano_Thief_Skill_Base a : stats.getSkills()){
+            if (added[a.getNanoThiefID()] && !a.canMulitAddListiners()) continue;
+            added[a.getNanoThiefID()] = true;
             if (a instanceof NanoThief_9) activeWellOverloaded = true;
             NanoThief_SkillBase listener = a.createListiner(this,this.ship);
             if (listener != null) {
                 addListener(listener, ship);
             }
-
             NanoThief_SkillBase[] listeners = a.createListiners(this,this.ship);
-            if (listeners == null) continue;
-            addListeners(listeners,ship);
-            //if (listener == null) continue;
-            //skills.add(listener);
-            /*if (listener.applyToModules()){
-                for (ShipAPI b : ship.getChildModulesCopy()){
-                    listener = a.createListiner(this,b);
-                    if (listener == null) continue;
-                    skills.add(listener);
-                }
-            }*/
+            if (listeners != null) {
+                addListeners(listeners, ship);
+            }
         }
 
         for (NanoThief_SkillBase a : removedSkills){
@@ -78,6 +76,19 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
         addChildShips(ship);
         for (NanoThief_SkillBase a : skills) a.prepareData();
         for (NanoThief_SkillBase a : alwaysSkills) a.prepareData();
+
+        added = new boolean[11];
+        for (Nano_Thief_Skill_Base a : stats.getSkills()){
+            if (added[a.getNanoThiefID()]) continue;
+            added[a.getNanoThiefID()] = true;
+            NanoThief_InterfaceBase c = a.createInterface();
+            if (c == null) continue;
+            ArrayList<NanoThief_SkillBase> validListeners = new ArrayList<>();
+            for (NanoThief_SkillBase b : skills) if (c.validListener(b)) validListeners.add(b);
+            for (NanoThief_SkillBase b : alwaysSkills) if (c.validListener(b)) validListeners.add(b);
+            c.prepareData(this,validListeners);
+            interfaces.add(c);
+        }
     }
     private void addChildShips(ShipAPI ship){
         for (ShipAPI a : ship.getChildModulesCopy()){
@@ -248,7 +259,10 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
         Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF+"_4", "graphics/icons/hullsys/temporal_shell.png",
                 "Prepared Simulacrum Fighter Wing", stored+"/"+maxStorge, false);*/
 
-
+        for (NanoThief_InterfaceBase a : interfaces){
+            a.displayStats();
+        }
+        //todo: remove this, and the one for skills. they will be invalidated.
         for (NanoThief_SkillBase a : alwaysSkills){
             a.displayStats();
         }

@@ -24,16 +24,16 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         float speedMult;
         switch (ship.getHullSize()){
             case CAPITAL_SHIP:
-                speedMult = 1 + (1-NanoThief_6.speedPerSize[3]);
+                speedMult = (float) (1 + (1-NanoThief_6.speedPerSize[3]));
                 break;
             case CRUISER:
-                speedMult = 1 + (1-NanoThief_6.speedPerSize[2]);
+                speedMult = (float) (1 + (1-NanoThief_6.speedPerSize[2]));
                 break;
             case DESTROYER:
-                speedMult = 1 + (1-NanoThief_6.speedPerSize[1]);
+                speedMult = (float) (1 + (1-NanoThief_6.speedPerSize[1]));
                 break;
             default:
-                speedMult = 1 + (1-NanoThief_6.speedPerSize[0]);
+                speedMult = (float) (1 + (1-NanoThief_6.speedPerSize[0]));
         }
         recharge = skills.stats.OF_productionTime*speedMult;
     }
@@ -45,12 +45,12 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
             spec.OF_swarmCost = NanoThief_6.BASESWARM_COST;
             spec.OF_productionTime = NanoThief_6.BASESWARM_BUILDTIME;
             spec.OF_ttl = NanoThief_6.BASESWARM_TTL;
-            spec.OF_recyclePerFighter = (spec.OF_swarmCost / Math.max(spec.OF_wingSize,1))*NanoThief_6.CustomSwarm_RefundPercent;
+            spec.OF_recyclePerFighter = (float) ((spec.OF_swarmCost / Math.max(spec.OF_wingSize,1))*NanoThief_6.CustomSwarm_RefundPercent);
             logStats(spec);
             return;
         }
         spec.OF_swarmCost = (a.getOpCost(a.getVariant().getStatsForOpCosts())*NanoThief_6.CustomSwarm_COST_PEROP)+NanoThief_6.CustomSwarm_COST_BASE;
-        spec.OF_productionTime = a.getNumFighters() * a.getRefitTime() * NanoThief_6.CustomSwarm_BUILDTIME_PREREFIT;
+        spec.OF_productionTime = (float) (a.getNumFighters() * a.getRefitTime() * NanoThief_6.CustomSwarm_BUILDTIME_PREREFIT);
         spec.OF_recyclePerFighter = (spec.OF_swarmCost / Math.max(spec.OF_wingSize,1));
         spec.OF_ttl = NanoThief_6.CustomSwarm_TTL;
         if (a.getRole().equals(WingRole.BOMBER)){
