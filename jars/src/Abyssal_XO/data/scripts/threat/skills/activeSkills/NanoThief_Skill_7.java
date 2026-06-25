@@ -36,19 +36,19 @@ public class NanoThief_Skill_7 extends NanoThief_SkillBase{
         switch (ship.getHullSize()){
             case CAPITAL_SHIP:
                 numShips = NanoThief_7.numPerSize[3];
-                speedMult = 1 + (1-NanoThief_7.speedPerSize[3]);
+                speedMult = (float) (1 + (1-NanoThief_7.speedPerSize[3]));
                 break;
             case CRUISER:
                 numShips = NanoThief_7.numPerSize[2];
-                speedMult = 1 + (1-NanoThief_7.speedPerSize[2]);
+                speedMult = (float) (1 + (1-NanoThief_7.speedPerSize[2]));
                 break;
             case DESTROYER:
                 numShips = NanoThief_7.numPerSize[1];
-                speedMult = 1 + (1-NanoThief_7.speedPerSize[1]);
+                speedMult = (float) (1 + (1-NanoThief_7.speedPerSize[1]));
                 break;
             default:
                 numShips = NanoThief_7.numPerSize[0];
-                speedMult = 1 + (1-NanoThief_7.speedPerSize[0]);
+                speedMult = (float) (1 + (1-NanoThief_7.speedPerSize[0]));
         }
         recharge = skills.stats.DF_productionTime*speedMult;
         maxFighters = (int) numShips;
@@ -78,12 +78,12 @@ public class NanoThief_Skill_7 extends NanoThief_SkillBase{
             spec.DF_swarmCost = NanoThief_6.BASESWARM_COST;
             spec.DF_productionTime = NanoThief_6.BASESWARM_BUILDTIME;
             spec.DF_ttl = NanoThief_6.BASESWARM_TTL;
-            spec.DF_recyclePerFighter = (spec.DF_swarmCost / Math.max(spec.DF_wingSize,1))*NanoThief_6.CustomSwarm_RefundPercent;
+            spec.DF_recyclePerFighter = (float) ((spec.DF_swarmCost / Math.max(spec.DF_wingSize,1))*NanoThief_6.CustomSwarm_RefundPercent);
             logStats(spec);
             return;
         }
         spec.DF_swarmCost = (a.getOpCost(a.getVariant().getStatsForOpCosts())*NanoThief_6.CustomSwarm_COST_PEROP)+NanoThief_6.CustomSwarm_COST_BASE;
-        spec.DF_productionTime = a.getNumFighters() * a.getRefitTime() * NanoThief_6.CustomSwarm_BUILDTIME_PREREFIT;
+        spec.DF_productionTime = (float) (a.getNumFighters() * a.getRefitTime() * NanoThief_6.CustomSwarm_BUILDTIME_PREREFIT);
         spec.DF_recyclePerFighter = (spec.DF_swarmCost / Math.max(spec.DF_wingSize,1));
         spec.DF_ttl = NanoThief_6.CustomSwarm_TTL;
         if (a.getRole().equals(WingRole.BOMBER)){

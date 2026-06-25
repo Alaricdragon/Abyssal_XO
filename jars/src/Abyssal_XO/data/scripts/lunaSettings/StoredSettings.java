@@ -1,7 +1,5 @@
 package Abyssal_XO.data.scripts.lunaSettings;
-import Abyssal_XO.data.scripts.threat.skills.NanoThief_10;
-import Abyssal_XO.data.scripts.threat.skills.NanoThief_9;
-import Abyssal_XO.data.scripts.threat.skills.NanoThief_Base;
+import Abyssal_XO.data.scripts.threat.skills.*;
 import com.fs.starfarer.api.Global;
 import lunalib.lunaSettings.LunaSettings;
 
@@ -20,6 +18,9 @@ public class StoredSettings {
     private static void getLunaSettings(){
         luna_NA_Base();
         //-
+        luna_NA_DescentralizedSwarms();
+        luna_NA_DefensiveSwarms();
+        luna_NA_CentralizedProduction();
         luna_NA_Desprate();
         luna_NA_Mastery();
     }
@@ -29,7 +30,41 @@ public class StoredSettings {
         NanoThief_Base.reclaimMultiFromParent = LunaSettings.getDouble("Abyssal_XO","NA_BASE_reclaimMultiFromParent");
         NanoThief_Base.reclaimRecyclePercent = LunaSettings.getDouble("Abyssal_XO","NA_BASE_reclaimRecyclePercent");
     }
+    private static void luna_NA_DescentralizedSwarms(){
+        NanoThief_6.CustomSwarm_COST_BASE = LunaSettings.getInt("Abyssal_XO","NA_DSP_CustomSwarm_COST_BASE");
+        NanoThief_6.CustomSwarm_COST_PEROP = LunaSettings.getInt("Abyssal_XO","NA_DSP_CustomSwarm_COST_PEROP");
+        NanoThief_6.CustomSwarm_BUILDTIME_PREREFIT = LunaSettings.getDouble("Abyssal_XO","NA_DSP_CustomSwarm_BUILDTIME_PREREFIT");
+        NanoThief_6.CustomSwarm_RefundPercent = LunaSettings.getDouble("Abyssal_XO","NA_DSP_CustomSwarm_RefundPercent");
+        NanoThief_6.CustomSwarm_RefundPercent_Bomber = LunaSettings.getDouble("Abyssal_XO","NA_DSP_CustomSwarm_RefundPercent_Bomber");
 
+        NanoThief_6.dpPerFighters = LunaSettings.getInt("Abyssal_XO","NA_DSP_dpPerFighters");
+        NanoThief_6.MINRANGEOFWING = LunaSettings.getInt("Abyssal_XO","NA_DSP_MINRANGEOFWING");
+        NanoThief_6.speedPerSize[0] = LunaSettings.getDouble("Abyssal_XO","NA_DSP_speedPerSize_0");
+        NanoThief_6.speedPerSize[1] = LunaSettings.getDouble("Abyssal_XO","NA_DSP_speedPerSize_1");
+        NanoThief_6.speedPerSize[2] = LunaSettings.getDouble("Abyssal_XO","NA_DSP_speedPerSize_2");
+        NanoThief_6.speedPerSize[3] = LunaSettings.getDouble("Abyssal_XO","NA_DSP_speedPerSize_3");
+    }
+    private static void luna_NA_DefensiveSwarms(){
+        NanoThief_7.numPerSize[0] = LunaSettings.getInt("Abyssal_XO","NA_DS_numPerSize_0");
+        NanoThief_7.numPerSize[1] = LunaSettings.getInt("Abyssal_XO","NA_DS_numPerSize_1");
+        NanoThief_7.numPerSize[2] = LunaSettings.getInt("Abyssal_XO","NA_DS_numPerSize_2");
+        NanoThief_7.numPerSize[3] = LunaSettings.getInt("Abyssal_XO","NA_DS_numPerSize_3");
+        NanoThief_7.speedPerSize[0] = LunaSettings.getDouble("Abyssal_XO","NA_DS_speedPerSize_0");
+        NanoThief_7.speedPerSize[1] = LunaSettings.getDouble("Abyssal_XO","NA_DS_speedPerSize_1");
+        NanoThief_7.speedPerSize[2] = LunaSettings.getDouble("Abyssal_XO","NA_DS_speedPerSize_2");
+        NanoThief_7.speedPerSize[3] = LunaSettings.getDouble("Abyssal_XO","NA_DS_speedPerSize_3");
+
+    }
+    private static void luna_NA_CentralizedProduction(){
+        NanoThief_8.reclaimRaito = LunaSettings.getDouble("Abyssal_XO","NA_CR_reclaimRaito");
+        NanoThief_8.reclaimPerSecondBase = LunaSettings.getInt("Abyssal_XO","NA_CR_reclaimPerSecondBase");
+        NanoThief_8.reclaimPerSecondPerBost = LunaSettings.getInt("Abyssal_XO","NA_CR_reclaimPerSecondPerBost");
+        NanoThief_8.reclaimPerSpeedBost = LunaSettings.getInt("Abyssal_XO","NA_CR_reclaimPerSpeedBost");
+        NanoThief_8.speedMod = LunaSettings.getDouble("Abyssal_XO","NA_CR_speedMod");
+        NanoThief_8.keeptReclaim = LunaSettings.getInt("Abyssal_XO","NA_CR_keeptReclaim");
+        NanoThief_8.keeptReclaimAbility = LunaSettings.getDouble("Abyssal_XO","NA_CR_keeptReclaimAbility");
+        NanoThief_8.baseReclaimEfficiencyMod = LunaSettings.getDouble("Abyssal_XO","NA_CR_baseReclaimEfficiencyMod");
+    }
     private static void luna_NA_Desprate(){
         NanoThief_9.crStart = LunaSettings.getDouble("Abyssal_XO","NA_DM_crStart");
         NanoThief_9.crReginSpeed = LunaSettings.getDouble("Abyssal_XO","NA_DM_crReginSpeed");

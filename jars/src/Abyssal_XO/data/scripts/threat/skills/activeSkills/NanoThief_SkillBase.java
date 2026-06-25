@@ -1,5 +1,6 @@
 package Abyssal_XO.data.scripts.threat.skills.activeSkills;
 
+import Abyssal_XO.data.scripts.threat.skills.interfaces.NanoThief_InterfaceBase;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.ShipAPI;
 import org.apache.log4j.Logger;

@@ -24,8 +24,8 @@ public class NanoThief_Skill_9_0 extends NanoThief_SkillBase{
         timeLeft = 1;*/
         float hp = ship.getHitpoints() / ship.getMaxHitpoints(); // 10 / 5 = 2. 5 / 10 = 0.5
         hp = Math.min(hp,1);
-        skills.addCostMod("9_0",(NanoThief_9.hpCost*((1-hp)*100)));
-        skills.addSpeedMod("9_0", ((float) (NanoThief_9.hpSpeed*((1-hp)*100))));
+        skills.addCostMod("9_0",(NanoThief_9.hpCost*((1-hp)*100)) * skills.stats.skillMulti[9]);
+        skills.addSpeedMod("9_0", ((float) (NanoThief_9.hpSpeed*((1-hp)*100)))* skills.stats.skillMulti[9]);
     }
     @Override
     public void displayStats() {

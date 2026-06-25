@@ -15,10 +15,10 @@ import com.fs.starfarer.api.util.Misc;
 import second_in_command.SCData;
 
 public class NanoThief_7 extends NanoThief_6 {
-    public static final String[] bannedTags = {"independent_of_carrier"};
-    public static final int[] numPerSize = {1,1,2,3};
+    public static String[] bannedTags = {"independent_of_carrier"};
+    public static int[] numPerSize = {1,1,2,3};
     //public static final float[] speedPerSize = {0.35f,0.5f,0.75f,1f};
-    public static final float[] speedPerSize = {0.5f,0.75f,1f,1.25f};
+    public static double[] speedPerSize = {0.5f,0.75f,1f,1.25f};
     //public static final double[] numbPerModule = {0,0.5,0.75,1};
     //public static final double[] speedPerModule = {0.1,0.2,0.3,0.4};
     @Override
@@ -63,5 +63,9 @@ public class NanoThief_7 extends NanoThief_6 {
             if (character.getAbilities().contains(Settings.NANO_THIEF_ABILITY)) return;
             character.addAbility(Settings.NANO_THIEF_ABILITY);
         }
+    }
+    @Override
+    public int getNanoThiefID() {
+        return 7;
     }
 }

@@ -16,6 +16,12 @@ public class NanoThief_3 extends Nano_Thief_Skill_Base {
 
     private static final float salvageMod = 0.20f;
     private static final float battleSalvageMod = 0.1f;
+
+    @Override
+    public int getNanoThiefID() {
+        return 3;
+    }
+
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
         //String hullmod = ((int)((hullMod)*100))+"%";
