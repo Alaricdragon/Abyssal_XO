@@ -49,7 +49,7 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
         if (stats.isValidReclaimTarget(ship)){
             int op = (int) (ship.getFleetMember() != null ? ship.getFleetMember().getDeploymentPointsCost() : ship.getDeployCost());
             op = NanoThief_Base.reclaimOnStartPerDP*stats.reclaimMulti*op;
-            ship.addListener(new NanoThief_AddReclaimAtStartListiner(ship,op,stats,this));
+            Global.getCombatEngine().addPlugin(new NanoThief_AddReclaimAtStartListiner(ship,op,stats,this));
         }
         for (Nano_Thief_Skill_Base a : stats.getSkills()){
             if (a instanceof NanoThief_9) activeWellOverloaded = true;

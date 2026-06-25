@@ -1,11 +1,9 @@
 package Abyssal_XO.data.scripts.threat.skills;
 
 import Abyssal_XO.data.scripts.Settings;
-import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipSkillsAdder;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_BattleListener;
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.campaign.CharacterDataAPI;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
@@ -14,15 +12,14 @@ import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import org.apache.log4j.Logger;
 import second_in_command.SCData;
-import second_in_command.specs.SCBaseSkillPlugin;
 
-import java.util.List;
-
-import static Abyssal_XO.data.scripts.Settings.NANO_THIEF_RECLAIM_RECYCLE_PERCENT;
 
 public class NanoThief_Base extends Nano_Thief_Skill_Base {
-    private static final String key = "AbyssalXO_Nano_Thief_Skill_0";
     public static int reclaimOnStartPerDP = 10; //50 * 10 = 500 on a 10 op ship. 5k on a 100 op ship.
+    public static int reclaimFromHostilePerDP = 25; //4000 per onslougt (x*5*40 = (200 * x)).
+    public static Double reclaimMultiFromParent = 0.1d;
+    public static Double reclaimRecyclePercent = 0.5d;
+    // 5*5*40 = 25 * 4 = 1000
     @Override
     public String getAffectsString() {
         return "every ship destroyed in combat";
@@ -40,8 +37,9 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
     Simulacrum Fighters have -20% hull, -20% shield efficiency, and -10% damage
         *
         * */
-        tooltip.addPara("When any ship is destroyed in combat, harvest a Reclaim Package worth %s/%s/%s/%s reclaim multiplied by the number of skills in this attribute other then this one, depending on hullsize. reclaim packages will then go to the nearest ship in the fleet. Any  Reclaim Packages that reaches there target will be converted into reclaim.",0f,Misc.getHighlightColor(), Misc.getHighlightColor(),""+Settings.NANO_THIEF_RECLAIM_GAIN[0],""+Settings.NANO_THIEF_RECLAIM_GAIN[1],""+Settings.NANO_THIEF_RECLAIM_GAIN[2],""+Settings.NANO_THIEF_RECLAIM_GAIN[3]);
-        String percent = NANO_THIEF_RECLAIM_RECYCLE_PERCENT *100 +"%";
+        //tooltip.addPara("When any ship is destroyed in combat, harvest a Reclaim Package worth %s/%s/%s/%s reclaim multiplied by the number of skills in this attribute other then this one, depending on hullsize. reclaim packages will then go to the nearest ship in the fleet. Any  Reclaim Packages that reaches there target will be converted into reclaim.",0f,Misc.getHighlightColor(), Misc.getHighlightColor(),""+Settings.NANO_THIEF_RECLAIM_GAIN[0],""+Settings.NANO_THIEF_RECLAIM_GAIN[1],""+Settings.NANO_THIEF_RECLAIM_GAIN[2],""+Settings.NANO_THIEF_RECLAIM_GAIN[3]);
+        tooltip.addPara("When any ship is destroyed in combat, harvest a Reclaim Package worth %s reclaim per deployment point multiplied by the number of skills in this attribute other then this one. reclaim packages will then go to the nearest ship in the fleet. Any  Reclaim Packages that reaches there target will be converted into reclaim.",0f,Misc.getHighlightColor(), Misc.getHighlightColor(),""+reclaimFromHostilePerDP);//""+Settings.NANO_THIEF_RECLAIM_GAIN[0],""+Settings.NANO_THIEF_RECLAIM_GAIN[1],""+Settings.NANO_THIEF_RECLAIM_GAIN[2],""+Settings.NANO_THIEF_RECLAIM_GAIN[3]);
+        String percent = reclaimRecyclePercent *100 +"%";
         tooltip.addPara("When any ship holding any amount of Reclaim is destroyed, add %s of the held Reclaim to the Reclaim Package",0f,Misc.getHighlightColor(), Misc.getHighlightColor(),percent);
         String reclaimPerOp = "" + reclaimOnStartPerDP;
         tooltip.addPara("Ships in this fleet enter combat with %s reclaim per deployment point multiplied by the number of skills in this attribute other then this one.",0f,Misc.getHighlightColor(),Misc.getHighlightColor(),reclaimPerOp);

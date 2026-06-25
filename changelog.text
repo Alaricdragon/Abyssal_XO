@@ -1,3 +1,21 @@
+V0.1.4:
+    mastery interface:
+        fixed some issues with the scrollbar going wayyy to far.
+    balance:
+        reclaim:
+            all ships now start combat with 10 reclaim per deployment point
+            base reclaim value of a ship is now ship dp * skills * 25
+            multisectional ships ship sections should now give 10% of the reclaim value of its parent ship (stacking per module destroyed).
+        mastery:
+            reclaim value 75% -> 50% of cost
+    reason:
+        I have found that this skill can be basically worthless on some fights. starting reclaim has been my solution. It is not mush. at all. but its something.
+        I have found that smaller ships have been giving a lot of reclaim compaired to larger more powerful ships. This issue is even worse in fights with very powerful, very efferent ships.
+    fixes:
+        mostly fixed some issues with Mastery interface scrollbars
+        fixed Scrapy Fortification applying its effects to modules permanently
+    settings:
+        added settings for reclaim gain stats.
 V0.1.3:
     mastery interface:
         fixed broken mastery display on some ui scaling settings.

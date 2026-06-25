@@ -48,7 +48,7 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
     public static double peakCRDuration = 0.6;
 
     //public static double forceRechargePerDP = rechargeTimePerDP;//this is for recharging the ship form a new simulacrum fighter.
-    public static double maxReclaimPercent = 0.75;//max amount of reclaim a simulacrum ship is worth when destroyed.
+    public static double maxReclaimPercent = 0.5;//max amount of reclaim a simulacrum ship is worth when destroyed.
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
         /*
@@ -114,9 +114,9 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
         tooltip.addPara("   -cost %s reclaim per deployment point, reduced by %s per none logistical d-mod (up to a reduction of %s),and increased by %s per s-mod (with no upper limit). not multiplicative",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line4_0,line4_1,line4_2,line4_3);
         tooltip.addPara("   -takes %s seconds to build per deployment point. during this time, the ship %s, cannot %s, %s or %s",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line5_0,line5_1,line5_2,line5_3,line5_4);
         tooltip.addPara("   -peak performance time is reduced by %s",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line6_0);
-        tooltip.addPara("   -reclaim gained from the ship is caped to %s of the reclaim it cost to build",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line7_0);
+        tooltip.addPara("   -reclaim gained from the ship is %s of the reclaim it cost to build",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line7_0);
+        tooltip.addPara("   -start with 0 reclaim in storge.",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor());
         tooltip.addPara("   -after combat the ships fall apart, being reduced to nothing",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor());
-        //tooltip.addPara("   -The s-mod and d-mod cost changes are not multiplicative with each other.",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor());
 
     }
     public void addNewAbilityText(SCData scData, TooltipMakerAPI tooltip){

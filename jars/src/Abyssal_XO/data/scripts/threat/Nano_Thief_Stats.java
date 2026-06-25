@@ -7,10 +7,7 @@ import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_Reclaim;
 import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_SawrmSpawner;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_BattleListener;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_RecreationScript;
-import Abyssal_XO.data.scripts.threat.skills.NanoThief_6;
-import Abyssal_XO.data.scripts.threat.skills.NanoThief_8;
-import Abyssal_XO.data.scripts.threat.skills.NanoThief_MasteryShipStats;
-import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
+import Abyssal_XO.data.scripts.threat.skills.*;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.*;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
@@ -43,7 +40,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import static Abyssal_XO.data.scripts.Settings.NANO_THIEF_RECLAIM_RECYCLE_PERCENT;
 
 public class Nano_Thief_Stats {
     private static Logger log = Global.getLogger(Nano_Thief_Stats.class);
@@ -405,26 +401,52 @@ public class Nano_Thief_Stats {
     }
 
     public int getReclaimValue(ShipAPI reclaim){
-        log.info("calculating total increase in reclaim for a "+reclaim.getHullSpec().getHullSize()+" ship");
+        log.info("calculating total increase in reclaim for a "+reclaim.getName()+" ship");
         log.info("  name:"+reclaim.getName());
         int amount;
         int skills = reclaimMulti;
-        switch (reclaim.getHullSpec().getHullSize()){
+        if (reclaim.getParentStation() != null){
+            float amountTemp = getBaseRecalimValue(reclaim.getParentStation());
+            amount = (int) (amountTemp * NanoThief_Base.reclaimMultiFromParent);
+            log.info("  getting reclaim as though from a child module with parient, this as: "+amountTemp+", "+amount);
+            //reclaim.getParentStation().getCustomData().put(Settings.NANO_THIEF_CUSTOM_MASTERY_RECLAIM_MEMERY_KEY,amountTemp - amount);
+            NanoThief_BattleListener.reclaimOverride.put(reclaim.getParentStation(), (int) (amountTemp - amount));
+        }else{
+            amount = getBaseRecalimValue(reclaim);
+            log.info("  getting reclaim as normal: "+amount);
+        }
+        if (!(reclaim.getChildModulesCopy() == null) && !reclaim.getChildModulesCopy().isEmpty()){
+            log.info("  removing reclaim from child modules...");
+            for (ShipAPI a : reclaim.getChildModulesCopy()){
+                NanoThief_BattleListener.reclaimOverride.put(reclaim, (int) (0));
+                //a.getCustomData().put(Settings.NANO_THIEF_CUSTOM_MASTERY_RECLAIM_MEMERY_KEY,0);
+            }
+        }
+        /*switch (reclaim.getHullSpec().getHullSize()){
             case CAPITAL_SHIP -> amount = Settings.NANO_THIEF_RECLAIM_GAIN[3]*skills;
             case CRUISER -> amount = Settings.NANO_THIEF_RECLAIM_GAIN[2]*skills;
             case DESTROYER -> amount = Settings.NANO_THIEF_RECLAIM_GAIN[1]*skills;
             default -> amount = Settings.NANO_THIEF_RECLAIM_GAIN[0]*skills;
-        }
-        double additional = NanoThief_BattleListener.getReclaimInShip(reclaim) * NANO_THIEF_RECLAIM_RECYCLE_PERCENT;
+        }*/
+        double additional = NanoThief_BattleListener.getReclaimInShip(reclaim) * NanoThief_Base.reclaimRecyclePercent;
         if (!NanoThief_BattleListener.getHostileCaptions().isEmpty() && !NanoThief_BattleListener.getFriendlyCaptions().isEmpty()){
             additional /= 2;//represents reclaim war over additional reclaim
         }
-        if (reclaim.getCustomData().containsKey(Settings.NANO_THIEF_CUSTOM_MASTERY_RECLAIM_MEMERY_KEY)){
-            amount = Math.min(amount, (int) reclaim.getCustomData().get(Settings.NANO_THIEF_CUSTOM_MASTERY_RECLAIM_MEMERY_KEY));
-        }
+        log.info("  got final reclaim as: "+(int)(amount+additional));
         return (int) (amount+additional);
     }
+    private int getBaseRecalimValue(ShipAPI reclaim){
+        int out;
+        if (NanoThief_BattleListener.reclaimOverride.containsKey(reclaim)){
+            log.info("  getting base reclaim as though from memory: ");
+            out = (int) NanoThief_BattleListener.reclaimOverride.get(reclaim);
+        }else {
+            float base = reclaim.getFleetMember() != null ? reclaim.getFleetMember().getDeploymentPointsCost() : reclaim.getDeployCost();
+            out = (int) (base * NanoThief_Base.reclaimFromHostilePerDP * reclaimMulti);
+        }
 
+        return out;
+    }
     private static final String NanoThiefStorgeKey = "$NanoThief_StoredReclaim_Base";
     //private HashMap<ShipAPI,Integer> reclaimGathered = new HashMap<>();
 

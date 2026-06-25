@@ -5,11 +5,14 @@ import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
 import com.fs.starfarer.api.GameState;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.combat.BaseEveryFrameCombatPlugin;
 import com.fs.starfarer.api.combat.ShipAPI;
-import com.fs.starfarer.api.combat.listeners.AdvanceableListener;
+import com.fs.starfarer.api.input.InputEventAPI;
+
+import java.util.List;
 
 /// this is used because things like the construction script are not added immanently on ship creation, to my frustration
-public class NanoThief_AddReclaimAtStartListiner implements AdvanceableListener {
+public class NanoThief_AddReclaimAtStartListiner extends BaseEveryFrameCombatPlugin {
     int reclaim;
     Nano_Thief_Stats stats;
     NanoThief_ShipSkills shipSkills;
@@ -22,26 +25,26 @@ public class NanoThief_AddReclaimAtStartListiner implements AdvanceableListener 
         this.ship = ship;
     }
     @Override
-    public void advance(float amount) {
+    public void advance(float amount, List<InputEventAPI> events) {
         if (Global.getCurrentState().equals(GameState.CAMPAIGN) ||
                 Global.getCurrentState().equals(GameState.TITLE) ||
                 Global.getCombatEngine().isCombatOver() ||
                 !Global.getCombatEngine().isInEngine(ship)
         ){
             Settings.log.info("failed to add starting reclaim because something went wrong...?");
-            ship.removeListener(this);
+            Global.getCombatEngine().removePlugin(this);
             return;
         }
         timer -= amount;
         Settings.log.info("got timer to get reclaim as: "+timer);
         if (!stats.isValidReclaimTarget(ship)){
-            ship.removeListener(this);
+            Global.getCombatEngine().removePlugin(this);
             Settings.log.info("ship of name: "+ship.getName()+" is invalid reclaim target. not adding starting reclaim");
         }
         if (timer <= 0){
             Settings.log.info("ship of name "+ship.getName()+" got "+reclaim+" inital reclaim");
             shipSkills.addReclaim(reclaim);
-            ship.removeListener(this);
+            Global.getCombatEngine().removePlugin(this);
         }
     }
 }
