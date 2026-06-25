@@ -1,4 +1,10 @@
 fieldID,fieldName,fieldType,defaultValue,secondaryValue,fieldDescription,minValue,maxValue,tab
+NA_BASE_Header,,Header,Base Skill,,,,,Nano Thief: Base Skill
+NA_BASE_reclaimOnStartPerDP,Reclaim ships start with per deployment point per skill,Int,10,,,1,1000,Nano Thief: Base Skill
+NA_BASE_reclaimFromHostilePerDP,Reclaim dead ships provide per deployment point per skill,Int,25,,,1,1000,Nano Thief: Base Skill
+NA_BASE_reclaimMultiFromParent,Percent of reclaim modules on moduler ships siphin from there main ship when destroyed,Double,0.1,,,0,1,Nano Thief: Base Skill
+NA_BASE_reclaimRecyclePercent,Percent of reclaim adding to reclaim packages when a ship is destroyed (not used for ship module),Double,0.1,,,0,1,Nano Thief: Base Skill
+,,,,,,,,
 NA_DM_Header,,Header,Desperate Measures,,,,,Nano Thief: Desperate Measures
 NA_DM_crStart,max CR for cr bonuses,Double,0.4,,,0,1,Nano Thief: Desperate Measures
 NA_DM_crReginSpeed,cr regen speed,Double,0.06,,,0,1,Nano Thief: Desperate Measures
@@ -31,4 +37,4 @@ NA_Mastery_rechargeTimePerDP,Recharge time per deployment ponit,Double,10,,,0.1,
 NA_Mastery_buildTimePerDP,Build time per deployment point,Double,2.5,,,0.1,100,Nano Thief: Mastery
 NA_Mastery_minCR,Min cr to build simulacrum ship,Double,0.4,,,0,1,Nano Thief: Mastery
 NA_Mastery_peakCRDuration,peak performance multiplyer,Double,0.6,,,0,1,Nano Thief: Mastery
-NA_Mastery_maxReclaimPercent,recoved reclaim multiplyer,Double,0.75,,,0,1,Nano Thief: Mastery
+NA_Mastery_maxReclaimPercent,recoved reclaim multiplyer,Double,0.5,,,0,1,Nano Thief: Mastery

@@ -1,19 +1,14 @@
 package Abyssal_XO.data.scripts.threat.AI;
 
-import Abyssal_XO.data.scripts.Settings;
-import Abyssal_XO.data.scripts.hullmods.SICSkillControllerBackup;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
+import Abyssal_XO.data.scripts.threat.listiners.NanoThief_BattleListener;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_10;
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
-import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.impl.combat.threat.RoilingSwarmEffect;
 import com.fs.starfarer.api.impl.combat.threat.ThreatShipConstructionScript;
 import org.lwjgl.util.vector.Vector2f;
-
-import static Abyssal_XO.data.scripts.Settings.NANO_THIEF_CUSTOM_MASTERY_RECLAIM_MEMERY_KEY;
 
 public class Nano_Thief_MasteryConstructionScript extends ThreatShipConstructionScript {
     private FleetMemberAPI toConstruct;
@@ -79,7 +74,8 @@ public class Nano_Thief_MasteryConstructionScript extends ThreatShipConstruction
                 swarm.getParams().flashFringeColor	= sourceSwarm.getParams().flashFringeColor;
             }
         }
-        ship.getCustomData().put(NANO_THIEF_CUSTOM_MASTERY_RECLAIM_MEMERY_KEY,(int)reclaim*NanoThief_10.maxReclaimPercent);
+        NanoThief_BattleListener.reclaimOverride.put(ship,(int)(reclaim*NanoThief_10.maxReclaimPercent));
+        //ship.getCustomData().put(NANO_THIEF_CUSTOM_MASTERY_RECLAIM_MEMERY_KEY,(int)reclaim*NanoThief_10.maxReclaimPercent);
         ship.setAlphaMult(0);
         ship.addTag(SHIP_UNDER_CONSTRUCTION);
         source.addTag(SWARM_CONSTRUCTING_SHIP);

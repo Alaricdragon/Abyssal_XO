@@ -34,10 +34,11 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
     @Getter
     private static HashMap<String,Nano_Thief_Stats> hostileCaptions;
 
-
+    public static HashMap<ShipAPI,Integer> reclaimOverride;
     public NanoThief_BattleListener(){
         friendlyCaptions = new HashMap<>();
         hostileCaptions = new HashMap<>();
+        reclaimOverride = new HashMap<>();
         //Nano_Thief_AI_OVERRIDE.reset();
         //Nano_Thief_NoneCombatAI.init();
         CombatEngineAPI engine = Global.getCombatEngine();

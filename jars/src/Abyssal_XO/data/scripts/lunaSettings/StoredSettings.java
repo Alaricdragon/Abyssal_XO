@@ -1,6 +1,7 @@
 package Abyssal_XO.data.scripts.lunaSettings;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_10;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_9;
+import Abyssal_XO.data.scripts.threat.skills.NanoThief_Base;
 import com.fs.starfarer.api.Global;
 import lunalib.lunaSettings.LunaSettings;
 
@@ -17,9 +18,18 @@ public class StoredSettings {
         LunaSettings.addSettingsListener(new ApplySettingsOnChange());
     }
     private static void getLunaSettings(){
+        luna_NA_Base();
+        //-
         luna_NA_Desprate();
         luna_NA_Mastery();
     }
+    private static void luna_NA_Base(){
+        NanoThief_Base.reclaimOnStartPerDP = LunaSettings.getInt("Abyssal_XO","NA_BASE_reclaimOnStartPerDP");
+        NanoThief_Base.reclaimFromHostilePerDP = LunaSettings.getInt("Abyssal_XO","NA_BASE_reclaimFromHostilePerDP");
+        NanoThief_Base.reclaimMultiFromParent = LunaSettings.getDouble("Abyssal_XO","NA_BASE_reclaimMultiFromParent");
+        NanoThief_Base.reclaimRecyclePercent = LunaSettings.getDouble("Abyssal_XO","NA_BASE_reclaimRecyclePercent");
+    }
+
     private static void luna_NA_Desprate(){
         NanoThief_9.crStart = LunaSettings.getDouble("Abyssal_XO","NA_DM_crStart");
         NanoThief_9.crReginSpeed = LunaSettings.getDouble("Abyssal_XO","NA_DM_crReginSpeed");

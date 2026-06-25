@@ -172,7 +172,7 @@ class trueTimeListener implements AdvanceableListener{
         skill.cooldown = NanoThief_4.cooldown;
         deactivate(skill.ship);
         for (ShipAPI b : skill.skills.getChildShips()){
-            activate(b);
+            deactivate(b);
         }
         //skill.deanimate();
     }
