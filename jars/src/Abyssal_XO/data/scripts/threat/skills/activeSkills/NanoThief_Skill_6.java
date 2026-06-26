@@ -5,6 +5,7 @@ import Abyssal_XO.data.scripts.hullmods.SICSkillControllerBackup;
 import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_SawrmSpawner;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_6;
+import Abyssal_XO.data.scripts.threat.skills.NanoThief_7;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.CombatFleetManagerAPI;
@@ -21,21 +22,25 @@ import org.lwjgl.util.vector.Vector2f;
 public class NanoThief_Skill_6 extends NanoThief_SkillBase{
     public NanoThief_Skill_6(NanoThief_ShipSkills skills, ShipAPI ship) {
         super(skills, ship);
-        float speedMult;
+        float buildTimeMulti;
         switch (ship.getHullSize()){
             case CAPITAL_SHIP:
-                speedMult = (float) (1 + (1-NanoThief_6.speedPerSize[3]));
+                buildTimeMulti = NanoThief_6.speedPerSize[3] == 0 ? 0 : (float) (1 / NanoThief_6.speedPerSize[3]);
+                //buildTimeMulti = (float) (1 + (1-NanoThief_6.speedPerSize[3]));
                 break;
             case CRUISER:
-                speedMult = (float) (1 + (1-NanoThief_6.speedPerSize[2]));
+                buildTimeMulti = NanoThief_6.speedPerSize[2] == 0 ? 0 : (float) (1 / NanoThief_6.speedPerSize[2]);
+                //buildTimeMulti = (float) (1 + (1-NanoThief_6.speedPerSize[2]));
                 break;
             case DESTROYER:
-                speedMult = (float) (1 + (1-NanoThief_6.speedPerSize[1]));
+                buildTimeMulti = NanoThief_6.speedPerSize[1] == 0 ? 0 : (float) (1 / NanoThief_6.speedPerSize[1]);
+                //buildTimeMulti = (float) (1 + (1-NanoThief_6.speedPerSize[1]));
                 break;
             default:
-                speedMult = (float) (1 + (1-NanoThief_6.speedPerSize[0]));
+                buildTimeMulti = NanoThief_6.speedPerSize[0] == 0 ? 0 : (float) (1 / NanoThief_6.speedPerSize[0]);
+                //buildTimeMulti = (float) (1 + (1-NanoThief_6.speedPerSize[0]));
         }
-        recharge = skills.stats.OF_productionTime*speedMult;
+        recharge = skills.stats.OF_productionTime*buildTimeMulti;
     }
     public static void getStats(Nano_Thief_Stats spec, FighterWingSpecAPI a){
         spec.OF_fighterHullSpec = a.getVariant().getHullSpec();
@@ -64,11 +69,11 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
     private static void logStats(Nano_Thief_Stats spec){
         log.info("got swarm of ID: "+spec.OF_fighterToBuild +" stats as: cost: "+spec.OF_swarmCost +", productionTime: "+spec.OF_productionTime +", time to live"+spec.OF_ttl +", and refund per fighter: "+spec.OF_recyclePerFighter);
     }
-    private float cooldown = 0;
-    private boolean onCooldown = false;
-    private boolean waiting = false;
-    private int maxFighters = 0;
-    private float recharge;
+    public float cooldown = 0;
+    public boolean onCooldown = false;
+    public boolean waiting = false;
+    public int maxFighters = 0;
+    public float recharge;
     @Override
     public void advance(float amount) {
         //note: NanoThief_ShipStats handles both the spawning and despawinging of swarm cores. This will require change.
@@ -101,16 +106,11 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         createCombatSwarmCore();
     }
 
-    @Override
+    /*@Override
     public void displayStats() {
         maxFighters = getMaxFighters();
         int max = maxFighters;
         int cur = currentFighters();
-        /*if (max <= cur) {
-            Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_6", "graphics/icons/hullsys/temporal_shell.png",
-                    "Offencive Fighter Construction Status", cur+" / "+max, true);
-            return;
-        }*/
         if (skills.getTotalReclaim() >= skills.getModifiedCost(skills.stats.OF_swarmCost)){
             if (!onCooldown && !waiting){
                 onCooldown = true;
@@ -133,11 +133,11 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         }
         Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_6", "graphics/icons/hullsys/temporal_shell.png",
                 "Offencive Fighter Construction Status", cur+" / "+max+", cannot build wing do to limited reclaim", true);
+    }*/
+    public int getMaxFighters(){
+        return Math.max((int)Math.floor((skills.stats.getDeployedPonits() / NanoThief_6.dpPerFighters)+0.5) * skills.stats.skillMulti[6],1);
     }
-    private int getMaxFighters(){
-        return Math.max((int)Math.floor((skills.stats.getDeployedPonits() / NanoThief_6.dpPerFighters)+0.5),1);
-    }
-    private int currentFighters(){
+    public int currentFighters(){
         return skills.stats.getOffinciveFighterCores().size();// + skills.stats.getOffinciveFighterWings().size();
     }
 

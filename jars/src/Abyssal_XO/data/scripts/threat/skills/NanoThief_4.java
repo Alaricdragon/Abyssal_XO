@@ -12,14 +12,14 @@ import second_in_command.SCData;
 
 public class NanoThief_4 extends Nano_Thief_Skill_Base {
     public static final String modifier = "AbyssalXO_Nano_Thief_Skill_4";
-    public static final float activeDamage = 500;
-    public static final float activePercent = 0.1f;
-    public static final float activeTime = 1;
-    public static final float resistance = 0.05f;
-    public static final float time = 5;
-    public static final float cooldown = 30;
-    public static final float activeCost = 10;
-    public static final float damagePerCost = 100;
+    public static double activeDamage = 500;
+    public static double activePercent = 0.1f;
+    public static double activeTime = 1;
+    public static double resistance = 0.05f;
+    public static double time = 5;
+    public static double cooldown = 30;
+    public static double activeCost = 10;
+    public static double damagePerCost = 50;
 
     //public static final int minReclaimToActavate = 25;
     //private static final float hullMod = 0.95f;

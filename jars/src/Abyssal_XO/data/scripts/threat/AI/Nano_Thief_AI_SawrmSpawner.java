@@ -8,11 +8,7 @@ import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_SkillBase;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_7;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
-import com.fs.starfarer.api.fleet.FleetMemberAPI;
-import com.fs.starfarer.api.fleet.FleetMemberType;
-import com.fs.starfarer.api.loading.VariantSource;
 import com.fs.starfarer.api.util.Misc;
-import lombok.Getter;
 import org.apache.log4j.Logger;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -22,7 +18,7 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
     private static final String idOfModifiers = "AbyssalXO_NanoThief_FighterMods";
     private ShipAPI ship;
     private ShipAPI motherShip;
-    private Nano_Thief_Stats stats;
+    public Nano_Thief_Stats stats;
     private String wing;
     private CombatEngineAPI engine;
     private final boolean isOffensive;
@@ -36,6 +32,7 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
     private double timeToReturn;
     private double returnReclaim;
     private int wingSize;
+    public float cost_per_fighter;
 
     private ArrayList<ShipAPI> arrayOfCores;
     public Nano_Thief_AI_SawrmSpawner(ShipAPI ship, ShipAPI motherShip, String wing, Nano_Thief_Stats stats, boolean isOffensive, NanoThief_SkillBase skill){
@@ -51,17 +48,19 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
             returnReclaim = stats.OF_recyclePerFighter;
             arrayOfCores = stats.getOffinciveFighterCores();
             wingSize = stats.OF_wingSize;
+            cost_per_fighter = stats.OF_swarmCost / wingSize;
         }else{
             timeToReturn = stats.DF_ttl;
             returnReclaim = stats.DF_recyclePerFighter;
-            arrayOfCores = ((NanoThief_Skill_7)skill).defenders;
+            arrayOfCores = ((NanoThief_Skill_7)skill).getInterface7().defenders;;
             wingSize = stats.DF_wingSize;
+            cost_per_fighter = stats.DF_swarmCost / wingSize;
             float speed = Global.getSettings().getFighterWingSpec(wing).getVariant().getHullSpec().getEngineSpec().getMaxSpeed();
             float acceleration = Global.getSettings().getFighterWingSpec(wing).getVariant().getHullSpec().getEngineSpec().getAcceleration();
             float deceleration = Global.getSettings().getFighterWingSpec(wing).getVariant().getHullSpec().getEngineSpec().getDeceleration();
-            speed = Math.max((motherShip.getMaxSpeed()+25) - speed,0);
-            acceleration = Math.max((motherShip.getAcceleration()+5) - acceleration,0);
-            deceleration = Math.max((motherShip.getDeceleration()+5) - deceleration,0);
+            speed = Math.max((motherShip.getMaxSpeed()+100) - speed,0);
+            acceleration = Math.max((motherShip.getAcceleration()+50) - acceleration,0);
+            deceleration = Math.max((motherShip.getDeceleration()+50) - deceleration,0);
             ship.setCustomData(IDOfData3,speed);
             ship.setCustomData(IDOfData4,acceleration);
             ship.setCustomData(IDOfData5,deceleration);

@@ -6,6 +6,8 @@ import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_SkillBase;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_6;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_7;
+import Abyssal_XO.data.scripts.threat.skills.interfaces.NanoThief_InterfaceBase;
+import Abyssal_XO.data.scripts.threat.skills.interfaces.NanoThief_Interface_7;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CharacterDataAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
@@ -56,6 +58,12 @@ public class NanoThief_7 extends NanoThief_6 {
     public NanoThief_SkillBase createListiner(NanoThief_ShipSkills skills, ShipAPI ship) {
         return new NanoThief_Skill_7(skills, ship);
     }
+
+    @Override
+    public NanoThief_InterfaceBase createInterface() {
+        return new NanoThief_Interface_7();
+    }
+
     @Override
     public void onActivation(SCData data) {
         if (data.getCommander().equals(Global.getSector().getPlayerPerson())){

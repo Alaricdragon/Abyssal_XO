@@ -5,6 +5,8 @@ import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_SkillBase;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_6;
+import Abyssal_XO.data.scripts.threat.skills.interfaces.NanoThief_InterfaceBase;
+import Abyssal_XO.data.scripts.threat.skills.interfaces.NanoThief_Interface_6;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CharacterDataAPI;
 import com.fs.starfarer.api.campaign.FactionAPI;
@@ -187,6 +189,11 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
     @Override
     public NanoThief_SkillBase createListiner(NanoThief_ShipSkills skills, ShipAPI ship) {
         return new NanoThief_Skill_6(skills, ship);
+    }
+
+    @Override
+    public NanoThief_InterfaceBase createInterface() {
+        return new NanoThief_Interface_6();
     }
 
     @Override

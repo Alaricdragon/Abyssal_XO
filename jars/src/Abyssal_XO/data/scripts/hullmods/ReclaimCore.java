@@ -2,6 +2,7 @@ package Abyssal_XO.data.scripts.hullmods;
 
 import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_SawrmSpawner;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
+import Abyssal_XO.data.scripts.threat.animation.NanoThief_A_FighterSpawn;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.BaseHullMod;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
@@ -45,6 +46,8 @@ public class ReclaimCore extends BaseHullMod {
         Nano_Thief_Stats.modifySingleFighter(fighter,ship);
         fighter.getMutableStats().getMinCrewMod().modifyMult("Abyssal_XO",0);
 
+        //todo: spawn animations. tried to create a reclaim sawrm over the fighter. it was under the fighter. unknown reasons.
+        //Global.getCombatEngine().addPlugin(new NanoThief_A_FighterSpawn(fighter,spawner));
         //NanoThief_ShipStats stats = (NanoThief_ShipStats) ship.getCustomData().get(IDOfData);
         //stats.getStats().modifySingleFighter(fighter,stats.getShip());
         //todo: I can listin here for when a fighter is launched, allowing for defensive cores to only use reclaim when a fighter is created.

@@ -31,7 +31,7 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
     @Getter
     private ArrayList<NanoThief_SkillBase> alwaysSkills = new ArrayList<>();
     private ArrayList<NanoThief_InterfaceBase> interfaces = new ArrayList<>();
-    protected ShipAPI ship;
+    public ShipAPI ship;
     protected float timeflow=1f;
     protected double costMulti=1;
     protected double reclaim = 0;

@@ -128,8 +128,12 @@ public class NanoThief_Skill_8 extends NanoThief_SkillBase{
     }
     public void refineReclaim(float amount){
         double mutli = (fakeReclaim / NanoThief_8.reclaimPerSpeedBost);
-        double cost = Math.min(skills.stats.skillMulti[8]*amount*((NanoThief_8.reclaimPerSecondPerBost*mutli)+NanoThief_8.reclaimPerSecondBase), fakeReclaim);
-        double gain = NanoThief_8.reclaimRaito*cost;
+        double cost = Math.min(amount*((NanoThief_8.reclaimPerSecondPerBost*mutli)+NanoThief_8.reclaimPerSecondBase), fakeReclaim);
+        double gainTemp = 1+(skills.stats.skillMulti[8]*(NanoThief_8.reclaimRaito-1));
+        if (ship.getVariant().getSMods().contains("Abyssal_XO_CF")){
+            gainTemp += NanoThief_8.sModBonus-1;
+        }
+        double gain = gainTemp*cost;
         //log.info("get refined stats as: "+mutli+", "+cost+", "+gain);
         if (gain <= 0) return;
         fakeReclaim-= cost;

@@ -160,16 +160,16 @@ class trueTimeListener implements AdvanceableListener{
         //log.info("activate");
     }
     private void activate(ShipAPI ship){
-        ship.getMutableStats().getHullDamageTakenMult().modifyMult(NanoThief_4.modifier, NanoThief_4.resistance);
-        ship.getMutableStats().getArmorDamageTakenMult().modifyMult(NanoThief_4.modifier, NanoThief_4.resistance);
-        ship.getMutableStats().getEmpDamageTakenMult().modifyMult(NanoThief_4.modifier, NanoThief_4.resistance);
+        ship.getMutableStats().getHullDamageTakenMult().modifyMult(NanoThief_4.modifier, (float) NanoThief_4.resistance);
+        ship.getMutableStats().getArmorDamageTakenMult().modifyMult(NanoThief_4.modifier, (float) NanoThief_4.resistance);
+        ship.getMutableStats().getEmpDamageTakenMult().modifyMult(NanoThief_4.modifier, (float) NanoThief_4.resistance);
 
         ship.setNextHitHullDamageThresholdMult(200,0);
         //log.info("deactivate");
     }
     private void deactivate(){
         skill.isActive = false;
-        skill.cooldown = NanoThief_4.cooldown;
+        skill.cooldown = (float) NanoThief_4.cooldown;
         deactivate(skill.ship);
         for (ShipAPI b : skill.skills.getChildShips()){
             deactivate(b);

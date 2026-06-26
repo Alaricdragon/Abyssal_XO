@@ -6,6 +6,7 @@ import com.fs.starfarer.api.util.Misc;
 import second_in_command.SCData;
 
 public class NanoThief_5 extends Nano_Thief_Skill_Base {
+    //todo: THIS IS THE UNUSED SKILL. FIND A WAY TO USE SAID SKILL.
     private static final String key = "AbyssalXO_Nano_Thief_Skill_5";
 
     private static final float timeMod = 1.1f;

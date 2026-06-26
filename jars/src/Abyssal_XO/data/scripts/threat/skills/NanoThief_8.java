@@ -11,6 +11,8 @@ import second_in_command.SCData;
 public class NanoThief_8 extends Nano_Thief_Skill_Base {
     //this needs to change.
     //so... what do I need to do here?
+    public static double sModBonus = 1.05;
+
     public static double reclaimRaito = 1.2;
     public static double reclaimPerSecondBase = 100; // 10 seconds for 1000 reclaim
     public static double reclaimPerSecondPerBost = 50; // 50 = 20 seconds. 1000 = 150 = 7.5 seconds. 2000 = 200 = 5 seconds. 3000 = 250 = 4 seconds. 4000 = 300 = 3.3~ seconds. 5000 = 350 = 2.4?
