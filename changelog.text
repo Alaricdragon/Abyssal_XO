@@ -1,3 +1,25 @@
+V0.1.6:
+    safety overrides (mod):
+        (hopefully) improved defensive swarms in combat display.
+        (hopefully)when multiple defensive swarm skills are picked, all swarms contribute to the same 'ship pool', instead of separate ones.
+        (hopefully) when multiple decentralized swarm production skills are picked, the max number of swarms is increased.
+        (hopefully) improved decentralized swarm production in combat interface when more then one of this skill is picked
+        balance:
+            Centralized Production skill stacking now increases reclaim efficacy, but not refining speed. [because why else would you pick this skill more then once]
+    fixes:
+        (hope)fixed centralized production reclaim target crash
+        fixed broken centralized fabricator s-mod bonus (now provides 5% bonus reclaim)
+        fixed Decentralized Swarm Production and Defensive Swarms 'speed settings' resalting in instantly built fighters if set past 2.
+    balance:
+        defensive swarms:
+            speed increase: mothership + 50 -> mothership + 100
+            acceleration increase: mothership + 10 -> mothership + 50
+        Scrapy Fortification:
+            damage resisted per reclaim 100 -> 50
+    settings:
+        added centralized fabricator s-mod bonus
+        simulacrum fighter build speed can now be reduced to zero. zero build speed will instantly build simulacrum fighter wings.
+        added settings for Scrapy Fortification
 V0.1.5:
     internal:
         prepared data for a future were I can, for example, have multiple of the same skills over multiple executive officers, and they would stack.

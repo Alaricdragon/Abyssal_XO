@@ -97,7 +97,7 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 		this.stats = stats;
 		this.reclaimValue = reclam;
 		this.isRefined = isRefined;
-		if (targetOverride != null){
+		if (targetOverride != null && stats.getSkills(targetOverride) != null){
 			this.fabricator = targetOverride;
 			stats.getSkills(targetOverride).addIncomingReclaim(ship,reclaimValue,isRefined);
 		}

@@ -5,6 +5,16 @@ NA_BASE_reclaimFromHostilePerDP,Reclaim dead ships provide per deployment point 
 NA_BASE_reclaimMultiFromParent,Percent of reclaim modules on moduler ships siphin from there main ship when destroyed,Double,0.1,,,0,1,Nano Thief: Base Skill
 NA_BASE_reclaimRecyclePercent,Percent of reclaim adding to reclaim packages when a ship is destroyed (not used for ship module),Double,0.1,,,0,1,Nano Thief: Base Skill
 ,,,,,,,,
+NA_SF_Header,,Header,Scrapy Fortification,,,,,Nano Thief: Scrapy Fortification
+NA_SF_activeDamage,Damage taken to actavate,Int,500,,,1,10000,Nano Thief: Scrapy Fortification
+NA_SF_activePercent,Percent of hull damage to actavate ,Double,0.1,,,0.01,1,Nano Thief: Scrapy Fortification
+NA_SF_activeTime,Over how many seconds this skill checks for damage,Double,1,,,0.1,10,Nano Thief: Scrapy Fortification
+NA_SF_resistance,Damage taken multi when skill is active,Double,0.05,,,0,1,Nano Thief: Scrapy Fortification
+NA_SF_time,Time this skill remains active,Double,5,,,0.1,10,Nano Thief: Scrapy Fortification
+NA_SF_cooldown,How many seconds this skill spends in cooldown after use,Double,30,,,0.1,300,Nano Thief: Scrapy Fortification
+NA_SF_activeCost,Reclaim cost per actavation,Int,10,,,0,1000,Nano Thief: Scrapy Fortification
+NA_SF_damagePerCost,Damage resisted per reclaim,Int,50,,,1,1000,Nano Thief: Scrapy Fortification
+,,,,,,,,
 NA_DSP_Header_0,,Header,Base stats for simulacrum fighters,,please note: This also effects Defensive Swarms simulacrum fighter wings,,,Nano Thief: Decentralized Swarms
 NA_DSP_CustomSwarm_COST_BASE,Simulacrum fighter base reclaim cost ,Int,20,,,1,200,Nano Thief: Decentralized Swarms
 NA_DSP_CustomSwarm_COST_PEROP,Simulacrum fighter reclaim cost per ordnace ponit,Int,10,,,1,200,Nano Thief: Decentralized Swarms
@@ -16,23 +26,24 @@ NA_DSP_CustomSwarm_RefundPercent_Bomber,Simulacrum fighter refune when landing f
 NA_DS_Header_1,,Header,Decentralized Swarm Production,,please note: simulacrum fighter settings are stored in Decentralized Swarm Production,,,Nano Thief: Decentralized Swarms
 NA_DSP_dpPerFighters,Deployment ponits per fighter capacity,Int,10,,,1,100,Nano Thief: Decentralized Swarms
 NA_DSP_MINRANGEOFWING,Min engagment range for wing to be invalid,Int,2000,,,1,10000,Nano Thief: Decentralized Swarms
-NA_DSP_speedPerSize_0,Build speed for frigates,Double,0.5,,,0.1,5,Nano Thief: Decentralized Swarms
-NA_DSP_speedPerSize_1,Build speed for destroyers,Double,0.75,,,0.1,5,Nano Thief: Decentralized Swarms
-NA_DSP_speedPerSize_2,Build speed for cruisers,Double,1,,,0.1,5,Nano Thief: Decentralized Swarms
-NA_DSP_speedPerSize_3,Build speed for capitals,Double,1.25,,,0.1,5,Nano Thief: Decentralized Swarms
+NA_DSP_speedPerSize_0,Build speed for frigates,Double,0.5,,,0,5,Nano Thief: Decentralized Swarms
+NA_DSP_speedPerSize_1,Build speed for destroyers,Double,0.75,,,0,5,Nano Thief: Decentralized Swarms
+NA_DSP_speedPerSize_2,Build speed for cruisers,Double,1,,,0,5,Nano Thief: Decentralized Swarms
+NA_DSP_speedPerSize_3,Build speed for capitals,Double,1.25,,,0,5,Nano Thief: Decentralized Swarms
 ,,,,,,,,
 NA_DS_Header,,Header,Defensive Swarms,,please note: simulacrum fighter settings are stored in Decentralized Swarm Production,,,Nano Thief: Defensive Swarms
 NA_DS_numPerSize_0,Fighters for frigates,Int,1,,,0,10,Nano Thief: Defensive Swarms
 NA_DS_numPerSize_1,Fighters for destroyers,Int,1,,,0,10,Nano Thief: Defensive Swarms
 NA_DS_numPerSize_2,Fighters for cruisers,Int,2,,,0,10,Nano Thief: Defensive Swarms
 NA_DS_numPerSize_3,Fighters for capitals,Int,3,,,0,10,Nano Thief: Defensive Swarms
-NA_DS_speedPerSize_0,Build speed for frigates,Double,0.5,,,0.1,5,Nano Thief: Defensive Swarms
-NA_DS_speedPerSize_1,Build speed for destroyers,Double,0.75,,,0.1,5,Nano Thief: Defensive Swarms
-NA_DS_speedPerSize_2,Build speed for cruisers,Double,1,,,0.1,5,Nano Thief: Defensive Swarms
-NA_DS_speedPerSize_3,Build speed for capitals,Double,1.25,,,0.1,5,Nano Thief: Defensive Swarms
+NA_DS_speedPerSize_0,Build speed for frigates,Double,0.5,,,0,5,Nano Thief: Defensive Swarms
+NA_DS_speedPerSize_1,Build speed for destroyers,Double,0.75,,,0,5,Nano Thief: Defensive Swarms
+NA_DS_speedPerSize_2,Build speed for cruisers,Double,1,,,0,5,Nano Thief: Defensive Swarms
+NA_DS_speedPerSize_3,Build speed for capitals,Double,1.25,,,0,5,Nano Thief: Defensive Swarms
 ,,,,,,,,
 NA_CR_Header,,Header,Centralized Production,,,,,Nano Thief: Centralized Production
-NA_CR_reclaimRaito,Refined reclaim created per reclaim,Double,1.2,,,1,10,Nano Thief: Centralized Production
+NA_CR_reclaimRaito,Refined reclaim created per reclaim multi,Double,1.2,,,1,10,Nano Thief: Centralized Production
+NA_CR_smod,Additional refined reclaim per reclaim when a smoded central fabracator is used multi,Double,1.05,,,1,10,Nano Thief: Centralized Production
 NA_CR_reclaimPerSecondBase,Reclaim refined per second,Int,100,,,1,1000,Nano Thief: Centralized Production
 NA_CR_reclaimPerSecondPerBost,Reclaim refined per bost,Int,50,,,1,1000,Nano Thief: Centralized Production
 NA_CR_reclaimPerSpeedBost,Reclaim required per bost,Int,1000,,,1,10000,Nano Thief: Centralized Production

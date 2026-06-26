@@ -18,6 +18,7 @@ public class StoredSettings {
     private static void getLunaSettings(){
         luna_NA_Base();
         //-
+        luna_NA_ScrapworkFortifications();
         luna_NA_DescentralizedSwarms();
         luna_NA_DefensiveSwarms();
         luna_NA_CentralizedProduction();
@@ -29,6 +30,17 @@ public class StoredSettings {
         NanoThief_Base.reclaimFromHostilePerDP = LunaSettings.getInt("Abyssal_XO","NA_BASE_reclaimFromHostilePerDP");
         NanoThief_Base.reclaimMultiFromParent = LunaSettings.getDouble("Abyssal_XO","NA_BASE_reclaimMultiFromParent");
         NanoThief_Base.reclaimRecyclePercent = LunaSettings.getDouble("Abyssal_XO","NA_BASE_reclaimRecyclePercent");
+    }
+    private static void luna_NA_ScrapworkFortifications(){
+        NanoThief_4.activeDamage = LunaSettings.getInt("Abyssal_XO","NA_SF_activeDamage");
+        NanoThief_4.activePercent = LunaSettings.getDouble("Abyssal_XO","NA_SF_activePercent");
+        NanoThief_4.activeTime = LunaSettings.getDouble("Abyssal_XO","NA_SF_activeTime");
+        NanoThief_4.resistance = LunaSettings.getDouble("Abyssal_XO","NA_SF_resistance");
+        NanoThief_4.time = LunaSettings.getDouble("Abyssal_XO","NA_SF_time");
+        NanoThief_4.cooldown = LunaSettings.getDouble("Abyssal_XO","NA_SF_cooldown");
+        NanoThief_4.activeCost = LunaSettings.getInt("Abyssal_XO","NA_SF_activeCost");
+        NanoThief_4.damagePerCost = LunaSettings.getInt("Abyssal_XO","NA_SF_damagePerCost");
+
     }
     private static void luna_NA_DescentralizedSwarms(){
         NanoThief_6.CustomSwarm_COST_BASE = LunaSettings.getInt("Abyssal_XO","NA_DSP_CustomSwarm_COST_BASE");
@@ -57,6 +69,7 @@ public class StoredSettings {
     }
     private static void luna_NA_CentralizedProduction(){
         NanoThief_8.reclaimRaito = LunaSettings.getDouble("Abyssal_XO","NA_CR_reclaimRaito");
+        NanoThief_8.sModBonus = LunaSettings.getDouble("Abyssal_XO","NA_CR_smod");
         NanoThief_8.reclaimPerSecondBase = LunaSettings.getInt("Abyssal_XO","NA_CR_reclaimPerSecondBase");
         NanoThief_8.reclaimPerSecondPerBost = LunaSettings.getInt("Abyssal_XO","NA_CR_reclaimPerSecondPerBost");
         NanoThief_8.reclaimPerSpeedBost = LunaSettings.getInt("Abyssal_XO","NA_CR_reclaimPerSpeedBost");
