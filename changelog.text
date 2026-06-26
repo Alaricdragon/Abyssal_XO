@@ -1,7 +1,7 @@
 V0.1.6:
     safety overrides (mod):
         (hopefully) improved defensive swarms in combat display.
-        (hopefully)when multiple defensive swarm skills are picked, all swarms contribute to the same 'ship pool', instead of separate ones.
+        (hopefully) when multiple defensive swarm skills are picked, all swarms contribute to the same 'ship pool', instead of separate ones.
         (hopefully) when multiple decentralized swarm production skills are picked, the max number of swarms is increased.
         (hopefully) improved decentralized swarm production in combat interface when more then one of this skill is picked
         balance:
