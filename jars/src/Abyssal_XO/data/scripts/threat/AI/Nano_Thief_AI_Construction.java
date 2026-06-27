@@ -353,8 +353,9 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
         startedConstruction = true;
         RoilingSwarmEffect swarm = RoilingSwarmEffect.getSwarmFor(ship);
         if (swarm != null) {
-            SICSkillControllerBackup.fleet_global = stats.fleet.getFleet();
+            //SICSkillControllerBackup.fleet_global = stats.fleet.getFleet();
             FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(FleetMemberType.SHIP, constructionDatas.ship.getVariant().clone());
+            SICSkillControllerBackup.member_map.put(memberCopy,stats.fleet.getFleet());
             //FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(FleetMemberType.SHIP, Global.getSettings().getVariant(Settings.NANO_THIEF_MASTERY_BASESHIP));
             //memberCopy.setOwner(ship.getOwner());
             memberCopy.setOwner(ship.getOriginalOwner());

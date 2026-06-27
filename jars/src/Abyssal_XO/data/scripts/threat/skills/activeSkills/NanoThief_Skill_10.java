@@ -93,7 +93,7 @@ public class NanoThief_Skill_10 extends NanoThief_SkillBase{
         }*/
     }
     private void buildShip(){
-        skills.useReclaim(nextShip.cost);
+        skills.useReclaim(skills.getModifiedCost(nextShip.cost));
 
         ShipAPI primary = ship;//stats.getShip();
         CombatEngineAPI engine = Global.getCombatEngine();
@@ -128,7 +128,7 @@ public class NanoThief_Skill_10 extends NanoThief_SkillBase{
         //return fighter;//note: not a fighter, but instead something very diffrent.
     }
     public boolean hasEnouthReclaim(){
-        if (skills.getTotalReclaim() < nextShip.cost) return false;
+        if (skills.getTotalReclaim() < skills.getModifiedCost(nextShip.cost)) return false;
         return true;
     }
     public boolean hasEnouthDP(){

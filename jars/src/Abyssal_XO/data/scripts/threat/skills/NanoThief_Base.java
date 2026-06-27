@@ -3,6 +3,7 @@ package Abyssal_XO.data.scripts.threat.skills;
 import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipSkillsAdder;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_BattleListener;
+import Abyssal_XO.data.scripts.threat.listiners.NanoThief_Threat_SIC_Adder;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
@@ -107,6 +108,8 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
         * I could also simply just.... not do that. and instead, just have 'Centralized Production' handle it, every second or two, adding in new ships (and removing old ones whenever it pleases.)*/
         if (!Global.getCombatEngine().hasPluginOfClass(NanoThief_BattleListener.class)) {
             Global.getCombatEngine().addPlugin(new NanoThief_BattleListener());
+            Global.getCombatEngine().addPlugin(new NanoThief_Threat_SIC_Adder());
+
         }
         //Settings.log.info("calculating active ship with this skill: "+ship.getName());
     }

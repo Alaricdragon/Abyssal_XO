@@ -1,6 +1,14 @@
 V0.1.7:
+    safety overrides (mod):
+        (hopefully) fixed Scrapy Fortification not working at all
+        (hopefully) improved Scrapy Fortification interface when more then one of this skill is picked.
+    Scrapy Fortification:
+        changed the animation color to be slightly more threat
+        added a sound copied directly from the dampener field system
+        fixed slightly broken UI (built before desperate messures, so a cooldown in seconds made sense)
     fixes:
         fixed mastery spawning ships for the player when it was not suppose to.
+        fixed mastery not using modified cost. (should only come up when using safety override mod)
 V0.1.6:
     safety overrides (mod):
         (hopefully) improved defensive swarms in combat display.
