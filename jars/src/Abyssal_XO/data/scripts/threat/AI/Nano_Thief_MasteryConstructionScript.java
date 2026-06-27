@@ -44,6 +44,7 @@ public class Nano_Thief_MasteryConstructionScript extends ThreatShipConstruction
         ship = engine.getFleetManager(source.getOriginalOwner()).spawnFleetMember(toConstruct,loc,facing,0f);//spawnShipOrWing(variantId, loc, facing, 0f, null);
         ship.setCurrentCR(crAtCreation);
         ship.resetDefaultAI();
+        ship.setOwner(source.getOriginalOwner());
         //for (ship.getAIFlags().hasFlag(AIF))
         //ship;
         /*if (Global.getCombatEngine().isInCampaign() || Global.getCombatEngine().isInCampaignSim()) {

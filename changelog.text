@@ -1,3 +1,6 @@
+V0.1.7:
+    fixes:
+        fixed mastery spawning ships for the player when it was not suppose to.
 V0.1.6:
     safety overrides (mod):
         (hopefully) improved defensive swarms in combat display.

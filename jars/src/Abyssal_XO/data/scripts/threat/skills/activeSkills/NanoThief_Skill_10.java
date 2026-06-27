@@ -97,7 +97,7 @@ public class NanoThief_Skill_10 extends NanoThief_SkillBase{
 
         ShipAPI primary = ship;//stats.getShip();
         CombatEngineAPI engine = Global.getCombatEngine();
-        CombatFleetManagerAPI manager = engine.getFleetManager(primary.getOwner());
+        CombatFleetManagerAPI manager = engine.getFleetManager(primary.getOriginalOwner());
         manager.setSuppressDeploymentMessages(true);
 
         Vector2f loc = primary.getLocation();
@@ -110,8 +110,10 @@ public class NanoThief_Skill_10 extends NanoThief_SkillBase{
         //OVERWRITER.setWingId(0,skills.stats.OF_fighterToBuild);
         //member.setOwner(primary.getOwner());
         //member.setVariant(OVERWRITER,false,true);
+        member.setOwner(primary.getOriginalOwner());//todo: is this required?
 
         fighter = manager.spawnFleetMember(member,loc, facing, 0f);
+        fighter.setOwner(primary.getOriginalOwner());
         fighter.setShipAI(new Nano_Thief_AI_Construction(fighter,nextShip,ship.getCurrentCR(),skills.stats));
 
         manager.removeDeployed(fighter,false);
