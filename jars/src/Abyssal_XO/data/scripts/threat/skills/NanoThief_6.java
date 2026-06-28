@@ -35,15 +35,19 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
 
 
     //public static final int ReclaimPerControl_BASE = 1000;
-    public static float CustomSwarm_COST_BASE = 20;//swarms cost 100 at 10 op, 200 at 20, 300 at 30.
+    public static float CustomSwarm_COST_BASE = 40;//swarms cost 100 at 10 op, 200 at 20, 300 at 30.
     public static float CustomSwarm_COST_PEROP = 10;//swarms cost 100 at 10 op, 200 at 20, 300 at 30.
+    // 10,20 = : 2dp:30rc, 5dp:70rc, 10dp:120rc
+    // 10,40 = : 2dp:50rc, 5dp:90rc, 10dp:140rc
     public static double CustomSwarm_BUILDTIME_PREREFIT = 1f;//swarms nerfed to build at normal 100% refit rate.
+    public static double CustomSwarm_BUILDTIME_BASE = 10;
     public static double CustomSwarm_RefundPercent = 0.5f;
     public static double CustomSwarm_RefundPercent_Bomber = CustomSwarm_RefundPercent;
     public static int CustomSwarm_TTL = 60;//swrams get exstea base TTL because they already die from shoting wepons.
     public static final int BASESWARM_COST = 100;
-    public static final int BASESWARM_BUILDTIME = 15;
+    public static final int BASESWARM_BUILDTIME = 10;
     public static final int BASESWARM_TTL = CustomSwarm_TTL;//swrams get exstea base TTL because they already die from shoting wepons.
+
 
     public static double[] speedPerSize = {0.5f,0.75f,1f,1.25f};
     public static void displayStats(TooltipMakerAPI panel, FighterWingSpecAPI a,boolean offincive){
@@ -141,12 +145,15 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
         //String line4b = ((int)(CustomSwarm_RefundPercent_Bomber*100))+"%";
         String line7a = ((int)(CustomSwarm_COST_BASE))+"";
         String line7b = ((int)(CustomSwarm_COST_PEROP))+"";
+
+        String line8a = BASESWARM_BUILDTIME+"";
+        String line8b = ((int)(CustomSwarm_BUILDTIME_PREREFIT*100)/100)+"";
         tooltip.addPara("Simulacrum Fighter Wings act as normal fighter wings with the following modifications:",0,Misc.getGrayColor(),Misc.getHighlightColor());
         tooltip.addPara("   -can only be active for %s seconds before reutrning to the nearest fiendly ship",0,Misc.getGrayColor(),Misc.getHighlightColor(),line3a);
         tooltip.addPara("   -will refund %s of there reclaim cost when returning to a firendly ship",0,Misc.getGrayColor(),Misc.getHighlightColor(),line4a);
         tooltip.addPara("   -do not replace lost fighters in a wing.",0,Misc.getGrayColor(),Misc.getHighlightColor());
         tooltip.addPara("   -cost %s + %s per op of the fighter wing",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line7a,line7b);
-        tooltip.addPara("   -buildtime is equal to the combined replacement rate of every fighter in the wing",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor());
+        tooltip.addPara("   -buildtime is %s + %s multiplied by combined replacement rate of every fighter in the wing",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line8a,line8b);
     }
     public void displayBuildingFighter(SCData scData, TooltipMakerAPI tooltip,boolean offincive){
         tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor());

@@ -15,6 +15,8 @@ import second_in_command.specs.SCBaseSkillPlugin;
 import java.util.HashMap;
 import java.util.List;
 
+import static Abyssal_XO.data.scripts.Settings.NANO_THIEF_SIC_HULLMOD_FLEET_KEY;
+
 public class SICSkillControllerBackup extends BaseHullMod {
     //todo: NOTICE: there is effectively only one instance of this mod. so HWAT THE FUCK WHY??
     private CampaignFleetAPI fleet = null;
@@ -96,7 +98,7 @@ public class SICSkillControllerBackup extends BaseHullMod {
        // if (tryToSetFleet(stats.getFleetMember())) return;
         SCData data = getData(stats.getFleetMember());
         if (data == null){
-            Settings.log.info("failed to get data (a)"+stats.getFleetMember().getId());
+            Settings.log.info("failed to get data (a)"+(stats.getFleetMember() != null ? stats.getFleetMember().getId() : "N/A"));
             return;
         }
         for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()) {
@@ -126,7 +128,7 @@ public class SICSkillControllerBackup extends BaseHullMod {
         //if (tryToSetFleet(ship.getFleetMember())) return;
         SCData data = getData(ship);
         if (data == null){
-            Settings.log.info("failed to get data (c)"+ship.getFleetMember().getId());
+            Settings.log.info("failed to get data (c)"+(ship.getFleetMember() != null ? ship.getFleetMember().getId() : "N/A"));
             return;
         }
         for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()) {
@@ -142,7 +144,7 @@ public class SICSkillControllerBackup extends BaseHullMod {
         //if (tryToSetFleet(ship.getFleetMember())) return;
         SCData data = getData(ship);
         if (data == null){
-            Settings.log.info("failed to get data (d)"+ship.getFleetMember().getId());
+            Settings.log.info("failed to get data (d)"+(ship.getFleetMember() != null ? ship.getFleetMember().getId() : "N/A"));
             return;
         }
         for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()) {
@@ -160,7 +162,14 @@ public class SICSkillControllerBackup extends BaseHullMod {
         return this.fleet;
     }*/
     private static SCData getData(ShipAPI shipAPI){
-        return getData(shipAPI.getFleetMember() != null ? shipAPI.getFleetMember() : shipAPI.getMutableStats().getFleetMember());//SCUtils.getFleetData(ship_map.get(shipAPI));
+        if (shipAPI.getCustomData().containsKey(NANO_THIEF_SIC_HULLMOD_FLEET_KEY)){
+            //Settings.log.info("got saved data for ship of: "+shipAPI.getId());
+            return (SCData) shipAPI.getCustomData().get(NANO_THIEF_SIC_HULLMOD_FLEET_KEY);
+        }
+        //Settings.log.info("failed to get saved data for ship of: "+shipAPI.getId());
+        SCData data = getData(shipAPI.getFleetMember() != null ? shipAPI.getFleetMember() : shipAPI.getMutableStats().getFleetMember());//SCUtils.getFleetData(ship_map.get(shipAPI));
+        shipAPI.setCustomData(NANO_THIEF_SIC_HULLMOD_FLEET_KEY,data);
+        return data;
     }
     private static SCData getData(FleetMemberAPI fleetMemberAPI){
         if (fleetMemberAPI == null){

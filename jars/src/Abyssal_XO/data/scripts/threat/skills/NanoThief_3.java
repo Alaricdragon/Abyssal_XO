@@ -1,5 +1,6 @@
 package Abyssal_XO.data.scripts.threat.skills;
 
+import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_LootListiner;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.ids.Stats;
@@ -8,14 +9,16 @@ import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.util.DynamicStats;
 import second_in_command.SCData;
+import second_in_command.SCUtils;
+import second_in_command.specs.SCOfficer;
 
 public class NanoThief_3 extends Nano_Thief_Skill_Base {
     private static final String key = "AbyssalXO_Nano_Thief_Skill_3";
-    public static final float reclaimPerSet = 1000f;
-    public static final float suppliesPerSet = 5f;
+    public static float reclaimPerSet = 1000f;
+    public static float suppliesPerSet = 5f;
 
-    private static final float salvageMod = 0.20f;
-    private static final float battleSalvageMod = 0.1f;
+    public static double salvageMod = 0.20f;
+    public static double battleSalvageMod = 0.1f;
 
     @Override
     public int getNanoThiefID() {
@@ -48,12 +51,27 @@ public class NanoThief_3 extends Nano_Thief_Skill_Base {
         label.italicize();
 
     }
-
+    //todo: make this update when settings are changed, provided player fleet has this upgrade
+    public static boolean attemptSettingsUpdateIfRequired(){
+        if (Global.getSector() == null || Global.getSector().getPlayerFleet() == null || SCUtils.getFleetData(Global.getSector().getPlayerFleet()) == null) return false;
+        SCData data = SCUtils.getFleetData(Global.getSector().getPlayerFleet());
+        for (SCOfficer a : data.getActiveOfficers()) if (a.getAptitudeId().equals("Abyssal_NanoThief")){
+            Nano_Thief_Stats b = new Nano_Thief_Stats(Global.getSector().getPlayerPerson(),Global.getSector().getPlayerFleet(),Global.getSector().getPlayerFleet().getFleetData(),"",true,0,Global.getSector().getPlayerFaction());
+            data.getFleet().getStats().getDynamic().getStat(Stats.SALVAGE_VALUE_MULT_FLEET_NOT_RARE).modifyFlat("AbyssalXO_NanoThief_Salvage", (float) salvageMod*b.skillMulti[3]);
+            data.getFleet().getStats().getDynamic().getStat(Stats.BATTLE_SALVAGE_MULT_FLEET).modifyFlat("AbyssalXO_NanoThief_Salvage", (float) battleSalvageMod*b.skillMulti[3]);
+            return true;
+        }
+        return false;
+    }
     @Override
     public void onActivation(SCData data) {
         super.onActivation(data);
-        data.getFleet().getStats().getDynamic().getStat(Stats.SALVAGE_VALUE_MULT_FLEET_NOT_RARE).modifyFlat("AbyssalXO_NanoThief_Salvage",salvageMod);
-        data.getFleet().getStats().getDynamic().getStat(Stats.BATTLE_SALVAGE_MULT_FLEET).modifyFlat("AbyssalXO_NanoThief_Salvage",battleSalvageMod);
+        if (data.isPlayer() && attemptSettingsUpdateIfRequired()){
+
+        }else {
+            data.getFleet().getStats().getDynamic().getStat(Stats.SALVAGE_VALUE_MULT_FLEET_NOT_RARE).modifyFlat("AbyssalXO_NanoThief_Salvage", (float) salvageMod);
+            data.getFleet().getStats().getDynamic().getStat(Stats.BATTLE_SALVAGE_MULT_FLEET).modifyFlat("AbyssalXO_NanoThief_Salvage", (float) battleSalvageMod);
+        }
         if (data.getCommander().equals(Global.getSector().getPlayerPerson())) {
             if (Global.getSector().getListenerManager().hasListenerOfClass(NanoThief_LootListiner.class)) return;
             Global.getSector().getListenerManager().addListener(new NanoThief_LootListiner());

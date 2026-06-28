@@ -18,8 +18,12 @@ import second_in_command.SCData;
 public class NanoThief_Base extends Nano_Thief_Skill_Base {
     public static int reclaimOnStartPerDP = 10; //50 * 10 = 500 on a 10 op ship. 5k on a 100 op ship.
     public static int reclaimFromHostilePerDP = 25; //4000 per onslougt (x*5*40 = (200 * x)).
-    public static Double reclaimMultiFromParent = 0.1d;
-    public static Double reclaimRecyclePercent = 0.5d;
+    public static double reclaimMultiFromParent = 0.1d;
+    public static double reclaimRecyclePercent = 0.5d;
+    public static int fabracatorDPForNanothiefCalculation = 60;
+
+    public static double reclaimMembersPerReclaim = 0.005;
+    public static int reclaimMembersBase = 5;
     // 5*5*40 = 25 * 4 = 1000
     @Override
     public String getAffectsString() {

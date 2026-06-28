@@ -4,6 +4,15 @@ NA_BASE_reclaimOnStartPerDP,Reclaim ships start with per deployment point per sk
 NA_BASE_reclaimFromHostilePerDP,Reclaim dead ships provide per deployment point per skill,Int,25,,,1,1000,Nano Thief: Base Skill
 NA_BASE_reclaimMultiFromParent,Percent of reclaim modules on moduler ships siphin from there main ship when destroyed,Double,0.1,,,0,1,Nano Thief: Base Skill
 NA_BASE_reclaimRecyclePercent,Percent of reclaim adding to reclaim packages when a ship is destroyed (not used for ship module),Double,0.1,,,0,1,Nano Thief: Base Skill
+NA_BASE_fabracatorDPForCalulations,Fabracator DP cost for nano thief calulations,Int,60,,This effects reclaim gains and mastery costs from threat fabracators,0,200,Nano Thief: Base Skill
+NA_BASE_swarmSizePerReclaim,Reclaim swarm size per reclaim,Double,0.005,,,0,1,Nano Thief: Base Skill
+NA_BASE_swarmSizeBase,Reclaim swarm size base,Int,5,,,0,100,Nano Thief: Base Skill
+,,,,,,,,
+NA_TS_Header,,Header,Thorough Salvaging,,,,,Nano Thief: Thorough Salvaging
+NA_TS_reclaimPerSet,Reclaim per bonus,Int,1000,,,1,10000,Nano Thief: Thorough Salvaging
+NA_TS_suppliesPerSet,Supplies per bonus,Int,5,,,1,1000,Nano Thief: Thorough Salvaging
+NA_TS_salvageMod,Salvage bonus,Double,0.2,,,0,1,Nano Thief: Thorough Salvaging
+NA_TS_battleSalvageMod,Salvage bonus from battles,Double,0.1,,,0,1,Nano Thief: Thorough Salvaging
 ,,,,,,,,
 NA_SF_Header,,Header,Scrapy Fortification,,,,,Nano Thief: Scrapy Fortification
 NA_SF_activeDamage,Damage taken to actavate,Int,500,,,1,10000,Nano Thief: Scrapy Fortification
@@ -16,9 +25,10 @@ NA_SF_activeCost,Reclaim cost per actavation,Int,10,,,0,1000,Nano Thief: Scrapy 
 NA_SF_damagePerCost,Damage resisted per reclaim,Int,50,,,1,1000,Nano Thief: Scrapy Fortification
 ,,,,,,,,
 NA_DSP_Header_0,,Header,Base stats for simulacrum fighters,,please note: This also effects Defensive Swarms simulacrum fighter wings,,,Nano Thief: Decentralized Swarms
-NA_DSP_CustomSwarm_COST_BASE,Simulacrum fighter base reclaim cost ,Int,20,,,1,200,Nano Thief: Decentralized Swarms
+NA_DSP_CustomSwarm_COST_BASE,Simulacrum fighter base reclaim cost ,Int,40,,,0,200,Nano Thief: Decentralized Swarms
 NA_DSP_CustomSwarm_COST_PEROP,Simulacrum fighter reclaim cost per ordnace ponit,Int,10,,,1,200,Nano Thief: Decentralized Swarms
 NA_DSP_CustomSwarm_BUILDTIME_PREREFIT,Simulacrum fighter build time multi,Double,1,,base build time is refit time multiplyed by wing size,0.1,5,Nano Thief: Decentralized Swarms
+NA_DSP_CustomSwarm_BUILDTIME_BASE,Simulacrum fighter base build time,Int,10,,,0,100,Nano Thief: Decentralized Swarms
 NA_DSP_CustomSwarm_RefundPercent,Simulacrum fighter refund when landing,Double,0.5,,,0,1,Nano Thief: Decentralized Swarms
 NA_DSP_CustomSwarm_RefundPercent_Bomber,Simulacrum fighter refune when landing for bombers,Double,0.5,,,0,1,Nano Thief: Decentralized Swarms
 #NA_DSP_,Simulacrum fighter base swarm stuff please ignore,Int,2,,,0,10,Nano Thief: Decentralized Swarms
@@ -79,9 +89,13 @@ NA_Mastery_oddsVariance,How mush the weight to spawn each ship differs for npc f
 NA_Mastery_sModCost,Cost incress per smod,Double,0.25,,,0,10,Nano Thief: Mastery
 NA_Mastery_dModDiscount,Cost decress per dmod,Double,0.1,,,0,10,Nano Thief: Mastery
 NA_Mastery_dModmin,Min cost from dmod decrease,Double,0.5,,,0,10,Nano Thief: Mastery
-NA_Mastery_costPerDP,Reclaim cost per deployment point,Int,200,,,1,1000,Nano Thief: Mastery
+NA_Mastery_costPerDP,Reclaim cost per deployment point,Int,250,,,1,1000,Nano Thief: Mastery
+NA_Mastery_costBase,Base reclaim cost,Int,500,,,1,1000,Nano Thief: Mastery
 NA_Mastery_rechargeTimePerDP,Recharge time per deployment ponit,Double,10,,,0.1,100,Nano Thief: Mastery
+NA_Mastery_rechargeTimeBase,Base recharge time,Double,20,,,0.1,100,Nano Thief: Mastery
 NA_Mastery_buildTimePerDP,Build time per deployment point,Double,2.5,,,0.1,100,Nano Thief: Mastery
+NA_Mastery_buildTimeBase,Base build time,Double,5,,,0.1,100,Nano Thief: Mastery
 NA_Mastery_minCR,Min cr to build simulacrum ship,Double,0.4,,,0,1,Nano Thief: Mastery
 NA_Mastery_peakCRDuration,peak performance multiplyer,Double,0.6,,,0,1,Nano Thief: Mastery
-NA_Mastery_maxReclaimPercent,recoved reclaim multiplyer,Double,0.5,,,0,1,Nano Thief: Mastery
+NA_Mastery_maxReclaimPercent,recoved reclaim multiplyer,Double,0.2,,,0,1,Nano Thief: Mastery
+NA_Mastery_SwarmSizeMulti,How large the construction swamrs are compaired to reclaim swarms. Cosmetic only,Double,4,,,0.1,10,Nano Thief: Mastery
