@@ -50,7 +50,7 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
         //add in a switch statment to determin data about this ship.
         stats.getAvailableShips().add(ship);
         if (stats.isValidReclaimTarget(ship)){
-            int op = (int) (ship.getFleetMember() != null ? ship.getFleetMember().getDeploymentPointsCost() : ship.getDeployCost());
+            int op = (int) (ship.getHullSpec() != null && ship.getHullSpec().equals("fabricator_unit") ? NanoThief_Base.fabracatorDPForNanothiefCalculation : ship.getFleetMember() != null ? ship.getFleetMember().getDeploymentPointsCost() : ship.getDeployCost());
             op = NanoThief_Base.reclaimOnStartPerDP*stats.reclaimMulti*op;
             Global.getCombatEngine().addPlugin(new NanoThief_AddReclaimAtStartListiner(ship,op,stats,this));
         }

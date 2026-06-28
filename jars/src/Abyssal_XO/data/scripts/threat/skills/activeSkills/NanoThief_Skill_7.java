@@ -90,7 +90,7 @@ public class NanoThief_Skill_7 extends NanoThief_SkillBase{
             return;
         }
         spec.DF_swarmCost = (a.getOpCost(a.getVariant().getStatsForOpCosts())*NanoThief_6.CustomSwarm_COST_PEROP)+NanoThief_6.CustomSwarm_COST_BASE;
-        spec.DF_productionTime = (float) (a.getNumFighters() * a.getRefitTime() * NanoThief_6.CustomSwarm_BUILDTIME_PREREFIT);
+        spec.DF_productionTime = (float) ((a.getNumFighters() * a.getRefitTime() * NanoThief_6.CustomSwarm_BUILDTIME_PREREFIT) + NanoThief_6.BASESWARM_BUILDTIME);
         spec.DF_recyclePerFighter = (spec.DF_swarmCost / Math.max(spec.DF_wingSize,1));
         spec.DF_ttl = NanoThief_6.CustomSwarm_TTL;
         if (a.getRole().equals(WingRole.BOMBER)){

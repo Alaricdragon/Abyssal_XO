@@ -117,6 +117,7 @@ public class Nano_Thief_Stats {
                 log.info("WARNING: NO LISTINER! SPOOKY!");
             }
         }
+        playerExstraReclaim *=playerStats.skillMulti[3];
         playerStats = null;
     }
     /*public Nano_Thief_Stats(String OF_fighterToBuild) {
@@ -441,7 +442,7 @@ public class Nano_Thief_Stats {
             log.info("  getting base reclaim as though from memory: ");
             out = (int) NanoThief_BattleListener.reclaimOverride.get(reclaim);
         }else {
-            float base = reclaim.getFleetMember() != null ? reclaim.getFleetMember().getDeploymentPointsCost() : reclaim.getDeployCost();
+            float base = reclaim.getHullSpec() != null && reclaim.getHullSpec().getHullId().equals("fabricator_unit") ? NanoThief_Base.fabracatorDPForNanothiefCalculation : reclaim.getFleetMember() != null ? reclaim.getFleetMember().getDeploymentPointsCost() : reclaim.getDeployCost();
             out = (int) (base * NanoThief_Base.reclaimFromHostilePerDP * reclaimMulti);
         }
 
@@ -547,7 +548,7 @@ public class Nano_Thief_Stats {
 
         swarm.getParams().maxOffset *= NanoThief_RecreationScript.RECLAMATION_SWARM_RADIUS_MULT;
 
-        int maxSwarmSize = (amount / 100) + 20;//base size is 20. + 10 per 1k size. so its 30,40,50,60 in size.
+        int maxSwarmSize = (int) ((amount * NanoThief_Base.reclaimMembersPerReclaim) + NanoThief_Base.reclaimMembersBase);//base size is 20. + 10 per 1k size. so its 30,40,50,60 in size.
         swarm.getParams().initialMembers = 0;
         swarm.getParams().baseMembersToMaintain = amount;
 
@@ -601,10 +602,9 @@ public class Nano_Thief_Stats {
         makeSureSavedShipsAreAlive();
         int output = 0;
         for (ShipAPI a : this.availableShips){
-            if (a.getFleetMember() == null) continue;
             //a.getMutableStats();
 
-            output += a.getFleetMember().getDeploymentPointsCost();
+            output += a.getHullSpec() != null && a.getHullSpec().getHullId().equals("fabricator_unit") ? NanoThief_Base.fabracatorDPForNanothiefCalculation : a.getFleetMember() != null ? a.getFleetMember().getDeploymentPointsCost() : a.getDeployCost();
             //output += a.getMutableStats().getSuppliesToRecover().getModifiedInt();
             //qoutput += availableShips.get(a).getDeployCost();
             //availableShips.get(a).getMutableStats().

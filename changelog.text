@@ -1,3 +1,34 @@
+V0.1.8:
+    safety overrides (mod):
+        (hopefully) made Thorough Salvaging's work with this.
+    fixes:
+        fixed a crash when pressing f2 on a ship created by mastery or a threat fabricator
+        hopefully improved the efficacy of the 'find SCData' eq for mastery and threat fabricator ships
+    settings:
+        moved the fabricator mastery cost override into reclaim settings. Now also effects reclaim gained.
+        added settings for reclaim swarm size
+        added settings for construction swarm size multi (compared to a reclaim swarm holding the same amount.)
+        simulacrum fighter wing base cost now can now go down to 0.
+        added settings for Thorough Salvaging
+    balance:
+        mastery:
+            cost per dp 200 -> 250
+            base reclaim cost 0 -> 500
+            base recharge time 0 -> 20
+            base build time 0 -> 5
+            reclaim gained from mastery ships 50% -> 20%
+            (effectively, each ships acts like its 2 dp more then it really is for mastery calculations)
+            (mastery reclaim value change was to make 'swarm tactics' a bit harder to do)
+        reclaim:
+            fabricator reclaim value is now the same as its mastery build value
+            reclaim members per reclaim 0.01 -> 0.005
+            reclaim members base 20 -> 5
+            (This was done to give threat just a bit less fragments from reclaim swarms. it was kinda silly looking)
+        Simulacrum fighter wings:
+            base cost 20 -> 40
+            base build time 0 -> 10
+            changed default wing from talon -> warthog
+
 V0.1.7:
     safety overrides (mod):
         (hopefully) fixed Scrapy Fortification not working at all

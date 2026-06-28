@@ -18,6 +18,7 @@ public class StoredSettings {
     private static void getLunaSettings(){
         luna_NA_Base();
         //-
+        luna_NA_ThoroughSalvaging();
         luna_NA_ScrapworkFortifications();
         luna_NA_DescentralizedSwarms();
         luna_NA_DefensiveSwarms();
@@ -30,6 +31,18 @@ public class StoredSettings {
         NanoThief_Base.reclaimFromHostilePerDP = LunaSettings.getInt("Abyssal_XO","NA_BASE_reclaimFromHostilePerDP");
         NanoThief_Base.reclaimMultiFromParent = LunaSettings.getDouble("Abyssal_XO","NA_BASE_reclaimMultiFromParent");
         NanoThief_Base.reclaimRecyclePercent = LunaSettings.getDouble("Abyssal_XO","NA_BASE_reclaimRecyclePercent");
+        NanoThief_Base.fabracatorDPForNanothiefCalculation = LunaSettings.getInt("Abyssal_XO","NA_BASE_fabracatorDPForCalulations");
+        NanoThief_Base.reclaimMembersPerReclaim = LunaSettings.getInt("Abyssal_XO","NA_BASE_swarmSizePerReclaim");
+        NanoThief_Base.reclaimMembersBase = LunaSettings.getInt("Abyssal_XO","NA_BASE_swarmSizeBase");
+
+    }
+    public static void luna_NA_ThoroughSalvaging(){
+        NanoThief_3.reclaimPerSet = LunaSettings.getInt("Abyssal_XO","NA_TS_reclaimPerSet");
+        NanoThief_3.suppliesPerSet = LunaSettings.getInt("Abyssal_XO","NA_TS_suppliesPerSet");
+        NanoThief_3.salvageMod = LunaSettings.getDouble("Abyssal_XO","NA_TS_salvageMod");
+        NanoThief_3.battleSalvageMod = LunaSettings.getDouble("Abyssal_XO","NA_TS_battleSalvageMod");
+
+        NanoThief_3.attemptSettingsUpdateIfRequired();
     }
     private static void luna_NA_ScrapworkFortifications(){
         NanoThief_4.activeDamage = LunaSettings.getInt("Abyssal_XO","NA_SF_activeDamage");
@@ -46,9 +59,9 @@ public class StoredSettings {
         NanoThief_6.CustomSwarm_COST_BASE = LunaSettings.getInt("Abyssal_XO","NA_DSP_CustomSwarm_COST_BASE");
         NanoThief_6.CustomSwarm_COST_PEROP = LunaSettings.getInt("Abyssal_XO","NA_DSP_CustomSwarm_COST_PEROP");
         NanoThief_6.CustomSwarm_BUILDTIME_PREREFIT = LunaSettings.getDouble("Abyssal_XO","NA_DSP_CustomSwarm_BUILDTIME_PREREFIT");
+        NanoThief_6.CustomSwarm_BUILDTIME_BASE = LunaSettings.getInt("Abyssal_XO","NA_DSP_CustomSwarm_BUILDTIME_BASE");
         NanoThief_6.CustomSwarm_RefundPercent = LunaSettings.getDouble("Abyssal_XO","NA_DSP_CustomSwarm_RefundPercent");
         NanoThief_6.CustomSwarm_RefundPercent_Bomber = LunaSettings.getDouble("Abyssal_XO","NA_DSP_CustomSwarm_RefundPercent_Bomber");
-
         NanoThief_6.dpPerFighters = LunaSettings.getInt("Abyssal_XO","NA_DSP_dpPerFighters");
         NanoThief_6.MINRANGEOFWING = LunaSettings.getInt("Abyssal_XO","NA_DSP_MINRANGEOFWING");
         NanoThief_6.speedPerSize[0] = LunaSettings.getDouble("Abyssal_XO","NA_DSP_speedPerSize_0");
@@ -103,19 +116,26 @@ public class StoredSettings {
         NanoThief_10.canCapital = LunaSettings.getBoolean("Abyssal_XO","NA_Mastery_canCapital");
         NanoThief_10.allowedSizesForNPC = new boolean[]{NanoThief_10.canFrigate,NanoThief_10.canDestroyer, NanoThief_10.canCruiser, NanoThief_10.canCapital};
         NanoThief_10.allowNPCFabricators = LunaSettings.getBoolean("Abyssal_XO","NA_Mastery_canFabricator");
-        NanoThief_10.fabricatorDPOverride = LunaSettings.getInt("Abyssal_XO","NA_Mastery_fabricatorDPOverride");
+        //NanoThief_10.fabricatorDPOverride = LunaSettings.getInt("Abyssal_XO","NA_Mastery_fabricatorDPOverride");
         int temp = LunaSettings.getInt("Abyssal_XO","NA_Mastery_oddsVariance");
         NanoThief_10.maxOddsNPC = temp+1;
         NanoThief_10.sModCost = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_sModCost");
         NanoThief_10.dModDiscount = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_dModDiscount");
         NanoThief_10.dModmin = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_dModmin");
         NanoThief_10.costPerDP = LunaSettings.getInt("Abyssal_XO","NA_Mastery_costPerDP");
+        NanoThief_10.baseCost = LunaSettings.getInt("Abyssal_XO","NA_Mastery_costBase");
+
         NanoThief_10.rechargeTimePerDP = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_rechargeTimePerDP");
+        NanoThief_10.rechargeTimeBase = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_rechargeTimeBase");
+
         NanoThief_10.buildTimePerDP = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_buildTimePerDP");
+        NanoThief_10.builtTimeBase = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_buildTimeBase");
+
         NanoThief_10.minCR = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_minCR");
         NanoThief_10.peakCRDuration = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_peakCRDuration");
         NanoThief_10.maxReclaimPercent = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_maxReclaimPercent");
 
+        NanoThief_10.swarmSizeMulti = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_SwarmSizeMulti");
     }
     /// not doing this because I am lazy. maybe later
     private static void getConfigSettings(){

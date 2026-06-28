@@ -4,6 +4,8 @@ import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.Utils;
 import Abyssal_XO.data.scripts.hullmods.SICSkillControllerBackup;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
+import Abyssal_XO.data.scripts.threat.skills.NanoThief_10;
+import Abyssal_XO.data.scripts.threat.skills.NanoThief_Base;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_MasteryShipStats;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
@@ -78,8 +80,9 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
         stats.constructors.add(this);
 
         RoilingSwarmEffect swarm = FragmentSwarmHullmod.createSwarmFor(ship);
-        swarm.getParams().baseMembersToMaintain = (int) (constructionDatas.cost / 50);
-        swarm.getParams().initialMembers = (int) (constructionDatas.cost / 50);
+        int maxSwarmSize = (int) ((constructionDatas.cost * NanoThief_Base.reclaimMembersPerReclaim) + NanoThief_Base.reclaimMembersBase);//base size is 20. + 10 per 1k size. so its 30,40,50,60 in size.
+        swarm.getParams().baseMembersToMaintain = (int) (maxSwarmSize * NanoThief_10.swarmSizeMulti);
+        swarm.getParams().initialMembers = swarm.getParams().baseMembersToMaintain;
         swarm.getParams().maxOffset = constructionDatas.ship.getHullSpec().getCollisionRadius();
 
         RoilingSwarmEffect.getFlockingMap().remove(swarm.getParams().flockingClass, swarm);

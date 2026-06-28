@@ -146,10 +146,13 @@ public class Nano_Thief_Selection_Sfw_Attack_CargoListiner implements CargoPicke
         }
         //cargo.addCommodity("crew",200);
         panel.addPara("the inserted fighter LCP is set as your Simulacrum Fighter Wing. the fighter LCP will not be available until you replace it with another one.",5);
-        panel.addPara("if nothing is selected, talon wings will be selected for deployment",5);
+        String baseWingDisplay = Global.getSettings().getFighterWingSpec(Settings.NANO_THIEF_PALYER_BASEWING).getWingName();
+        panel.addPara("if nothing is selected, "+baseWingDisplay+" will be selected for deployment",5);
         panel.addPara("The rules for base stats is as follows:",5);
         panel.addPara("Reclaim cost is %s per ordnance point + %s",5, Misc.getTextColor(), Misc.getHighlightColor(),""+(int)NanoThief_6.CustomSwarm_COST_PEROP,""+(int)NanoThief_6.CustomSwarm_COST_BASE);
-        panel.addPara("Build time is wing size * replacement rate",5,Misc.getTextColor(), Misc.getHighlightColor());
+        String line8a = NanoThief_6.BASESWARM_BUILDTIME+"";
+        String line8b = ((int)(NanoThief_6.CustomSwarm_BUILDTIME_PREREFIT*100)/100)+"";
+        panel.addPara("Build time is %s + %s * wing size * replacement rate",5,Misc.getTextColor(), Misc.getHighlightColor(),line8a,line8b);
         panel.addPara("can only be active for %s seconds before returning to a friendly ship",5,Misc.getTextColor(), Misc.getHighlightColor(),""+(int) NanoThief_6.CustomSwarm_TTL);
         applyStatsPanel(panel);
 
@@ -157,7 +160,7 @@ public class Nano_Thief_Selection_Sfw_Attack_CargoListiner implements CargoPicke
     }
     private void applyStatsPanel(TooltipMakerAPI panel){
         String fighterID = currentFighter;
-        if (currentFighter == null) fighterID = "talon_wing";
+        if (currentFighter == null) fighterID = Settings.NANO_THIEF_PALYER_BASEWING;//"talon_wing";
         String sprite = Global.getSettings().getFighterWingSpec(fighterID).getVariant().getHullSpec().getSpriteName();
         FighterWingSpecAPI fighterSpec = Global.getSettings().getFighterWingSpec(fighterID);
         //panel.addPara("",5);
@@ -198,7 +201,7 @@ public class Nano_Thief_Selection_Sfw_Attack_CargoListiner implements CargoPicke
             currentFighter = newFTemp;
             //Global.getSector().getPlayerPerson().getMemory().set(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY, currentFighter);
         }else{
-            currentFighter = "talon_wing";
+            currentFighter = Settings.NANO_THIEF_PALYER_BASEWING;
             //Global.getSector().getPlayerPerson().getMemory().set(Settings.NANO_THIEF_CUSTOM_WING_MEMORY_KEY, currentFighter);
         }
     }
