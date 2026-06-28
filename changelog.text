@@ -9,6 +9,10 @@ V0.1.7:
     fixes:
         fixed mastery spawning ships for the player when it was not suppose to.
         fixed mastery not using modified cost. (should only come up when using safety override mod)
+        fixed Simulacrum ships and fighter wings getting the second in command effects from the first fleet to spawn one instead of the fleet that created them
+        fixed ships spawned from mastery ships being unable to create the 'reclaim creation effect' like other ships
+    threat:
+        created a system that forces ships spawned by fabricators to get second in command ability's and skills.
 V0.1.6:
     safety overrides (mod):
         (hopefully) improved defensive swarms in combat display.

@@ -301,9 +301,10 @@ public class Nano_Thief_Stats {
             if (!canAcceptReclaim(curr)) continue;
             if (curr.isHulk()) continue;
             if (curr.equals(reclaim)) continue;
-            if (curr.getFleetCommander() == null) continue;
+            //if (curr.getFleetCommander() == null) continue;
             //log.info("  has fleet commander");
-            if (!curr.getFleetCommander().getId().equals(this.commanderID)) continue;
+            if (NanoThief_BattleListener.getCommanderID(curr) == null) continue;
+            if (!(NanoThief_BattleListener.getCommanderID(curr) == this.commanderID)) continue;
             //log.info("  has valid fleet commander");
 
             //log.info("  got valid reclaim target. comparing position....");
@@ -339,9 +340,8 @@ public class Nano_Thief_Stats {
                 if (curr.isHulk()) continue;
                 if (curr.equals(reclaim)) continue;
                 if (curr.isFighter()) continue;
-                if (curr.getFleetCommander() == null) continue;
-                //log.info("  has fleet commander");
-                if (!curr.getFleetCommander().getId().equals(this.commanderID)) continue;
+                if (NanoThief_BattleListener.getCommanderID(curr) == null) continue;
+                if (!(NanoThief_BattleListener.getCommanderID(curr) == this.commanderID)) continue;
                 //log.info("  has valid fleet commander");
                 if (curr.getVariant().hasHullMod(Settings.HULLMOD_CENTRAL_FAB)){
                     centralFab = curr;

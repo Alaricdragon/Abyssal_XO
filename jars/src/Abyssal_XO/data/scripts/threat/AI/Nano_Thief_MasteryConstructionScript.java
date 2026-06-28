@@ -1,5 +1,6 @@
 package Abyssal_XO.data.scripts.threat.AI;
 
+import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_BattleListener;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_10;
@@ -42,6 +43,8 @@ public class Nano_Thief_MasteryConstructionScript extends ThreatShipConstruction
         //ship = engine.getFleetManager(source.getOriginalOwner()).spawnShipOrWing(variantId, loc, facing, 0f, null);
         //engine.getFleetManager(source.getOriginalOwner()).soawn
         ship = engine.getFleetManager(source.getOriginalOwner()).spawnFleetMember(toConstruct,loc,facing,0f);//spawnShipOrWing(variantId, loc, facing, 0f, null);
+        //Settings.log.info("GOT MEMBER ID AS (c): "+ship.getFleetMember().getId());
+
         ship.setCurrentCR(crAtCreation);
         ship.resetDefaultAI();
         ship.setOwner(source.getOriginalOwner());
@@ -88,5 +91,6 @@ public class Nano_Thief_MasteryConstructionScript extends ThreatShipConstruction
             g.toggleOff();
         }
         hasCreated = true;
+        //Settings.log.info("GOT MEMBER ID AS (d): "+ship.getFleetMember().getId());
     }
 }

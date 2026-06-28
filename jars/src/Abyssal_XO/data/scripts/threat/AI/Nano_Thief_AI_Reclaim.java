@@ -11,7 +11,6 @@ import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.api.util.WeightedRandomPicker;
 import lombok.Getter;
 import org.apache.log4j.Logger;
-import org.lwjgl.Sys;
 import org.lwjgl.util.vector.Vector2f;
 
 import java.util.ArrayList;

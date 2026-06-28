@@ -5,7 +5,9 @@ import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.combat.BaseHullMod;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
+import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
+import com.fs.starfarer.api.loading.VariantSource;
 import second_in_command.SCData;
 import second_in_command.SCUtils;
 import second_in_command.specs.SCBaseSkillPlugin;
@@ -19,6 +21,50 @@ public class SICSkillControllerBackup extends BaseHullMod {
     public static CampaignFleetAPI fleet_global = null;
     public static HashMap<FleetMemberAPI,CampaignFleetAPI> member_map = new HashMap<>();
     public static HashMap<ShipAPI,CampaignFleetAPI> ship_map = new HashMap<>();
+
+    /// adds the fleet to this hullmod -before- the ship gets is added to the combat engin.
+    public static void addShipBeforeShipSpawns(FleetMemberAPI ship, CampaignFleetAPI fleet){
+        ShipVariantAPI OVERWRITER = ship.getVariant();//Global.getSettings().getVariant("Abyssal_XO_ReclaimCore_Blank").clone();
+        OVERWRITER.setSource(VariantSource.REFIT);
+        SICSkillControllerBackup.member_map.put(ship,fleet);
+        OVERWRITER.addMod(Settings.SIC_CONTROL_HULLMOD);
+        ship.setVariant(OVERWRITER,false,true);
+    }
+    /// adds the ship to this hullmod after the ship is added to the combat engine
+    public static void addShipAfterShipSpawns(ShipAPI ship, CampaignFleetAPI fleet){
+        /*todo:
+            1: try seeing if said ships already have a fleet by defalt (if so, filter for fleets that have SC data)
+            2: run checks in hullmod to see when a giving bit of code fails. so I can have some fucking logs about what is going on
+            3: run tests to try and determine if simulacrum fighters and simulacrum ships still work.
+            4: make sure nano-thief is being added at the right time with my code...? (its not. on added to combat it runs.)
+            5: try 'shipAPI.applyEffectsAfterShipAddedToCombatEngine();' to see if that helps
+
+         */
+        Settings.log.info("attempting to add hullmods to a single ship of name, id: "+ship.getName()+" id: "+ship.getFleetMember().getId());
+        Settings.log.info(" ships fleet starting as: "+(ship.getFleetMember() != null && ship.getFleetMember().getFleetData() != null && ship.getFleetMember().getFleetData().getFleet() != null ? ship.getFleetMember().getFleetData().getFleet().getId() : "N/A"));
+        Settings.log.info(" target fleet as: "+(fleet != null ? fleet.getId() : "N/A"));
+        SICSkillControllerBackup.member_map.put(ship.getFleetMember(),fleet);
+        //ship.getFleetMember().setCustomData(NANO_THIEF_SIC_HULLMOD_FLEET_KEY,fleet);
+        ShipVariantAPI OVERWRITER = ship.getVariant();//Global.getSettings().getVariant("Abyssal_XO_ReclaimCore_Blank").clone();
+        OVERWRITER.setSource(VariantSource.REFIT);
+        //OVERWRITER.setWingId(0,skills.stats.OF_fighterToBuild);
+        OVERWRITER.addMod(Settings.SIC_CONTROL_HULLMOD);
+        //ship.getVariant().getHullMods();
+        ship.getFleetMember().setVariant(OVERWRITER,false,true);//setVariant(OVERWRITER,false,true);
+        Settings.log.info(" does have hullmod: "+ship.getVariant().hasHullMod(Settings.SIC_CONTROL_HULLMOD));
+
+        ship.applyEffectsAfterShipAddedToCombatEngine();
+
+        SCData data = getData(ship.getFleetMember());
+        if (data == null) return;
+
+        for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()) {
+            skill.applyEffectsBeforeShipCreation(data, ship.getFleetMember().getStats(), ship.getVariant(), ship.getHullSize(), Settings.SIC_CONTROL_HULLMOD+"_"+skill.getId());
+        }
+        for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()) {
+            skill.applyEffectsAfterShipCreation(data, ship, ship.getVariant(), Settings.SIC_CONTROL_HULLMOD+"_"+skill.getId());
+        }
+    }
     /*public void setFleet(FleetMemberAPI memberAPI){//might need some more things here???
         if (this.fleet != null){
             Settings.log.info( "(SICSkillControllerBackup)"+(memberAPI != null ?memberAPI.getId():"N/A")+" already has fleet of id"+fleet.getId());
@@ -49,7 +95,10 @@ public class SICSkillControllerBackup extends BaseHullMod {
 
        // if (tryToSetFleet(stats.getFleetMember())) return;
         SCData data = getData(stats.getFleetMember());
-        if (data == null) return;
+        if (data == null){
+            Settings.log.info("failed to get data (a)"+stats.getFleetMember().getId());
+            return;
+        }
         for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()) {
             skill.applyEffectsBeforeShipCreation(data, stats, stats.getVariant(), hullSize, id+"_"+skill.getId());
         }
@@ -60,7 +109,11 @@ public class SICSkillControllerBackup extends BaseHullMod {
         super.applyEffectsAfterShipCreation(ship, id);
         //if (tryToSetFleet(ship.getFleetMember())) return;
         SCData data = getData(ship);
-        if (data == null) return;
+        if (data == null){
+            Settings.log.info("failed to get data (b)"+(ship.getFleetMember() != null ? ship.getFleetMember().getId() : "N/A"));
+            //if (ship.getMutableStats().getFleetMember() != null)Settings.log.info(" -"+ship.getMutableStats().getFleetMember().getId());
+            return;
+        }
         for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()) {
             skill.applyEffectsAfterShipCreation(data, ship, ship.getVariant(), id+"_"+skill.getId());
             //skill.applyEffectsBeforeShipCreation(data, stats, stats.getVariant(), hullSize, "${id}_${skill.getId()}")
@@ -72,7 +125,10 @@ public class SICSkillControllerBackup extends BaseHullMod {
         super.applyEffectsToFighterSpawnedByShip(fighter, ship, id);
         //if (tryToSetFleet(ship.getFleetMember())) return;
         SCData data = getData(ship);
-        if (data == null) return;
+        if (data == null){
+            Settings.log.info("failed to get data (c)"+ship.getFleetMember().getId());
+            return;
+        }
         for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()) {
             //skill.applyEffectsToFighterSpawnedByShip(data, ship, ship.getVariant(), id+"_"+skill.getId());
             skill.applyEffectsToFighterSpawnedByShip(data, fighter, ship, id+"_"+skill.getId());
@@ -85,7 +141,10 @@ public class SICSkillControllerBackup extends BaseHullMod {
         super.advanceInCombat(ship, amount);
         //if (tryToSetFleet(ship.getFleetMember())) return;
         SCData data = getData(ship);
-        if (data == null) return;
+        if (data == null){
+            Settings.log.info("failed to get data (d)"+ship.getFleetMember().getId());
+            return;
+        }
         for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()) {
             //skill.applyEffectsToFighterSpawnedByShip(data, ship, ship.getVariant(), id+"_"+skill.getId());
             skill.advanceInCombat(data,  ship, amount);
@@ -100,10 +159,10 @@ public class SICSkillControllerBackup extends BaseHullMod {
     /*private CampaignFleetAPI getFleet(){
         return this.fleet;
     }*/
-    private SCData getData(ShipAPI shipAPI){
-        return getData(shipAPI.getFleetMember());//SCUtils.getFleetData(ship_map.get(shipAPI));
+    private static SCData getData(ShipAPI shipAPI){
+        return getData(shipAPI.getFleetMember() != null ? shipAPI.getFleetMember() : shipAPI.getMutableStats().getFleetMember());//SCUtils.getFleetData(ship_map.get(shipAPI));
     }
-    private SCData getData(FleetMemberAPI fleetMemberAPI){
+    private static SCData getData(FleetMemberAPI fleetMemberAPI){
         if (fleetMemberAPI == null){
             Settings.log.info("failed to get fleet member for a ship....");
             return null;

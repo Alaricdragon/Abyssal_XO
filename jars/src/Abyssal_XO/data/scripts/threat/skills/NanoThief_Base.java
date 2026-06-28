@@ -74,6 +74,7 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
         }
             //List<NanoThief_ShipSkillsAdder> a = ship.getListenerManager().getListeners(NanoThief_ShipSkillsAdder.class);
             //listiner = a.get(0);
+        Settings.log.info("adding to nano-thief internal data a ship of name: "+ship.getName()+" id: "+(ship.getFleetMember() != null ? ship.getFleetMember().getId() : "N/A"));
         NanoThief_ShipSkillsAdder a = new NanoThief_ShipSkillsAdder(ship,data);
         ship.addListener(a);
         /*/

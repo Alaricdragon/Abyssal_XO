@@ -32,7 +32,7 @@ public class NanoThief_Threat_SIC_Adder extends BaseEveryFrameCombatPlugin {
         for (ShipAPI a : engine.getShips()) {
             if (a.isHulk()) continue;
             if (a.getHullSize() == ShipAPI.HullSize.FIGHTER) continue;
-            if (a.hasTag(SHIP_UNDER_CONSTRUCTION) && !a.getVariant().getHullMods().contains("Abussal_XO_SIC_controler") && !a.getVariant().getHullMods().contains("sc_skill_controller")){
+            if (a.hasTag(SHIP_UNDER_CONSTRUCTION) && !a.getVariant().getHullMods().contains(Settings.SIC_CONTROL_HULLMOD) && !a.getVariant().getHullMods().contains("sc_skill_controller")){
                 int force = a.getOriginalOwner();
                 for (ShipAPI b : engine.getShips()){
                     if (b.getOriginalOwner() != force) continue;
@@ -48,23 +48,6 @@ public class NanoThief_Threat_SIC_Adder extends BaseEveryFrameCombatPlugin {
             //events.get(0).getEventClass().equals()
     }
     private void refitShip(ShipAPI shipAPI, CampaignFleetAPI fleet){
-        /*todo:
-            1: try seeing if said ships already have a fleet by defalt (if so, filter for fleets that have SC data)
-            2: run checks in hullmod to see when a giving bit of code fails. so I can have some fucking logs about what is going on
-            3: run tests to try and determine if simulacrum fighters and simulacrum ships still work.
-            4: make sure nano-thief is being added at the right time with my code...? (its not. on added to combat it runs.)
-            5: try 'shipAPI.applyEffectsAfterShipAddedToCombatEngine();' to see if that helps
-
-         */
-        Settings.log.info("attempting to add hullmods to a single ship of name, id: "+shipAPI.getName()+" id: "+shipAPI.getFleetMember().getId());
-        SICSkillControllerBackup.member_map.put(shipAPI.getFleetMember(),fleet);
-        //shipAPI.getFleetMember().setCustomData(NANO_THIEF_SIC_HULLMOD_FLEET_KEY,fleet);
-        ShipVariantAPI OVERWRITER = shipAPI.getVariant();//Global.getSettings().getVariant("Abyssal_XO_ReclaimCore_Blank").clone();
-        OVERWRITER.setSource(VariantSource.REFIT);
-        //OVERWRITER.setWingId(0,skills.stats.OF_fighterToBuild);
-        OVERWRITER.addMod("Abussal_XO_SIC_controler");
-        //shipAPI.getVariant().getHullMods();
-        shipAPI.getFleetMember().setVariant(OVERWRITER,false,true);//setVariant(OVERWRITER,false,true);
-        Settings.log.info("does have hullmod: "+shipAPI.getVariant().hasHullMod("Abussal_XO_SIC_controler"));
+        SICSkillControllerBackup.addShipAfterShipSpawns(shipAPI, fleet);
     }
 }
