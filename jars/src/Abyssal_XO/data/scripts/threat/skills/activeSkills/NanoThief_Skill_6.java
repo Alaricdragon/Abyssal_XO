@@ -164,7 +164,8 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         OVERWRITER.setSource(VariantSource.REFIT);
         OVERWRITER.setWingId(0,skills.stats.OF_fighterToBuild);
         if (primary.getFleetMember() != null && primary.getFleetMember().getFleetData() != null && primary.getFleetMember().getFleetData().getFleet() != null) {
-            SICSkillControllerBackup.fleet_global = primary.getFleetMember().getFleetData().getFleet();
+            SICSkillControllerBackup.member_map.put(member,primary.getFleetMember().getFleetData().getFleet());
+            //SICSkillControllerBackup.fleet_global = primary.getFleetMember().getFleetData().getFleet();
             OVERWRITER.addMod(Settings.SIC_CONTROL_HULLMOD);
         }
         member.setOwner(primary.getOwner());

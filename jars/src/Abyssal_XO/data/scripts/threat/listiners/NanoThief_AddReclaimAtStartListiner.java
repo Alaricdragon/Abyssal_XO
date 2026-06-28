@@ -31,18 +31,18 @@ public class NanoThief_AddReclaimAtStartListiner extends BaseEveryFrameCombatPlu
                 Global.getCombatEngine().isCombatOver() ||
                 !Global.getCombatEngine().isInEngine(ship)
         ){
-            Settings.log.info("failed to add starting reclaim because something went wrong...?");
+            //Settings.log.info("failed to add starting reclaim because something went wrong...?");
             Global.getCombatEngine().removePlugin(this);
             return;
         }
         timer -= amount;
-        Settings.log.info("got timer to get reclaim as: "+timer);
+        //Settings.log.info("got timer to get reclaim as: "+timer);
         if (!stats.isValidReclaimTarget(ship)){
             Global.getCombatEngine().removePlugin(this);
-            Settings.log.info("ship of name: "+ship.getName()+" is invalid reclaim target. not adding starting reclaim");
+            //Settings.log.info("ship of name: "+ship.getName()+" is invalid reclaim target. not adding starting reclaim");
         }
         if (timer <= 0){
-            Settings.log.info("ship of name "+ship.getName()+" got "+reclaim+" inital reclaim");
+            //Settings.log.info("ship of name "+ship.getName()+" got "+reclaim+" inital reclaim");
             shipSkills.addReclaim(reclaim);
             Global.getCombatEngine().removePlugin(this);
         }

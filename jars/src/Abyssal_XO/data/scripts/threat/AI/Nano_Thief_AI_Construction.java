@@ -353,10 +353,13 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
         startedConstruction = true;
         RoilingSwarmEffect swarm = RoilingSwarmEffect.getSwarmFor(ship);
         if (swarm != null) {
-            SICSkillControllerBackup.fleet_global = stats.fleet.getFleet();
+            //SICSkillControllerBackup.fleet_global = stats.fleet.getFleet();
             FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(FleetMemberType.SHIP, constructionDatas.ship.getVariant().clone());
+            SICSkillControllerBackup.member_map.put(memberCopy,stats.fleet.getFleet());
+            //Settings.log.info("GOT MEMBER ID AS (a): "+memberCopy.getId());
             //FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(FleetMemberType.SHIP, Global.getSettings().getVariant(Settings.NANO_THIEF_MASTERY_BASESHIP));
             //memberCopy.setOwner(ship.getOwner());
+            memberCopy.setOwner(ship.getOriginalOwner());
             memberCopy.setFleetCommanderForStats(stats.commander,stats.fleet);
             memberCopy.setShipName(constructionDatas.name);
             //Utils.applyShipIntoFleet(stats.fleet,memberCopy);
@@ -369,7 +372,8 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
             memberCopy.setOwner(ship.getOwner());
             memberCopy.setVariant(OVERWRITER,false,true);
             memberCopy.getStats().getMinCrewMod().modifyMult("Abyssal_XO",0);
-            Settings.log.info("HERE: GETTING DATA: "+memberCopy.isMothballed()); //get if ship is mothballed?
+            //Settings.log.info("GOT MEMBER ID AS (b): "+memberCopy.getId());
+            /*Settings.log.info("HERE: GETTING DATA: "+memberCopy.isMothballed()); //get if ship is mothballed?
             //memberCopy.getFleetData().getFleet();
             String out = "";
             //out += "got fleet data name as: "+memberCopy.getFleetData().getFleet().getName()+"";
@@ -377,7 +381,7 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
             for (String a : memberCopy.getVariant().getHullMods()){
                 out+=a+", ";
             }
-            Settings.log.info(out);
+            Settings.log.info(out);*/
             //memberCopy.getStats().getDynamic().getStat()
             //memberCopy.getStats().
             //FleetMemberAPI memberCopy = constructionDatas.ship;

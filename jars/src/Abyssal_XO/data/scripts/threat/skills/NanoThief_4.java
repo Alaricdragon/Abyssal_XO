@@ -3,6 +3,8 @@ package Abyssal_XO.data.scripts.threat.skills;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_SkillBase;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_4;
+import Abyssal_XO.data.scripts.threat.skills.interfaces.NanoThief_InterfaceBase;
+import Abyssal_XO.data.scripts.threat.skills.interfaces.NanoThief_Interface_4;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
@@ -57,6 +59,11 @@ public class NanoThief_4 extends Nano_Thief_Skill_Base {
     @Override
     public NanoThief_SkillBase createListiner(NanoThief_ShipSkills skills, ShipAPI ship) {
         return new NanoThief_Skill_4(skills,ship);
+    }
+
+    @Override
+    public NanoThief_InterfaceBase createInterface() {
+        return new NanoThief_Interface_4();
     }
 
     @Override

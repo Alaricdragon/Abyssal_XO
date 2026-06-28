@@ -13,6 +13,8 @@ import org.lwjgl.util.vector.Vector2f;
 
 import java.awt.*;
 
+import static Abyssal_XO.data.scripts.Settings.NANO_THIEF_SKILL_4_ACTIVE_KEY;
+
 public class NanoThief_Skill_4 extends NanoThief_SkillBase{
     public float cooldown;
     public boolean ready = true;
@@ -26,18 +28,18 @@ public class NanoThief_Skill_4 extends NanoThief_SkillBase{
         //todo: make sure that the sound + animation is working. look at RAT 'MagicSubsystem's. they have good sounds and animations.
         super(skills, ship);
         totalHull = ship.getMaxHitpoints();
-        if (!ship.hasListenerOfClass(DamageModifier.class)){
+        //if (!ship.hasListenerOfClass(DamageModifier.class)){
             ship.addListener(new DamageModifier(this,ship));
-        }
+        //}
         //this is here to make sure that 'desperate measures' does not reduce the duration of this ability.
-        if (!ship.hasListenerOfClass(trueTimeListener.class)){
+        //if (!ship.hasListenerOfClass(trueTimeListener.class)){
             ship.addListener(new trueTimeListener(this));
-        }
+        //}
         for (ShipAPI b : skills.getChildShips()){
-            if (!b.hasListenerOfClass(DamageModifier.class)){
+            //if (!b.hasListenerOfClass(DamageModifier.class)){
                 b.addListener(new DamageModifier(this,b));
                 totalHull+=b.getMaxHitpoints();
-            }
+            //}
         }
     }
 
@@ -50,32 +52,18 @@ public class NanoThief_Skill_4 extends NanoThief_SkillBase{
 
     @Override
     public void displayStats() {
-        if (isActive){
-            Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_4", "graphics/icons/hullsys/temporal_shell.png",
-                    "Scrapy Fortification", "is active for "+(int)(NanoThief_4.time-timeActive)+" seconds",false);
-            return;
-        }
-        if (skills.getTotalReclaim() < skills.getModifiedCost(NanoThief_4.activeCost)){
-            Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_4", "graphics/icons/hullsys/temporal_shell.png",
-                    "Scrapy Fortification", "Cannot activate well under "+NanoThief_4.activeCost+" reclaim",true);
-            return;
-        }
-        if (ready){
-            Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_4", "graphics/icons/hullsys/temporal_shell.png",
-                    "Scrapy Fortification", "is ready to activate",false);
-            return;
-        }
-        Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_4", "graphics/icons/hullsys/temporal_shell.png",
-                "Scrapy Fortification", "On cooldown for "+((int)cooldown)+" seconds",true);
     }
     public void animate(){
         animate(ship);
+        Global.getSoundPlayer().playLoop("system_damper_loop",skills.ship,0.75f,0.5f,skills.ship.getLocation(),skills.ship.getVelocity());
         for (ShipAPI b : skills.getChildShips()){
             animate(b);
         }
     }
-    private static final Color jitterColor = new Color(255,165,90,55);
-    private static final Color jitterUnderColor = new Color(255,165,90,155);
+    private static final Color jitterColor = new Color(130,155,145,55);
+    private static final Color jitterUnderColor = new Color(130,155,145,155);
+    //private static final Color jitterColor = new Color(255,165,90,55);
+    //private static final Color jitterUnderColor = new Color(255,165,90,155);
     private void animate(ShipAPI ship){
         ship.setJitter(Settings.DISPLAYID_NANOTHIEF+"_skill_4", jitterColor, 1, 2, 0f, 5);
         ship.setJitterUnder(Settings.DISPLAYID_NANOTHIEF+"_skill_4", jitterUnderColor, 1, 25, 0f, 7);
@@ -124,13 +112,13 @@ class trueTimeListener implements AdvanceableListener{
     public void advance(float amount) {
         if (skill.isActive) skill.animate();
         if (skill.ready){
-            skill.damageLastFewSeconds *= Math.max(0,1-(amount / NanoThief_4.activeTime));
+            skill.damageLastFewSeconds *= (float) Math.max(0,1-(amount / NanoThief_4.activeTime));
             //return;
         }
         if (!skill.isActive){
-            //todo: this line needs work. it is always active. also I need tow ork on the other systems
             if (!(skill.damageLastFewSeconds >= NanoThief_4.activeDamage || ((1+skill.damageLastFewSeconds)/ skill.totalHull) >= NanoThief_4.activePercent)) return;
             if (skill.skills.getTotalReclaim() < skill.skills.getModifiedCost(NanoThief_4.activeCost)) return;
+            if (skill.skills.ship.getCustomData().containsKey(NANO_THIEF_SKILL_4_ACTIVE_KEY) && (boolean) skill.skills.ship.getCustomData().get(NANO_THIEF_SKILL_4_ACTIVE_KEY)) return;
             activate();
             //log.info("DLS: "+skill.damageLastFewSeconds+", totalHull: "+skill.totalHull);
             //log.info("damage ratio: " + ((1+skill.damageLastFewSeconds)/ skill.totalHull));
@@ -147,6 +135,8 @@ class trueTimeListener implements AdvanceableListener{
         }
     }
     private void activate(){
+        Global.getSoundPlayer().playSound("system_damper",1,0.75f,skill.skills.ship.getLocation(),skill.skills.ship.getVelocity());
+        skill.skills.ship.setCustomData(NANO_THIEF_SKILL_4_ACTIVE_KEY,true);
         skill.ready = false;
         skill.isActive = true;
         skill.timeActive = 0;
@@ -168,6 +158,8 @@ class trueTimeListener implements AdvanceableListener{
         //log.info("deactivate");
     }
     private void deactivate(){
+        Global.getSoundPlayer().playSound("system_damper_off",1,0.75f,skill.skills.ship.getLocation(),skill.skills.ship.getVelocity());
+        skill.skills.ship.setCustomData(NANO_THIEF_SKILL_4_ACTIVE_KEY,false);
         skill.isActive = false;
         skill.cooldown = (float) NanoThief_4.cooldown;
         deactivate(skill.ship);

@@ -1,6 +1,7 @@
 package Abyssal_XO.data.scripts.threat.listiners;
 
 import Abyssal_XO.data.scripts.Settings;
+import Abyssal_XO.data.scripts.hullmods.SICSkillControllerBackup;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
 import com.fs.starfarer.api.Global;
@@ -24,6 +25,7 @@ import second_in_command.specs.SCOfficer;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import static Abyssal_XO.data.scripts.Settings.TAG_HASRECLAMED;
 
@@ -35,10 +37,12 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
     private static HashMap<String,Nano_Thief_Stats> hostileCaptions;
 
     public static HashMap<ShipAPI,Integer> reclaimOverride;
+    public static HashMap<ShipAPI,String> shipCommanders = new HashMap<>();
     public NanoThief_BattleListener(){
         friendlyCaptions = new HashMap<>();
         hostileCaptions = new HashMap<>();
         reclaimOverride = new HashMap<>();
+        shipCommanders = new HashMap<>();
         //Nano_Thief_AI_OVERRIDE.reset();
         //Nano_Thief_NoneCombatAI.init();
         CombatEngineAPI engine = Global.getCombatEngine();
@@ -76,17 +80,27 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
         return output;
     }*/
     public static Nano_Thief_Stats getStatsForShip(ShipAPI ship, SCData data){
-        if (friendlyCaptions.containsKey(ship.getFleetCommander().getId())){
-            return friendlyCaptions.get(ship.getFleetCommander().getId());
-        }else if (hostileCaptions.containsKey(ship.getFleetCommander().getId())){
-            return hostileCaptions.get(ship.getFleetCommander().getId());
+        /*String id =
+                ship.getFleetCommander() != null ? ship.getFleetCommander().getId() :
+                        SICSkillControllerBackup.member_map.containsKey(ship.getFleetMember()) ? SICSkillControllerBackup.member_map.get(ship.getFleetMember()).getCommander().getId() : null;*/
+        String id = data.getFleet().getCommander().getId();
+        //Settings.log.info("(battle listener): got commander of ship as :"+id);
+        if (friendlyCaptions.containsKey(id)){
+            //Settings.log.info("(battle listener): found command in friendlys");
+            shipCommanders.put(ship,id);
+            return friendlyCaptions.get(id);
+        }else if (hostileCaptions.containsKey(id)){
+            //Settings.log.info("(battle listener): found command in hostiles");
+            shipCommanders.put(ship,id);
+            return hostileCaptions.get(id);
         }
+        //Settings.log.info("(battle listener): failed to find commander");
         return null;
     }
     public static double getReclaimInShip(ShipAPI ship){
-        if (ship == null || ship.getFleetCommander() == null) return 0;
-        if (friendlyCaptions.containsKey(ship.getFleetCommander().getId())){
-            Nano_Thief_Stats stats = friendlyCaptions.get(ship.getFleetCommander().getId());
+        if (ship == null || getCommanderID(ship) == null) return 0;
+        if (friendlyCaptions.containsKey(getCommanderID(ship))){
+            Nano_Thief_Stats stats = friendlyCaptions.get(getCommanderID(ship));
             double out = 0;
             NanoThief_ShipSkills sSkills = stats.getSkills(ship);
             if (sSkills != null){
@@ -96,8 +110,8 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
             stats.getAvailableShips().remove(ship.getId());
             return out;
 
-        }else if (hostileCaptions.containsKey(ship.getFleetCommander().getId())){
-            Nano_Thief_Stats stats = hostileCaptions.get(ship.getFleetCommander().getId());
+        }else if (hostileCaptions.containsKey(getCommanderID(ship))){
+            Nano_Thief_Stats stats = hostileCaptions.get(getCommanderID(ship));
             double out = 0;
             NanoThief_ShipSkills sSkills = stats.getSkills(ship);
             if (sSkills != null){
@@ -204,10 +218,11 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
             if (curr == null) continue;
             if (curr.isHulk()) continue;
             if (curr.equals(target)) continue;
-            if (curr.getFleetCommander() == null) continue;
+            if (getCommanderID(curr) == null) continue;
             if (curr.isFighter()) continue;
+            if (!shipCommanders.containsKey(curr)) continue;
             //log.info("  has fleet commander");
-            if (!commanders.containsKey(curr.getFleetCommander().getId())) continue;
+            if (!commanders.containsKey(shipCommanders.get(curr))) continue;
             //log.info("  has valid fleet commander");
             /*log.info("  has fleetmember");
             if (curr.getFleetMember().getFleetData() == null) continue;
@@ -221,11 +236,15 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
             if (c < distance){
                 //log.info("got valid target. setting possible target as: "+curr.getFleetCommander().getId());
                 distance = c;
-                output.one = commanders.get(curr.getFleetCommander().getId());
+                output.one = commanders.get(getCommanderID(curr));
                 output.two = curr.getOriginalOwner();
             }
         }
         return output;
+    }
+
+    public static String getCommanderID(ShipAPI ship){
+        return shipCommanders.containsKey(ship) ? shipCommanders.get(ship) : ship.getFleetCommander() != null ? ship.getFleetCommander().getId() : null;
     }
 
     /*public ShipAPI getPrefuredTarget(ShipAPI target,CombatEngineAPI engine){
