@@ -23,7 +23,7 @@ import static com.fs.starfarer.api.impl.combat.threat.ThreatShipConstructionScri
 
 public class NanoThief_ShipSkills implements AdvanceableListener {
     private static Logger log = Global.getLogger(Nano_Thief_Stats.class);
-    @Getter
+    //@Getter
     private HashMap<ShipAPI,reclaim> incomingReclaim = new HashMap<>();
     public Nano_Thief_Stats stats;
     @Getter
@@ -143,10 +143,11 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
                 //    ai2 = (Nano_Thief_AI_Reclaim) ai;
                 //}
                 if (ship.equals(stats.getCentralFab())) if (!incomingReclaim.get(a).isRefined) mod = NanoThief_8.reclaimRaito;
-                else if (!incomingReclaim.get(a).isRefined) mod = NanoThief_8.baseReclaimEfficiencyMod;
+                if (!ship.equals(stats.getCentralFab()) && !incomingReclaim.get(a).isRefined) mod = NanoThief_8.baseReclaimEfficiencyMod;
             }
             incoming += (int) (incomingReclaim.get(a).value*mod);
         }
+        //Settings.log.info(ship.getName()+" got total incoming as: "+incoming);
         return incoming;
     }
     public double getModifiedCost(double cost){
@@ -181,6 +182,7 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
         getCostMulti();
     }
     public double getTotalReclaim(){
+        //Settings.log.info(ship.getName()+" got total reclaim as: "+reclaim);
         return reclaim;//+refinedReclaim;
     }
     public double getTotalReclaimIncludingIncomeing(){
@@ -271,6 +273,7 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
         }
     }
     public void addIncomingReclaim(ShipAPI reclaim, int value, boolean isRefined){
+        //Settings.log.info("adding reclaim package to incoming to ship, value, refined: "+ship.getName()+", "+value+", "+isRefined);
         incomingReclaim.put(reclaim,new reclaim(value, isRefined));
     }
 

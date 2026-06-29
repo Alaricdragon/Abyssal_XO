@@ -58,7 +58,7 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
     //public static double forceRechargePerDP = rechargeTimePerDP;//this is for recharging the ship form a new simulacrum fighter.
     public static double maxReclaimPercent = 0.2;//max amount of reclaim a simulacrum ship is worth when destroyed.
 
-    public static double swarmSizeMulti = 4;
+    public static double swarmSizeMulti = 2;
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
         /*

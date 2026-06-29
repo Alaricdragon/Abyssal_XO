@@ -56,7 +56,8 @@ public class Settings {
     public static final String NANO_THIEF_CUSTOM_MASTERY_NUMBERS_MEMORY_KEY = "$Abyssal_XO_NANO_MASTERY_NUMBERS";
     public static final String NANO_THIEF_CUSTOM_MASTERY_NAMES_MEMORY_KEY = "$Abyssal_XO_NANO_MASTERY_NAMES";
    // public static String NANO_THIEF_CUSTOM_MASTERY_RECLAIM_MEMERY_KEY = "$Nano_Thief_ReclaimOverride";
-    public static final String NANO_THIEF_SKILL_4_ACTIVE_KEY = "Skill_4_Active";
+    public static final String NANO_THIEF_SKILL_4_ACTIVE_KEY = "Abyssal_XO_Skill_4_Active";
+    public static final String NANO_THIEF_RECLAIM_TARGET_KEY = "Abyssal_XO_Nanothief_ReclaimTarget_";
     public static final String NANO_THIEF_SIC_HULLMOD_FLEET_KEY = "Abyssal_XO_FleetMemoryKey";
     public static final String NANO_THIEF_MASTERY_BASESHIP = "kite_pirates_Raider";
     public static final String NANO_THIEF_BASEWING = "attack_swarm_wing";//"attack_swarm_wing";

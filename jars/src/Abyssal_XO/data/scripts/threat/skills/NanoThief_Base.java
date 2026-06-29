@@ -22,7 +22,7 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
     public static double reclaimRecyclePercent = 0.5d;
     public static int fabracatorDPForNanothiefCalculation = 60;
 
-    public static double reclaimMembersPerReclaim = 0.005;
+    public static double reclaimMembersPerReclaim = 0.01;
     public static int reclaimMembersBase = 5;
     // 5*5*40 = 25 * 4 = 1000
     @Override

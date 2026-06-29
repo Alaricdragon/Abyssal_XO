@@ -62,15 +62,16 @@ public class NanoThief_Skill_8 extends NanoThief_SkillBase{
         //log.info("attempting to create reclaim packages");
         if (skills.getTotalReclaim() < getAmountToHold+1000) return;
         ArrayList<ShipAPI> targets = new ArrayList<>();
-        int muti = (int) (skills.getTotalReclaim() / 1000) - 1;//cannot give more reclaim them I have.  //Integer.MAX_VALUE;
-        int maxSpend = (int) ((skills.getTotalReclaim() - getAmountToHold)/1000);
+        int muti = ((int) (skills.getTotalReclaim() / 1000f)) - 1;//cannot give more reclaim them I have.  //Integer.MAX_VALUE;
+        int maxSpend = (int) ((skills.getTotalReclaim() - getAmountToHold)/1000f);
         skills.stats.makeSureSavedShipsAreAlive();
         for (ShipAPI a : skills.stats.getAvailableShips()){
             if (!skills.stats.canAcceptReclaim(a)) continue;
             if (a.equals(skills.stats.getCentralFab())) continue;
             NanoThief_ShipSkills b = skills.stats.getSkills(a);
             if (b == null) continue;
-            int spendType = (int) b.getTotalReclaimIncludingIncomeing() / 1000;
+            int spendType = (int) (b.getTotalReclaimIncludingIncomeing() / 1000f);
+            //Settings.log.info(b.ship.getName()+" spend type as: "+spendType);
             spendType = Math.max(1,spendType);
             if (spendType < muti){
                 muti = spendType;
