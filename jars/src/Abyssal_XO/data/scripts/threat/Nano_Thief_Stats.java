@@ -550,7 +550,7 @@ public class Nano_Thief_Stats {
 
         int maxSwarmSize = (int) ((amount * NanoThief_Base.reclaimMembersPerReclaim) + NanoThief_Base.reclaimMembersBase);//base size is 20. + 10 per 1k size. so its 30,40,50,60 in size.
         swarm.getParams().initialMembers = 0;
-        swarm.getParams().baseMembersToMaintain = amount;
+        swarm.getParams().baseMembersToMaintain = maxSwarmSize;
 
         fighter.getMutableStats().getSightRadiusMod().modifyMult("Abyssal_XO",0.1f);
         if (isRefined) fighter.getMutableStats().getMaxSpeed().modifyMult("Abyssal_XO", (float) NanoThief_8.speedMod);

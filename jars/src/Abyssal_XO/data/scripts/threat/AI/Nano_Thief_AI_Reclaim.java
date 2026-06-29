@@ -15,6 +15,9 @@ import org.lwjgl.util.vector.Vector2f;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static Abyssal_XO.data.scripts.Settings.NANO_THIEF_RECLAIM_TARGET_KEY;
+
 public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
     //notes:
     //this is copied from 'ThreatSwarmAI'. this required a lot of removing things (construction swarms, and I require defense swarms.)
@@ -91,14 +94,15 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 	private static Logger log = Global.getLogger(Nano_Thief_AI_Reclaim.class);
 	@Getter
 	private boolean isRefined;
+
 	public Nano_Thief_AI_Reclaim(ShipAPI ship, Nano_Thief_Stats stats,int reclam,boolean isRefined,ShipAPI targetOverride) {
 		this.ship = ship;
 		this.stats = stats;
 		this.reclaimValue = reclam;
 		this.isRefined = isRefined;
 		if (targetOverride != null && stats.getSkills(targetOverride) != null){
-			this.fabricator = targetOverride;
-			stats.getSkills(targetOverride).addIncomingReclaim(ship,reclaimValue,isRefined);
+			updateSwarmTarget(targetOverride);
+			//ship
 		}
 
 		isReclamationSwarm(ship);
@@ -110,7 +114,23 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 		attackRangeMultInterval.forceIntervalElapsed();
 		priorityTargetPickerInterval.forceIntervalElapsed();
 	}
+	//private String getTargetTa
+	private void updateSwarmTarget(ShipAPI target){
+		this.fabricator = target;
+		stats.getSkills(target).addIncomingReclaim(ship,reclaimValue,isRefined);
+		RoilingSwarmEffect swarm = RoilingSwarmEffect.getSwarmFor(ship);
 
+
+		//RoilingSwarmEffect.getFlockingMap().getList(swarm.getParams().flockingClass);
+		//ship.setCustomData(NANO_THIEF_RECLAIM_TARGET_KEY,target.getId());
+
+		RoilingSwarmEffect.getFlockingMap().remove(swarm.getParams().flockingClass, swarm);
+		swarm.getParams().flockingClass = NANO_THIEF_RECLAIM_TARGET_KEY+target.getId();
+		RoilingSwarmEffect.getFlockingMap().add(swarm.getParams().flockingClass, swarm);
+
+		//swarm.getParams().memberExchangeClass = FragmentSwarmHullmod.RECLAMATION_SWARM_EXCHANGE_CLASS;
+
+	}
 	public SharedSwarmWingData getShared() {
 		if (ship.getWing() == null) return new SharedSwarmWingData();
 
@@ -255,7 +275,8 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 				if (reclamationReturnInterval.intervalElapsed()) {
 					CombatEngineAPI engine = Global.getCombatEngine();
 					Settings.log.info("got target for reclaims as (ship commander): "+(fabricator == null ? "N/A" : fabricator.getName())+","+stats.commander);
-					fabricator = stats.getTargetForReclaim(ship,engine);
+					updateSwarmTarget(stats.getTargetForReclaim(ship,engine));
+					//fabricator = stats.getTargetForReclaim(ship,engine);
 					NanoThief_ShipSkills skills = stats.getSkills(fabricator);
 					if (skills != null) skills.addIncomingReclaim(ship,reclaimValue,isRefined);
 					if (fabricator == null){
@@ -573,12 +594,12 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 
 		if (swarm != null && swarm.getParams().flockingClass != null && swarm.getAttachedTo() != null) {
 			for (RoilingSwarmEffect curr : RoilingSwarmEffect.getFlockingMap().getList(swarm.getParams().flockingClass)) {
+
 				if (curr == swarm) continue;
 				if (curr.getAttachedTo() == ship || curr.getAttachedTo() == null ||
 						curr.getAttachedTo().getOwner() != owner) {
 					continue;
 				}
-
 				if (swarm.getParams().flockingClass.equals(curr.getParams().flockingClass)) {
 					// avoid other construction swarms - looking for a clear area
 					boolean sameWing = wing == ((ShipAPI) curr.getAttachedTo()).getWing();

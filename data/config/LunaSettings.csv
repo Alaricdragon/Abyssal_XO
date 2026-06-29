@@ -5,8 +5,16 @@ NA_BASE_reclaimFromHostilePerDP,Reclaim dead ships provide per deployment point 
 NA_BASE_reclaimMultiFromParent,Percent of reclaim modules on moduler ships siphin from there main ship when destroyed,Double,0.1,,,0,1,Nano Thief: Base Skill
 NA_BASE_reclaimRecyclePercent,Percent of reclaim adding to reclaim packages when a ship is destroyed (not used for ship module),Double,0.1,,,0,1,Nano Thief: Base Skill
 NA_BASE_fabracatorDPForCalulations,Fabracator DP cost for nano thief calulations,Int,60,,This effects reclaim gains and mastery costs from threat fabracators,0,200,Nano Thief: Base Skill
-NA_BASE_swarmSizePerReclaim,Reclaim swarm size per reclaim,Double,0.005,,,0,1,Nano Thief: Base Skill
+NA_BASE_swarmSizePerReclaim,Reclaim swarm size per reclaim,Double,0.01,,,0,1,Nano Thief: Base Skill
 NA_BASE_swarmSizeBase,Reclaim swarm size base,Int,5,,,0,100,Nano Thief: Base Skill
+,,,,,,,,
+NA_SM_Header,,Header,Scrapwork Microforge,,,,,Nano Thief: Scrapwork Microforge
+NA_SM_timeSmall,Reload (small),Int,15,,,1,120,Nano Thief: Scrapwork Microforge
+NA_SM_timeMid,Reload (med),Int,30,,,1,120,Nano Thief: Scrapwork Microforge
+NA_SM_timeLarge,Reload (Large),Int,45,,,1,120,Nano Thief: Scrapwork Microforge
+NA_SM_costSmall,Cost per op (small),Int,10,,,1,100,Nano Thief: Scrapwork Microforge
+NA_SM_costMid,Cost per op (med),Int,20,,,1,100,Nano Thief: Scrapwork Microforge
+NA_SM_costLarge,Cost per op (large),Int,30,,,1,100,Nano Thief: Scrapwork Microforge
 ,,,,,,,,
 NA_TS_Header,,Header,Thorough Salvaging,,,,,Nano Thief: Thorough Salvaging
 NA_TS_reclaimPerSet,Reclaim per bonus,Int,1000,,,1,10000,Nano Thief: Thorough Salvaging
@@ -98,4 +106,4 @@ NA_Mastery_buildTimeBase,Base build time,Double,5,,,0.1,100,Nano Thief: Mastery
 NA_Mastery_minCR,Min cr to build simulacrum ship,Double,0.4,,,0,1,Nano Thief: Mastery
 NA_Mastery_peakCRDuration,peak performance multiplyer,Double,0.6,,,0,1,Nano Thief: Mastery
 NA_Mastery_maxReclaimPercent,recoved reclaim multiplyer,Double,0.2,,,0,1,Nano Thief: Mastery
-NA_Mastery_SwarmSizeMulti,How large the construction swamrs are compaired to reclaim swarms. Cosmetic only,Double,4,,,0.1,10,Nano Thief: Mastery
+NA_Mastery_SwarmSizeMulti,How large the construction swamrs are compaired to reclaim swarms. Cosmetic only,Double,2,,,0.1,10,Nano Thief: Mastery

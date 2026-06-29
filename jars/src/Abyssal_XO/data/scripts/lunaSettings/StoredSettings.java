@@ -18,6 +18,7 @@ public class StoredSettings {
     private static void getLunaSettings(){
         luna_NA_Base();
         //-
+        luna_NA_ScrapworkMicroforge();
         luna_NA_ThoroughSalvaging();
         luna_NA_ScrapworkFortifications();
         luna_NA_DescentralizedSwarms();
@@ -32,8 +33,17 @@ public class StoredSettings {
         NanoThief_Base.reclaimMultiFromParent = LunaSettings.getDouble("Abyssal_XO","NA_BASE_reclaimMultiFromParent");
         NanoThief_Base.reclaimRecyclePercent = LunaSettings.getDouble("Abyssal_XO","NA_BASE_reclaimRecyclePercent");
         NanoThief_Base.fabracatorDPForNanothiefCalculation = LunaSettings.getInt("Abyssal_XO","NA_BASE_fabracatorDPForCalulations");
-        NanoThief_Base.reclaimMembersPerReclaim = LunaSettings.getInt("Abyssal_XO","NA_BASE_swarmSizePerReclaim");
+        NanoThief_Base.reclaimMembersPerReclaim = LunaSettings.getDouble("Abyssal_XO","NA_BASE_swarmSizePerReclaim");
         NanoThief_Base.reclaimMembersBase = LunaSettings.getInt("Abyssal_XO","NA_BASE_swarmSizeBase");
+
+    }
+    public static void luna_NA_ScrapworkMicroforge(){
+        NanoThief_2.timeSmall = LunaSettings.getInt("Abyssal_XO","NA_SM_timeSmall");
+        NanoThief_2.timeMid = LunaSettings.getInt("Abyssal_XO","NA_SM_timeMid");
+        NanoThief_2.timeLarge = LunaSettings.getInt("Abyssal_XO","NA_SM_timeLarge");
+        NanoThief_2.costSmall = LunaSettings.getInt("Abyssal_XO","NA_SM_costSmall");
+        NanoThief_2.costMid = LunaSettings.getInt("Abyssal_XO","NA_SM_costMid");
+        NanoThief_2.costLarge = LunaSettings.getInt("Abyssal_XO","NA_SM_costLarge");
 
     }
     public static void luna_NA_ThoroughSalvaging(){

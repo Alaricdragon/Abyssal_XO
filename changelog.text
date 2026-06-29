@@ -1,3 +1,23 @@
+V0.1.9:
+    safety overrides (mod):
+        (hopefully) improved Scrapwork Microforge interface when more then one of this skill is picked.
+    fixes:
+        created reclaim now 'adds' to a swarm mush faster (so it can actually reach the current size)
+        fixed a bug were reclaim swarm size was always equal to reclaim value
+        (hopefully) fixed centralized productions broken reclaim targeting.
+        fixed reclaim getting confused and following different reclaim going in a direction that its not going.
+    balance:
+        reclaim:
+            swarm size per reclaim 0.005 -> 0.001
+        mastery:
+            mastery construction swarm size multi 4 -> 2
+        Scrapwork Microforge:
+            refills first: smaller -> larger
+            cost now scales with ammo increasing effects
+    interface:
+        improved Scrapwork Microforge interface a lot
+    settings:
+        added settings for Scrapwork Microforge
 V0.1.8:
     safety overrides (mod):
         (hopefully) made Thorough Salvaging's work with this.

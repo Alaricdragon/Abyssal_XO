@@ -33,9 +33,9 @@ public class NanoThief_Skill_2 extends NanoThief_SkillBase {
             if (a.getMaxAmmo() == 0) continue;
             if (a.getAmmoTracker().getAmmoPerSecond() != 0) continue;
             int b = 0;
-            if (a.getSpec().getSize().equals(WeaponAPI.WeaponSize.SMALL)) b = 0;
+            if (a.getSpec().getSize().equals(WeaponAPI.WeaponSize.SMALL)) b = 2;
             if (a.getSpec().getSize().equals(WeaponAPI.WeaponSize.MEDIUM)) b = 1;
-            if (a.getSpec().getSize().equals(WeaponAPI.WeaponSize.LARGE)) b = 2;
+            if (a.getSpec().getSize().equals(WeaponAPI.WeaponSize.LARGE)) b = 0;
             weponsT.get(b).add(a);
             Pair<Double, Float> pair = getStatsForGun(a);
             if (pair.one > maxCost) maxCost = pair.one;
@@ -45,33 +45,42 @@ public class NanoThief_Skill_2 extends NanoThief_SkillBase {
         }
     }
 
-    private float cooldown = 0f;
-    private static final float secondsPerReceack = 3f;
-    private boolean onCooldown = false;
+    public float cooldown = 0f;
+    public float coolDownInstance = 0f;
+    public float secondsPerReceack = 3f;
+    public boolean onCooldown = false;
+
+    public double lowestCurrentCost = 0;
     @Override
     public void advance(float amount) {
         cooldown-=amount;
         if (cooldown > 0) return;
+        //cooldown = 0.5f;//0.5 seconds between checks.
         //if (skills.getTotalReclaim() == 0) return;
         for (ArrayList<ArrayList<WeaponAPI>> weponsT : wepons){
             for (ArrayList<WeaponAPI> a : weponsT) {
                 for (WeaponAPI b : a) {
                     if (b.getAmmo() != 0) continue;
                     Pair<Double,Float> pair = getStatsForGun(b);
-                    if (skills.getTotalReclaim() >= skills.getModifiedCost(pair.one)) {
-                        skills.useReclaim(skills.getModifiedCost(pair.one));
+                    double cost = pair.one;
+                    if (cost < lowestCurrentCost || lowestCurrentCost == 0) lowestCurrentCost = cost;
+                    if (skills.getTotalReclaim() >= skills.getModifiedCost(cost)) {
+                        skills.useReclaim(skills.getModifiedCost(cost));
                         cooldown = pair.two;
+                        coolDownInstance = cooldown;
+                        lowestCurrentCost = 0;
                         //b.getAmmoTracker().setAmmo(b.getAmmoTracker().getMaxAmmo());
                         b.setAmmo(b.getMaxAmmo());
                         playSoundIfPlayerShip();
                         onCooldown = true;
+                        animate(b);
                         //log.info("forging missile...");
                         return;
                     }
                 }
             }
         }
-        //log.info("activating temp cooldown...");
+        //log.info("got current lowest cost as: "+lowestCurrentCost);
         onCooldown = false;
         cooldown=secondsPerReceack;
     }
@@ -91,6 +100,8 @@ public class NanoThief_Skill_2 extends NanoThief_SkillBase {
             cooldownT = NanoThief_2.timeLarge;
         }
         double cost = Math.max(b.getSpec().getOrdnancePointCost(skills.ship.getCaptain().getStats(), skills.ship.getMutableStats()),1) * costPerOpp;
+        cost = cost * ( (double) b.getMaxAmmo() / (double) Math.max(1,b.getSpec().getMaxAmmo()));
+
         Pair<Double,Float> out = new Pair<>();
         out.one = cost;
         out.two = cooldownT;
@@ -100,15 +111,10 @@ public class NanoThief_Skill_2 extends NanoThief_SkillBase {
         if (!ship.equals(Global.getCombatEngine().getPlayerShip())) return;
     }
 
+    private void animate(WeaponAPI b){
+    }
     @Override
     public void displayStats() {
-        if (onCooldown){
-            Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_2", "graphics/icons/hullsys/temporal_shell.png",
-                    "Scrapwork Microforge", "On cooldown for "+((int)cooldown)+" seconds",true);
-            return;
-        }
-        Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_2", "graphics/icons/hullsys/temporal_shell.png",
-                "Scrapwork Microforge", "Ready to forge additional ammo",false);
     }
 
     @Override

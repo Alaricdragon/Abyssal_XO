@@ -326,6 +326,7 @@ public class NanoThief_A_ReclaimSpawn extends BaseEveryFrameCombatPlugin {
         }
     }
 
+    private float speedMulti = 2;
     protected void spawnSwarms(float amount) {
         if (!spawnedSwarms) {
             int numSwarms = 1;
@@ -343,8 +344,7 @@ public class NanoThief_A_ReclaimSpawn extends BaseEveryFrameCombatPlugin {
             }
             spawnedSwarms = true;
         }
-
-        interval2.advance(amount * 2f);
+        interval2.advance(amount * speedMulti);
         if (interval2.intervalElapsed()) {
             WeightedRandomPicker<ShipAPI> picker = new WeightedRandomPicker<>();
             picker.addAll(pieces);
@@ -352,8 +352,8 @@ public class NanoThief_A_ReclaimSpawn extends BaseEveryFrameCombatPlugin {
             for (ShipAPI curr : swarms) {
                 RoilingSwarmEffect swarm = RoilingSwarmEffect.getSwarmFor(curr);
                 if (swarm == null) continue;
-                if (swarm.getNumActiveMembers() > swarm.getParams().baseMembersToMaintain) continue;
-
+                if (swarm.getNumActiveMembers() >= swarm.getParams().baseMembersToMaintain) continue;
+                speedMulti = swarm.getParams().baseMembersToMaintain / 20f; //every 20 members, increase build speed by 1.
                 RoilingSwarmEffect.SwarmMember p = swarm.addMember();
 
                 ShipAPI piece = picker.pick();
