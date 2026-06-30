@@ -12,15 +12,28 @@ import com.fs.starfarer.api.util.Misc;
 import second_in_command.SCData;
 
 public class NanoThief_2 extends Nano_Thief_Skill_Base {
+    /*
+        todo:
+            changes:
+                 make this a continues reload. So it reloads one volley of ammo
+                    -adjust eq for this.
+                    -adjust cooldown based on percent of weapon reloaded.
+                    -select weapon to reload at random.
+                 make every op incur a cooldown? [maybe?]
+
+     */
     private static final String key = "AbyssalXO_Nano_Thief_Skill_2";
 
-    public static float timeSmall = 15;
-    public static float timeMid = 30;
-    public static float timeLarge = 45;
+    public static float timeSmall = 30;
+    public static float timeMid = 60;
+    public static float timeLarge = 90;
 
-    public static float costSmall = 10;
-    public static float costMid = 20;
-    public static float costLarge = 30;
+    public static float costSmall = 30;
+    public static float costMid = 40;
+    public static float costLarge = 50;
+
+    public static float animationTimeMult = 1;
+    public static float animationIntensity = 1.25f;
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
         String tSmall = ""+(int)timeSmall;
@@ -31,12 +44,13 @@ public class NanoThief_2 extends Nano_Thief_Skill_Base {
         String cMid = ""+(int)costMid;
         String cLarge = ""+(int)costLarge;
 
-        tooltip.addPara("Every %s/%s/%s seconds, fully refill a single empty 'limited ammo' weapons ammo",0,Misc.getHighlightColor(),Misc.getHighlightColor(),tSmall,tMid,tLarge);
-        tooltip.addPara("Will refill larger weapons first",0,Misc.getHighlightColor(),Misc.getHighlightColor());
-        tooltip.addPara("All attached modules share a cooldown with the main ship. Will always refill the main ship first",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        tooltip.addPara("Every %s/%s/%s seconds, fully refill the ammo of a random 'limited ammo' weapon",0,Misc.getHighlightColor(),Misc.getHighlightColor(),tSmall,tMid,tLarge);
+        //tooltip.addPara("Will refill a ",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        tooltip.addPara("All attached modules share a cooldown with the main ship.",0,Misc.getHighlightColor(),Misc.getHighlightColor());
 
         tooltip.addPara("Costs %s/%s/%s reclaim per OP depending on weapon size",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor(),cSmall,cMid,cLarge);
         tooltip.addPara("Effects that increase max ammo increase cost proportionally",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor());
+        tooltip.addPara("When a weapon reloads, the reclaim cost and cooldown is proportional to the amount of ammo reloaded compaired to the maximum amount of ammo that weapon can hold",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         tooltip.addSpacer(10f);
 
         //LabelAPI label = tooltip.addPara("\"I don't care what it takes, I don't even care if the craft explodes the moment we set foot on it. If we cant meet quotas, some safety concerns will be the least of our worry's!.\"", Misc.getTextColor(), 0f);

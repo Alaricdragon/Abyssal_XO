@@ -35,7 +35,7 @@ public class NanoThief_Interface_2 extends NanoThief_InterfaceBase{
         //Settings.log.info("get cost, totalreclaim: "+skills.getModifiedCost(single.lowestCurrentCost)+", "+skills.getTotalReclaim());
         if (skills.getModifiedCost(single.lowestCurrentCost) > skills.getTotalReclaim()){
             Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_2", "graphics/icons/hullsys/temporal_shell.png",
-                    "Scrapwork Microforge", "Require at least "+skills.getModifiedCost(single.lowestCurrentCost)+" reclaim to forge missiles",true);
+                    "Scrapwork Microforge", "Require at least "+(int)skills.getModifiedCost(single.lowestCurrentCost)+" reclaim to forge missiles",true);
             return;
         }
         if (single.lowestCurrentCost != 0){
@@ -48,7 +48,7 @@ public class NanoThief_Interface_2 extends NanoThief_InterfaceBase{
         String out = "";
         boolean debuff = false;
         if (skills.getModifiedCost(listiners.get(0).lowestCurrentCost) > skills.getTotalReclaim()){
-            out += "Require "+skills.getModifiedCost(listiners.get(0).lowestCurrentCost)+" reclaim. ";
+            out += "Require "+(int)skills.getModifiedCost(listiners.get(0).lowestCurrentCost)+" reclaim. ";
             debuff = true;
         }
         // if (listiners.get(0).lowestCurrentCost != 0){

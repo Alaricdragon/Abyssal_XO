@@ -9,12 +9,14 @@ NA_BASE_swarmSizePerReclaim,Reclaim swarm size per reclaim,Double,0.01,,,0,1,Nan
 NA_BASE_swarmSizeBase,Reclaim swarm size base,Int,5,,,0,100,Nano Thief: Base Skill
 ,,,,,,,,
 NA_SM_Header,,Header,Scrapwork Microforge,,,,,Nano Thief: Scrapwork Microforge
-NA_SM_timeSmall,Reload (small),Int,15,,,1,120,Nano Thief: Scrapwork Microforge
-NA_SM_timeMid,Reload (med),Int,30,,,1,120,Nano Thief: Scrapwork Microforge
-NA_SM_timeLarge,Reload (Large),Int,45,,,1,120,Nano Thief: Scrapwork Microforge
-NA_SM_costSmall,Cost per op (small),Int,10,,,1,100,Nano Thief: Scrapwork Microforge
-NA_SM_costMid,Cost per op (med),Int,20,,,1,100,Nano Thief: Scrapwork Microforge
-NA_SM_costLarge,Cost per op (large),Int,30,,,1,100,Nano Thief: Scrapwork Microforge
+NA_SM_timeSmall,Reload (small),Int,30,,,1,240,Nano Thief: Scrapwork Microforge
+NA_SM_timeMid,Reload (med),Int,60,,,1,240,Nano Thief: Scrapwork Microforge
+NA_SM_timeLarge,Reload (Large),Int,90,,,1,240,Nano Thief: Scrapwork Microforge
+NA_SM_costSmall,Cost per op (small),Int,30,,,1,200,Nano Thief: Scrapwork Microforge
+NA_SM_costMid,Cost per op (med),Int,40,,,1,200,Nano Thief: Scrapwork Microforge
+NA_SM_costLarge,Cost per op (large),Int,50,,,1,200,Nano Thief: Scrapwork Microforge
+NA_SM_AnimationIntensity,Intensity of animation,Double,1,,,0,200,Nano Thief: Scrapwork Microforge
+NA_SM_AnimationTime,Time of animation compaired to reload time,Double,1.25,,,0,2,Nano Thief: Scrapwork Microforge
 ,,,,,,,,
 NA_TS_Header,,Header,Thorough Salvaging,,,,,Nano Thief: Thorough Salvaging
 NA_TS_reclaimPerSet,Reclaim per bonus,Int,1000,,,1,10000,Nano Thief: Thorough Salvaging
