@@ -1,3 +1,21 @@
+V0.1.10:
+    balance:
+        Scrapwork Microforge:
+            refills first: larger -> random
+            now refills weapons before they run out of ammo. (with a proportional cost in time and reclaim)
+            cost small  10 -> 30
+            cost mid    20 -> 40
+            cost large  30 -> 50
+            time small  15 -> 30
+            time mid    30 -> 60
+            time large  45 -> 90
+    fixes:
+        Scrapwork Microforge:
+            fixed some wepons that didnt have limited ammow counting as limited ammo weapons
+    new:
+        added a small animation for Scrapwork Microforge
+    settings:
+        added settings for the animation in Scrapwork Microforge. This will be removed later once I get this sorted.
 V0.1.9:
     safety overrides (mod):
         (hopefully) improved Scrapwork Microforge interface when more then one of this skill is picked.

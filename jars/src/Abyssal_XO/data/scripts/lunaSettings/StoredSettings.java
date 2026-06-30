@@ -45,6 +45,9 @@ public class StoredSettings {
         NanoThief_2.costMid = LunaSettings.getInt("Abyssal_XO","NA_SM_costMid");
         NanoThief_2.costLarge = LunaSettings.getInt("Abyssal_XO","NA_SM_costLarge");
 
+        NanoThief_2.animationIntensity = LunaSettings.getInt("Abyssal_XO","NA_SM_AnimationIntensity");
+        NanoThief_2.animationTimeMult = LunaSettings.getInt("Abyssal_XO","NA_SM_AnimationTime");
+
     }
     public static void luna_NA_ThoroughSalvaging(){
         NanoThief_3.reclaimPerSet = LunaSettings.getInt("Abyssal_XO","NA_TS_reclaimPerSet");
