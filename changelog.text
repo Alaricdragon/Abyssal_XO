@@ -1,3 +1,7 @@
+V0.1.13:
+    fixes:
+        fixed Scrapwork Microforge not showing the right reclaim cost of the next use.
+        fixed mastery and simulacrum fighter wing crash
 V0.1.12:
     safety overrides (mod):
         (hopefully) Constant Repairs should work slightly better now (less computer resources used).
