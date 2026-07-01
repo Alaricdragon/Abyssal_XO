@@ -8,7 +8,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 
 public class Settings {
-    public static final String SIC_CONTROL_HULLMOD = "Abyssal_XO_SIC_controler";//"sc_skill_controller";
+    public static final String SIC_CONTROL_HULLMOD = "Abussal_XO_SIC_controler";//"sc_skill_controller";
     public static final String MEMKEY_NANOTHIEF_STATUS = "$Abyssal_XO_GOT_NANOTHIEF";
 
 

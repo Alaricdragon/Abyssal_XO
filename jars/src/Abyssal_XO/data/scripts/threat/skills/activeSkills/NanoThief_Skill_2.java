@@ -72,6 +72,7 @@ public class NanoThief_Skill_2 extends NanoThief_SkillBase {
         //if (skills.getTotalReclaim() == 0) return;
         int start = (int) (Math.random()*wepons.size());//starting location. will loop untill it reaches this again.
         //Settings.log.info("got start as: "+start+", of size:"+wepons.size());
+        lowestCurrentCost = 0;
         for (int c = start+1; true; c++){
             if (c >= wepons.size()) c = 0;
             //Settings.log.info("got c as: "+c);
