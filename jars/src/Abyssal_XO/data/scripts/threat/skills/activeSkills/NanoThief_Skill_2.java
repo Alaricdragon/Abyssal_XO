@@ -36,6 +36,7 @@ public class NanoThief_Skill_2 extends NanoThief_SkillBase {
             if (a.getMaxAmmo() == 0) continue;
             if (a.getAmmoTracker().getAmmoPerSecond() != 0) continue;
             if (!a.getAmmoTracker().usesAmmo()) continue;
+            if (a.getSlot().isBuiltIn()) continue;
             //int b = 0;
             //if (a.getSpec().getSize().equals(WeaponAPI.WeaponSize.SMALL)) b = 2;
             //if (a.getSpec().getSize().equals(WeaponAPI.WeaponSize.MEDIUM)) b = 1;
@@ -167,6 +168,7 @@ class WeaponData{
     private void getStatsForGun(){
         double costPerOpp = 0;
         float cooldownT = 0;
+        int op = 0;
         if (b.getSpec().getSize().equals(WeaponAPI.WeaponSize.SMALL)) {
             costPerOpp = NanoThief_2.costSmall;
             cooldownT = NanoThief_2.timeSmall;

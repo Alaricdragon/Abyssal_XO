@@ -86,6 +86,7 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
             ArrayList<NanoThief_SkillBase> validListeners = new ArrayList<>();
             for (NanoThief_SkillBase b : skills) if (c.validListener(b)) validListeners.add(b);
             for (NanoThief_SkillBase b : alwaysSkills) if (c.validListener(b)) validListeners.add(b);
+            if (validListeners.isEmpty()) continue;
             c.prepareData(this,validListeners);
             interfaces.add(c);
         }

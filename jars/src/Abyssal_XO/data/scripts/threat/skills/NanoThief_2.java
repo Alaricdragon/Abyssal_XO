@@ -51,6 +51,7 @@ public class NanoThief_2 extends Nano_Thief_Skill_Base {
         tooltip.addPara("Costs %s/%s/%s reclaim per OP depending on weapon size",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor(),cSmall,cMid,cLarge);
         tooltip.addPara("Effects that increase max ammo increase cost proportionally",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor());
         tooltip.addPara("When a weapon reloads, the reclaim cost and cooldown is proportional to the amount of ammo reloaded compaired to the maximum amount of ammo that weapon can hold",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        tooltip.addPara("Does not work on built in weapons",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         tooltip.addSpacer(10f);
 
         //LabelAPI label = tooltip.addPara("\"I don't care what it takes, I don't even care if the craft explodes the moment we set foot on it. If we cant meet quotas, some safety concerns will be the least of our worry's!.\"", Misc.getTextColor(), 0f);
