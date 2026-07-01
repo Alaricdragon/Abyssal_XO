@@ -44,6 +44,9 @@ public class StoredSettings {
         NanoThief_2.costSmall = LunaSettings.getInt("Abyssal_XO","NA_SM_costSmall");
         NanoThief_2.costMid = LunaSettings.getInt("Abyssal_XO","NA_SM_costMid");
         NanoThief_2.costLarge = LunaSettings.getInt("Abyssal_XO","NA_SM_costLarge");
+        NanoThief_2.baseCostSmall = LunaSettings.getInt("Abyssal_XO","NA_SM_costSmallBase");
+        NanoThief_2.baseCostMid = LunaSettings.getInt("Abyssal_XO","NA_SM_costMidBase");
+        NanoThief_2.baseCostLarge = LunaSettings.getInt("Abyssal_XO","NA_SM_costLargeBase");
 
         NanoThief_2.animationIntensity = LunaSettings.getInt("Abyssal_XO","NA_SM_AnimationIntensity");
         NanoThief_2.animationTimeMult = LunaSettings.getInt("Abyssal_XO","NA_SM_AnimationTime");
@@ -75,7 +78,9 @@ public class StoredSettings {
         NanoThief_6.CustomSwarm_BUILDTIME_BASE = LunaSettings.getInt("Abyssal_XO","NA_DSP_CustomSwarm_BUILDTIME_BASE");
         NanoThief_6.CustomSwarm_RefundPercent = LunaSettings.getDouble("Abyssal_XO","NA_DSP_CustomSwarm_RefundPercent");
         NanoThief_6.CustomSwarm_RefundPercent_Bomber = LunaSettings.getDouble("Abyssal_XO","NA_DSP_CustomSwarm_RefundPercent_Bomber");
-        NanoThief_6.dpPerFighters = LunaSettings.getInt("Abyssal_XO","NA_DSP_dpPerFighters");
+        NanoThief_6.baseDpPerFighter = LunaSettings.getInt("Abyssal_XO","NA_DSP_dpPerFightersBase");
+        NanoThief_6.dpPerOpPerFighter = LunaSettings.getDouble("Abyssal_XO","NA_DSP_opPerDpPerFighters");
+        //NanoThief_6.dpPerFighters = LunaSettings.getInt("Abyssal_XO","NA_DSP_dpPerFighters");
         NanoThief_6.MINRANGEOFWING = LunaSettings.getInt("Abyssal_XO","NA_DSP_MINRANGEOFWING");
         NanoThief_6.speedPerSize[0] = LunaSettings.getDouble("Abyssal_XO","NA_DSP_speedPerSize_0");
         NanoThief_6.speedPerSize[1] = LunaSettings.getDouble("Abyssal_XO","NA_DSP_speedPerSize_1");

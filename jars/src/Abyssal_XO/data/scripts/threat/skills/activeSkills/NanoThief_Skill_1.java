@@ -22,7 +22,7 @@ public class NanoThief_Skill_1 extends NanoThief_SkillBase {
     }
     private void advanceSingle(float amount, ShipAPI ship){
         if (ship.getHitpoints() >= ship.getMaxHitpoints()) return;
-        double repairSpeed = currentSpeed(ship.getHitpoints(),ship.getMaxHitpoints()) * amount;
+        double repairSpeed = currentSpeed(ship.getHitpoints(),ship.getMaxHitpoints()) * amount * skills.stats.skillMulti[1];
         double costPerHull = skills.getModifiedCost(NanoThief_1.getHullPerReclaim());
         if (repairSpeed / costPerHull > skills.getTotalReclaim()){
             repairSpeed = (double) (costPerHull * skills.getTotalReclaim());//(skills.getTotalReclaim() * NanoThief_1.getHullPerReclaim());

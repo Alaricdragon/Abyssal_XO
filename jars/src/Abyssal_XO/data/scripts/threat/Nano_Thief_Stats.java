@@ -59,6 +59,7 @@ public class Nano_Thief_Stats {
     public float OF_swarmCost = 100;
     public float OF_recyclePerFighter = 0;
     public float OF_ttl = 60;
+    public float OF_DpPerFighter = 10;
     @Deprecated
     public float OF_range;
     public String OF_fighterToBuild = Settings.NANO_THIEF_BASEWING;//Settings.NANO_THIEF_PALYER_BASEWING;

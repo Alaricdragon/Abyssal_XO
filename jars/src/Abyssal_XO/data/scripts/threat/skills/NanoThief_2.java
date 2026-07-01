@@ -32,6 +32,10 @@ public class NanoThief_2 extends Nano_Thief_Skill_Base {
     public static float costMid = 40;
     public static float costLarge = 50;
 
+    public static float baseCostSmall = 50;
+    public static float baseCostMid = 70;
+    public static float baseCostLarge = 90;
+
     public static float animationTimeMult = 1;
     public static float animationIntensity = 1.25f;
     @Override
@@ -41,14 +45,17 @@ public class NanoThief_2 extends Nano_Thief_Skill_Base {
         String tLarge = ""+(int)timeLarge;
 
         String cSmall = ""+(int)costSmall;
+        String cBaseSmall = ""+(int)baseCostSmall;
         String cMid = ""+(int)costMid;
+        String cBaseMid = ""+(int)baseCostMid;
         String cLarge = ""+(int)costLarge;
+        String cBaseLarge = ""+(int)baseCostLarge;
 
         tooltip.addPara("Every %s/%s/%s seconds, fully refill the ammo of a random 'limited ammo' weapon",0,Misc.getHighlightColor(),Misc.getHighlightColor(),tSmall,tMid,tLarge);
         //tooltip.addPara("Will refill a ",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         tooltip.addPara("All attached modules share a cooldown with the main ship.",0,Misc.getHighlightColor(),Misc.getHighlightColor());
 
-        tooltip.addPara("Costs %s/%s/%s reclaim per OP depending on weapon size",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor(),cSmall,cMid,cLarge);
+        tooltip.addPara("Costs %s/%s/%s + %s/%s/%s reclaim per OP depending on weapon size",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor(),cBaseSmall,cBaseMid,cBaseLarge,cSmall,cMid,cLarge);
         tooltip.addPara("Effects that increase max ammo increase cost proportionally",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor());
         tooltip.addPara("When a weapon reloads, the reclaim cost and cooldown is proportional to the amount of ammo reloaded compaired to the maximum amount of ammo that weapon can hold",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         tooltip.addPara("Does not work on built in weapons",0,Misc.getHighlightColor(),Misc.getHighlightColor());

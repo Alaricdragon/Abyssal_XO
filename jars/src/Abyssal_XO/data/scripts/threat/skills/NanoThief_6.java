@@ -29,10 +29,24 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
     *               3) some type of swarmer
     *           2) make it so basic attack swarms no longer spawn as Sim Fighter Wings
     * */
-    public static float dpPerFighters = 10;
+    //public static float dpPerFighters = 10;
     public static int MINRANGEOFWING = 2000;
 
+    public static double baseDpPerFighter = 8;//?
+    public static double dpPerOpPerFighter = 0.4f;//how mush dp is required per op.
+    //so... 240 battle size for all eqs.
+    //talan: 6 + .4? = 240/6.4 = 37 ish. (from 24)
+    //15: 6+3.2 = 240/9.2 = //
 
+    // 2: 8+0.4 = 240/8.4 = 30 ish...
+    // 15: 8+3 = 240/11 = 21.?
+    // 20: 8+4 = 240/12 = 20.
+    // 40: = 8 + ()
+    // ? = 40
+    // 20 = 8+(40*a) -> -8 -> 12 = 40*a -> /40 -> 12/40 = 0.4
+
+    // 2: 8+0.8 = 240/8.8 = 9*2.66 = 18+6= 26 fighter wings.
+    // 15:8+4+2 = 240/14 = 15ish?
 
     //public static final int ReclaimPerControl_BASE = 1000;
     public static float CustomSwarm_COST_BASE = 40;//swarms cost 100 at 10 op, 200 at 20, 300 at 30.
@@ -74,6 +88,8 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
             pt = (int)spec.OF_productionTime;
             sc = (int)spec.OF_swarmCost;
             rpf = (int)spec.OF_recyclePerFighter;
+            float dppf = ((int)(spec.OF_DpPerFighter*100))/100f;
+            panel.addPara(" Dp per fighter: %s",0, Misc.getTextColor(), Misc.getHighlightColor(),""+dppf);
         }else{
             ttl=(int)spec.DF_ttl;
             pt = (int)spec.DF_productionTime;
@@ -170,9 +186,12 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
         String line3c = (int)(speedPerSize[2]*100)+"%";
         String line3d = (int)(speedPerSize[3]*100)+"%";
 
-        String line6a = ""+(int)dpPerFighters;
+        //String line6a = ""+(int)dpPerFighters;
+        String line6a = ""+(int)baseDpPerFighter;
+        String line6b = ""+((int)(dpPerOpPerFighter*100))/100f;
         tooltip.addPara("Construct Offencive Simulacrum Fighter Wings to assist your fleet in combat.",0,Misc.getHighlightColor(),Misc.getHighlightColor());
-        tooltip.addPara("only one Offencive Simulacrum Fighter Wing can be active in your fleet for every %s Deployment Ponits you have active",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line6a);
+        tooltip.addPara("Every Offencive Simulacrum Fighter requires %s + %s per op active deployment points to be maintained",0,Misc.getTextColor(),Misc.getHighlightColor(),line6a,line6b);
+        //tooltip.addPara("only one Offencive Simulacrum Fighter Wing can be active in your fleet for every %s Deployment Ponits you have active",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line6a);
         tooltip.addPara("Each ship in your fleet builds Officensive Simulacrum Fighter Wings at %s/%s/%s/%s speed depending on hullsize",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line3a,line3b,line3c,line3d);
 
         tooltip.addPara("Offencive Simulacrum Fighter Wings build this way gain infinit engagment range",0,Misc.getHighlightColor(),Misc.getHighlightColor());

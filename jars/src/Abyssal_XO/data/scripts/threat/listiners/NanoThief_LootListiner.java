@@ -15,7 +15,8 @@ public class NanoThief_LootListiner implements ShowLootListener {
         Nano_Thief_Stats.setPlayerExstraReclaimIfRequired();
         float reclaim = Nano_Thief_Stats.getPlayerExstraReclaim();
         log.info("attempting to create more loot from something or other =)");
-        reclaim /= NanoThief_3.reclaimPerSet;
+        if (NanoThief_3.reclaimPerSet != 0)reclaim /= NanoThief_3.reclaimPerSet;
+        else reclaim = 0;
         log.info("got sets as:");
         log.info("  total sets: "+reclaim);
         log.info("  supplies: "+reclaim*NanoThief_3.suppliesPerSet);

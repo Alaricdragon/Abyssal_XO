@@ -6,7 +6,7 @@
     {
         "major":0,
         "minor":1,
-        "patch":"11"
+        "patch":"12"
     },
 	"starsectorVersion":"0.98a-RC5",
 	"directDownloadURL":"https://github.com/Alaricdragon/Abyssal_XO/archive/refs/heads/master.zip",

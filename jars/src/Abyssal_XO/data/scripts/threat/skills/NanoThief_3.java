@@ -13,6 +13,13 @@ import second_in_command.SCUtils;
 import second_in_command.specs.SCOfficer;
 
 public class NanoThief_3 extends Nano_Thief_Skill_Base {
+    /*
+        todo:
+            1: make it so 'reclaim' gained is not reset when a new battle starts, only when
+            2: make it so the amount of 'reclaim' is not added if the player is in a sim.
+            3: make it so if the player does not claim reclaim, a intil screen pops up with the supplies added to the players fleet.
+
+     */
     private static final String key = "AbyssalXO_Nano_Thief_Skill_3";
     public static float reclaimPerSet = 1000f;
     public static float suppliesPerSet = 5f;
@@ -51,7 +58,6 @@ public class NanoThief_3 extends Nano_Thief_Skill_Base {
         label.italicize();
 
     }
-    //todo: make this update when settings are changed, provided player fleet has this upgrade
     public static boolean attemptSettingsUpdateIfRequired(){
         if (Global.getSector() == null || Global.getSector().getPlayerFleet() == null || SCUtils.getFleetData(Global.getSector().getPlayerFleet()) == null) return false;
         SCData data = SCUtils.getFleetData(Global.getSector().getPlayerFleet());

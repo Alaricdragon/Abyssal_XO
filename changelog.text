@@ -1,3 +1,22 @@
+V0.1.12:
+    safety overrides (mod):
+        (hopefully) Constant Repairs should work slightly better now (less computer resources used).
+    balance:
+        Scrapwork Microforge:
+            time small  30 -> 60
+            time mid    60 -> 90
+            time large  90 -> 120
+            base cost small 0 -> 50
+            base cost small 0 -> 70
+            base cost small 0 -> 90
+            min opp for cost calculation 1 -> 0
+        Offencive swarms:
+            dp per fighter 10 -> 8
+            dp per fighter per op 0 -> 0.4
+    changes:
+        changed the Scrapwork Microforge animation color slightly.
+    fixes:
+        fixed Offencive swarms interface using the cost for defensive swarm wings.
 V0.1.11:
     fixes:
         fixed crash when politing a ship with mo limited ammo weapons well having the Scrapwork Microforge skill
