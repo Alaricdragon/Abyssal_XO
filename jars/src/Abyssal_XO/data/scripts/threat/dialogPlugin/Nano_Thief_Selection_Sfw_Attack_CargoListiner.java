@@ -14,6 +14,9 @@ import org.apache.log4j.Logger;
 
 import java.util.List;
 
+import static Abyssal_XO.data.scripts.threat.skills.NanoThief_6.baseDpPerFighter;
+import static Abyssal_XO.data.scripts.threat.skills.NanoThief_6.dpPerOpPerFighter;
+
 public class Nano_Thief_Selection_Sfw_Attack_CargoListiner implements CargoPickerListener {
     private static Logger log = Global.getLogger(Nano_Thief_dialog.class);
     static CargoAPI playerFighters;
@@ -153,7 +156,13 @@ public class Nano_Thief_Selection_Sfw_Attack_CargoListiner implements CargoPicke
         String line8a = NanoThief_6.BASESWARM_BUILDTIME+"";
         String line8b = ((int)(NanoThief_6.CustomSwarm_BUILDTIME_PREREFIT*100)/100)+"";
         panel.addPara("Build time is %s + %s * wing size * replacement rate",5,Misc.getTextColor(), Misc.getHighlightColor(),line8a,line8b);
-        panel.addPara("can only be active for %s seconds before returning to a friendly ship",5,Misc.getTextColor(), Misc.getHighlightColor(),""+(int) NanoThief_6.CustomSwarm_TTL);
+        panel.addPara("Can only be active for %s seconds before returning to a friendly ship",5,Misc.getTextColor(), Misc.getHighlightColor(),""+(int) NanoThief_6.CustomSwarm_TTL);
+        if (getMemoryKey().equals(Settings.NANO_THIEF_CUSTOM_WING_ATK_MEMORY_KEY)){
+            String line6a = ""+(int)baseDpPerFighter;
+            String line6b = ""+((int)(dpPerOpPerFighter*100))/100f;
+            panel.addPara("Every Offencive Simulacrum Fighter requires %s + %s per op active deployment points to be maintained",0,Misc.getTextColor(),Misc.getHighlightColor(),line6a,line6b);
+
+        }
         applyStatsPanel(panel);
 
         //dialog.dismiss();

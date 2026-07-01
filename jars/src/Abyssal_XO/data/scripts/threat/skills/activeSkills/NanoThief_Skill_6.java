@@ -58,6 +58,7 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         spec.OF_productionTime = (float) ((a.getNumFighters() * a.getRefitTime() * NanoThief_6.CustomSwarm_BUILDTIME_PREREFIT) + NanoThief_6.BASESWARM_BUILDTIME);
         spec.OF_recyclePerFighter = (spec.OF_swarmCost / Math.max(spec.OF_wingSize,1));
         spec.OF_ttl = NanoThief_6.CustomSwarm_TTL;
+        spec.OF_DpPerFighter = (float) (NanoThief_6.baseDpPerFighter+(NanoThief_6.dpPerOpPerFighter*a.getOpCost(a.getVariant().getStatsForOpCosts())));
         if (a.getRole().equals(WingRole.BOMBER)){
             //spec.OF_ttl = NanoThief_6.CustomSwarm_Bomber_TTL;
             spec.OF_recyclePerFighter *=NanoThief_6.CustomSwarm_RefundPercent_Bomber;
@@ -135,7 +136,8 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
                 "Offencive Fighter Construction Status", cur+" / "+max+", cannot build wing do to limited reclaim", true);
     }*/
     public int getMaxFighters(){
-        return Math.max((int)Math.floor((skills.stats.getDeployedPonits() / NanoThief_6.dpPerFighters)+0.5) * skills.stats.skillMulti[6],1);
+
+        return Math.max((int)Math.floor((skills.stats.getDeployedPonits() / skills.stats.OF_DpPerFighter)+0.5) * skills.stats.skillMulti[6],1);
     }
     public int currentFighters(){
         return skills.stats.getOffinciveFighterCores().size();// + skills.stats.getOffinciveFighterWings().size();

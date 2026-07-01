@@ -16,7 +16,8 @@ public class NanoThief_A_Skill_2 implements EveryFrameCombatPlugin {
     private WeaponAPI weapon;
     private float time;
     private float maxTime;
-    private static final Color color = new Color(130,155,145,255);
+    //private static final Color color = new Color(130,155,145,255);
+    private static final Color color = new Color(65,75,70,255);
     public NanoThief_A_Skill_2(WeaponAPI b, float time){
         this.weapon = b;
         this.time = time;
@@ -36,6 +37,7 @@ public class NanoThief_A_Skill_2 implements EveryFrameCombatPlugin {
     }
     public void animate(){
         //Settings.log.info("("+weapon.getSpec().getWeaponId()+") got glow amount as: "+((time/maxTime)* NanoThief_2.animationIntensity)+" from time/max, intensity: "+time+"/"+maxTime+", "+NanoThief_2.animationIntensity);
+        //weapon.
         weapon.setGlowAmount((time/maxTime)* NanoThief_2.animationIntensity,color);
         //0.75 / 10 = 0.75
         //0.

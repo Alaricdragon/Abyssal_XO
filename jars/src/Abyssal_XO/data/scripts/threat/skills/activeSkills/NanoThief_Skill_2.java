@@ -168,21 +168,26 @@ class WeaponData{
     private void getStatsForGun(){
         double costPerOpp = 0;
         float cooldownT = 0;
+        double costBase = 0;
         int op = 0;
         if (b.getSpec().getSize().equals(WeaponAPI.WeaponSize.SMALL)) {
             costPerOpp = NanoThief_2.costSmall;
             cooldownT = NanoThief_2.timeSmall;
+            costBase = NanoThief_2.baseCostSmall;
         }
         if (b.getSpec().getSize().equals(WeaponAPI.WeaponSize.MEDIUM)) {
             costPerOpp = NanoThief_2.costMid;
             cooldownT = NanoThief_2.timeMid;
+            costBase = NanoThief_2.baseCostMid;
         }
         if (b.getSpec().getSize().equals(WeaponAPI.WeaponSize.LARGE)) {
             costPerOpp = NanoThief_2.costLarge;
             cooldownT = NanoThief_2.timeLarge;
+            costBase = NanoThief_2.baseCostLarge;
         }
         double cost = Math.max(b.getSpec().getOrdnancePointCost(skills.ship.getCaptain().getStats(), skills.ship.getMutableStats()),1) * costPerOpp;
-        cost = cost * ( (double) b.getMaxAmmo() / (double) Math.max(1,b.getSpec().getMaxAmmo()));
+        cost = cost * ( (double) b.getMaxAmmo() / (double) Math.max(0,b.getSpec().getMaxAmmo()));
+        cost += costBase;
 
         //Pair<Double,Float> out = new Pair<>();
         //out.one = cost;

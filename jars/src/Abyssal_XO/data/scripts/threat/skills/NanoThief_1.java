@@ -97,4 +97,8 @@ public class NanoThief_1 extends Nano_Thief_Skill_Base {
         label.italicize();
 
     }
+    @Override
+    public boolean canMulitAddListiners() {
+        return false;
+    }
 }

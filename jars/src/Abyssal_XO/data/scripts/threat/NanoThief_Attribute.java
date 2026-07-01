@@ -9,23 +9,16 @@ import second_in_command.specs.SCBaseAptitudePlugin;
 public class NanoThief_Attribute extends SCBaseAptitudePlugin {
     /*so relevent data:
     todo list:
-        1) (for safty overriden nanothief) make it so I can have multible of the same nanothief skills active.
-            -scrapwork fortification: add a tag to the ship when active, preventing more then one instance of this from being active at once (force disabling it if required.
-                                      also, make it so it resits the last bit of damage that caused the skill to actavate.
-            -offensive fighter production: make it so there is a multiplyer to the max number of fighters on Nano_Thief_Stats. so each instance of this adds a multiplyer, and allows for this to be active.
-            -centralized production: make having more then one of this skill provide a multiplyer to recalim gained, instead of anything else.
-            -main stats: make an exception for centralized production so multiple instances of said skill are not active at the same time.
-            -nano-thief stats: needs to beable to look at all xos on fleet and add there skills together, (ignoring the 'base' skill) to
-        2) (for safty overriden nanothief) make it so the display of each skill has the ability to handle more then one display at the same time.
-            -this requires me to change the location of the display, to no longer be fully bound to the skills.
-            -I need to in some occasions (defensive / offincive fighter, missile reload, scrapwork fortifications, centralized production, mastery) make it so it can handle multible items, even if its poorly.
-        3) skill upgrades:
-            -(done untested)centralized production: make it so refined reclaim gets sent out every 10 or 15 seconds, instead of every 2.
         4) add in the new icons for the systems (copyed another skill for now)
         5) add in the quest to allow someone to acquire this skill (kill a centen number of fabricates, then just have it.)
         6) improve the display for the nano-thief stats. something like, a bar that fills as I build fighters, and a bar that fills as I max deployment (and fills more (with a different color) as I max storge)
-        -) reinable disabled skills (disabled do to not actualy doing anything yet.
-
+        -) reenable disabled skills (disabled do to not actualy doing anything yet.
+        -
+        -) add artifacts: (from rat, like what you find in the abyss.)
+        1) 'decentralized swarm production' artifact: evey 120 seconds, for every 10 dp you have, create a 45 second timed offensive simulacrum wing
+        2) 'Mastery' artifact: for every 5dp of hostile ships destroyed, gain 1 'reclaim opp'. once you have enough, create a new ship from an exsisting ship.
+            -balance wise: centralized cooldown to prevent 'issues'
+            -otherwise exactly the fucking same.
         new skill list to do list:
 
 note: I need to change everything.

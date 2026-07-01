@@ -39,7 +39,7 @@ public class NanoThief_Interface_6 extends NanoThief_InterfaceBase {
                     "Offencive Fighter Construction Status", cur+" / "+max, true);
             return;
         }*/
-        if (skills.getTotalReclaim() >= skills.getModifiedCost(skills.stats.DF_swarmCost)){
+        if (skills.getTotalReclaim() >= skills.getModifiedCost(skills.stats.OF_swarmCost)){
             if (!listiner.onCooldown && !listiner.waiting){
                 listiner.onCooldown = true;
                 listiner.cooldown = listiner.recharge;
@@ -65,7 +65,7 @@ public class NanoThief_Interface_6 extends NanoThief_InterfaceBase {
     private void displayMultiStat(){
         int max = listiners.get(0).getMaxFighters();
         int cur = listiners.get(0).currentFighters();
-        if (skills.getTotalReclaim() < skills.getModifiedCost(skills.stats.DF_swarmCost)){
+        if (skills.getTotalReclaim() < skills.getModifiedCost(skills.stats.OF_swarmCost)){
             Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_6", "graphics/icons/hullsys/temporal_shell.png",
                     "Offencive Fighter Construction Status", cur+" / "+max+", cannot build wings do to limited reclaim", true);
             return;
