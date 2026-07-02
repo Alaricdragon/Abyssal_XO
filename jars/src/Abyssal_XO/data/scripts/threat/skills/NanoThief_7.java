@@ -9,6 +9,7 @@ import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_7;
 import Abyssal_XO.data.scripts.threat.skills.interfaces.NanoThief_InterfaceBase;
 import Abyssal_XO.data.scripts.threat.skills.interfaces.NanoThief_Interface_7;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.CharacterDataAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.ui.LabelAPI;
@@ -75,5 +76,10 @@ public class NanoThief_7 extends NanoThief_6 {
     @Override
     public int getNanoThiefID() {
         return 7;
+    }
+
+    public static double weight = 1;
+    public Float getNPCSpawnWeight(CampaignFleetAPI fleet) {
+        return (float) weight;
     }
 }

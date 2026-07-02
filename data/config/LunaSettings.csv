@@ -1,4 +1,9 @@
 fieldID,fieldName,fieldType,defaultValue,secondaryValue,fieldDescription,minValue,maxValue,tab
+CORE_Header,,Header,Enabled attrubites and odds of spawning,,,,,Features
+CORE_alwaysGiveThreat,Force Threat to have the Nano Thief attribute,Boolean,true,,,,,Features
+CORE_oddsForThreat,Odds Threat have the Nano Thief attribute,Int,1,,Only used if force Threat to have the Nano Thief attribute is false,0,10,Features
+CORE_oddsForOther,Odds random fleets have the Nano Thief attribute,Int,0,,,0,10,Features
+,,,,,,,,
 NA_BASE_Header,,Header,Base Skill,,,,,Nano Thief: Base Skill
 NA_BASE_reclaimOnStartPerDP,Reclaim ships start with per deployment point per skill,Int,10,,,1,1000,Nano Thief: Base Skill
 NA_BASE_reclaimFromHostilePerDP,Reclaim dead ships provide per deployment point per skill,Int,25,,,1,1000,Nano Thief: Base Skill
@@ -8,7 +13,15 @@ NA_BASE_fabracatorDPForCalulations,Fabracator DP cost for nano thief calulations
 NA_BASE_swarmSizePerReclaim,Reclaim swarm size per reclaim,Double,0.01,,,0,1,Nano Thief: Base Skill
 NA_BASE_swarmSizeBase,Reclaim swarm size base,Int,5,,,0,100,Nano Thief: Base Skill
 ,,,,,,,,
+NA_CR1_Header,,Header,Constant Repairs,,,,,Nano Thief: Constant Repairs
+NA_CR1_NPC_Weight,Odds of this skill for NPCs,Double,1,,,0,10,Nano Thief: Constant Repairs
+NA_CR1_hullPerReclaim,Hull repaired per reclaim,Int,12,,,1,1000,Nano Thief: Constant Repairs
+NA_CR1_speed,Base repair speed,Double,0.002,,,0,1,Nano Thief: Constant Repairs
+NA_CR1_repairExspensalThreshold,Repair exspensal threshold,Double,0.25,,Perentage of missing hull per exspensal increase in speed,0.01,1,Nano Thief: Constant Repairs
+NA_CR1_repairExspensal,Exspensal Increase,Double,2,,"The power speed is increase by per exspensal threshold. a value of 2 multiplys speed by 2 at 1 threshold, 4 at 2 threshold, 8 at 3 threshold, and 16 at 4 threshold",1,10,Nano Thief: Constant Repairs
+,,,,,,,,
 NA_SM_Header,,Header,Scrapwork Microforge,,,,,Nano Thief: Scrapwork Microforge
+NA_SM_NPC_Weight,Odds of this skill for NPCs,Double,1,,,0,10,Nano Thief: Scrapwork Microforge
 NA_SM_timeSmall,Reload (small),Int,60,,,1,240,Nano Thief: Scrapwork Microforge
 NA_SM_timeMid,Reload (med),Int,90,,,1,240,Nano Thief: Scrapwork Microforge
 NA_SM_timeLarge,Reload (Large),Int,120,,,1,240,Nano Thief: Scrapwork Microforge
@@ -22,12 +35,14 @@ NA_SM_AnimationIntensity,Intensity of animation,Double,1,,,0,200,Nano Thief: Scr
 NA_SM_AnimationTime,Time of animation compaired to reload time,Double,1.25,,,0,2,Nano Thief: Scrapwork Microforge
 ,,,,,,,,
 NA_TS_Header,,Header,Thorough Salvaging,,,,,Nano Thief: Thorough Salvaging
+NA_TS_NPC_Weight,Odds of this skill for NPCs,Double,1,,,0,10,Nano Thief: Thorough Salvaging
 NA_TS_reclaimPerSet,Reclaim per bonus,Int,1000,,,1,10000,Nano Thief: Thorough Salvaging
 NA_TS_suppliesPerSet,Supplies per bonus,Int,5,,,1,1000,Nano Thief: Thorough Salvaging
 NA_TS_salvageMod,Salvage bonus,Double,0.2,,,0,1,Nano Thief: Thorough Salvaging
 NA_TS_battleSalvageMod,Salvage bonus from battles,Double,0.1,,,0,1,Nano Thief: Thorough Salvaging
 ,,,,,,,,
 NA_SF_Header,,Header,Scrapy Fortification,,,,,Nano Thief: Scrapy Fortification
+NA_SF_NPC_Weight,Odds of this skill for NPCs,Double,1,,,0,10,Nano Thief: Scrapy Fortification
 NA_SF_activeDamage,Damage taken to actavate,Int,500,,,1,10000,Nano Thief: Scrapy Fortification
 NA_SF_activePercent,Percent of hull damage to actavate ,Double,0.1,,,0.01,1,Nano Thief: Scrapy Fortification
 NA_SF_activeTime,Over how many seconds this skill checks for damage,Double,1,,,0.1,10,Nano Thief: Scrapy Fortification
@@ -47,6 +62,7 @@ NA_DSP_CustomSwarm_RefundPercent_Bomber,Simulacrum fighter refune when landing f
 #NA_DSP_,Simulacrum fighter base swarm stuff please ignore,Int,2,,,0,10,Nano Thief: Decentralized Swarms
 #NA_DSP_,Simulacrum fighter base swarm stuff please ignore,Int,3,,,0,10,Nano Thief: Decentralized Swarms
 NA_DS_Header_1,,Header,Decentralized Swarm Production,,please note: simulacrum fighter settings are stored in Decentralized Swarm Production,,,Nano Thief: Decentralized Swarms
+NA_DSP_NPC_Weight,Odds of this skill for NPCs,Double,1,,,0,10,Nano Thief: Decentralized Swarms
 NA_DSP_dpPerFightersBase,Deployment ponits per base fighter capacity,Int,8,,,1,100,Nano Thief: Decentralized Swarms
 NA_DSP_opPerDpPerFighters,Op per deployment point per fighter capacity,Double,0.4,,,0,10,Nano Thief: Decentralized Swarms
 NA_DSP_MINRANGEOFWING,Min engagment range for wing to be invalid,Int,2000,,,1,10000,Nano Thief: Decentralized Swarms
@@ -56,6 +72,7 @@ NA_DSP_speedPerSize_2,Build speed for cruisers,Double,1,,,0,5,Nano Thief: Decent
 NA_DSP_speedPerSize_3,Build speed for capitals,Double,1.25,,,0,5,Nano Thief: Decentralized Swarms
 ,,,,,,,,
 NA_DS_Header,,Header,Defensive Swarms,,please note: simulacrum fighter settings are stored in Decentralized Swarm Production,,,Nano Thief: Defensive Swarms
+NA_DS_NPC_Weight,Odds of this skill for NPCs,Double,1,,,0,10,Nano Thief: Defensive Swarms
 NA_DS_numPerSize_0,Fighters for frigates,Int,1,,,0,10,Nano Thief: Defensive Swarms
 NA_DS_numPerSize_1,Fighters for destroyers,Int,1,,,0,10,Nano Thief: Defensive Swarms
 NA_DS_numPerSize_2,Fighters for cruisers,Int,2,,,0,10,Nano Thief: Defensive Swarms
@@ -66,6 +83,7 @@ NA_DS_speedPerSize_2,Build speed for cruisers,Double,1,,,0,5,Nano Thief: Defensi
 NA_DS_speedPerSize_3,Build speed for capitals,Double,1.25,,,0,5,Nano Thief: Defensive Swarms
 ,,,,,,,,
 NA_CR_Header,,Header,Centralized Production,,,,,Nano Thief: Centralized Production
+NA_CR_NPC_Weight,Odds of this skill for NPCs,Double,1,,,0,10,Nano Thief: Centralized Production
 NA_CR_reclaimRaito,Refined reclaim created per reclaim multi,Double,1.2,,,1,10,Nano Thief: Centralized Production
 NA_CR_smod,Additional refined reclaim per reclaim when a smoded central fabracator is used multi,Double,1.05,,,1,10,Nano Thief: Centralized Production
 NA_CR_reclaimPerSecondBase,Reclaim refined per second,Int,100,,,1,1000,Nano Thief: Centralized Production
@@ -77,6 +95,7 @@ NA_CR_keeptReclaimAbility,Refined reclaim keept on Central Fabracator multiplyed
 NA_CR_baseReclaimEfficiencyMod,How efficant normal reclaim is if the Central Fabracator is destroyed,Double,0.8,,,0,1,Nano Thief: Centralized Production
 ,,,,,,,,
 NA_DM_Header,,Header,Desperate Measures,,,,,Nano Thief: Desperate Measures
+NA_DM_NPC_Weight,Odds of this skill for NPCs,Double,1,,,0,10,Nano Thief: Desperate Measures
 NA_DM_crStart,max CR for cr bonuses,Double,0.4,,,0,1,Nano Thief: Desperate Measures
 NA_DM_crReginSpeed,cr regen speed,Double,0.06,,,0,1,Nano Thief: Desperate Measures
 NA_DM_crSkillSpeed,cr skill speedup mod,Double,0.1,,,0,1,Nano Thief: Desperate Measures
@@ -92,6 +111,7 @@ NA_DM_overloadSkillCost,overload skill cost mod,Double,0.25,,,0,10,Nano Thief: D
 NA_DM_overloadSkillSpeed,overload skill speed mod,Double,1,,,0,10,Nano Thief: Desperate Measures
 ,,,,,,,,
 NA_Mastery_Header,,Header,Mastery,,,,,Nano Thief: Mastery
+NA_Mastery_NPC_Weight,Odds of this skill for NPCs,Double,1,,,0,10,Nano Thief: Mastery
 NA_Mastery_maxShips,Max number of ships one can have selected for mastery,Int,4,,,1,100,Nano Thief: Mastery
 NA_Mastery_canFrigate,Allow frigates,Boolean,true,,,,,Nano Thief: Mastery
 NA_Mastery_canDestroyer,Allow destroyers,Boolean,false,,,,,Nano Thief: Mastery

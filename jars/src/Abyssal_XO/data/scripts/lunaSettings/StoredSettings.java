@@ -1,4 +1,5 @@
 package Abyssal_XO.data.scripts.lunaSettings;
+import Abyssal_XO.data.scripts.threat.NanoThief_Attribute;
 import Abyssal_XO.data.scripts.threat.skills.*;
 import com.fs.starfarer.api.Global;
 import lunalib.lunaSettings.LunaSettings;
@@ -16,8 +17,17 @@ public class StoredSettings {
         LunaSettings.addSettingsListener(new ApplySettingsOnChange());
     }
     private static void getLunaSettings(){
+        applyBaseSettings();
+        addNanothief();
+    }
+    private static void applyBaseSettings(){
+        NanoThief_Attribute.alwaysGiveThreat = LunaSettings.getBoolean("Abyssal_XO","CORE_alwaysGiveThreat");
+        NanoThief_Attribute.oddsForThreat = LunaSettings.getDouble("Abyssal_XO","CORE_oddsForThreat");
+        NanoThief_Attribute.oddsForOther = LunaSettings.getDouble("Abyssal_XO","CORE_oddsForOther");
+    }
+    private static void addNanothief(){
         luna_NA_Base();
-        //-
+        luna_NA_ConstantRepaires();
         luna_NA_ScrapworkMicroforge();
         luna_NA_ThoroughSalvaging();
         luna_NA_ScrapworkFortifications();
@@ -26,6 +36,7 @@ public class StoredSettings {
         luna_NA_CentralizedProduction();
         luna_NA_Desprate();
         luna_NA_Mastery();
+
     }
     private static void luna_NA_Base(){
         NanoThief_Base.reclaimOnStartPerDP = LunaSettings.getInt("Abyssal_XO","NA_BASE_reclaimOnStartPerDP");
@@ -37,7 +48,16 @@ public class StoredSettings {
         NanoThief_Base.reclaimMembersBase = LunaSettings.getInt("Abyssal_XO","NA_BASE_swarmSizeBase");
 
     }
+    public static void luna_NA_ConstantRepaires(){
+        NanoThief_1.weight = LunaSettings.getInt("Abyssal_XO","NA_CR1_NPC_Weight");
+        NanoThief_1.hullPerReclaim = LunaSettings.getInt("Abyssal_XO","NA_CR1_hullPerReclaim");
+        NanoThief_1.speed = LunaSettings.getDouble("Abyssal_XO","NA_CR1_speed");
+        NanoThief_1.repairExspensalThreshold = LunaSettings.getDouble("Abyssal_XO","NA_CR1_repairExspensalThreshold");
+        NanoThief_1.repairExspensal = LunaSettings.getDouble("Abyssal_XO","NA_CR1_repairExspensal");
+
+    }
     public static void luna_NA_ScrapworkMicroforge(){
+        NanoThief_2.weight = LunaSettings.getInt("Abyssal_XO","NA_SM_NPC_Weight");
         NanoThief_2.timeSmall = LunaSettings.getInt("Abyssal_XO","NA_SM_timeSmall");
         NanoThief_2.timeMid = LunaSettings.getInt("Abyssal_XO","NA_SM_timeMid");
         NanoThief_2.timeLarge = LunaSettings.getInt("Abyssal_XO","NA_SM_timeLarge");
@@ -53,6 +73,7 @@ public class StoredSettings {
 
     }
     public static void luna_NA_ThoroughSalvaging(){
+        NanoThief_3.weight = LunaSettings.getInt("Abyssal_XO","NA_TS_NPC_Weight");
         NanoThief_3.reclaimPerSet = LunaSettings.getInt("Abyssal_XO","NA_TS_reclaimPerSet");
         NanoThief_3.suppliesPerSet = LunaSettings.getInt("Abyssal_XO","NA_TS_suppliesPerSet");
         NanoThief_3.salvageMod = LunaSettings.getDouble("Abyssal_XO","NA_TS_salvageMod");
@@ -61,6 +82,7 @@ public class StoredSettings {
         NanoThief_3.attemptSettingsUpdateIfRequired();
     }
     private static void luna_NA_ScrapworkFortifications(){
+        NanoThief_4.weight = LunaSettings.getInt("Abyssal_XO","NA_SF_NPC_Weight");
         NanoThief_4.activeDamage = LunaSettings.getInt("Abyssal_XO","NA_SF_activeDamage");
         NanoThief_4.activePercent = LunaSettings.getDouble("Abyssal_XO","NA_SF_activePercent");
         NanoThief_4.activeTime = LunaSettings.getDouble("Abyssal_XO","NA_SF_activeTime");
@@ -72,6 +94,7 @@ public class StoredSettings {
 
     }
     private static void luna_NA_DescentralizedSwarms(){
+        NanoThief_6.weight = LunaSettings.getInt("Abyssal_XO","NA_DSP_NPC_Weight");
         NanoThief_6.CustomSwarm_COST_BASE = LunaSettings.getInt("Abyssal_XO","NA_DSP_CustomSwarm_COST_BASE");
         NanoThief_6.CustomSwarm_COST_PEROP = LunaSettings.getInt("Abyssal_XO","NA_DSP_CustomSwarm_COST_PEROP");
         NanoThief_6.CustomSwarm_BUILDTIME_PREREFIT = LunaSettings.getDouble("Abyssal_XO","NA_DSP_CustomSwarm_BUILDTIME_PREREFIT");
@@ -88,6 +111,7 @@ public class StoredSettings {
         NanoThief_6.speedPerSize[3] = LunaSettings.getDouble("Abyssal_XO","NA_DSP_speedPerSize_3");
     }
     private static void luna_NA_DefensiveSwarms(){
+        NanoThief_7.weight = LunaSettings.getInt("Abyssal_XO","NA_DS_NPC_Weight");
         NanoThief_7.numPerSize[0] = LunaSettings.getInt("Abyssal_XO","NA_DS_numPerSize_0");
         NanoThief_7.numPerSize[1] = LunaSettings.getInt("Abyssal_XO","NA_DS_numPerSize_1");
         NanoThief_7.numPerSize[2] = LunaSettings.getInt("Abyssal_XO","NA_DS_numPerSize_2");
@@ -99,6 +123,7 @@ public class StoredSettings {
 
     }
     private static void luna_NA_CentralizedProduction(){
+        NanoThief_8.weight = LunaSettings.getInt("Abyssal_XO","NA_CR_NPC_Weight");
         NanoThief_8.reclaimRaito = LunaSettings.getDouble("Abyssal_XO","NA_CR_reclaimRaito");
         NanoThief_8.sModBonus = LunaSettings.getDouble("Abyssal_XO","NA_CR_smod");
         NanoThief_8.reclaimPerSecondBase = LunaSettings.getInt("Abyssal_XO","NA_CR_reclaimPerSecondBase");
@@ -110,6 +135,7 @@ public class StoredSettings {
         NanoThief_8.baseReclaimEfficiencyMod = LunaSettings.getDouble("Abyssal_XO","NA_CR_baseReclaimEfficiencyMod");
     }
     private static void luna_NA_Desprate(){
+        NanoThief_9.weight = LunaSettings.getInt("Abyssal_XO","NA_DM_NPC_Weight");
         NanoThief_9.crStart = LunaSettings.getDouble("Abyssal_XO","NA_DM_crStart");
         NanoThief_9.crReginSpeed = LunaSettings.getDouble("Abyssal_XO","NA_DM_crReginSpeed");
         NanoThief_9.crSkillSpeed = LunaSettings.getDouble("Abyssal_XO","NA_DM_crSkillSpeed");
@@ -126,6 +152,7 @@ public class StoredSettings {
 
     }
     private static void luna_NA_Mastery(){
+        NanoThief_10.weight = LunaSettings.getInt("Abyssal_XO","NA_Mastery_NPC_Weight");
         NanoThief_10.maxShips = LunaSettings.getInt("Abyssal_XO","NA_Mastery_maxShips");
         NanoThief_10.maxNumberForNPC = NanoThief_10.maxShips;
         NanoThief_10.canFrigate = LunaSettings.getBoolean("Abyssal_XO","NA_Mastery_canFrigate");

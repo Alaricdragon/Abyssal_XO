@@ -1,16 +1,37 @@
 package Abyssal_XO.data.scripts.threat;
 
 import Abyssal_XO.data.scripts.Settings;
+import Abyssal_XO.data.scripts.threat.skills.NanoThief_Base;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import second_in_command.SCData;
 import second_in_command.specs.SCAptitudeSection;
 import second_in_command.specs.SCBaseAptitudePlugin;
 
 public class NanoThief_Attribute extends SCBaseAptitudePlugin {
+    public static boolean alwaysGiveThreat = true;
+    public static double oddsForThreat = 1;
+    public static double oddsForOther = 0;
     /*so relevent data:
     todo list:
-        4) add in the new icons for the systems (copyed another skill for now)
-        5) add in the quest to allow someone to acquire this skill (kill a centen number of fabricates, then just have it.)
+        0) add a skill 1 animation. some type of small jitter when repairing.
+        1) rename mod to something else (Second In Command: Stolen Powers)? Something like that.
+        2) WORK ON SKILL 3
+            -see skill for notes.
+            -requires a response on the form to get active
+        3)
+        4) add in the new icons for the skills.
+            -12? icons required.
+            -10 for skill [including base skill, and ability]
+                [64x64 sized images]. in 'threat' colors.
+            1 'special item' image.
+        5) add in the quest to allow someone to acquire this skill
+            -1: make the listener and memory to see if the player has killed enouth threat yet.
+            -2: create the listiner that waits for the player to enter a 'threat' system then spawns 'the fleet'.
+                -include a system that removes and remakes the fleet whenever I change threat systems.
+                -include a system to automaticly remove myself when the fleet is killed.
+            -3: make the special item that I click on to get nano-thief.
+                -it should open a dialog. But for now I can avoid that by just having a right click to acquire nano-thief.
+
         6) improve the display for the nano-thief stats. something like, a bar that fills as I build fighters, and a bar that fills as I max deployment (and fills more (with a different color) as I max storge)
         -) reenable disabled skills (disabled do to not actualy doing anything yet.
         -
@@ -312,14 +333,20 @@ or
     public Float getNPCFleetSpawnWeight(SCData scData, CampaignFleetAPI campaignFleetAPI) {
         /*String faction = campaignFleetAPI.getFaction().getId();
         if (Settings.NanoThief_Users.contains(faction)) return 100f;*/
-        return 0f;
+
+        String faction = campaignFleetAPI.getFaction().getId();
+        for (String a : Settings.NanoThief_Users){
+            if (a.equals(faction)) return (float) oddsForThreat;
+        }
+
+        return (float) oddsForOther;
     }
 
     @Override
     public Boolean guaranteePick(CampaignFleetAPI fleet) {
         String faction = fleet.getFaction().getId();
         for (String a : Settings.NanoThief_Users){
-            if (a.equals(faction)) return true;
+            if (a.equals(faction)) return alwaysGiveThreat;
         }
         //if (Settings.NanoThief_Users.contains(faction)) return true;
         return super.guaranteePick(fleet);

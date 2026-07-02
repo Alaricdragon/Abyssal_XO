@@ -2,6 +2,7 @@ package Abyssal_XO.data.scripts.threat.skills;
 
 import Abyssal_XO.data.scripts.Settings;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
@@ -90,5 +91,10 @@ public class NanoThief_8 extends Nano_Thief_Skill_Base {
                 faction.addKnownHullMod(Settings.HULLMOD_CENTRAL_FAB);
             }
         }
+    }
+
+    public static double weight = 1;
+    public Float getNPCSpawnWeight(CampaignFleetAPI fleet) {
+        return (float) weight;
     }
 }

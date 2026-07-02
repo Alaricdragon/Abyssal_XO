@@ -1,5 +1,6 @@
 package Abyssal_XO.data.scripts.threat.skills;
 
+import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
@@ -76,5 +77,9 @@ public class NanoThief_5 extends Nano_Thief_Skill_Base {
 
         label.italicize();
 
+    }
+    public static double weight = 1;
+    public Float getNPCSpawnWeight(CampaignFleetAPI fleet) {
+        return (float) weight;
     }
 }
