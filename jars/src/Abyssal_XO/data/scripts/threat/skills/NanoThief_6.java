@@ -8,6 +8,7 @@ import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_6;
 import Abyssal_XO.data.scripts.threat.skills.interfaces.NanoThief_InterfaceBase;
 import Abyssal_XO.data.scripts.threat.skills.interfaces.NanoThief_Interface_6;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.CharacterDataAPI;
 import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
@@ -234,5 +235,10 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
             if (character.getAbilities().contains(Settings.NANO_THIEF_ABILITY)) return;
             character.addAbility(Settings.NANO_THIEF_ABILITY);
         }
+    }
+
+    public static double weight = 1;
+    public Float getNPCSpawnWeight(CampaignFleetAPI fleet) {
+        return (float) weight;
     }
 }

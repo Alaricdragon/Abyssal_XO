@@ -4,7 +4,7 @@ id,name,iconPath,npcSpawnWeight,plugin
 SiC_NanoThief_NanoThiefBase,Active Acquisition,graphics/secondInCommand/improvisation/salvaged_armor.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_Base
 SiC_NanoThief_skill_1,Constant Repairs,graphics/secondInCommand/improvisation/preservation.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_1
 SiC_NanoThief_skill_2,Scrapwork Microforge,graphics/secondInCommand/improvisation/scrappy_maintenance.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_2
-SiC_NanoThief_skill_3,Thorough Salvaging,graphics/secondInCommand/improvisation/defensive_configuration.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_3
+SiC_NanoThief_skill_3,Thorough Salvaging,graphics/secondInCommand/improvisation/defensive_configuration.png,0.25,Abyssal_XO.data.scripts.threat.skills.NanoThief_3
 SiC_NanoThief_skill_4,Scrapy Fortification,graphics/secondInCommand/improvisation/secured_mounts.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_4
 SiC_NanoThief_skill_5,unused,graphics/secondInCommand/improvisation/mobilization.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_5
 SiC_NanoThief_skill_6,Decentralized Swarm Production,graphics/secondInCommand/improvisation/enhanced_overrides.png,1,Abyssal_XO.data.scripts.threat.skills.NanoThief_6

@@ -3,6 +3,7 @@ package Abyssal_XO.data.scripts.threat.skills;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_LootListiner;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Stats;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
@@ -94,5 +95,9 @@ public class NanoThief_3 extends Nano_Thief_Skill_Base {
                 Global.getSector().getListenerManager().removeListenerOfClass(NanoThief_LootListiner.class);
             }
         }
+    }
+    public static double weight = 1;
+    public Float getNPCSpawnWeight(CampaignFleetAPI fleet) {
+        return (float) weight;
     }
 }

@@ -1,3 +1,8 @@
+V0.1.14:
+    settings:
+        added Constant Repairs settings.
+        added settings for enabling/disabling nano-thief for normal NPCs and Threat
+        added settings to change the odds of a giving skill with threat.
 V0.1.13:
     fixes:
         fixed Scrapwork Microforge not showing the right reclaim cost of the next use.

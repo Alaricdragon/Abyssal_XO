@@ -4,6 +4,7 @@ import Abyssal_XO.data.scripts.Utils;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_SkillBase;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_1;
+import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
@@ -30,19 +31,19 @@ public class NanoThief_1 extends Nano_Thief_Skill_Base {
     //private static final double speedMin = 0.0025d;//0.25X combat indurance //1
 
     @Getter
-    private static final double speed = 0.0020d;
+    public static double speed = 0.0020d;
 
     @Getter
-    private static final int hullPerReclaim = 12;//100 = 10? 1000 = 100. 10000 = 1000.
+    public static int hullPerReclaim = 12;//100 = 10? 1000 = 100. 10000 = 1000.
 
     //@Getter
     //private static final double hullRange = hullMax-hullMin;//0.01d
     //@Getter
     //private static final double hullRepairThing = (speedMax-speedMin);//0.01d
     @Getter
-    private static final double repairExspensalThreshold = 0.25;
+    public static double repairExspensalThreshold = 0.25;
     @Getter
-    private static final double repairExspensal = 2;
+    public static double repairExspensal = 2;
     @Override
     public NanoThief_SkillBase createListiner(NanoThief_ShipSkills skills, ShipAPI ship){
         return new NanoThief_Skill_1(skills,ship);
@@ -75,9 +76,9 @@ public class NanoThief_1 extends Nano_Thief_Skill_Base {
         String hullV0 = (int)(100)+"%";
         String hullV1 = (int)(50)+"%";
         String hullV2 = (int)(0)+"%";
-        String speedV0 = speed*Utils.getExpenseValue(1,1,repairExspensalThreshold,repairExspensal)*100+"%";
-        String speedV1 = speed*Utils.getExpenseValue(0.5,1,repairExspensalThreshold,repairExspensal)*100+"%";
-        String speedV2 = speed*Utils.getExpenseValue(0,1,repairExspensalThreshold,repairExspensal)*100+"%";
+        String speedV0 = ((int)(speed*Utils.getExpenseValue(1,1,repairExspensalThreshold,repairExspensal)*10000))/100f+"%";
+        String speedV1 = ((int)(speed*Utils.getExpenseValue(0.5,1,repairExspensalThreshold,repairExspensal)*10000))/100f+"%";
+        String speedV2 = ((int)(speed*Utils.getExpenseValue(0,1,repairExspensalThreshold,repairExspensal)*10000))/100f+"%";
         //String speedMaxS = (((int)(speedMax*1000))/10f)+"%";
         //String speedMinS = (((int)(speedMin*1000))/10f)+"%";
         String one = "1";
@@ -100,5 +101,10 @@ public class NanoThief_1 extends Nano_Thief_Skill_Base {
     @Override
     public boolean canMulitAddListiners() {
         return false;
+    }
+
+    public static double weight = 1;
+    public Float getNPCSpawnWeight(CampaignFleetAPI fleet) {
+        return (float) weight;
     }
 }
