@@ -25,9 +25,9 @@ public class NanoThief_2 extends Nano_Thief_Skill_Base {
      */
     private static final String key = "AbyssalXO_Nano_Thief_Skill_2";
 
-    public static float timeSmall = 30;
-    public static float timeMid = 60;
-    public static float timeLarge = 90;
+    public static float timeSmall = 45;
+    public static float timeMid = 75;
+    public static float timeLarge = 105;
 
     public static float costSmall = 30;
     public static float costMid = 40;

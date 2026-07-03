@@ -64,6 +64,10 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
     }
     @Override
     public void applyEffectsAfterShipCreation(SCData data, ShipAPI ship, ShipVariantAPI variant, String id) {
+        if (!Global.getCombatEngine().hasPluginOfClass(NanoThief_BattleListener.class)) {
+            Global.getCombatEngine().addPlugin(new NanoThief_BattleListener());
+            Global.getCombatEngine().addPlugin(new NanoThief_Threat_SIC_Adder());
+        }
         if (ship.getParentStation() != null || ship.getParentPieceId() != null){
             //log.info("NOT ADDING LISTENER FOR A SINGLE SHIP, BECAUSE IT IS A MODULE");
             return;
@@ -112,11 +116,6 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
     public void advanceInCombat(SCData data, ShipAPI ship, Float amount) {
         /*I need to look up and find some type of 'deployment listener' to determine what ships are deployed.
         * I could also simply just.... not do that. and instead, just have 'Centralized Production' handle it, every second or two, adding in new ships (and removing old ones whenever it pleases.)*/
-        if (!Global.getCombatEngine().hasPluginOfClass(NanoThief_BattleListener.class)) {
-            Global.getCombatEngine().addPlugin(new NanoThief_BattleListener());
-            Global.getCombatEngine().addPlugin(new NanoThief_Threat_SIC_Adder());
-
-        }
         //Settings.log.info("calculating active ship with this skill: "+ship.getName());
     }
 

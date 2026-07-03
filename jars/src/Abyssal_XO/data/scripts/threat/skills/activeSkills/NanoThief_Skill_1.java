@@ -11,13 +11,17 @@ import java.awt.*;
 
 public class NanoThief_Skill_1 extends NanoThief_SkillBase {
     private double repairPercentage;
+
+    private static double maxSpeed;
     public NanoThief_Skill_1(NanoThief_ShipSkills skills, ShipAPI ship) {
         super(skills,ship);
+        maxSpeed = NanoThief_1.getSpeed()*Utils.getExpenseValue(0,1,NanoThief_1.getRepairExspensalThreshold(),NanoThief_1.getRepairExspensal());
     }
 
     @Override
     public void advance(float amount) {
         if (amount == 0) return;
+        if (ship.isFinishedLanding()) return;
         advanceSingle(amount, skills.ship);
         for (ShipAPI b : skills.getChildShips()){
             advanceSingle(amount,b);
@@ -31,7 +35,7 @@ public class NanoThief_Skill_1 extends NanoThief_SkillBase {
             repairSpeed = (double) (costPerHull * skills.getTotalReclaim());//(skills.getTotalReclaim() * NanoThief_1.getHullPerReclaim());
         }
         if (repairSpeed <= 0) return;
-        //applyAnimation(ship.getMaxHitpoints(),ship.getHitpoints());
+        applyAnimation(ship.getMaxHitpoints(),ship.getHitpoints());
         //log.info("repairing at: amount, repairSpeed, speedPerSecond: "+amount+", "+repairSpeed+", "+(repairSpeed/amount));
         //log.info("  max hp: "+ship.getMaxHitpoints());
         //log.info("  currentHP: "+ship.getHitpoints());
@@ -69,20 +73,31 @@ public class NanoThief_Skill_1 extends NanoThief_SkillBase {
     }*/
     private static final Color jitterColor = new Color(130,155,145,55);
     private static final Color jitterUnderColor = new Color(130,155,145,155);
-    public static float intensityMulti = 1;
-    public static float copysMulti = 10;
-    public static float uncerCopysMulti = 20;
-    public void applyAnimation(float hull,float maxHull){
-        float percent = 1-(hull / maxHull); //10 / 5 = 0.5
-        //private static final Color jitterColor = new Color(255,165,90,55);
-        //private static final Color jitterUnderColor = new Color(255,165,90,155);
-        ship.setJitter(Settings.DISPLAYID_NANOTHIEF+"_skill_4", jitterColor, intensityMulti*percent, (int)(copysMulti*percent), 0f, 5);
-        ship.setJitterUnder(Settings.DISPLAYID_NANOTHIEF+"_skill_4", jitterUnderColor, intensityMulti*percent, (int)(copysMulti*percent), 0f, 7);
+    public static float intensity = 1;
+    public static float copys = 5;
+    public static float uncerCopys = 10;
+    public void applyAnimation(float maxHull,float hull){
+        double percent = hull / maxHull; //200 / 50 = 4. //50 / 200 = 0.25
+        percent = NanoThief_1.getSpeed()*Utils.getExpenseValue(percent,1,NanoThief_1.getRepairExspensalThreshold(),NanoThief_1.getRepairExspensal());
+        //double currentTemp = percent;
+        percent = percent / maxSpeed; //100 / 100 = 1. 1 / 100 = 0.001
+        //max speed = 0.16.
+        //speed = 0.04 = 0.04 / 0.16 = *
+        if (percent < 0.15) return;//no animation below this value.
+        //Settings.log.info("got percent as: "+(int)(percent*100)+" for "+(int)(100*(hull/maxHull))+"% hull");
+        //Settings.log.info("got exsact values as: speed, maxspeed: "+currentTemp+", "+maxSpeed);
+        Color b = new Color(130/3,155/3,145/3,(int)Math.min(255*percent,150));
+        //Color a = new Color(13,15,14,(int)Math.min(255*percent,250));
+        Color a = new Color(130/2,155/2,145/2,(int)Math.min(255*percent,255));
+
+        ship.setJitter(Settings.DISPLAYID_NANOTHIEF+"_skill_4", b, intensity, (int)(copys), 0f, 5);
+        ship.setJitterUnder(Settings.DISPLAYID_NANOTHIEF+"_skill_4", a, intensity, (int)(uncerCopys), 0f, 7);
     }
     public static double currentSpeed(float hull,float maxHull){//this is HP per second.
         //this returns the hull repaired every second.
         double percent = hull / maxHull; //200 / 50 = 4. //50 / 200 = 0.25
         percent = NanoThief_1.getSpeed()*Utils.getExpenseValue(percent,1,NanoThief_1.getRepairExspensalThreshold(),NanoThief_1.getRepairExspensal());
+
         /*if (percent >= NanoThief_1.getHullMax()) return NanoThief_1.getSpeedMin()*maxHull;
         if (percent <= NanoThief_1.getHullMin()) return NanoThief_1.getSpeedMax()*maxHull;
         percent -= NanoThief_1.getHullMin();//

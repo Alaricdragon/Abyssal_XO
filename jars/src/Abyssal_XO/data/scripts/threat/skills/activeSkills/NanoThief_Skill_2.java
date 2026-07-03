@@ -60,7 +60,7 @@ public class NanoThief_Skill_2 extends NanoThief_SkillBase {
 
     public float cooldown = 0f;
     public float coolDownInstance = 0f;
-    public float secondsPerReceack = 3f;
+    public float secondsPerReceack = 1f;
     public boolean onCooldown = false;
 
     public double lowestCurrentCost = 0;
@@ -68,15 +68,27 @@ public class NanoThief_Skill_2 extends NanoThief_SkillBase {
     public void advance(float amount) {
         cooldown-=amount;
         if (cooldown > 0) return;
+        if (ship.isFinishedLanding()){
+            onCooldown = false;
+            cooldown=secondsPerReceack;
+            return;
+        }
         //cooldown = 0.5f;//0.5 seconds between checks.
         //if (skills.getTotalReclaim() == 0) return;
-        int start = (int) (Math.random()*wepons.size());//starting location. will loop untill it reaches this again.
+        //int start = (int) (Math.random()*wepons.size());//starting location. will loop untill it reaches this again.
         //Settings.log.info("got start as: "+start+", of size:"+wepons.size());
         lowestCurrentCost = 0;
-        for (int c = start+1; true; c++){
-            if (c >= wepons.size()) c = 0;
+        ArrayList<WeaponData> canWeapons = new ArrayList<>();
+        for (WeaponData a : wepons){
+            //if (c >= wepons.size()) c = 0;
             //Settings.log.info("got c as: "+c);
-            WeaponData a = wepons.get(c);
+            //WeaponData a = wepons.get(c);
+            if (!a.isReady()) continue;
+            if (a.minCost < lowestCurrentCost || lowestCurrentCost == 0) lowestCurrentCost = a.minCost;//min cost of a reload.
+            if (skills.getModifiedCost(a.minCost) > skills.getTotalReclaim()) continue;
+            a.getStatsForGun();//recalculates stats for the gun here.
+            canWeapons.add(a);
+            /*
             if (!a.isReady()){
                 if (start == c) break;//break for end of loop eq.
                 continue;
@@ -96,18 +108,28 @@ public class NanoThief_Skill_2 extends NanoThief_SkillBase {
                 return;
             }
             if (start == c) break;//break for end of loop eq.
-            /*for (ArrayList<WeaponAPI> a : weponsT) {
-                for (WeaponAPI b : a) {
-                    if (b.getAmmo() != 0) continue;
-                    Pair<Double,Float> pair = getStatsForGun(b);
-                    double cost = pair.one;
-                    if (cost < lowestCurrentCost || lowestCurrentCost == 0) lowestCurrentCost = cost;
-                    if (skills.getTotalReclaim() >= skills.getModifiedCost(cost)) {
-                        //log.info("forging missile...");
-                        return;
-                    }
-                }
-            }*/
+             */
+        }
+
+        if (!canWeapons.isEmpty()){
+            WeaponData a = canWeapons.get((int) (Math.random()*canWeapons.size()));
+
+            //Pair<Double,Float> pair = a.getCurrentCost();
+            int multi = (int) Math.min(skills.getTotalReclaim()/skills.getModifiedCost(a.costPer),a.b.getMaxAmmo()-a.b.getAmmoTracker().getAmmo());
+            double cost = multi * a.costPer;
+            Settings.log.info("got multi and cost as: "+multi+", "+cost);
+            //if (cost < lowestCurrentCost || lowestCurrentCost == 0) lowestCurrentCost = cost;
+            if (skills.getTotalReclaim() >= skills.getModifiedCost(cost)){
+                cooldown = multi * a.cooldownPer;
+                coolDownInstance = cooldown;
+                lowestCurrentCost = 0;
+                onCooldown = true;
+                animate(a.b,(cooldown*NanoThief_2.animationTimeMult)+1);
+                playSoundIfPlayerShip();
+                skills.useReclaim(skills.getModifiedCost(cost));
+                a.b.setAmmo(a.b.getAmmoTracker().getAmmo()+multi);
+                return;
+            }
         }
         //log.info("got current lowest cost as: "+lowestCurrentCost);
         onCooldown = false;
@@ -144,6 +166,8 @@ class WeaponData{
     protected float cooldown;
     protected NanoThief_ShipSkills skills;
     WeaponAPI b;
+    protected double costPer;
+    protected float cooldownPer;
     protected WeaponData(WeaponAPI b,NanoThief_ShipSkills skills){
         this.b = b;
         this.skills = skills;
@@ -166,7 +190,7 @@ class WeaponData{
         out.two = (float) (minCooldown * reloads);
         return out;
     }
-    private void getStatsForGun(){
+    public void getStatsForGun(){
         double costPerOpp = 0;
         float cooldownT = 0;
         double costBase = 0;
@@ -200,7 +224,10 @@ class WeaponData{
         minReload = (int) Math.min(b.getMaxAmmo(),b.getSpec().getBurstSize());
         minCost = ((double) minReload / b.getMaxAmmo()) * totalCost;
         minCooldown = ((float) minReload / b.getMaxAmmo()) * cooldown;
-        Settings.log.info("min reload, cost, cooldown: "+minReload+", "+minCost+", "+minCooldown);
+
+        costPer = cost / b.getMaxAmmo();
+        cooldownPer = cooldown / b.getMaxAmmo();
+        //Settings.log.info("min reload, cost, cooldown: "+minReload+", "+minCost+", "+minCooldown);
 
 
         // 5, 10 = 5 / 10 = 0.5.
