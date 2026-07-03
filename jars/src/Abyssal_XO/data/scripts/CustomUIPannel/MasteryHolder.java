@@ -56,7 +56,7 @@ public class MasteryHolder implements CustomUIPanelPlugin, CustomVisualDialogDel
     public ShipsInFleetHolder fleetShips;
     public MasteryInformationHolder2 infoHolder;
     public Master_FinalButtons finalButtons;
-    private final float screenMulti = 1/Global.getSettings().getScreenScaleMult();
+    private final float screenMulti = (1/Global.getSettings().getScreenScaleMult())*0.95f;
     public MasteryHolder(InteractionDialogAPI dialog){
         this.dialog = dialog;
         float height = Global.getSettings().getScreenHeightPixels() * screenMulti;

@@ -1,3 +1,19 @@
+V0.1.15:
+    balance:
+        Arma Armatura(mod)
+            made it so Constant Repairs, Scrapwork Microforge & Desprate Messures CR regeneration no longer appy when a strikecraft is landed (because the things they effect will be repaired anyways)
+        Scrapwork Microforge:
+            adjusted 'time between ammo checks' for not player piloted ships 3 -> 1
+            time small  60 -> 45
+            time mid    90 -> 75
+            time large  120 -> 105
+    fixes:
+        made it so every single ship is not checking every single tick to make sure the right listeners are active.
+        fixed Scrapwork Microforge broken randomization when choosing what weapon to rearm
+        fixed Scrapwork Microforge being unable to partly refill ammo.
+        changed the mastery interface slightly so you can see the ships scrollbars now
+    new:
+        added a small animation to Constant Repairs. No settings yet.
 V0.1.14:
     settings:
         added Constant Repairs settings.
