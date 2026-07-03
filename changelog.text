@@ -11,9 +11,11 @@ V0.1.15:
         made it so every single ship is not checking every single tick to make sure the right listeners are active.
         fixed Scrapwork Microforge broken randomization when choosing what weapon to rearm
         fixed Scrapwork Microforge being unable to partly refill ammo.
-        changed the mastery interface slightly so you can see the ships scrollbars now
+        mastery interface slightly changed so you can see the ships scrollbars now
     new:
         added a small animation to Constant Repairs. No settings yet.
+    changes:
+        changed the name of the mod from abyssal XO to 'Second In Command: Fragments Of Stolen Power'
 V0.1.14:
     settings:
         added Constant Repairs settings.
