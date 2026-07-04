@@ -1,0 +1,28 @@
+id,trigger,conditions,script,text,options,notes
+abyssal_XO_BlackBox_0,abyssal_XO_BlackBoxStart,,FireAll abyssal_XO_BlackBoxQuestionSet_a,Starting text A,"abyssal_XO_BlackBoxStart_1:""Is there any risk?""
+abyssal_XO_BlackBoxStart_2:""Why were we able to salvage this?""
+abyssal_XO_BlackBoxStart_3:""Can we replecate it?""
+abyssal_XO_BlackBoxStart_4:""How can we use this?""
+abyssal_XO_BlackBoxStart_5:""Can we destroy it?""",
+abyssal_XO_BlackBox_1,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_1,,Question A,,
+abyssal_XO_BlackBox_2,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_2,,Question B,,
+abyssal_XO_BlackBox_3,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_3,,Question C,,
+abyssal_XO_BlackBox_4,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_4,DismissDialog,Question D,,
+abyssal_XO_BlackBox_5,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_5,DismissDialog,Question E,,
+#abyssal_XO_BlackBox_6,abyssal_XO_BlackBoxStart,$option == abyssal_XO_BlackBox_1,,,,
+#abyssal_XO_BlackBox_0,abyssal_XO_BlackBoxStart,$option == abyssal_XO_BlackBox_1,,,,
+#abyssal_XO_BlackBox_0,abyssal_XO_BlackBoxStart,$option == abyssal_XO_BlackBox_1,,,,
+#abyssal_XO_BlackBox_,abyssal_XO_BlackBoxStart,$option == abyssal_XO_BlackBox_1,,,,
+,,,,,,
+#stored data from other tests,,,,,,
+#abyssal_XO_BlackBox_0,abyssal_XO_BlackBoxStart,,,Starting text A,"abyssal_XO_BlackBoxStart_1:""Is there any risk?""
+abyssal_XO_BlackBoxStart_2:""Why were we able to salvage this?""
+abyssal_XO_BlackBoxStart_3:""Can we replecate it?""
+abyssal_XO_BlackBoxStart_4:""How can we use this?""
+abyssal_XO_BlackBoxStart_5:""Can we destroy it?""
+FireAll abyssal_XO_BlackBoxQuestionSet_a",
+#abyssal_XO_BlackBox_1,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_1,,Question A,,
+#abyssal_XO_BlackBox_2,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_2,,Question B,,
+#abyssal_XO_BlackBox_3,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_3,,Question C,,
+#abyssal_XO_BlackBox_4,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_4,,Question D,"defaultLeave:""As you were.""",
+#abyssal_XO_BlackBox_5,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_5,,Question E,"defaultLeave:""As you were.""",

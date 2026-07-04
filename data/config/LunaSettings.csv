@@ -40,6 +40,8 @@ NA_TS_reclaimPerSet,Reclaim per bonus,Int,1000,,,1,10000,Nano Thief: Thorough Sa
 NA_TS_suppliesPerSet,Supplies per bonus,Int,5,,,1,1000,Nano Thief: Thorough Salvaging
 NA_TS_salvageMod,Salvage bonus,Double,0.2,,,0,1,Nano Thief: Thorough Salvaging
 NA_TS_battleSalvageMod,Salvage bonus from battles,Double,0.1,,,0,1,Nano Thief: Thorough Salvaging
+NA_TS_showSupplyMessageLooted,Show supplies gained when already looted,Boolean,false,,,,,Nano Thief: Thorough Salvaging
+NA_TS_showSupplyMessageNotLooted,Show supplies gained when added directly to invatory,Boolean,true,,,,,Nano Thief: Thorough Salvaging
 ,,,,,,,,
 NA_SF_Header,,Header,Scrapy Fortification,,,,,Nano Thief: Scrapy Fortification
 NA_SF_NPC_Weight,Odds of this skill for NPCs,Double,1,,,0,10,Nano Thief: Scrapy Fortification
@@ -109,6 +111,11 @@ NA_DM_overloadCostPerSecond,overload cost per second removed,Int,50,,,1,500,Nano
 NA_DM_overloadEffectTime,overload skill effect time,Int,5,,,1,20,Nano Thief: Desperate Measures
 NA_DM_overloadSkillCost,overload skill cost mod,Double,0.25,,,0,10,Nano Thief: Desperate Measures
 NA_DM_overloadSkillSpeed,overload skill speed mod,Double,1,,,0,10,Nano Thief: Desperate Measures
+NA_DM_keptReclaim,Reclaim skill min reclaim to actavate,Int,2000,,,0,10000,Nano Thief: Desperate Measures
+NA_DM_keptReclaimAbility,Reclaim skill max reclaim cost skill multibled by this value to actavate,Double,2,,,0,10,Nano Thief: Desperate Measures
+NA_DM_keptReclaimReclaimPerBoast,Required reclaim over actavation threshold per bost,Int,1000,,,1,10000,Nano Thief: Desperate Measures
+NA_DM_keptReclaimCost,Reclaim skill cost per bost,Double,0.025,,,0,10,Nano Thief: Desperate Measures
+NA_DM_keptReclaimSpeed,Reclaim skill speed per bost,Double,0.1,,,0,10,Nano Thief: Desperate Measures
 ,,,,,,,,
 NA_Mastery_Header,,Header,Mastery,,,,,Nano Thief: Mastery
 NA_Mastery_NPC_Weight,Odds of this skill for NPCs,Double,1,,,0,10,Nano Thief: Mastery

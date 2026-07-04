@@ -1,3 +1,16 @@
+V0.1.16:
+    fixes:
+        Centralized Production now keeps in mind 'desperate messures' cost effects when deciding how mush reclaim to hold.
+        Thorough Salvaging: fixed not gaining supplies on retreat, or in multiple back to back battle conditions.
+    balance:
+        Desperate Messures now apples a reclaim speed / cost effect when past 2000 reclaim, or twice the cost of your highest cost skill:
+            +10% speed per 1000 reclaim past this point.
+            +2.5% cost per 1000 reclaim past this point
+    new
+        Thorough Salvaging now displays a small message showing how many supplies you received when added directly to the players inventory.
+    settings:
+        Thorough Salvaging settings for allowing supply gain message, on 'looted' and 'added' supply's separately.
+    started some preparation for the quest.
 V0.1.15:
     balance:
         Arma Armatura(mod)

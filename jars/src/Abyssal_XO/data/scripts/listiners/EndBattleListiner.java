@@ -2,7 +2,10 @@ package Abyssal_XO.data.scripts.listiners;
 
 import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.Utils;
+import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_LootListiner;
+import Abyssal_XO.data.scripts.threat.listiners.NanoThief_Skill3_TimeListiner;
+import Abyssal_XO.data.scripts.threat.skills.NanoThief_3;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.BaseCampaignEventListener;
 import com.fs.starfarer.api.campaign.CargoAPI;
@@ -23,8 +26,19 @@ public class EndBattleListiner extends BaseCampaignEventListener {
     }
     @Override
     public void reportPlayerEngagement(EngagementResultAPI result) {
+        processNT_Skill3();
         if (!result.didPlayerWin()) return;
-        processThreat(result);
+        //processThreat(result);
+    }
+    private void processNT_Skill3(){
+        //Settings.log.info("(end battle listiner) runing...");
+        if (!NanoThief_3.playerHasSkill3) return;
+        //Settings.log.info("(end battle listiner) player has skill...");
+        NanoThief_3.calculatePlayerSuppliesGained();
+        if (!Global.getSector().getPlayerFleet().hasScriptOfClass(NanoThief_Skill3_TimeListiner.class)){
+            //Settings.log.info("(end battle listiner) added true listener...");
+            Global.getSector().getPlayerFleet().addScript(new NanoThief_Skill3_TimeListiner());
+        }
     }
     private void processThreat(EngagementResultAPI result){
         if (Global.getSector().getMemory().contains(Settings.MEMKEY_NANOTHIEF_STATUS) && Global.getSector().getMemory().getInt(Settings.MEMKEY_NANOTHIEF_STATUS) == -1) return;

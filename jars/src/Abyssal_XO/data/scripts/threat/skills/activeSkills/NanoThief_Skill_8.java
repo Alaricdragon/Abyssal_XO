@@ -60,10 +60,10 @@ public class NanoThief_Skill_8 extends NanoThief_SkillBase{
             run though all ships, and divide them into 'send category'.
         */
         //log.info("attempting to create reclaim packages");
-        if (skills.getTotalReclaim() < getAmountToHold+1000) return;
+        if (skills.getTotalReclaim() < skills.getModifiedCost(getAmountToHold+1000)) return;
         ArrayList<ShipAPI> targets = new ArrayList<>();
         int muti = ((int) (skills.getTotalReclaim() / 1000f)) - 1;//cannot give more reclaim them I have.  //Integer.MAX_VALUE;
-        int maxSpend = (int) ((skills.getTotalReclaim() - getAmountToHold)/1000f);
+        int maxSpend = (int) ((skills.getTotalReclaim() - skills.getModifiedCost(getAmountToHold))/1000f);
         skills.stats.makeSureSavedShipsAreAlive();
         for (ShipAPI a : skills.stats.getAvailableShips()){
             if (!skills.stats.canAcceptReclaim(a)) continue;
@@ -97,7 +97,7 @@ public class NanoThief_Skill_8 extends NanoThief_SkillBase{
             this EQ hold.
         */
 
-        double hardMin = getAmountToHold;
+        double hardMin = skills.getModifiedCost(getAmountToHold);
         double availbleReclaim = skills.getTotalReclaim();
         int toSpendPerTarget = (int) ((availbleReclaim - (muti*1000*targets.size())) / (targets.size()+1));
         toSpendPerTarget = Math.max(1000,toSpendPerTarget);

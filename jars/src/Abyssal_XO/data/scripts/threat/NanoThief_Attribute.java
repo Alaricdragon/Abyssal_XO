@@ -14,12 +14,12 @@ public class NanoThief_Attribute extends SCBaseAptitudePlugin {
     /*so relevent data:
     todo list:
         0) add a skill 1 animation. some type of small jitter when repairing.
-        1) rename mod to something else (Second In Command: Stolen Powers)? Something like that.
+            -partly done. needs settings
         2) WORK ON SKILL 3
             -see skill for notes.
             -requires a response on the form to get active
-        3)
         4) add in the new icons for the skills.
+            NOTE: I have contacted the Quaken about this issue
             -12? icons required.
             -10 for skill [including base skill, and ability]
                 [64x64 sized images]. in 'threat' colors.

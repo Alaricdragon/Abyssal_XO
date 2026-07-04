@@ -78,6 +78,8 @@ public class StoredSettings {
         NanoThief_3.suppliesPerSet = LunaSettings.getInt("Abyssal_XO","NA_TS_suppliesPerSet");
         NanoThief_3.salvageMod = LunaSettings.getDouble("Abyssal_XO","NA_TS_salvageMod");
         NanoThief_3.battleSalvageMod = LunaSettings.getDouble("Abyssal_XO","NA_TS_battleSalvageMod");
+        NanoThief_3.showSupplyMessageLooted = LunaSettings.getBoolean("Abyssal_XO","NA_TS_showSupplyMessageLooted");
+        NanoThief_3.showSupplyMessageNotLooted = LunaSettings.getBoolean("Abyssal_XO","NA_TS_showSupplyMessageNotLooted");
 
         NanoThief_3.attemptSettingsUpdateIfRequired();
     }
@@ -149,6 +151,11 @@ public class StoredSettings {
         NanoThief_9.overloadEffectTime = LunaSettings.getInt("Abyssal_XO","NA_DM_overloadEffectTime");
         NanoThief_9.overloadSkillCost = LunaSettings.getDouble("Abyssal_XO","NA_DM_overloadSkillCost");
         NanoThief_9.overloadSkillSpeed = LunaSettings.getDouble("Abyssal_XO","NA_DM_overloadSkillSpeed");
+        NanoThief_9.keptReclaim = LunaSettings.getInt("Abyssal_XO","NA_DM_keptReclaim");
+        NanoThief_9.keptReclaimAbility = LunaSettings.getDouble("Abyssal_XO","NA_DM_keptReclaimAbility");
+        NanoThief_9.keptReclaimReclaimPerBoast = LunaSettings.getInt("Abyssal_XO","NA_DM_keptReclaimReclaimPerBoast");
+        NanoThief_9.keptReclaimCost = LunaSettings.getDouble("Abyssal_XO","NA_DM_keptReclaimCost");
+        NanoThief_9.keptReclaimSpeed = LunaSettings.getDouble("Abyssal_XO","NA_DM_keptReclaimSpeed");
 
     }
     private static void luna_NA_Mastery(){
