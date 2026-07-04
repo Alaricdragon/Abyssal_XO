@@ -1,4 +1,5 @@
 package Abyssal_XO.data.scripts;
+import Abyssal_XO.data.scripts.listiners.EndBattleListiner;
 import Abyssal_XO.data.scripts.lunaSettings.StoredSettings;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_EndBattleListiner;
 import com.fs.starfarer.api.BaseModPlugin;
@@ -20,7 +21,7 @@ public class SiC_NanoThief_Plugin extends BaseModPlugin {
         }
         StoredSettings.attemptEnableLunalib();
         StoredSettings.getSettings();
-        //Global.getSector().addListener(new NanoThief_EndBattleListiner(false));
+        if (!Global.getSector().getListenerManager().hasListenerOfClass(EndBattleListiner.class) )Global.getSector().addListener(new EndBattleListiner(false));
     }
 
     @Override

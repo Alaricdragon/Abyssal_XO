@@ -42,6 +42,7 @@ import java.util.List;
 
 
 public class Nano_Thief_Stats {
+
     private static Logger log = Global.getLogger(Nano_Thief_Stats.class);
     public NanoThief_MasteryShipStats[] masteryShips;
     //public HashMap<> reservedDP;

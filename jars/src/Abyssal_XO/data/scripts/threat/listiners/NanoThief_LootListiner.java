@@ -1,5 +1,6 @@
 package Abyssal_XO.data.scripts.threat.listiners;
 
+import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_3;
 import com.fs.starfarer.api.Global;
@@ -12,14 +13,12 @@ public class NanoThief_LootListiner implements ShowLootListener {
     private static Logger log = Global.getLogger(Nano_Thief_Stats.class);
     @Override
     public void reportAboutToShowLootToPlayer(CargoAPI loot, InteractionDialogAPI dialog) {
-        Nano_Thief_Stats.setPlayerExstraReclaimIfRequired();
-        float reclaim = Nano_Thief_Stats.getPlayerExstraReclaim();
-        log.info("attempting to create more loot from something or other =)");
-        if (NanoThief_3.reclaimPerSet != 0)reclaim /= NanoThief_3.reclaimPerSet;
-        else reclaim = 0;
-        log.info("got sets as:");
-        log.info("  total sets: "+reclaim);
-        log.info("  supplies: "+reclaim*NanoThief_3.suppliesPerSet);
-        loot.addCommodity("supplies",reclaim*NanoThief_3.suppliesPerSet);
+        NanoThief_3.calculatePlayerSuppliesGained();
+        Settings.log.info("(loot adder): added supplies: "+NanoThief_3.reclaimToAdd);
+        loot.addSupplies(NanoThief_3.reclaimToAdd);
+        NanoThief_3.reclaimAdded+=NanoThief_3.reclaimToAdd;
+        NanoThief_3.reclaimToAdd=0;
+        NanoThief_3.alreadyLooted = true;
+        NanoThief_3.playerHasSkill3 = false;//don't know if it exists anymore.
     }
 }

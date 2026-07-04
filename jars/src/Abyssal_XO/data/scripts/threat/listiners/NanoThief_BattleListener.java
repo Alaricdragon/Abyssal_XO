@@ -3,6 +3,7 @@ package Abyssal_XO.data.scripts.threat.listiners;
 import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.hullmods.SICSkillControllerBackup;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
+import Abyssal_XO.data.scripts.threat.skills.NanoThief_3;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
@@ -39,6 +40,7 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
     public static HashMap<ShipAPI,Integer> reclaimOverride;
     public static HashMap<ShipAPI,String> shipCommanders = new HashMap<>();
     public NanoThief_BattleListener(){
+        NanoThief_3.calculatePlayerSuppliesGained();
         friendlyCaptions = new HashMap<>();
         hostileCaptions = new HashMap<>();
         reclaimOverride = new HashMap<>();

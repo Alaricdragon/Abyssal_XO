@@ -2,8 +2,11 @@ package Abyssal_XO.data.scripts.threat.skills;
 
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_LootListiner;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_SkillBase;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
+import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Stats;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
@@ -19,8 +22,14 @@ public class NanoThief_3 extends Nano_Thief_Skill_Base {
             1: make it so 'reclaim' gained is not reset when a new battle starts, only when
             2: make it so the amount of 'reclaim' is not added if the player is in a sim.
             3: make it so if the player does not claim reclaim, a intil screen pops up with the supplies added to the players fleet.
-
+            -
+            notes on stuff and things:
+            1: add a intel thing that fades after a few days, but shows how mush reclaim you got in your last battle.
+            2: add a second intel thing that triggers if you run from a fight, (AKA didnt get the loot) that adds the loot to the player.
      */
+    /*
+    * */
+
     private static final String key = "AbyssalXO_Nano_Thief_Skill_3";
     public static float reclaimPerSet = 1000f;
     public static float suppliesPerSet = 5f;
@@ -28,6 +37,8 @@ public class NanoThief_3 extends Nano_Thief_Skill_Base {
     public static double salvageMod = 0.20f;
     public static double battleSalvageMod = 0.1f;
 
+    public static boolean showSupplyMessageLooted = false;
+    public static boolean showSupplyMessageNotLooted = true;
     @Override
     public int getNanoThiefID() {
         return 3;
@@ -99,5 +110,41 @@ public class NanoThief_3 extends Nano_Thief_Skill_Base {
     public static double weight = 1;
     public Float getNPCSpawnWeight(CampaignFleetAPI fleet) {
         return (float) weight;
+    }
+    public static boolean playerHasSkill3;
+    public static boolean alreadyLooted;
+    public static float reclaimToAdd;
+    public static float reclaimAdded;
+    public static void sendIntelMessage(){
+        if (alreadyLooted) if (showSupplyMessageLooted)Global.getSector().getCampaignUI().addMessage("Gained "+(int)(reclaimAdded+reclaimToAdd)+" supplies from previous battle (Already looted)",Global.getSector().getPlayerFaction().getBaseUIColor());
+        else{
+            if (showSupplyMessageNotLooted) Global.getSector().getCampaignUI().addMessage("Gained "+(int)(reclaimAdded+reclaimToAdd)+" supplies from previous battle",Global.getSector().getPlayerFaction().getBaseUIColor());
+            Global.getSector().getPlayerFleet().getCargo().addSupplies(reclaimToAdd);
+        }
+        reclaimAdded = 0;
+        reclaimToAdd = 0;
+    }
+    public static void calculatePlayerSuppliesGained(){
+        Nano_Thief_Stats.setPlayerExstraReclaimIfRequired();
+        float reclaim = Nano_Thief_Stats.getPlayerExstraReclaim();
+        log.info("attempting to create more loot from something or other =)");
+        if (NanoThief_3.reclaimPerSet != 0)reclaim /= NanoThief_3.reclaimPerSet;
+        else reclaim = 0;
+        log.info("got sets as:");
+        log.info("  total sets: "+reclaim);
+        log.info("  supplies: "+reclaim*NanoThief_3.suppliesPerSet);
+        float supplies = reclaim*NanoThief_3.suppliesPerSet;
+        reclaimToAdd+=supplies;
+
+        playerHasSkill3 = false;
+        alreadyLooted = false;
+    }
+    @Override
+    public NanoThief_SkillBase createListiner(NanoThief_ShipSkills skills, ShipAPI ship) {
+        if (skills.stats.fleet != null && skills.stats.fleet.getFleet() != null && skills.stats.fleet.getFleet().isPlayerFleet()){
+            playerHasSkill3 = true;
+            //alreadyLooted = false;
+        }
+        return null;
     }
 }

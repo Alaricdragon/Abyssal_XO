@@ -7,7 +7,6 @@ import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import org.lwjgl.Sys;
 import second_in_command.SCData;
 
 public class NanoThief_9 extends Nano_Thief_Skill_Base {
@@ -30,6 +29,12 @@ public class NanoThief_9 extends Nano_Thief_Skill_Base {
     public static double overloadEffectTime = 5;
     public static double overloadSkillCost = 0.25;
     public static double overloadSkillSpeed = 1.0;
+
+    public static int keptReclaim = 2000;
+    public static double keptReclaimAbility = 2;
+    public static int keptReclaimReclaimPerBoast = 1000;
+    public static double keptReclaimCost = 0.025;//2.5% increase in cost.
+    public static double keptReclaimSpeed = 0.1;//10% increase in speed
     public static void main(String[] args){
         double cr = 0.0;
         System.out.println("got CR: "+cr+" regen speed as:" + crRegenSpeed(cr));
@@ -166,6 +171,12 @@ public class NanoThief_9 extends Nano_Thief_Skill_Base {
         String line9a = (int)(overloadEffectTime)+"";
         String line10a = (int)(overloadSkillSpeed * 100)+"%";
         String line11a = ((int)(overloadSkillCost*100000)/1000d)+"%";
+
+        String line13a = keptReclaimReclaimPerBoast+"";
+        String line13b = keptReclaim+"";
+        String line13c = ((int)(keptReclaimAbility*10))/10+"";
+        String line14a = (int)(keptReclaimSpeed * 100)+"%";;
+        String line15a = ((int)(keptReclaimCost*100000)/1000d)+"%";;
         tooltip.addPara("For every %s missing hull:",0,Misc.getHighlightColor(),Misc.getHighlightColor(),"1%");
         tooltip.addPara("   -increase the speed of all Nano Thief skills by %s",0,Misc.getTextColor(),Misc.getHighlightColor(),line2a);
         tooltip.addPara("   -increase the cost of all Nano Thief skills by %s",0,Misc.getTextColor(),Misc.getNegativeHighlightColor(),line3a);
@@ -181,6 +192,9 @@ public class NanoThief_9 extends Nano_Thief_Skill_Base {
         tooltip.addPara("For %s seconds after overloading:",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line9a);
         tooltip.addPara("   -increase the speed of all Nano Thief skills by %s",0,Misc.getTextColor(),Misc.getHighlightColor(),line10a);
         tooltip.addPara("   -increase the cost of all Nano Thief skills by %s",0,Misc.getTextColor(),Misc.getNegativeHighlightColor(),line11a);
+        tooltip.addPara("For every %s reclaim over %s or %s times the cost of your most costly ability, whatever is higher",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line13a,line13b,line13c);
+        tooltip.addPara("   -increase the speed of all Nano Thief skills by %s",0,Misc.getTextColor(),Misc.getHighlightColor(),line14a);
+        tooltip.addPara("   -increase the cost of all Nano Thief skills by %s",0,Misc.getTextColor(),Misc.getNegativeHighlightColor(),line15a);
         tooltip.addPara("All Nano Thief skill now work well overloading and venting",0,Misc.getHighlightColor(),Misc.getHighlightColor());
 
         tooltip.addSpacer(10f);
@@ -192,7 +206,7 @@ public class NanoThief_9 extends Nano_Thief_Skill_Base {
 
     @Override
     public NanoThief_SkillBase[] createListiners(NanoThief_ShipSkills skills, ShipAPI ship) {
-        return new NanoThief_SkillBase[]{new NanoThief_Skill_9_0(skills,ship), new NanoThief_Skill_9_1(skills, ship), new NanoThief_Skill_9_2(skills, ship)};
+        return new NanoThief_SkillBase[]{new NanoThief_Skill_9_0(skills,ship), new NanoThief_Skill_9_1(skills, ship), new NanoThief_Skill_9_2(skills, ship), new NanoThief_Skill_9_3(skills, ship)};
     }
 
     @Override
