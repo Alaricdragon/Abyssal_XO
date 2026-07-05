@@ -8,6 +8,8 @@ import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.listeners.AdvanceableListener;
 import second_in_command.SCData;
 
+import static com.fs.starfarer.api.impl.combat.threat.ThreatShipConstructionScript.SHIP_UNDER_CONSTRUCTION;
+
 public class NanoThief_ShipSkillsAdder implements AdvanceableListener {
     private ShipAPI ship;
     private SCData data;
@@ -23,6 +25,7 @@ public class NanoThief_ShipSkillsAdder implements AdvanceableListener {
         if (!(Global.getCombatEngine().hasPluginOfClass(NanoThief_BattleListener.class))) return;
         if (NanoThief_BattleListener.getHostileCaptions().isEmpty() && NanoThief_BattleListener.getFriendlyCaptions().isEmpty()) return;
         if (ship.hasListenerOfClass(NanoThief_ShipSkills.class)) return; //this should never happen.
+        if (ship.hasTag(SHIP_UNDER_CONSTRUCTION)) return;//keep this in stasus untill fully ready.
         Nano_Thief_Stats stats = NanoThief_BattleListener.getStatsForShip(ship,data);
         if (stats == null){
             return;

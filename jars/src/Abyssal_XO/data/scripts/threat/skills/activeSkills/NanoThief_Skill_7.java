@@ -22,16 +22,15 @@ import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.util.vector.Vector2f;
 
-import java.util.ArrayList;
-
 public class NanoThief_Skill_7 extends NanoThief_SkillBase{
     public float cooldown = 0;
-    public boolean onCooldown = false;
+    //public boolean onCooldown = false;
     public boolean waiting = false;
     public float recharge;
     @Setter
     @Getter
     private NanoThief_Interface_7 interface7;
+    public boolean WaitingOnReclaim = false;
     public NanoThief_Skill_7(NanoThief_ShipSkills skills, ShipAPI ship) {
         super(skills, ship);
         float buildTimeMulti;
@@ -58,6 +57,7 @@ public class NanoThief_Skill_7 extends NanoThief_SkillBase{
                 //buildTimeMulti = (float) (1 + (1-NanoThief_7.speedPerSize[0]));//-0.25 +1 = 0.75 // 3: 1+(1-3) = 1 + -2 = -1.
         }
         recharge = skills.stats.DF_productionTime*buildTimeMulti;
+        cooldown = recharge;
         //maxFighters = (int) numShips;
         /*for (ShipAPI mods : ship.getChildModulesCopy()){
             switch (ship.getHullSize()){
@@ -90,7 +90,7 @@ public class NanoThief_Skill_7 extends NanoThief_SkillBase{
             return;
         }
         spec.DF_swarmCost = (a.getOpCost(a.getVariant().getStatsForOpCosts())*NanoThief_6.CustomSwarm_COST_PEROP)+NanoThief_6.CustomSwarm_COST_BASE;
-        spec.DF_productionTime = (float) ((a.getNumFighters() * a.getRefitTime() * NanoThief_6.CustomSwarm_BUILDTIME_PREREFIT) + NanoThief_6.BASESWARM_BUILDTIME);
+        spec.DF_productionTime = (float) ((a.getNumFighters() * a.getRefitTime() * NanoThief_6.CustomSwarm_BUILDTIME_PREREFIT) + NanoThief_6.CustomSwarm_BUILDTIME_BASE);
         spec.DF_recyclePerFighter = (spec.DF_swarmCost / Math.max(spec.DF_wingSize,1));
         spec.DF_ttl = NanoThief_6.CustomSwarm_TTL;
         if (a.getRole().equals(WingRole.BOMBER)){
@@ -112,26 +112,33 @@ public class NanoThief_Skill_7 extends NanoThief_SkillBase{
         if (cooldown > 0) return;
         //maxFighters = getMaxFighters();
         double cost = skills.getModifiedCost(skills.stats.DF_swarmCost);
-        if (skills.getTotalReclaim() < cost && !waiting){// || currentFighters() >= maxFighters){
+        /*if (skills.getTotalReclaim() < cost && !waiting){// || currentFighters() >= maxFighters){
             //if (skills.stats.getReadSavedDP() <= 0) skills.stats.getDeployedPonits();
             cooldown = 1;//skills.stats.OF_productionTime;
             onCooldown = false;
             waiting = false;
             return;
-        }
-        if (!onCooldown){
+        }*/
+        /*if (!onCooldown){
             onCooldown = true;
             cooldown = recharge;
             return;
-        }
+        }*/
         //create a combat swarm
+        WaitingOnReclaim = false;
+        if (skills.getTotalReclaim() < cost){
+            waiting = true;
+            cooldown = 1;
+            WaitingOnReclaim = true;
+            return;
+        }
         if (currentFighters() >= interface7.getMaxFighters() || ship.isPhased()){
             waiting = true;
             cooldown = 1;
             return;
         }
         waiting = false;
-        onCooldown = true;
+        //onCooldown = true;
         cooldown = recharge;
         skills.useReclaim(cost);
         createCombatSwarmCore();

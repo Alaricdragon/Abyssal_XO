@@ -163,7 +163,7 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
         String line7a = ((int)(CustomSwarm_COST_BASE))+"";
         String line7b = ((int)(CustomSwarm_COST_PEROP))+"";
 
-        String line8a = BASESWARM_BUILDTIME+"";
+        String line8a = CustomSwarm_BUILDTIME_BASE+"";
         String line8b = ((int)(CustomSwarm_BUILDTIME_PREREFIT*100)/100)+"";
         tooltip.addPara("Simulacrum Fighter Wings act as normal fighter wings with the following modifications:",0,Misc.getGrayColor(),Misc.getHighlightColor());
         tooltip.addPara("   -can only be active for %s seconds before reutrning to the nearest fiendly ship",0,Misc.getGrayColor(),Misc.getHighlightColor(),line3a);

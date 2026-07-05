@@ -41,6 +41,7 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
                 //buildTimeMulti = (float) (1 + (1-NanoThief_6.speedPerSize[0]));
         }
         recharge = skills.stats.OF_productionTime*buildTimeMulti;
+        cooldown = recharge;
     }
     public static void getStats(Nano_Thief_Stats spec, FighterWingSpecAPI a){
         spec.OF_fighterHullSpec = a.getVariant().getHullSpec();
@@ -55,7 +56,7 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
             return;
         }
         spec.OF_swarmCost = (a.getOpCost(a.getVariant().getStatsForOpCosts())*NanoThief_6.CustomSwarm_COST_PEROP)+NanoThief_6.CustomSwarm_COST_BASE;
-        spec.OF_productionTime = (float) ((a.getNumFighters() * a.getRefitTime() * NanoThief_6.CustomSwarm_BUILDTIME_PREREFIT) + NanoThief_6.BASESWARM_BUILDTIME);
+        spec.OF_productionTime = (float) ((a.getNumFighters() * a.getRefitTime() * NanoThief_6.CustomSwarm_BUILDTIME_PREREFIT) + NanoThief_6.CustomSwarm_BUILDTIME_BASE);
         spec.OF_recyclePerFighter = (spec.OF_swarmCost / Math.max(spec.OF_wingSize,1));
         spec.OF_ttl = NanoThief_6.CustomSwarm_TTL;
         spec.OF_DpPerFighter = (float) (NanoThief_6.baseDpPerFighter+(NanoThief_6.dpPerOpPerFighter*a.getOpCost(a.getVariant().getStatsForOpCosts())));
@@ -71,10 +72,11 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         log.info("got swarm of ID: "+spec.OF_fighterToBuild +" stats as: cost: "+spec.OF_swarmCost +", productionTime: "+spec.OF_productionTime +", time to live"+spec.OF_ttl +", and refund per fighter: "+spec.OF_recyclePerFighter);
     }
     public float cooldown = 0;
-    public boolean onCooldown = false;
+    //public boolean onCooldown = false;
     public boolean waiting = false;
     public int maxFighters = 0;
     public float recharge;
+    public boolean WaitingOnReclaim = false;
     @Override
     public void advance(float amount) {
         //note: NanoThief_ShipStats handles both the spawning and despawinging of swarm cores. This will require change.
@@ -82,26 +84,33 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         if (cooldown > 0) return;
         maxFighters = getMaxFighters();
         double cost = skills.getModifiedCost(skills.stats.OF_swarmCost);
-        if (skills.getTotalReclaim() < cost && !waiting){// || currentFighters() >= maxFighters){
+/*        if (skills.getTotalReclaim() < cost && !waiting){// || currentFighters() >= maxFighters){
             //if (skills.stats.getReadSavedDP() <= 0) skills.stats.getDeployedPonits();
             cooldown = 1;//skills.stats.OF_productionTime;
             onCooldown = false;
             waiting = false;
             return;
-        }
-        if (!onCooldown){
+        }*/
+        /*if (!onCooldown){
             onCooldown = true;
             cooldown = recharge;
             return;
-        }
+        }*/
         //create a combat swarm
+        WaitingOnReclaim = false;
+        if (skills.getTotalReclaim() < cost){
+            waiting = true;
+            cooldown = 1;
+            WaitingOnReclaim = true;
+            return;
+        }
         if (currentFighters() >= maxFighters || ship.isPhased()){
             waiting = true;
             cooldown = 1;
             return;
         }
         waiting = false;
-        onCooldown = true;
+        //onCooldown = true;
         cooldown = recharge;
         skills.useReclaim(cost);
         createCombatSwarmCore();

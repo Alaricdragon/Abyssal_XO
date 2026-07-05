@@ -218,7 +218,7 @@ public class Nano_Thief_Stats {
         }
     }
     public NanoThief_ShipSkills getSkills(ShipAPI shipAPI){
-        if (!availableShips.contains(shipAPI)) return null;
+        if (shipAPI == null || !availableShips.contains(shipAPI)) return null;
         NanoThief_ShipSkills listiner = null;
         if (shipAPI.hasListenerOfClass(NanoThief_ShipSkills.class)){
             List<NanoThief_ShipSkills> a = shipAPI.getListenerManager().getListeners(NanoThief_ShipSkills.class);
