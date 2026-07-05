@@ -153,7 +153,7 @@ public class Nano_Thief_Selection_Sfw_Attack_CargoListiner implements CargoPicke
         panel.addPara("if nothing is selected, "+baseWingDisplay+" will be selected for deployment",5);
         panel.addPara("The rules for base stats is as follows:",5);
         panel.addPara("Reclaim cost is %s per ordnance point + %s",5, Misc.getTextColor(), Misc.getHighlightColor(),""+(int)NanoThief_6.CustomSwarm_COST_PEROP,""+(int)NanoThief_6.CustomSwarm_COST_BASE);
-        String line8a = NanoThief_6.BASESWARM_BUILDTIME+"";
+        String line8a = NanoThief_6.CustomSwarm_BUILDTIME_BASE+"";
         String line8b = ((int)(NanoThief_6.CustomSwarm_BUILDTIME_PREREFIT*100)/100)+"";
         panel.addPara("Build time is %s + %s * wing size * replacement rate",5,Misc.getTextColor(), Misc.getHighlightColor(),line8a,line8b);
         panel.addPara("Can only be active for %s seconds before returning to a friendly ship",5,Misc.getTextColor(), Misc.getHighlightColor(),""+(int) NanoThief_6.CustomSwarm_TTL);

@@ -39,37 +39,41 @@ public class NanoThief_Interface_6 extends NanoThief_InterfaceBase {
                     "Offencive Fighter Construction Status", cur+" / "+max, true);
             return;
         }*/
-        if (skills.getTotalReclaim() >= skills.getModifiedCost(skills.stats.OF_swarmCost)){
-            if (!listiner.onCooldown && !listiner.waiting){
-                listiner.onCooldown = true;
-                listiner.cooldown = listiner.recharge;
-            }
-            if (listiner.waiting){
-                if (skills.ship.isPhased()) {
-                    Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_6", "graphics/icons/hullsys/temporal_shell.png",
-                            "Offencive Fighter Construction Status", cur + " / " + max + ", cannot create fighter while phased", true);
-                    return;
-                }
+        /*if (!listiner.onCooldown && !listiner.waiting){
+            listiner.onCooldown = true;
+            listiner.cooldown = listiner.recharge;
+        }*/
+        if (listiner.waiting){
+            listiner.cooldown = 0;
+            if (skills.ship.isPhased()) {
                 Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_6", "graphics/icons/hullsys/temporal_shell.png",
-                        "Offencive Fighter Construction Status", cur+" / "+max+", cannot control additional fighters", true);
+                        "Offencive Fighter Construction Status", cur + " / " + max + ", cannot create fighter while phased", true);
+                return;
+            }
+            if (skills.getTotalReclaim() < skills.getModifiedCost(skills.stats.OF_swarmCost)) {
+                Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_6", "graphics/icons/hullsys/temporal_shell.png",
+                        "Offencive Fighter Construction Status", cur+" / "+max+", requires "+skills.getModifiedCost(skills.stats.OF_swarmCost)+" reclaim. "+100+"% ready", true);
                 return;
             }
             Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_6", "graphics/icons/hullsys/temporal_shell.png",
-                    "Offencive Fighter Construction Status", cur+" / "+max+", "+(int)(((listiner.recharge-listiner.cooldown) / listiner.recharge)*100)+"% prepared to create wing...", false);
+                    "Offencive Fighter Construction Status", cur+" / "+max+", cannot control additional fighters", true);
+            return;
+        }
+        if (skills.getTotalReclaim() < skills.getModifiedCost(skills.stats.OF_swarmCost)) {
+            int charge = (int)(((listiner.recharge-listiner.cooldown) / listiner.recharge)*100);
+            charge = Math.min(charge,100);
+            Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_6", "graphics/icons/hullsys/temporal_shell.png",
+                    "Offencive Fighter Construction Status", cur+" / "+max+", requires "+skills.getModifiedCost(skills.stats.OF_swarmCost)+" reclaim. "+charge+"% ready", true);
             return;
         }
         Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_6", "graphics/icons/hullsys/temporal_shell.png",
-                "Offencive Fighter Construction Status", cur+" / "+max+", cannot build wing do to limited reclaim", true);
+                "Offencive Fighter Construction Status", cur+" / "+max+", "+(int)(((listiner.recharge-listiner.cooldown) / listiner.recharge)*100)+"% prepared to create wing...", false);
+        return;
 
     }
     private void displayMultiStat(){
         int max = listiners.get(0).getMaxFighters();
         int cur = listiners.get(0).currentFighters();
-        if (skills.getTotalReclaim() < skills.getModifiedCost(skills.stats.OF_swarmCost)){
-            Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_6", "graphics/icons/hullsys/temporal_shell.png",
-                    "Offencive Fighter Construction Status", cur+" / "+max+", cannot build wings do to limited reclaim", true);
-            return;
-        }
         String display = cur + " / "+max+": ";
         String displayTemp = "";
         boolean isWaiting = false;
@@ -79,11 +83,13 @@ public class NanoThief_Interface_6 extends NanoThief_InterfaceBase {
             displayTemp += "("+getSingleListinerString(a)+")";
             if (a.waiting) isWaiting = true;
         }
-        if (skills.ship.isPhased() && isWaiting && max < cur){
+        if (skills.getTotalReclaim() < skills.getModifiedCost(skills.stats.OF_swarmCost)){
+            display+=" requires "+skills.getModifiedCost(skills.stats.OF_swarmCost)+" reclaim. ";
+            isDebuff = true;
+        }else if (skills.ship.isPhased() && isWaiting && max < cur){
             display+=" cannot create fighters when phased. ";
             isDebuff = true;
-        }
-        if (max >= cur){
+        }else if (max >= cur){
             display+= " cannot control additional fighters. ";
             isDebuff = true;
         }
@@ -92,10 +98,11 @@ public class NanoThief_Interface_6 extends NanoThief_InterfaceBase {
                 "Offencive Fighter Construction Status", display, isDebuff);
     }
     private String getSingleListinerString(NanoThief_Skill_6 a){
-        if (!a.onCooldown && !a.waiting){
+        /*if (!a.onCooldown && !a.waiting){
             a.onCooldown = true;
             a.cooldown = a.recharge;
-        }
-        return (int)(((a.recharge-a.cooldown) / a.recharge)*100)+"%";
+        }*/
+        if (a.waiting) a.cooldown = 0;
+        return a.WaitingOnReclaim ? "100%" : (int)(((a.recharge-a.cooldown) / a.recharge)*100)+"%";
     }
 }

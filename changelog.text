@@ -1,3 +1,13 @@
+V0.1.17:
+    fixes:
+        fixed reclaim target crash upon losing all ships in fleet.
+        fixed the possibility of fighters having reclaim stats (please dont ask)
+        made it so cooldown skills recharge when a ship has zero reclaim.
+        fixed issue with base build time being hard coded for simulacrum fighter wings
+        removed the now defunct 'fabricator dp override' in mastery settings. please use the one in reclaim settings instead.
+        fixed Thorough Salvaging maybe adding supplys to give later when reclaim is gained in the simulation
+    balance:
+        Decentralized Swarm Production && Defensive Swarms now charge even when no reclaim is available.
 V0.1.16:
     fixes:
         Centralized Production now keeps in mind 'desperate messures' cost effects when deciding how mush reclaim to hold.

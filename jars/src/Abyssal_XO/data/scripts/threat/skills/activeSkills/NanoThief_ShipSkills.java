@@ -223,7 +223,7 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
         if (ship.isHulk()) return;
         if (!activeWellOverloaded && (ship.getFluxTracker().isOverloaded() || ship.getFluxTracker().isVenting())) return;
         for (NanoThief_SkillBase a : alwaysSkills) a.advance(amount);
-        if (getTotalReclaim() == 0) return;
+        //if (getTotalReclaim() == 0) return;
         amount *= timeflow;
         for (NanoThief_SkillBase a : skills) a.advance(amount);
     }

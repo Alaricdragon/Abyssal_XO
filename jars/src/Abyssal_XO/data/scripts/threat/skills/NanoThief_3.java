@@ -141,7 +141,7 @@ public class NanoThief_3 extends Nano_Thief_Skill_Base {
     }
     @Override
     public NanoThief_SkillBase createListiner(NanoThief_ShipSkills skills, ShipAPI ship) {
-        if (skills.stats.fleet != null && skills.stats.fleet.getFleet() != null && skills.stats.fleet.getFleet().isPlayerFleet()){
+        if (!Global.getCombatEngine().isSimulation() && skills.stats.fleet != null && skills.stats.fleet.getFleet() != null && skills.stats.fleet.getFleet().isPlayerFleet()){
             playerHasSkill3 = true;
             //alreadyLooted = false;
         }

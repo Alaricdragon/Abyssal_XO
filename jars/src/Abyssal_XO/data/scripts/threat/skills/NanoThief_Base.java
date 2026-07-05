@@ -68,7 +68,7 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
             Global.getCombatEngine().addPlugin(new NanoThief_BattleListener());
             Global.getCombatEngine().addPlugin(new NanoThief_Threat_SIC_Adder());
         }
-        if (ship.getParentStation() != null || ship.getParentPieceId() != null){
+        if (ship.getParentStation() != null || ship.getParentPieceId() != null || (ship.getHullSpec() != null && ship.getHullSpec().getHullSize() == ShipAPI.HullSize.FIGHTER)){
             //log.info("NOT ADDING LISTENER FOR A SINGLE SHIP, BECAUSE IT IS A MODULE");
             return;
         }
@@ -83,9 +83,14 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
         }
             //List<NanoThief_ShipSkillsAdder> a = ship.getListenerManager().getListeners(NanoThief_ShipSkillsAdder.class);
             //listiner = a.get(0);
+        Settings.log.info("Attempting to get child moduals with a size of: "+ship.getChildModulesCopy());
+        for (ShipAPI a : ship.getChildModulesCopy()){
+            Settings.log.info("got module as: "+a.getName()+", "+a.getId());
+        }
         Settings.log.info("adding to nano-thief internal data a ship of name: "+ship.getName()+" id: "+(ship.getFleetMember() != null ? ship.getFleetMember().getId() : "N/A"));
         NanoThief_ShipSkillsAdder a = new NanoThief_ShipSkillsAdder(ship,data);
         ship.addListener(a);
+        Settings.log.info("successfully added listiner...");
         /*/
 
         if (!Global.getCurrentState().equals(GameState.COMBAT)) return;
