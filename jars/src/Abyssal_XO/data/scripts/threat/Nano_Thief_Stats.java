@@ -95,9 +95,10 @@ public class Nano_Thief_Stats {
     @Getter
     private ArrayList<ShipAPI> OffinciveFighterCores = new ArrayList<>();//might not be needed we will see.
     public static void setPlayerExstraReclaimIfRequired(){
+        playerExstraReclaim = 0;
         if (playerStats == null) return;
         playerStats.makeSureSavedShipsAreAlive();
-        playerExstraReclaim = 0;
+        //playerExstraReclaim = 0;
         for (ShipAPI ship : playerStats.availableShips){
             NanoThief_ShipSkills listiner = null;
             if (ship.hasListenerOfClass(NanoThief_ShipSkills.class)){

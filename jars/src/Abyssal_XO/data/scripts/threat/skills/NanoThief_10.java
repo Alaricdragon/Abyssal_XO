@@ -44,6 +44,9 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
     public static double dModmin = 0.5;
     public static double costPerDP = 250;
     public static double baseCost = 500;
+    //30k reclaim per battle. 60k including friendly ships.
+    public static double[] costPerDPs = {250,500,750,1000};//(2k) = 40*2 = 80k. 125*240 = 30k per battle. (1k) = 40*1 = 40k
+    public static double[] baseCosts = {500,1000,1500,2000};
     //200 for 1 dp cost, 2000 for 10 dp. (0.5 capitals for 1 dp. 0.5 frigets for 1 dp.)
     //200,0:   1dp:200r, 3dp:600r,  10dp:2000r, 20dp:4000r
     //200,500: 1dp:750r, 3dp:1100r, 10dp:2500r, 20dp:4500r
@@ -52,6 +55,10 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
     public static double rechargeTimeBase = 20;
     public static double buildTimePerDP = 2.5;//2.5 seconds per dp cost of ship.
     public static double builtTimeBase = 5;
+    public static double[] rechargeTimePerDPs = {10,10,10,10};
+    public static double[] rechargeTimeBases = {20,30,40,50};
+    public static double[] buildTimePerDPs = {2.5,2.5,2.5,2.5};
+    public static double[] builtTimeBases = {5,10,15,20};
 
     public static double minCR = 0.4;//for spawning ships
     public static double peakCRDuration = 0.6;
@@ -60,6 +67,63 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
     public static double maxReclaimPercent = 0.2;//max amount of reclaim a simulacrum ship is worth when destroyed.
 
     public static double swarmSizeMulti = 2;
+    public ArrayList<String> allowedSizeStrings(String frig, String dest, String cru, String cap){
+        ArrayList<String> allowedSizes = new ArrayList<>();
+        if (canFrigate) allowedSizes.add(frig);
+        if (canDestroyer) allowedSizes.add(dest);
+        if (canCruiser) allowedSizes.add(cru);
+        if (canCapital) allowedSizes.add(cap);
+        return allowedSizes;
+    }
+    public String sizeStringSingleAsDoubles(double[] doubles,String separator,String finily){
+        double b = doubles[0];
+        for (int a = 1; a < doubles.length; a++){
+            if (doubles[a] != b){
+                return sizeStringSingle(allowedSizeStrings(""+doubles[0], ""+doubles[1], ""+doubles[2], ""+doubles[3]),separator,finily);
+            }
+            b = doubles[a];
+        }
+        return ""+doubles[0];
+    }
+    public String sizeStringSingleAsInts(double[] doubles,String separator,String finily){
+        double b = doubles[0];
+        for (int a = 1; a < doubles.length; a++){
+            if ((int)doubles[a] != (int)b){
+                return sizeStringSingle(allowedSizeStrings(""+(int)doubles[0], ""+(int)doubles[1], ""+(int)doubles[2], ""+(int)doubles[3]),separator,finily);
+            }
+            b = doubles[a];
+        }
+        return ""+(int)doubles[0];
+    }
+    public String sizeStringSingle(String frig, String dest, String cru, String cap,String separator,String finily){
+        return sizeStringSingle(allowedSizeStrings(frig, dest, cru, cap),separator,finily);
+    }
+    public String sizeStringSingle(ArrayList<String> allowedSizes,String separator,String finily){
+        String out = "";
+        for (int a = 0; a < allowedSizes.size(); a++){
+            out+=allowedSizes.get(a);
+            if (a < allowedSizes.size() - 1) out+=separator;
+            if (a == allowedSizes.size() - 2) out+=finily;
+        }
+        return out;
+    }
+    private String addDOHSIfRequired(double[]... doubles){
+        if (allowedSizeStrings("","","","").size() > 1) return " depending on hullsize";
+        boolean canSize = false;
+        for (double[] doubles1 : doubles) {
+            double b = doubles1[0];
+            for (int a = 1; a < doubles1.length; a++) {
+                if ((int) doubles1[a] != (int) b) {
+                    canSize = true;
+                    break;
+                }
+                b = doubles1[a];
+            }
+            if (canSize) break;
+        }
+        if (canSize) return " depending on hullsize";
+        else return "";
+    }
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltip) {
         /*
@@ -78,15 +142,22 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
         the smod and dmod cost changes are not multiplicative.
         any ship in your fleet can be chosen as a possible ship to build, up to a maximum of %s ships.
         */
-        String line4_0_0 = ""+(int)rechargeTimeBase;
-        String line4_0 = ""+(int)rechargeTimePerDP;
+        String sizeClass = "";
+        ArrayList<String> allowedSizes = allowedSizeStrings("Frigate","Destroyer","Cruiser","Capital");
+        if (allowedSizes.size() <= 1){
+            sizeClass+="only ";
+        }
+        sizeClass+=sizeStringSingle(allowedSizes,", ","and ");
+        String line4_0_0 = sizeStringSingleAsInts(rechargeTimeBases,"/","");//""+(int)rechargeTimeBase;
+        String line4_0 = sizeStringSingleAsInts(rechargeTimePerDPs,"/","");//""+(int)rechargeTimePerDP;
         String line7_0 = ""+maxShips;
         String line8_0 = (int)(minCR*100)+"%";
         tooltip.addPara("When reclaim is available and this ability is ready, select a random ship from a list of possible ships",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         tooltip.addPara("A nanobot swarm will be deployed to construct this ship as a simulacrum ship in a empty area nearby",0,Misc.getHighlightColor(),Misc.getHighlightColor());
-        tooltip.addPara("The nanobot swarm will take %s + %s seconds to prepare per deployment point of the simulacrum ship",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line4_0_0,line4_0);
+        tooltip.addPara("The nanobot swarm will take %s + %s seconds to prepare per deployment point of the simulacrum ship"+addDOHSIfRequired(rechargeTimeBases,rechargeTimePerDPs),0,Misc.getHighlightColor(),Misc.getHighlightColor(),line4_0_0,line4_0);
         tooltip.addPara("The simulacrum ships this skill can build can be selected, up to a maximum of %s ships.",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line7_0);
         tooltip.addPara("ships with less then %s cr cannot use this ability",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line8_0);
+        if (allowedSizes.size() != 4)tooltip.addPara("%s are allowed to be added to this ability",0,Misc.getHighlightColor(),Misc.getHighlightColor(),sizeClass);
         tooltip.addPara("available simulacrum ships in this fleet:",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         displayShipStats(tooltip,getShips(scData.getCommander(),scData.getFleet().getFaction()),true);
         tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor());
@@ -104,14 +175,14 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
     private void displayBaseStats(SCData scData, TooltipMakerAPI tooltip){
         //String line3_0 = ""+(int)forceRechargePerDP;
 
-        String line4_0_0 = ""+(int)baseCost;
-        String line4_0 = ""+(int)costPerDP;
+        String line4_0_0 = sizeStringSingleAsInts(baseCosts,"/","");//""+(int)baseCost;
+        String line4_0 = sizeStringSingleAsInts(costPerDPs,"/","");//""+(int)costPerDP;
         String line4_1 = (int)(dModDiscount*100)+"%";
         String line4_2 = (int)(dModmin*100)+"%";
         String line4_3 = (int)(sModCost*100)+"%";
 
-        String line5_0_0 = ""+builtTimeBase;
-        String line5_0 = ""+buildTimePerDP;
+        String line5_0_0 = sizeStringSingleAsDoubles(builtTimeBases,"/","");//""+builtTimeBase;
+        String line5_0 = sizeStringSingleAsDoubles(buildTimePerDPs,"/","");//""+buildTimePerDP;
         String line5_1 = "can be damaged";
         String line5_2 = "move";
         String line5_3 = "attack";
@@ -125,8 +196,8 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
         tooltip.addPara("   -must be built form a 'construction swarm'",0,Misc.getGrayColor(),Misc.getHighlightColor());
         tooltip.addPara("   -starting cr is equal to the cr of the ship that spawned the simulacrum ship",0,Misc.getGrayColor(),Misc.getHighlightColor());
         //tooltip.addPara("   -cannot be used to create additional simulacrum ships until %s seconds pass per deployment point",0,Misc.getGrayColor(),Misc.getHighlightColor(),line3_0);
-        tooltip.addPara("   -cost %s + %s reclaim per deployment point, reduced by %s per none logistical d-mod (up to a reduction of %s),and increased by %s per s-mod (with no upper limit). not multiplicative",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line4_0_0,line4_0,line4_1,line4_2,line4_3);
-        tooltip.addPara("   -takes %s + %s seconds to build per deployment point. during this time, the ship %s, cannot %s, %s or %s",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line5_0_0,line5_0,line5_1,line5_2,line5_3,line5_4);
+        tooltip.addPara("   -cost %s + %s reclaim per deployment point"+addDOHSIfRequired(baseCosts,costPerDPs)+", reduced by %s per none logistical d-mod (up to a reduction of %s),and increased by %s per s-mod (with no upper limit). not multiplicative",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line4_0_0,line4_0,line4_1,line4_2,line4_3);
+        tooltip.addPara("   -takes %s + %s seconds to build per deployment point"+addDOHSIfRequired(builtTimeBases,buildTimePerDPs)+". during this time, the ship %s, cannot %s, %s or %s",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line5_0_0,line5_0,line5_1,line5_2,line5_3,line5_4);
         tooltip.addPara("   -peak performance time is reduced by %s",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line6_0);
         tooltip.addPara("   -reclaim gained from the ship is %s of the reclaim it cost to build",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line7_0);
         tooltip.addPara("   -start with 0 reclaim in storge.",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor());

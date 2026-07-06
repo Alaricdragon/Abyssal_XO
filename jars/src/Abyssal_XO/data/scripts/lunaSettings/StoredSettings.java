@@ -174,15 +174,50 @@ public class StoredSettings {
         NanoThief_10.sModCost = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_sModCost");
         NanoThief_10.dModDiscount = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_dModDiscount");
         NanoThief_10.dModmin = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_dModmin");
-        NanoThief_10.costPerDP = LunaSettings.getInt("Abyssal_XO","NA_Mastery_costPerDP");
-        NanoThief_10.baseCost = LunaSettings.getInt("Abyssal_XO","NA_Mastery_costBase");
 
-        NanoThief_10.rechargeTimePerDP = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_rechargeTimePerDP");
-        NanoThief_10.rechargeTimeBase = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_rechargeTimeBase");
+        NanoThief_10.costPerDPs = new double[]{
+            LunaSettings.getInt("Abyssal_XO","NA_Mastery_costPerDP_f"),
+            LunaSettings.getInt("Abyssal_XO","NA_Mastery_costPerDP_d"),
+            LunaSettings.getInt("Abyssal_XO","NA_Mastery_costPerDP_cr"),
+            LunaSettings.getInt("Abyssal_XO","NA_Mastery_costPerDP_ca")
+        };
+        //NanoThief_10.costPerDP = LunaSettings.getInt("Abyssal_XO","NA_Mastery_costPerDP");
+        //NanoThief_10.baseCost = LunaSettings.getInt("Abyssal_XO","NA_Mastery_costBase");
+        NanoThief_10.baseCosts = new double[]{
+                LunaSettings.getInt("Abyssal_XO","NA_Mastery_costBase_f"),
+                LunaSettings.getInt("Abyssal_XO","NA_Mastery_costBase_d"),
+                LunaSettings.getInt("Abyssal_XO","NA_Mastery_costBase_cr"),
+                LunaSettings.getInt("Abyssal_XO","NA_Mastery_costBase_ca")
+        };
 
-        NanoThief_10.buildTimePerDP = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_buildTimePerDP");
-        NanoThief_10.builtTimeBase = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_buildTimeBase");
+        //NanoThief_10.rechargeTimePerDP = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_rechargeTimePerDP");
+        NanoThief_10.rechargeTimePerDPs = new double[]{
+                LunaSettings.getDouble("Abyssal_XO","NA_Mastery_rechargeTimePerDP_f"),
+                LunaSettings.getDouble("Abyssal_XO","NA_Mastery_rechargeTimePerDP_d"),
+                LunaSettings.getDouble("Abyssal_XO","NA_Mastery_rechargeTimePerDP_cr"),
+                LunaSettings.getDouble("Abyssal_XO","NA_Mastery_rechargeTimePerDP_ca")
+        };
+        //NanoThief_10.rechargeTimeBase = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_rechargeTimeBase");
+        NanoThief_10.rechargeTimeBases = new double[]{
+                LunaSettings.getDouble("Abyssal_XO","NA_Mastery_rechargeTimeBase_f"),
+                LunaSettings.getDouble("Abyssal_XO","NA_Mastery_rechargeTimeBase_d"),
+                LunaSettings.getDouble("Abyssal_XO","NA_Mastery_rechargeTimeBase_cr"),
+                LunaSettings.getDouble("Abyssal_XO","NA_Mastery_rechargeTimeBase_ca")
+        };
+        //NanoThief_10.buildTimePerDP = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_buildTimePerDP");
+        NanoThief_10.buildTimePerDPs = new double[]{
+                LunaSettings.getDouble("Abyssal_XO","NA_Mastery_buildTimePerDP_f"),
+                LunaSettings.getDouble("Abyssal_XO","NA_Mastery_buildTimePerDP_d"),
+                LunaSettings.getDouble("Abyssal_XO","NA_Mastery_buildTimePerDP_cr"),
+                LunaSettings.getDouble("Abyssal_XO","NA_Mastery_buildTimePerDP_ca")
+        };
 
+        NanoThief_10.builtTimeBases = new double[]{
+                LunaSettings.getDouble("Abyssal_XO","NA_Mastery_buildTimeBase_f"),
+                LunaSettings.getDouble("Abyssal_XO","NA_Mastery_buildTimeBase_d"),
+                LunaSettings.getDouble("Abyssal_XO","NA_Mastery_buildTimeBase_cr"),
+                LunaSettings.getDouble("Abyssal_XO","NA_Mastery_buildTimeBase_ca")
+        };
         NanoThief_10.minCR = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_minCR");
         NanoThief_10.peakCRDuration = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_peakCRDuration");
         NanoThief_10.maxReclaimPercent = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_maxReclaimPercent");

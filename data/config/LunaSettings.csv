@@ -9,7 +9,7 @@ NA_BASE_reclaimOnStartPerDP,Reclaim ships start with per deployment point per sk
 NA_BASE_reclaimFromHostilePerDP,Reclaim dead ships provide per deployment point per skill,Int,25,,,1,1000,Nano Thief: Base Skill
 NA_BASE_reclaimMultiFromParent,Percent of reclaim modules on moduler ships siphin from there main ship when destroyed,Double,0.1,,,0,1,Nano Thief: Base Skill
 NA_BASE_reclaimRecyclePercent,Percent of reclaim adding to reclaim packages when a ship is destroyed (not used for ship module),Double,0.1,,,0,1,Nano Thief: Base Skill
-NA_BASE_fabracatorDPForCalulations,Fabracator DP cost for nano thief calulations,Int,60,,This effects reclaim gains and mastery costs from threat fabracators,0,200,Nano Thief: Base Skill
+NA_BASE_fabracatorDPForCalulations,Fabracator DP cost for nano thief calulations,Int,80,,This effects reclaim gains and mastery costs from threat fabracators,0,200,Nano Thief: Base Skill
 NA_BASE_swarmSizePerReclaim,Reclaim swarm size per reclaim,Double,0.01,,,0,1,Nano Thief: Base Skill
 NA_BASE_swarmSizeBase,Reclaim swarm size base,Int,5,,,0,100,Nano Thief: Base Skill
 ,,,,,,,,
@@ -130,13 +130,37 @@ NA_Mastery_oddsVariance,How mush the weight to spawn each ship differs for npc f
 NA_Mastery_sModCost,Cost incress per smod,Double,0.25,,,0,10,Nano Thief: Mastery
 NA_Mastery_dModDiscount,Cost decress per dmod,Double,0.1,,,0,10,Nano Thief: Mastery
 NA_Mastery_dModmin,Min cost from dmod decrease,Double,0.5,,,0,10,Nano Thief: Mastery
-NA_Mastery_costPerDP,Reclaim cost per deployment point,Int,250,,,1,1000,Nano Thief: Mastery
-NA_Mastery_costBase,Base reclaim cost,Int,500,,,1,1000,Nano Thief: Mastery
-NA_Mastery_rechargeTimePerDP,Recharge time per deployment ponit,Double,10,,,0.1,100,Nano Thief: Mastery
-NA_Mastery_rechargeTimeBase,Base recharge time,Double,20,,,0.1,100,Nano Thief: Mastery
-NA_Mastery_buildTimePerDP,Build time per deployment point,Double,2.5,,,0.1,100,Nano Thief: Mastery
-NA_Mastery_buildTimeBase,Base build time,Double,5,,,0.1,100,Nano Thief: Mastery
 NA_Mastery_minCR,Min cr to build simulacrum ship,Double,0.4,,,0,1,Nano Thief: Mastery
 NA_Mastery_peakCRDuration,peak performance multiplyer,Double,0.6,,,0,1,Nano Thief: Mastery
 NA_Mastery_maxReclaimPercent,recoved reclaim multiplyer,Double,0.2,,,0,1,Nano Thief: Mastery
 NA_Mastery_SwarmSizeMulti,How large the construction swamrs are compaired to reclaim swarms. Cosmetic only,Double,2,,,0.1,10,Nano Thief: Mastery
+NA_Mastery_Header_costPerDP,,Header,cost per dp,,,,,Nano Thief: Mastery
+NA_Mastery_costPerDP_f,Reclaim cost per deployment point (frigate),Int,250,,,1,10000,Nano Thief: Mastery
+NA_Mastery_costPerDP_d,Reclaim cost per deployment point (destroyer),Int,500,,,1,10000,Nano Thief: Mastery
+NA_Mastery_costPerDP_cr,Reclaim cost per deployment point (cruiser),Int,750,,,1,10000,Nano Thief: Mastery
+NA_Mastery_costPerDP_ca,Reclaim cost per deployment point (capital),Int,1000,,,1,10000,Nano Thief: Mastery
+NA_Mastery_Header_costBase,,Header,base cost,,,,,Nano Thief: Mastery
+NA_Mastery_costBase_f,Base reclaim cost (frigate),Int,500,,,1,10000,Nano Thief: Mastery
+NA_Mastery_costBase_d,Base reclaim cost (destroyer),Int,1000,,,1,10000,Nano Thief: Mastery
+NA_Mastery_costBase_cr,Base reclaim cost (cruiser),Int,1500,,,1,10000,Nano Thief: Mastery
+NA_Mastery_costBase_ca,Base reclaim cost (capital),Int,2000,,,1,10000,Nano Thief: Mastery
+NA_Mastery_Header_rechargeTimePerDP,,Header,recharge time per dp,,,,,Nano Thief: Mastery
+NA_Mastery_rechargeTimePerDP_f,Recharge time per deployment ponit (frigate),Double,10,,,0.1,100,Nano Thief: Mastery
+NA_Mastery_rechargeTimePerDP_d,Recharge time per deployment ponit (destroyer),Double,10,,,0.1,100,Nano Thief: Mastery
+NA_Mastery_rechargeTimePerDP_cr,Recharge time per deployment ponit (cruiser),Double,10,,,0.1,100,Nano Thief: Mastery
+NA_Mastery_rechargeTimePerDP_ca,Recharge time per deployment ponit (capital),Double,10,,,0.1,100,Nano Thief: Mastery
+NA_Mastery_Header_rechargeTimeBase,,Header,Base recharge time,,,,,Nano Thief: Mastery
+NA_Mastery_rechargeTimeBase_f,Base recharge time (frigate),Double,20,,,0.1,100,Nano Thief: Mastery
+NA_Mastery_rechargeTimeBase_d,Base recharge time (destroyer),Double,30,,,0.1,100,Nano Thief: Mastery
+NA_Mastery_rechargeTimeBase_cr,Base recharge time (cruiser),Double,40,,,0.1,100,Nano Thief: Mastery
+NA_Mastery_rechargeTimeBase_ca,Base recharge time (capital),Double,50,,,0.1,100,Nano Thief: Mastery
+NA_Mastery_Header_BuildTimePerDP,,Header,Built time per deployment point,,,,,Nano Thief: Mastery
+NA_Mastery_buildTimePerDP_f,Build time per deployment point (frigate),Double,2.5,,,0.1,100,Nano Thief: Mastery
+NA_Mastery_buildTimePerDP_d,Build time per deployment point (destroyer),Double,2.5,,,0.1,100,Nano Thief: Mastery
+NA_Mastery_buildTimePerDP_cr,Build time per deployment point (cruiser),Double,2.5,,,0.1,100,Nano Thief: Mastery
+NA_Mastery_buildTimePerDP_ca,Build time per deployment point (capital),Double,2.5,,,0.1,100,Nano Thief: Mastery
+NA_Mastery_Header_buildTimeBase,,Header,Build time base,,,,,Nano Thief: Mastery
+NA_Mastery_buildTimeBase_f,Base build time (frigate),Double,5,,,0.1,100,Nano Thief: Mastery
+NA_Mastery_buildTimeBase_d,Base build time (destroyer),Double,10,,,0.1,100,Nano Thief: Mastery
+NA_Mastery_buildTimeBase_cr,Base build time (cruiser),Double,15,,,0.1,100,Nano Thief: Mastery
+NA_Mastery_buildTimeBase_ca,Base build time (capital),Double,20,,,0.1,100,Nano Thief: Mastery
