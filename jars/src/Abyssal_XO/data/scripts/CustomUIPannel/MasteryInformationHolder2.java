@@ -64,10 +64,10 @@ public class MasteryInformationHolder2 implements CustomUIPanelPlugin {
         tooltip.addPara("select your Simulacrum Ships here",5);
         tooltip.addPara("if nothing is selected, a pirate kite raider will be selected for deployment",5);
         tooltip.addPara("the rules for simulacrum ships are as follows:",5);
-        tooltip.addPara("Reclaim cost is %s + %s per deployment point + (base cost * s-mods * %s) - (base cost * d-mods * %s)",5, Misc.getTextColor(), Misc.getHighlightColor(),""+(int)NanoThief_10.baseCost,""+(int) NanoThief_10.costPerDP,""+NanoThief_10.sModCost,""+NanoThief_10.dModDiscount);
+        tooltip.addPara("Reclaim cost is %s + %s per deployment point + (base cost * s-mods * %s) - (base cost * d-mods * %s)"+NanoThief_10.addDOHSIfRequired(NanoThief_10.baseCosts,NanoThief_10.costPerDPs),5, Misc.getTextColor(), Misc.getHighlightColor(),NanoThief_10.sizeStringSingleAsInts(NanoThief_10.baseCosts,"/",""),NanoThief_10.sizeStringSingleAsInts(NanoThief_10.costPerDPs,"/",""),""+NanoThief_10.sModCost,""+NanoThief_10.dModDiscount);
         tooltip.addPara("Were d-mods only includes combat effecting d-mods, and is caped to %s of the base reclaim cost",5, Misc.getTextColor(), Misc.getHighlightColor(),((int) (NanoThief_10.dModmin*100)) + "%");
-        tooltip.addPara("Build time is %s + %s per deployment point",5,Misc.getTextColor(), Misc.getHighlightColor(),""+(int)NanoThief_10.builtTimeBase,""+(((int)NanoThief_10.buildTimePerDP*10)/10));
-        tooltip.addPara("Time to recharge construction is %s + %s per deployment point",5,Misc.getTextColor(), Misc.getHighlightColor(),""+(int)NanoThief_10.rechargeTimeBase,""+(int)NanoThief_10.rechargeTimePerDP);
+        tooltip.addPara("Build time is %s + %s per deployment point"+NanoThief_10.addDOHSIfRequired(NanoThief_10.builtTimeBases,NanoThief_10.buildTimePerDPs),5,Misc.getTextColor(), Misc.getHighlightColor(),NanoThief_10.sizeStringSingleAsDoubles(NanoThief_10.builtTimeBases,"/",""),NanoThief_10.sizeStringSingleAsDoubles(NanoThief_10.buildTimePerDPs,"/",""));
+        tooltip.addPara("Time to recharge construction is %s + %s per deployment point"+NanoThief_10.addDOHSIfRequired(NanoThief_10.rechargeTimeBases,NanoThief_10.rechargeTimePerDPs),5,Misc.getTextColor(), Misc.getHighlightColor(),NanoThief_10.sizeStringSingleAsInts(NanoThief_10.rechargeTimeBases,"/",""),NanoThief_10.sizeStringSingleAsInts(NanoThief_10.rechargeTimePerDPs,"/",""));
         tooltip.addPara("Loes %s peak performance time",5,Misc.getTextColor(), Misc.getHighlightColor(),(100-(int)(NanoThief_10.peakCRDuration*100)) + "%");
         //basic rules here (reclaim cost, build time, max numbers of ships selected.)
 

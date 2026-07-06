@@ -20,7 +20,7 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
     public static int reclaimFromHostilePerDP = 25; //4000 per onslougt (x*5*40 = (200 * x)).
     public static double reclaimMultiFromParent = 0.1d;
     public static double reclaimRecyclePercent = 0.5d;
-    public static int fabracatorDPForNanothiefCalculation = 60;
+    public static int fabracatorDPForNanothiefCalculation = 80;
 
     public static double reclaimMembersPerReclaim = 0.01;
     public static int reclaimMembersBase = 5;

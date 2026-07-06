@@ -39,7 +39,7 @@ public class NanoThief_MasteryShipStats {
         ArrayList<String> temp = new ArrayList<>(List.of(dmos));
         this.ship = ship;
         this.weight = weight;
-        double costIncrease = (ship.getVariant().getSMods().size()*NanoThief_10.sModCost);
+        /*double costIncrease = (ship.getVariant().getSMods().size()*NanoThief_10.sModCost);
         int dmods = 0;
         for (String a : ship.getVariant().getPermaMods()){
             if (Global.getSettings().getHullModSpec(a).getTags().contains("dmod") && !temp.contains(a)) dmods++;
@@ -50,18 +50,93 @@ public class NanoThief_MasteryShipStats {
         double smodBonus = cost * costIncrease;
         double dmodNegitive = cost * costDecrease;
         cost += smodBonus;
-        cost -= dmodNegitive;
-        //Settings.log.info("a: "+ship.getDeployCost()+", b: "+ship.getDeploymentPointsCost()+", c: "+ship.getBaseDeployCost()+", d: "+ship.getDeploymentCostSupplies());
-        reloadTime = Math.max(NanoThief_10.rechargeTimePerDP+NanoThief_10.rechargeTimeBase,(getDP() * NanoThief_10.rechargeTimePerDP)+NanoThief_10.rechargeTimeBase);
+        cost -= dmodNegitive;*/
 
-        buildTime = Math.max(NanoThief_10.buildTimePerDP+NanoThief_10.builtTimeBase,(getDP() * NanoThief_10.buildTimePerDP)+NanoThief_10.builtTimeBase);
+        cost = getBaseCost();
+        cost += getSModCost();
+        cost -= getDModReduction();
+        //Settings.log.info("a: "+ship.getDeployCost()+", b: "+ship.getDeploymentPointsCost()+", c: "+ship.getBaseDeployCost()+", d: "+ship.getDeploymentCostSupplies());
+        reloadTime = getReloadTime();
+        buildTime = getBuildTime();
         this.name = name;
     }
     private float getDP(){
         return ship.getHullSpec().getHullId().equals("fabricator_unit") ? NanoThief_Base.fabracatorDPForNanothiefCalculation : ship.getDeploymentPointsCost();//ship.getHullSpec().getSuppliesToRecover();
     }
+    public double getReloadTime(){
+        double rechargeTimePerDP=0;
+        double rechargeTimeBase=0;
+        switch (ship.getHullSpec().getHullSize()){
+            case FIGHTER:
+            case FRIGATE:
+            case DEFAULT:
+                rechargeTimePerDP=NanoThief_10.rechargeTimePerDPs[0];
+                rechargeTimeBase=NanoThief_10.rechargeTimeBases[0];
+                break;
+            case DESTROYER:
+                rechargeTimePerDP=NanoThief_10.rechargeTimePerDPs[1];
+                rechargeTimeBase=NanoThief_10.rechargeTimeBases[1];
+                break;
+            case CRUISER:
+                rechargeTimePerDP=NanoThief_10.rechargeTimePerDPs[2];
+                rechargeTimeBase=NanoThief_10.rechargeTimeBases[2];
+                break;
+            case CAPITAL_SHIP:
+                rechargeTimePerDP=NanoThief_10.rechargeTimePerDPs[3];
+                rechargeTimeBase=NanoThief_10.rechargeTimeBases[3];
+                break;
+        }
+        return Math.max(rechargeTimePerDP+rechargeTimeBase,(getDP() * rechargeTimePerDP)+rechargeTimeBase);
+    }
+    public double getBuildTime(){
+        double buildTimePerDP=0;
+        double builtTimeBase=0;
+        switch (ship.getHullSpec().getHullSize()){
+            case FIGHTER:
+            case FRIGATE:
+            case DEFAULT:
+                buildTimePerDP=NanoThief_10.buildTimePerDPs[0];
+                builtTimeBase=NanoThief_10.builtTimeBases[0];
+                break;
+            case DESTROYER:
+                buildTimePerDP=NanoThief_10.buildTimePerDPs[1];
+                builtTimeBase=NanoThief_10.builtTimeBases[1];
+                break;
+            case CRUISER:
+                buildTimePerDP=NanoThief_10.buildTimePerDPs[2];
+                builtTimeBase=NanoThief_10.builtTimeBases[2];
+                break;
+            case CAPITAL_SHIP:
+                buildTimePerDP=NanoThief_10.buildTimePerDPs[3];
+                builtTimeBase=NanoThief_10.builtTimeBases[3];
+                break;
+        }
+        return Math.max(buildTimePerDP+builtTimeBase,(getDP() * buildTimePerDP)+builtTimeBase);
+    }
     public int getBaseCost(){
-        return (int) ((getDP() * NanoThief_10.costPerDP)+NanoThief_10.baseCost);
+        double costPerDP=0;
+        double baseCost=0;
+        switch (ship.getHullSpec().getHullSize()){
+            case FIGHTER:
+            case FRIGATE:
+            case DEFAULT:
+                costPerDP=NanoThief_10.costPerDPs[0];
+                baseCost=NanoThief_10.baseCosts[0];
+                break;
+            case DESTROYER:
+                costPerDP=NanoThief_10.costPerDPs[1];
+                baseCost=NanoThief_10.baseCosts[1];
+                break;
+            case CRUISER:
+                costPerDP=NanoThief_10.costPerDPs[2];
+                baseCost=NanoThief_10.baseCosts[2];
+                break;
+            case CAPITAL_SHIP:
+                costPerDP=NanoThief_10.costPerDPs[3];
+                baseCost=NanoThief_10.baseCosts[3];
+                break;
+        }
+        return (int) ((getDP() * costPerDP)+baseCost);
     }
     public int getSModCost(){
         double costIncrease = (ship.getVariant().getSMods().size()*NanoThief_10.sModCost);

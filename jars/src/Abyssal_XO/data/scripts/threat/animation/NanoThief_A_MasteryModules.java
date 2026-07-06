@@ -1,57 +1,47 @@
-package Abyssal_XO.data.scripts.threat.AI;
+package Abyssal_XO.data.scripts.threat.animation;
 
-import Abyssal_XO.data.scripts.Settings;
+import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_MasteryConstructionScript;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
-import Abyssal_XO.data.scripts.threat.animation.NanoThief_A_MasteryModules;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_BattleListener;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_10;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.combat.threat.RoilingSwarmEffect;
-import com.fs.starfarer.api.impl.combat.threat.ThreatShipConstructionScript;
 import org.lwjgl.util.vector.Vector2f;
 
 import static Abyssal_XO.data.scripts.hullmods.SICSkillControllerBackup.addShipAfterShipSpawns;
 
-public class Nano_Thief_MasteryConstructionScript extends ThreatShipConstructionScript {
-    protected FleetMemberAPI toConstruct;
-    protected boolean canSpawn = false;
-    protected float crAtCreation;
-    public boolean hasCreated = false;
-    protected double reclaim;
-    protected Nano_Thief_Stats stats;
-    public Nano_Thief_MasteryConstructionScript(FleetMemberAPI toConstruct, ShipAPI source, float delay, float fadeInTime,float crAtCreation,double reclaim,Nano_Thief_Stats stats) {
-        super(toConstruct.getVariant().getHullVariantId(), source, delay, fadeInTime);
-        this.toConstruct = toConstruct;
-        this.crAtCreation = crAtCreation;
-        canSpawn = true;
-        this.reclaim = reclaim;
-        this.stats = stats;
+public class NanoThief_A_MasteryModules extends Nano_Thief_MasteryConstructionScript {
+    private boolean canWork2 = false;
+    public NanoThief_A_MasteryModules(ShipAPI ship, FleetMemberAPI toConstruct, ShipAPI source, float delay, float fadeInTime, float crAtCreation, double reclaim, Nano_Thief_Stats stats) {
+        super(toConstruct, source, delay, fadeInTime, crAtCreation, reclaim, stats);
+        canWork2 = true;
+        this.ship = ship;
         spawnShip();
     }
     @Override
     protected void spawnShip() {
-        if (!canSpawn) return;
+        if (!canWork2) return;
         float facing = source.getFacing() + 15f * ((float) Math.random() - 0.5f);
 
         Vector2f loc = new Vector2f(source.getLocation());
 
         CombatEngineAPI engine = Global.getCombatEngine();
-        CombatFleetManagerAPI fleetManager = engine.getFleetManager(source.getOriginalOwner());
-        boolean wasSuppressed = fleetManager.isSuppressDeploymentMessages();
-        fleetManager.setSuppressDeploymentMessages(true);
+        //CombatFleetManagerAPI fleetManager = engine.getFleetManager(source.getOriginalOwner());
+        //boolean wasSuppressed = fleetManager.isSuppressDeploymentMessages();
+        //fleetManager.setSuppressDeploymentMessages(true);
 
-        toConstruct.setOwner(source.getOriginalOwner());
+        //toConstruct.setOwner(source.getOriginalOwner());
         //ship = engine.getFleetManager(source.getOriginalOwner()).spawnShipOrWing(variantId, loc, facing, 0f, null);
         //engine.getFleetManager(source.getOriginalOwner()).soawn
-        ship = engine.getFleetManager(source.getOriginalOwner()).spawnFleetMember(toConstruct,loc,facing,0f);//spawnShipOrWing(variantId, loc, facing, 0f, null);
+        //ship = engine.getFleetManager(source.getOriginalOwner()).spawnFleetMember(toConstruct,loc,facing,0f);//spawnShipOrWing(variantId, loc, facing, 0f, null);
         //if (true) return;//temp code
         //Settings.log.info("GOT MEMBER ID AS (c): "+ship.getFleetMember().getId());
 
         ship.setCurrentCR(crAtCreation);
         ship.resetDefaultAI();
-        ship.setOwner(source.getOriginalOwner());
+        //ship.setOwner(source.getOriginalOwner());
         //for (ship.getAIFlags().hasFlag(AIF))
         //ship;
         /*if (Global.getCombatEngine().isInCampaign() || Global.getCombatEngine().isInCampaignSim()) {
@@ -61,13 +51,13 @@ public class Nano_Thief_MasteryConstructionScript extends ThreatShipConstruction
                 ship.setName(toConstruct.getShipName()+name);
             }
         }*/
-        ship.setName(toConstruct.getShipName() + "#"+(int)(Math.random() * 10000));
+        //ship.setName(toConstruct.getShipName() + "#"+(int)(Math.random() * 10000));
         //ship;
-        fleetManager.setSuppressDeploymentMessages(wasSuppressed);
+        //fleetManager.setSuppressDeploymentMessages(wasSuppressed);
         collisionClass = ship.getCollisionClass();
 
 
-        RoilingSwarmEffect swarm = RoilingSwarmEffect.getSwarmFor(ship);
+        /*RoilingSwarmEffect swarm = RoilingSwarmEffect.getSwarmFor(ship);
         RoilingSwarmEffect sourceSwarm = RoilingSwarmEffect.getSwarmFor(source);
         if (swarm != null) {
             swarm.getParams().withInitialMembers = false;
@@ -81,8 +71,8 @@ public class Nano_Thief_MasteryConstructionScript extends ThreatShipConstruction
                 swarm.getParams().withInitialMembers = false;
                 swarm.getParams().flashFringeColor	= sourceSwarm.getParams().flashFringeColor;
             }
-        }
-        NanoThief_BattleListener.reclaimOverride.put(ship,(int)(reclaim*NanoThief_10.maxReclaimPercent));
+        }*/
+        //NanoThief_BattleListener.reclaimOverride.put(ship,(int)(reclaim* NanoThief_10.maxReclaimPercent));
         //ship.getCustomData().put(NANO_THIEF_CUSTOM_MASTERY_RECLAIM_MEMERY_KEY,(int)reclaim*NanoThief_10.maxReclaimPercent);
         ship.setAlphaMult(0);
         ship.addTag(SHIP_UNDER_CONSTRUCTION);
