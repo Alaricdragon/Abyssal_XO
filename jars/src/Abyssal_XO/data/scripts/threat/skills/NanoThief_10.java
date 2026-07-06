@@ -27,9 +27,9 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
 
     public static int maxShips = 4;
     public static boolean canFrigate = true;
-    public static boolean canDestroyer = false;
-    public static boolean canCruiser = false;
-    public static boolean canCapital = false;
+    public static boolean canDestroyer = true;
+    public static boolean canCruiser = true;
+    public static boolean canCapital = true;
     public static boolean allowNPCFabricators = false;
     //public static int fabricatorDPOverride = 60;
 
@@ -42,19 +42,19 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
     public static double sModCost = 0.25;//per s-mod, add a
     public static double dModDiscount = 0.1;
     public static double dModmin = 0.5;
-    public static double costPerDP = 250;
-    public static double baseCost = 500;
+    //public static double costPerDP = 250;
+    //public static double baseCost = 500;
     //30k reclaim per battle. 60k including friendly ships.
     public static double[] costPerDPs = {250,500,750,1000};//(2k) = 40*2 = 80k. 125*240 = 30k per battle. (1k) = 40*1 = 40k
-    public static double[] baseCosts = {500,1000,1500,2000};
+    public static double[] baseCosts = {500,1000,2000,4000};
     //200 for 1 dp cost, 2000 for 10 dp. (0.5 capitals for 1 dp. 0.5 frigets for 1 dp.)
     //200,0:   1dp:200r, 3dp:600r,  10dp:2000r, 20dp:4000r
     //200,500: 1dp:750r, 3dp:1100r, 10dp:2500r, 20dp:4500r
     //200,400: 1dp:600r, 3dp:1000r, 10dp:2400r
-    public static double rechargeTimePerDP = 10;//10 seconds per dp cost of ship.
-    public static double rechargeTimeBase = 20;
-    public static double buildTimePerDP = 2.5;//2.5 seconds per dp cost of ship.
-    public static double builtTimeBase = 5;
+    //public static double rechargeTimePerDP = 10;//10 seconds per dp cost of ship.
+    //public static double rechargeTimeBase = 20;
+    //public static double buildTimePerDP = 2.5;//2.5 seconds per dp cost of ship.
+    //public static double builtTimeBase = 5;
     public static double[] rechargeTimePerDPs = {10,10,10,10};
     public static double[] rechargeTimeBases = {20,30,40,50};
     public static double[] buildTimePerDPs = {2.5,2.5,2.5,2.5};
@@ -67,7 +67,7 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
     public static double maxReclaimPercent = 0.2;//max amount of reclaim a simulacrum ship is worth when destroyed.
 
     public static double swarmSizeMulti = 2;
-    public ArrayList<String> allowedSizeStrings(String frig, String dest, String cru, String cap){
+    public static ArrayList<String> allowedSizeStrings(String frig, String dest, String cru, String cap){
         ArrayList<String> allowedSizes = new ArrayList<>();
         if (canFrigate) allowedSizes.add(frig);
         if (canDestroyer) allowedSizes.add(dest);
@@ -75,7 +75,7 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
         if (canCapital) allowedSizes.add(cap);
         return allowedSizes;
     }
-    public String sizeStringSingleAsDoubles(double[] doubles,String separator,String finily){
+    public static String sizeStringSingleAsDoubles(double[] doubles,String separator,String finily){
         double b = doubles[0];
         for (int a = 1; a < doubles.length; a++){
             if (doubles[a] != b){
@@ -85,7 +85,7 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
         }
         return ""+doubles[0];
     }
-    public String sizeStringSingleAsInts(double[] doubles,String separator,String finily){
+    public static String sizeStringSingleAsInts(double[] doubles,String separator,String finily){
         double b = doubles[0];
         for (int a = 1; a < doubles.length; a++){
             if ((int)doubles[a] != (int)b){
@@ -95,10 +95,10 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
         }
         return ""+(int)doubles[0];
     }
-    public String sizeStringSingle(String frig, String dest, String cru, String cap,String separator,String finily){
+    public static String sizeStringSingle(String frig, String dest, String cru, String cap,String separator,String finily){
         return sizeStringSingle(allowedSizeStrings(frig, dest, cru, cap),separator,finily);
     }
-    public String sizeStringSingle(ArrayList<String> allowedSizes,String separator,String finily){
+    public static String sizeStringSingle(ArrayList<String> allowedSizes,String separator,String finily){
         String out = "";
         for (int a = 0; a < allowedSizes.size(); a++){
             out+=allowedSizes.get(a);
@@ -107,8 +107,8 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
         }
         return out;
     }
-    private String addDOHSIfRequired(double[]... doubles){
-        if (allowedSizeStrings("","","","").size() > 1) return " depending on hullsize";
+    public static String addDOHSIfRequired(double[]... doubles){
+        if (allowedSizeStrings("","","","").size() <= 1) return "";
         boolean canSize = false;
         for (double[] doubles1 : doubles) {
             double b = doubles1[0];

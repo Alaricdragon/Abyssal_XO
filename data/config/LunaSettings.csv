@@ -142,8 +142,8 @@ NA_Mastery_costPerDP_ca,Reclaim cost per deployment point (capital),Int,1000,,,1
 NA_Mastery_Header_costBase,,Header,base cost,,,,,Nano Thief: Mastery
 NA_Mastery_costBase_f,Base reclaim cost (frigate),Int,500,,,1,10000,Nano Thief: Mastery
 NA_Mastery_costBase_d,Base reclaim cost (destroyer),Int,1000,,,1,10000,Nano Thief: Mastery
-NA_Mastery_costBase_cr,Base reclaim cost (cruiser),Int,1500,,,1,10000,Nano Thief: Mastery
-NA_Mastery_costBase_ca,Base reclaim cost (capital),Int,2000,,,1,10000,Nano Thief: Mastery
+NA_Mastery_costBase_cr,Base reclaim cost (cruiser),Int,2000,,,1,10000,Nano Thief: Mastery
+NA_Mastery_costBase_ca,Base reclaim cost (capital),Int,4000,,,1,10000,Nano Thief: Mastery
 NA_Mastery_Header_rechargeTimePerDP,,Header,recharge time per dp,,,,,Nano Thief: Mastery
 NA_Mastery_rechargeTimePerDP_f,Recharge time per deployment ponit (frigate),Double,10,,,0.1,100,Nano Thief: Mastery
 NA_Mastery_rechargeTimePerDP_d,Recharge time per deployment ponit (destroyer),Double,10,,,0.1,100,Nano Thief: Mastery

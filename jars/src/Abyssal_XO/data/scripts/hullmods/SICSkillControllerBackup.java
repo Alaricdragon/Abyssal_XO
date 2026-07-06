@@ -173,7 +173,12 @@ public class SICSkillControllerBackup extends BaseHullMod {
     }
     private static SCData getData(FleetMemberAPI fleetMemberAPI){
         if (fleetMemberAPI == null){
-            Settings.log.info("failed to get fleet member for a ship....");
+            Settings.log.info("(SIC_Controller_Backup) failed to get fleet member for a ship...");
+            return null;
+        }
+        if (!member_map.containsKey(fleetMemberAPI)){
+            Settings.log.warn("(SIC_Controller_Backup) failed to get fleet in fleetmember - fleet map.  fleetMember id, name of: "+fleetMemberAPI.getId()+", "+fleetMemberAPI.getShipName());
+            Settings.log.info("     got some stats as: hull id: "+fleetMemberAPI.getHullSpec().getHullId()+", size: "+fleetMemberAPI.getHullSpec().getHullSize());
             return null;
         }
         return SCUtils.getFleetData(member_map.get(fleetMemberAPI));
