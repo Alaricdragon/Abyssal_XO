@@ -121,11 +121,10 @@ NA_Mastery_Header,,Header,Mastery,,,,,Nano Thief: Mastery
 NA_Mastery_NPC_Weight,Odds of this skill for NPCs,Double,1,,,0,10,Nano Thief: Mastery
 NA_Mastery_maxShips,Max number of ships one can have selected for mastery,Int,4,,,1,100,Nano Thief: Mastery
 NA_Mastery_canFrigate,Allow frigates,Boolean,true,,,,,Nano Thief: Mastery
-NA_Mastery_canDestroyer,Allow destroyers,Boolean,false,,,,,Nano Thief: Mastery
-NA_Mastery_canCruiser,Allow cruisers,Boolean,false,,,,,Nano Thief: Mastery
-NA_Mastery_canCapital,Allow capitals,Boolean,false,,,,,Nano Thief: Mastery
-NA_Mastery_canFabricator,Allow NPCs to use fabricators class ships (requires 'Allow capitals' to be true),Boolean,true,,fabracator ships are threats 'big capital' ship. the option to exsclude exsists because they are a bit mush.,,,Nano Thief: Mastery
-#NA_Mastery_fabricatorDPOverride,"If threat is allowed to build fabricators, this is used instead of there normal DP cost for mastery calculations",Int,60,,default unmodified value is 20.,1,200,Nano Thief: Mastery
+NA_Mastery_canDestroyer,Allow destroyers,Boolean,true,,,,,Nano Thief: Mastery
+NA_Mastery_canCruiser,Allow cruisers,Boolean,true,,,,,Nano Thief: Mastery
+NA_Mastery_canCapital,Allow capitals,Boolean,true,,,,,Nano Thief: Mastery
+NA_Mastery_canFabricator,Allow NPCs to use fabricators class ships (requires 'Allow capitals' to be true),Boolean,false,,fabracator ships are threats 'big capital' ship. the option to exsclude exsists because they are a bit mush.,,,Nano Thief: Mastery
 NA_Mastery_oddsVariance,How mush the weight to spawn each ship differs for npc fleets,Int,19,,,1,100,Nano Thief: Mastery
 NA_Mastery_sModCost,Cost incress per smod,Double,0.25,,,0,10,Nano Thief: Mastery
 NA_Mastery_dModDiscount,Cost decress per dmod,Double,0.1,,,0,10,Nano Thief: Mastery

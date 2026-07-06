@@ -57,6 +57,7 @@ public class SICSkillControllerBackup extends BaseHullMod {
 
         ship.applyEffectsAfterShipAddedToCombatEngine();
 
+        ship.setCustomData(NANO_THIEF_SIC_HULLMOD_FLEET_KEY,SCUtils.getFleetData(fleet));
         SCData data = getData(ship.getFleetMember());
         if (data == null) return;
 
@@ -145,6 +146,7 @@ public class SICSkillControllerBackup extends BaseHullMod {
         SCData data = getData(ship);
         if (data == null){
             Settings.log.info("failed to get data (d)"+(ship.getFleetMember() != null ? ship.getFleetMember().getId() : "N/A"));
+            Settings.log.info("-name, size, hull id:"+ship.getName()+","+ship.getHullSpec().getHullSize()+","+ship.getHullSpec().getHullId());
             return;
         }
         for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()) {
@@ -181,6 +183,7 @@ public class SICSkillControllerBackup extends BaseHullMod {
             Settings.log.info("     got some stats as: hull id: "+fleetMemberAPI.getHullSpec().getHullId()+", size: "+fleetMemberAPI.getHullSpec().getHullSize());
             return null;
         }
+        //Settings.log.info("got base data of member id: "+fleetMemberAPI.getId()+" as "+member_map.get(fleetMemberAPI).getId());
         return SCUtils.getFleetData(member_map.get(fleetMemberAPI));
     }
     /*private List<SCBaseSkillPlugin> getSkills(){

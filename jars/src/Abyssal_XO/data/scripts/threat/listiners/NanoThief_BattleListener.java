@@ -170,6 +170,18 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
         if (target.hasTag(TAG_HASRECLAMED)) return;
         if (ThreatCombatStrategyAI.isFabricator(target)) return;
         if (target.getHullSpec().getHullId().equals("attack_swarm")) return;
+        if (target.hasTag("kol_module_hulked") && target.getHitpoints() > 0) return;
+        /*Settings.log.info("(target set as reclaim) getting target for reclaim as: "+target.getName()+", "+target.isAlive());
+        String b = "tags: ";
+        for (String a: target.getTags()) b+=a+", ";
+        Settings.log.info(b);
+        b = "hullmods: ";
+        for (String a: target.getVariant().getHullMods()) b+=a+", ";
+        Settings.log.info(b);
+        b = "builtin: ";
+        for (String a: target.getHullSpec().getBuiltInMods()) b+=a+", ";
+        Settings.log.info(b);*/
+
         //if (target.getVariant() != null && (target.getVariant().getHullVariantId().equals("attack_swarm") || target.getVariant().getHullVariantId().equals("attack_swarm_Construction"))) return;
         //if (!ship.isHulk() || ship.hasTag(TAG_HASRECLAMED)) return;
         //if (ThreatCombatStrategyAI.isFabricator(ship)) return;

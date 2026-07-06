@@ -10,6 +10,8 @@ import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.combat.threat.RoilingSwarmEffect;
 import org.lwjgl.util.vector.Vector2f;
 
+import static Abyssal_XO.data.scripts.hullmods.SICSkillControllerBackup.addShipAfterShipSpawns;
+
 public class NanoThief_A_MasteryModules extends Nano_Thief_MasteryConstructionScript {
     private boolean canWork2 = false;
     public NanoThief_A_MasteryModules(ShipAPI ship, FleetMemberAPI toConstruct, ShipAPI source, float delay, float fadeInTime, float crAtCreation, double reclaim, Nano_Thief_Stats stats) {
@@ -83,6 +85,12 @@ public class NanoThief_A_MasteryModules extends Nano_Thief_MasteryConstructionSc
             g.toggleOff();
         }
         hasCreated = true;
+        for (ShipAPI a : ship.getChildModulesCopy()){
+            //todo: make it so this section adds on the required hullmods.
+            addShipAfterShipSpawns(a,stats.fleet.getFleet());
+            NanoThief_A_MasteryModules temp = new NanoThief_A_MasteryModules(a,toConstruct,source,delay,fadeInTime,crAtCreation,reclaim,stats);
+            Global.getCombatEngine().addPlugin(temp);
+        }
         //Settings.log.info("GOT MEMBER ID AS (d): "+ship.getFleetMember().getId());
     }
 }

@@ -12,6 +12,8 @@ import com.fs.starfarer.api.impl.combat.threat.RoilingSwarmEffect;
 import com.fs.starfarer.api.impl.combat.threat.ThreatShipConstructionScript;
 import org.lwjgl.util.vector.Vector2f;
 
+import static Abyssal_XO.data.scripts.hullmods.SICSkillControllerBackup.addShipAfterShipSpawns;
+
 public class Nano_Thief_MasteryConstructionScript extends ThreatShipConstructionScript {
     protected FleetMemberAPI toConstruct;
     protected boolean canSpawn = false;
@@ -95,6 +97,7 @@ public class Nano_Thief_MasteryConstructionScript extends ThreatShipConstruction
         hasCreated = true;
         for (ShipAPI a : ship.getChildModulesCopy()){
             //todo: make it so this section adds on the required hullmods.
+            addShipAfterShipSpawns(a,stats.fleet.getFleet());
             NanoThief_A_MasteryModules temp = new NanoThief_A_MasteryModules(a,toConstruct,source,delay,fadeInTime,crAtCreation,reclaim,stats);
             Global.getCombatEngine().addPlugin(temp);
         }

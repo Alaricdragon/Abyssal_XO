@@ -1,3 +1,22 @@
+V0.1.18:
+    fixes:
+        fixed Thorough Salvaging reclaim bonus providing reclaim at every single possible salvage point forever base on the last battle.
+        fixed multisectional ships crashing mastery when built
+        fixed a issue with mastery sometimes not setting SiC data for threat, maybe?
+        fixed knights of ludd module armor being reclaimed at inappropriate times (hopefully)
+    balance:
+        threat fabricator dp value for nano-thief: 60->80
+        mastery:
+            now any ship size can be used.
+            base cost:           500/500/500/500 -> 500/1000/2000/4000
+            cost per dp:         250/250/250/250 -> 250/500/750/1000
+            recharge time base:  20/20/20/20 -> 20/30/40/50
+            build time base:     5/5/5/5 -> 5/10/15/20
+            by default, all size classes are allowed in mastery.
+    settings:
+        added mastery settings for all size classes.
+    improvements:
+        massively improved mastery's tooltip to be a lot better on different settings.
 V0.1.17:
     fixes:
         fixed reclaim target crash upon losing all ships in fleet.
