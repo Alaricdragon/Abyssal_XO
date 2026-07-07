@@ -69,7 +69,7 @@ public class Nano_Thief_AI_Construction implements ShipAIPlugin{
         this.constructionDatas = constructionDatas;
         avoidDistance = (constructionDatas.ship.getHullSpec().getCollisionRadius() * 2) + 10;//twice raid
         this.stats = stats;
-        this.dp = constructionDatas.ship.getFleetPointCost();
+        this.dp = (int) constructionDatas.ship.getDeploymentPointsCost();
         this.cr = cr;
         //ship.setAlphaMult(0);
         ship.setDoNotRender(true);

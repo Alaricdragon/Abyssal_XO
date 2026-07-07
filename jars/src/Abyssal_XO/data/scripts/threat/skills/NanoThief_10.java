@@ -156,9 +156,10 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
         tooltip.addPara("A nanobot swarm will be deployed to construct this ship as a simulacrum ship in a empty area nearby",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         tooltip.addPara("The nanobot swarm will take %s + %s seconds to prepare per deployment point of the simulacrum ship"+addDOHSIfRequired(rechargeTimeBases,rechargeTimePerDPs),0,Misc.getHighlightColor(),Misc.getHighlightColor(),line4_0_0,line4_0);
         tooltip.addPara("The simulacrum ships this skill can build can be selected, up to a maximum of %s ships.",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line7_0);
-        tooltip.addPara("ships with less then %s cr cannot use this ability",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line8_0);
+        tooltip.addPara("Ships with less then %s cr cannot use this ability",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line8_0);
         if (allowedSizes.size() != 4)tooltip.addPara("%s are allowed to be added to this ability",0,Misc.getHighlightColor(),Misc.getHighlightColor(),sizeClass);
-        tooltip.addPara("available simulacrum ships in this fleet:",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        tooltip.addPara("This ability always starts on cooldown",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        tooltip.addPara("Available simulacrum ships in this fleet:",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         displayShipStats(tooltip,getShips(scData.getCommander(),scData.getFleet().getFaction()),true);
         tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         this.addNewAbilityText(scData, tooltip);

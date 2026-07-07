@@ -14,6 +14,7 @@ import second_in_command.specs.SCBaseSkillPlugin;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import static Abyssal_XO.data.scripts.Settings.NANO_THIEF_SIC_HULLMOD_FLEET_KEY;
 
@@ -42,7 +43,7 @@ public class SICSkillControllerBackup extends BaseHullMod {
             5: try 'shipAPI.applyEffectsAfterShipAddedToCombatEngine();' to see if that helps
 
          */
-        Settings.log.info("attempting to add hullmods to a single ship of name, id: "+ship.getName()+" id: "+ship.getFleetMember().getId());
+        Settings.log.info("attempting to add hullmods to a single ship of name: "+ship.getName()+", id: "+ship.getFleetMember().getId()+", hull id: "+ship.getHullSpec().getHullId());
         Settings.log.info(" ships fleet starting as: "+(ship.getFleetMember() != null && ship.getFleetMember().getFleetData() != null && ship.getFleetMember().getFleetData().getFleet() != null ? ship.getFleetMember().getFleetData().getFleet().getId() : "N/A"));
         Settings.log.info(" target fleet as: "+(fleet != null ? fleet.getId() : "N/A"));
         SICSkillControllerBackup.member_map.put(ship.getFleetMember(),fleet);
@@ -146,7 +147,7 @@ public class SICSkillControllerBackup extends BaseHullMod {
         SCData data = getData(ship);
         if (data == null){
             Settings.log.info("failed to get data (d)"+(ship.getFleetMember() != null ? ship.getFleetMember().getId() : "N/A"));
-            Settings.log.info("-name, size, hull id:"+ship.getName()+","+ship.getHullSpec().getHullSize()+","+ship.getHullSpec().getHullId());
+            Settings.log.info("-name, size, hull id:"+ship.getName()+", "+ship.getHullSpec().getHullSize()+", "+ship.getHullSpec().getHullId());
             return;
         }
         for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()) {
@@ -168,9 +169,14 @@ public class SICSkillControllerBackup extends BaseHullMod {
             //Settings.log.info("got saved data for ship of: "+shipAPI.getId());
             return (SCData) shipAPI.getCustomData().get(NANO_THIEF_SIC_HULLMOD_FLEET_KEY);
         }
-        //Settings.log.info("failed to get saved data for ship of: "+shipAPI.getId());
+        ShipAPI looking = shipAPI;
+        while (shipAPI.getParentStation() != null) {
+            shipAPI = shipAPI.getParentStation();//FORCE item to use parent stations memory.
+            Settings.log.info(" -Forcing parent station of id: "+shipAPI.getId()+", name: "+shipAPI.getName());
+        }
+        Settings.log.info("failed to get saved data for ship of: "+looking.getId()+", Attempting to set data...");
         SCData data = getData(shipAPI.getFleetMember() != null ? shipAPI.getFleetMember() : shipAPI.getMutableStats().getFleetMember());//SCUtils.getFleetData(ship_map.get(shipAPI));
-        shipAPI.setCustomData(NANO_THIEF_SIC_HULLMOD_FLEET_KEY,data);
+        looking.setCustomData(NANO_THIEF_SIC_HULLMOD_FLEET_KEY,data);
         return data;
     }
     private static SCData getData(FleetMemberAPI fleetMemberAPI){
@@ -179,11 +185,15 @@ public class SICSkillControllerBackup extends BaseHullMod {
             return null;
         }
         if (!member_map.containsKey(fleetMemberAPI)){
+            /*if (shipTemp != null && shipTemp.getParentStation() != null){
+                Settings.log.info("~attempting to get parent station as this...");
+                return getData(shipTemp.getParentStation());
+            }*/
             Settings.log.warn("(SIC_Controller_Backup) failed to get fleet in fleetmember - fleet map.  fleetMember id, name of: "+fleetMemberAPI.getId()+", "+fleetMemberAPI.getShipName());
             Settings.log.info("     got some stats as: hull id: "+fleetMemberAPI.getHullSpec().getHullId()+", size: "+fleetMemberAPI.getHullSpec().getHullSize());
             return null;
         }
-        //Settings.log.info("got base data of member id: "+fleetMemberAPI.getId()+" as "+member_map.get(fleetMemberAPI).getId());
+        Settings.log.info("got base data of member id: "+fleetMemberAPI.getId()+" as "+member_map.get(fleetMemberAPI).getId());
         return SCUtils.getFleetData(member_map.get(fleetMemberAPI));
     }
     /*private List<SCBaseSkillPlugin> getSkills(){

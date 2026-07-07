@@ -32,6 +32,8 @@ public class NanoThief_Skill_10 extends NanoThief_SkillBase{
     //private boolean waiting = false;
     public NanoThief_MasteryShipStats nextShip;
     public float waitTime = 0.25f;
+
+    public boolean onCooldown = true;
     @Override
     public void advance(float amount) {
         waiting+=amount;
@@ -39,16 +41,22 @@ public class NanoThief_Skill_10 extends NanoThief_SkillBase{
         cooldown -= waiting;
         waiting = 0;
         //cooldown -= amount;
-        if (!hasEnouthReclaim() || !hasEnouthCR()){
-            cooldown = (float) nextShip.reloadTime;
+        /*if (!hasEnouthReclaim() || !hasEnouthCR()){
+            //cooldown = (float) nextShip.reloadTime;
+            //waiting = 0;
+            onCooldown = false;
             return;
-        }
+        }*/
         if (cooldown > 0) return;
         cooldown = 0;
+        onCooldown = false;
+        if (!hasEnouthReclaim()) return;
+        if (!hasEnouthCR()) return;
         if (!hasEnouthDP()) return;
         if (!inStateOfPrevention()) return;
         buildShip();
         selectNextShip();
+        onCooldown = true;
     }
     @Override
     public void displayStats() {
@@ -132,7 +140,7 @@ public class NanoThief_Skill_10 extends NanoThief_SkillBase{
         return true;
     }
     public boolean hasEnouthDP(){
-        if (!(skills.stats.getDPWithToBeConstructed(ship.getOriginalOwner()) >= nextShip.ship.getFleetPointCost())) return false;
+        if (!(skills.stats.getDPWithToBeConstructed(ship.getOriginalOwner()) >= nextShip.ship.getDeploymentPointsCost())) return false;
         return true;
     }
     public boolean inStateOfPrevention(){
