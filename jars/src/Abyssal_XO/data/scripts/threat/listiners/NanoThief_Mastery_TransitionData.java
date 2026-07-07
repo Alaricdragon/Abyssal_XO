@@ -11,12 +11,15 @@ import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.combat.BaseEveryFrameCombatPlugin;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
+import com.fs.starfarer.api.combat.WeaponAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.fleet.FleetMemberType;
 import com.fs.starfarer.api.impl.combat.threat.RoilingSwarmEffect;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.loading.VariantSource;
+import com.fs.starfarer.api.loading.WeaponSlotAPI;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NanoThief_Mastery_TransitionData extends BaseEveryFrameCombatPlugin {
@@ -41,12 +44,19 @@ public class NanoThief_Mastery_TransitionData extends BaseEveryFrameCombatPlugin
     }
     private void actavate(){
         RoilingSwarmEffect swarm = RoilingSwarmEffect.getSwarmFor(ship);
+        /*
+        STATION_MODULE
+        todo: find a way to 'split' ships with modules, effectively cloneing the modules.
+        there mount type is STATION_MODULE.
+
+        */
         if (swarm != null) {
             //FleetMemberAPI temp = Global.getSettings().createFleetMember(FleetMemberType.SHIP, constructionDatas.ship.getVariant().clone());
             //ShipAPI ship2 = Global.getCombatEngine().getFleetManager(ship.getOriginalOwner()).spawnFleetMember(temp,ship.getCopyLocation(),ship.getFacing(),0f);
             //if (true) return;
             //SICSkillControllerBackup.fleet_global = stats.fleet.getFleet();
             FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(FleetMemberType.SHIP, constructionDatas.ship.getVariant().clone());
+
             //FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(FleetMemberType.SHIP,constructionDatas.ship.getVariant().clone());
             //FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(FleetMemberType.SHIP,Global.getSettings().getVariant("onslaught_mk1_Ancient") );//constructionDatas.ship.getVariant().clone());
             SICSkillControllerBackup.member_map.put(memberCopy,stats.fleet.getFleet());
@@ -64,7 +74,11 @@ public class NanoThief_Mastery_TransitionData extends BaseEveryFrameCombatPlugin
             OVERWRITER.addMod("Abyssal_XO_DC");
             OVERWRITER.addMod(Settings.SIC_CONTROL_HULLMOD);
             memberCopy.setOwner(ship.getOwner());
+
+            cloneModules(OVERWRITER);
+
             memberCopy.setVariant(OVERWRITER,false,true);
+
             memberCopy.getStats().getMinCrewMod().modifyMult("Abyssal_XO",0);
             //Settings.log.info("GOT MEMBER ID AS (b): "+memberCopy.getId());
             /*Settings.log.info("HERE: GETTING DATA: "+memberCopy.isMothballed()); //get if ship is mothballed?
@@ -88,5 +102,37 @@ public class NanoThief_Mastery_TransitionData extends BaseEveryFrameCombatPlugin
                     memberCopy, ship, 1f, (float) constructionDatas.buildTime,cr,constructionDatas.cost,stats);
             Global.getCombatEngine().addPlugin(linkedSwarmAI.constructionScript);
         }
+    }
+    private void cloneModules(ShipVariantAPI OVERWRITER){
+        if (true) return;//NOT YET WORKING.
+        for (String a : OVERWRITER.getModuleSlots()){
+            ShipVariantAPI b = OVERWRITER.getModuleVariant(a);
+           // ShipVariantAPI c = ;//Global.getSettings().getVariant(b.get)
+            FleetMemberAPI c = Global.getFactory().createFleetMember(FleetMemberType.SHIP,b.clone().getHullVariantId());
+            ShipVariantAPI d = c.getVariant();
+            d.setSource(VariantSource.REFIT);
+            d.clear();
+            for (String e : b.getModuleSlots()) d.setModuleVariant(e,b.getModuleVariant(e));
+            for (String e : b.getSMods()) d.addPermaMod(e,true);
+            for (String e : b.getPermaMods()) d.addPermaMod(e,false);
+            for (String e : b.getHullMods()) d.addMod(e);
+            for (String e : b.getNonBuiltInWeaponSlots()) d.addWeapon(e,b.getWeaponId(e));
+            int z = 0;
+            for (String e : b.getFittedWings()){
+                d.setWingId(z,e);
+                z++;
+            }
+            //d.addMod("");
+            //b.addMod("");
+            //b.removeMod("");
+            OVERWRITER.setModuleVariant(a,d);
+            cloneModules(d);
+        }
+
+        /*
+        for (WeaponSlotAPI a : OVERWRITER.getHullSpec().getAllWeaponSlotsCopy()){
+            if (a.getWeaponType() != WeaponAPI.WeaponType.STATION_MODULE) continue;
+
+        }*/
     }
 }

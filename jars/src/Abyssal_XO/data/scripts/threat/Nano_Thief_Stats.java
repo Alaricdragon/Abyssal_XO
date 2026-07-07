@@ -410,21 +410,31 @@ public class Nano_Thief_Stats {
         int amount;
         int skills = reclaimMulti;
         if (reclaim.getParentStation() != null){
-            float amountTemp = getBaseRecalimValue(reclaim.getParentStation());
+            ShipAPI maxParant = reclaim;
+            while (maxParant.getParentStation() != null) maxParant = maxParant.getParentStation();
+            float amountTemp = getBaseRecalimValue(maxParant);
             amount = (int) (amountTemp * NanoThief_Base.reclaimMultiFromParent);
             log.info("  getting reclaim as though from a child module with parient, this as: "+amountTemp+", "+amount);
             //reclaim.getParentStation().getCustomData().put(Settings.NANO_THIEF_CUSTOM_MASTERY_RECLAIM_MEMERY_KEY,amountTemp - amount);
-            NanoThief_BattleListener.reclaimOverride.put(reclaim.getParentStation(), (int) (amountTemp - amount));
+            NanoThief_BattleListener.reclaimOverride.put(maxParant, (int) (amountTemp - amount));
         }else{
             amount = getBaseRecalimValue(reclaim);
             log.info("  getting reclaim as normal: "+amount);
         }
         if (!(reclaim.getChildModulesCopy() == null) && !reclaim.getChildModulesCopy().isEmpty()){
             log.info("  removing reclaim from child modules...");
-            for (ShipAPI a : reclaim.getChildModulesCopy()){
-                NanoThief_BattleListener.reclaimOverride.put(reclaim, (int) (0));
-                //a.getCustomData().put(Settings.NANO_THIEF_CUSTOM_MASTERY_RECLAIM_MEMERY_KEY,0);
+            ArrayList<ShipAPI> childs = new ArrayList<>();
+            childs.addAll(reclaim.getChildModulesCopy());
+            while (!childs.isEmpty()){
+                //child ships can have child ships. destroy them
+                if (childs.get(0).getChildModulesCopy() != null && !childs.get(0).getChildModulesCopy().isEmpty()) childs.addAll(childs.get(0).getChildModulesCopy());
+                NanoThief_BattleListener.reclaimOverride.put(childs.get(0), (int) (0));
+                childs.remove(0);
             }
+            //for (ShipAPI a : reclaim.getChildModulesCopy()){
+            //    NanoThief_BattleListener.reclaimOverride.put(reclaim, (int) (0));
+                //a.getCustomData().put(Settings.NANO_THIEF_CUSTOM_MASTERY_RECLAIM_MEMERY_KEY,0);
+            //}
         }
         /*switch (reclaim.getHullSpec().getHullSize()){
             case CAPITAL_SHIP -> amount = Settings.NANO_THIEF_RECLAIM_GAIN[3]*skills;

@@ -1,11 +1,8 @@
 v0.1.19:
-    TODO ISSUES DONT FORGET:
-     1: onslought module armor might be getting some SiC-backups for some reasons,
-        OR the one I spawned was compleatly broken.
-    2: -something- about the pandora is giving the wrong amount of reclaim. arg.
     fixes:
         fixes mastery interface showing officers in selected ships even though officers are never copyed.
         fixed mastery creating ships over the DP cap
+        fixed a issue with some multisectional ships giving the wrong amount of reclaim.
     tooltips:
         added tooltips to Mastery, Defensive Swarms, and Decentralized Swarm Production mentioning how the skills start on cooldown.
     balance:

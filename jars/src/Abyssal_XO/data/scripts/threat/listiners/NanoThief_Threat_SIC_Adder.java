@@ -11,6 +11,7 @@ import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.loading.VariantSource;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,7 +48,20 @@ public class NanoThief_Threat_SIC_Adder extends BaseEveryFrameCombatPlugin {
         }
             //events.get(0).getEventClass().equals()
     }
+    private void addAllIncludingKids(ShipAPI shipAPI, CampaignFleetAPI fleet){
+        refitShip(shipAPI,fleet);
+        ArrayList<ShipAPI> childs = new ArrayList<>();
+        childs.addAll(shipAPI.getChildModulesCopy());
+        while (!childs.isEmpty()){
+            //child ships can have child ships. destroy them
+            if (childs.get(0).getChildModulesCopy() != null && !childs.get(0).getChildModulesCopy().isEmpty()) childs.addAll(childs.get(0).getChildModulesCopy());
+            //NanoThief_BattleListener.reclaimOverride.put(childs.get(0), (int) (0));
+            refitShip(childs.get(0),fleet);
+            childs.remove(0);
+        }
+    }
     private void refitShip(ShipAPI shipAPI, CampaignFleetAPI fleet){
         SICSkillControllerBackup.addShipAfterShipSpawns(shipAPI, fleet);
+        addAllIncludingKids(shipAPI, fleet);
     }
 }
