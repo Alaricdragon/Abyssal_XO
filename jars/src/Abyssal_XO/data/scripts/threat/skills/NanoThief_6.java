@@ -196,6 +196,7 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
         tooltip.addPara("Each ship in your fleet builds Officensive Simulacrum Fighter Wings at %s/%s/%s/%s speed depending on hullsize",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line3a,line3b,line3c,line3d);
 
         tooltip.addPara("Offencive Simulacrum Fighter Wings build this way gain infinit engagment range",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        tooltip.addPara("This ability always starts on cooldown",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         displayBuildingFighter(scData, tooltip,true);
         tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         this.addNewAbilityText(scData, tooltip);

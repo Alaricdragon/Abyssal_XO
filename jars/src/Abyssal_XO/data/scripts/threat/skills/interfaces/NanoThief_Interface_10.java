@@ -89,12 +89,12 @@ public class NanoThief_Interface_10 extends NanoThief_InterfaceBase {
             single.cooldown = 0;
             if (!single.hasEnouthDP()){
                 Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_10", "graphics/icons/hullsys/temporal_shell.png",
-                        "Mastery Status", "Construction swarm for "+single.nextShip.name+" ready. Cannot launch do to limited dp", true);
+                        "Mastery Status", "Cannot build "+single.nextShip.name+". Requires "+single.nextShip.ship.getDeploymentPointsCost()+" dp.", true);
                 return;
             }
             if (single.hasEnouthReclaim() && single.inStateOfPrevention()){
                 Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_10", "graphics/icons/hullsys/temporal_shell.png",
-                        "Mastery Status", "Ready to construct "+single.nextShip.name+". cannot prepare construction while phased", true);
+                        "Mastery Status", "Cannot build "+single.nextShip.name+" while phased", true);
                 return;
             }
             if (single.hasEnouthReclaim()){
@@ -102,18 +102,18 @@ public class NanoThief_Interface_10 extends NanoThief_InterfaceBase {
                         "Mastery Status", "Ready to construct "+single.nextShip.name+".", false);
             }else{
                 Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_10", "graphics/icons/hullsys/temporal_shell.png",
-                        "Mastery Status", "Require "+(int)single.nextShip.cost+" reclaim to build "+single.nextShip.name+".", true);
+                        "Mastery Status", "Cannot build "+single.nextShip.name+". requires "+(int)single.nextShip.cost+" reclaim", true);
             }
         }else{
             //50 - 40 = 10. 10 / 50 = 0.2 = 20%
-            int percentDone = (int)(((single.nextShip.reloadTime-single.cooldown) / single.nextShip.reloadTime)*100);
+            int percentDone = single.onCooldown ? (int)(((single.nextShip.reloadTime-single.cooldown) / single.nextShip.reloadTime)*100) : 100;
             //Settings.log.info("done eq: (int)((("+nextShip.reloadTime+" - "+cooldown+") / "+nextShip.reloadTime+") * "+100+") = "+percentDone);
             if (single.hasEnouthReclaim()){
                 Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_10", "graphics/icons/hullsys/temporal_shell.png",
-                        "Mastery Status", percentDone+"% ready to build "+single.nextShip.name+".", false);
+                        "Mastery Status", percentDone+"% ready to build "+single.nextShip.name+". Requires "+(int)single.nextShip.cost+" reclaim", false);
             }else{
                 Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_10", "graphics/icons/hullsys/temporal_shell.png",
-                        "Mastery Status", "Require at least "+(int)single.nextShip.cost+" reclaim to build "+single.nextShip.name+".", true);
+                        "Mastery Status", percentDone+"% ready to build "+single.nextShip.name+". Requires "+(int)single.nextShip.cost+" reclaim", true);
             }
         }
     }

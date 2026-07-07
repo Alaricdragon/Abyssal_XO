@@ -40,6 +40,7 @@ public class NanoThief_7 extends NanoThief_6 {
         tooltip.addPara("Each ship in your fleet builds Defensive Simulacrum Fighter Wings at %s/%s/%s/%s speed depending on hullsize",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line3a,line3b,line3c,line3d);
 
         tooltip.addPara("Defensive Simulacrum Fighter Wings build this cannot stray from the ship that created them",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        tooltip.addPara("This ability always starts on cooldown",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         displayBuildingFighter(scData, tooltip,false);
         tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         this.addNewAbilityText(scData, tooltip);
