@@ -18,6 +18,7 @@ import com.fs.starfarer.api.impl.combat.threat.RoilingSwarmEffect;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.loading.VariantSource;
 import com.fs.starfarer.api.loading.WeaponSlotAPI;
+import com.fs.starfarer.api.util.Misc;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,12 +105,21 @@ public class NanoThief_Mastery_TransitionData extends BaseEveryFrameCombatPlugin
         }
     }
     private void cloneModules(ShipVariantAPI OVERWRITER){
-        if (true) return;//NOT YET WORKING.
+        //if (true) return;//NOT YET WORKING.
         for (String a : OVERWRITER.getModuleSlots()){
             ShipVariantAPI b = OVERWRITER.getModuleVariant(a);
            // ShipVariantAPI c = ;//Global.getSettings().getVariant(b.get)
-            FleetMemberAPI c = Global.getFactory().createFleetMember(FleetMemberType.SHIP,b.clone().getHullVariantId());
+
+            //ShipVariantAPI variant = b.clone();
+            //variant.setOriginalVariant(null);
+            //variant.setHullVariantId(Misc.genUID());
+            //variant.setSource(VariantSource.REFIT);
+            //member.setVariant(variant, false, true)
+
+            FleetMemberAPI c = Global.getFactory().createFleetMember(FleetMemberType.SHIP,b.getHullVariantId());
             ShipVariantAPI d = c.getVariant();
+            d.setOriginalVariant(null);
+            d.setHullVariantId(Misc.genUID());
             d.setSource(VariantSource.REFIT);
             d.clear();
             for (String e : b.getModuleSlots()) d.setModuleVariant(e,b.getModuleVariant(e));
