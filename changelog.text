@@ -1,3 +1,6 @@
+V0.1.20:
+    fixes:
+        fixed multisectional ships in mastery sometimes being linked somehow to the original sometimes???
 v0.1.19:
     fixes:
         fixes mastery interface showing officers in selected ships even though officers are never copyed.
