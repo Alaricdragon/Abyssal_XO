@@ -21,6 +21,8 @@ public class Utils {
             if (Integer.parseInt(a.getMajor()) > 2) return true;
             if (Integer.parseInt(a.getMajor()) < 2) return false;
             if (Integer.parseInt(a.getMinor()) > 0) return true;
+            String p = a.getPatch().toLowerCase();
+            if (p.contains("beta") || p.contains("alpha")) return false;// no alpha or beta should exsist 2.0.?
             if (Integer.parseInt(a.getPatch()) > 0) return true;
         }catch (Exception e){
             return true;
