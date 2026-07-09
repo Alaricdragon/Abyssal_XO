@@ -1,6 +1,7 @@
 package Abyssal_XO.data.scripts.threat.AI;
 
 import Abyssal_XO.data.scripts.Utils;
+import Abyssal_XO.data.scripts.combatability.CombatabilityUtility;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
@@ -11,7 +12,6 @@ import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.util.Misc;
 import org.apache.log4j.Logger;
 import org.lwjgl.util.vector.Vector2f;
-import second_in_command.hullmods.SCControllerHullmod;
 
 import java.util.ArrayList;
 
@@ -70,7 +70,11 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
         //log.info("got return reclaim as: "+returnReclaim);
         engine = Global.getCombatEngine();
         ship.setCustomData(IDOfData2,this);
-        if (Utils.isCurrectSiCVersion()) SCControllerHullmod.Companion.addHullmodAfterShipCreation(ship,stats.scData);
+        if (Utils.isCurrectSiCVersion()){
+            log.info("IS THIS RUNNING OR NOT?!?!?: "+Utils.isCurrectSiCVersion());
+            CombatabilityUtility.addSiC_MidFight(ship,stats.scData);
+            //SCControllerHullmod.Companion.addHullmodAfterShipCreation(ship,stats.scData);
+        }
         //stage0();
         //ship.getMutableStats().fighter
         /*/

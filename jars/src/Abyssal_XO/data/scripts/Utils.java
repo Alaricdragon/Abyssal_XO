@@ -17,15 +17,46 @@ import java.util.HashMap;
 public class Utils {
     public static boolean isCurrectSiCVersion(){
         VersionInfoAPI a = Global.getSettings().getModManager().getModSpec("second_in_command").getVersionInfo();
+        Settings.log.info("GETTING VERSIONS AS: "+a.getMajor()+", "+a.getMinor()+", "+a.getPatch());
         try {
-            if (Integer.parseInt(a.getMajor()) > 2) return true;
-            if (Integer.parseInt(a.getMajor()) < 2) return false;
-            if (Integer.parseInt(a.getMinor()) > 0) return true;
-            if (Integer.parseInt(a.getPatch()) > 0) return true;
+            if (getVersionFromString(a.getMajor()) > 2) return true;
+            if (getVersionFromString(a.getMajor()) < 2) return false;
+            if (getVersionFromString(a.getMinor()) > 0) return true;
+            if (getVersionFromString(a.getMinor()) < 0) return false;
+            if (getVersionFromString(a.getPatch()) > 0) return true;
+            if (getVersionFromString(a.getPatch()) < 0) return false;
         }catch (Exception e){
             return true;
         }
         return false;
+    }
+    private static double getVersionFromString(String a){
+        double out = 0;
+        String b = a.toLowerCase();
+        if (b.contains("b") || b.contains("a")) out-=1;
+        //-beta, alpha.
+        //Settings.log.info("String change start as: ");
+        //Settings.log.info(" "+b);
+        b = b.replaceAll("-","");
+        //Settings.log.info(" "+b);
+        b = b.replaceAll("b","");
+        //Settings.log.info(" "+b);
+        b = b.replaceAll("e","");
+        //Settings.log.info(" "+b);
+        b = b.replaceAll("t","");
+        //Settings.log.info(" "+b);
+        b = b.replaceAll("a","");
+        //Settings.log.info(" "+b);
+        b = b.replaceAll("l","");
+        //Settings.log.info(" "+b);
+        b = b.replaceAll("p","");
+        //Settings.log.info(" "+b);
+        b = b.replaceAll("h","");
+        //Settings.log.info(" "+b);
+        //Settings.log.info(" done! got final value as:");
+        //Settings.log.info(" "+Double.parseDouble(b));
+        out += Double.parseDouble(b);
+        return out;
     }
     public static float getDistance(float x, float y, Vector2f loc2){
         return Misc.getDistance(new Vector2f(x,y),loc2);
