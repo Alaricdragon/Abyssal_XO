@@ -22,14 +22,18 @@ public class Utils {
             if (getVersionFromString(a.getMajor()) > 2) return true;
             if (getVersionFromString(a.getMajor()) < 2) return false;
             if (getVersionFromString(a.getMinor()) > 0) return true;
+            if (getVersionFromString(a.getMinor()) < 0) return false;
             if (getVersionFromString(a.getPatch()) > 0) return true;
+            if (getVersionFromString(a.getPatch()) < 0) return false;
         }catch (Exception e){
             return true;
         }
         return false;
     }
     private static double getVersionFromString(String a){
+        double out = 0;
         String b = a.toLowerCase();
+        if (b.contains("b") || b.contains("a")) out-=1;
         //-beta, alpha.
         Settings.log.info("String change start as: ");
         Settings.log.info(" "+b);
@@ -51,7 +55,8 @@ public class Utils {
         Settings.log.info(" "+b);
         Settings.log.info(" done! got final value as:");
         Settings.log.info(" "+Double.parseDouble(b));
-        return Double.parseDouble(b);
+        out += Double.parseDouble(b);
+        return out;
     }
     public static float getDistance(float x, float y, Vector2f loc2){
         return Misc.getDistance(new Vector2f(x,y),loc2);
