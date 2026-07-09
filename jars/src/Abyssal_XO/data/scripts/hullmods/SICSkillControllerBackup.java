@@ -1,6 +1,7 @@
 package Abyssal_XO.data.scripts.hullmods;
 
 import Abyssal_XO.data.scripts.Settings;
+import Abyssal_XO.data.scripts.Utils;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.combat.BaseHullMod;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
@@ -27,6 +28,7 @@ public class SICSkillControllerBackup extends BaseHullMod {
 
     /// adds the fleet to this hullmod -before- the ship gets is added to the combat engin.
     public static void addShipBeforeShipSpawns(FleetMemberAPI ship, CampaignFleetAPI fleet){
+        if (Utils.isCurrectSiCVersion()) return;
         ShipVariantAPI OVERWRITER = ship.getVariant();//Global.getSettings().getVariant("Abyssal_XO_ReclaimCore_Blank").clone();
         OVERWRITER.setSource(VariantSource.REFIT);
         SICSkillControllerBackup.member_map.put(ship,fleet);
@@ -35,14 +37,7 @@ public class SICSkillControllerBackup extends BaseHullMod {
     }
     /// adds the ship to this hullmod after the ship is added to the combat engine
     public static void addShipAfterShipSpawns(ShipAPI ship, CampaignFleetAPI fleet){
-        /*todo:
-            1: try seeing if said ships already have a fleet by defalt (if so, filter for fleets that have SC data)
-            2: run checks in hullmod to see when a giving bit of code fails. so I can have some fucking logs about what is going on
-            3: run tests to try and determine if simulacrum fighters and simulacrum ships still work.
-            4: make sure nano-thief is being added at the right time with my code...? (its not. on added to combat it runs.)
-            5: try 'shipAPI.applyEffectsAfterShipAddedToCombatEngine();' to see if that helps
-
-         */
+        if (Utils.isCurrectSiCVersion()) return;
         Settings.log.info("attempting to add hullmods to a single ship of name: "+ship.getName()+", id: "+ship.getFleetMember().getId()+", hull id: "+ship.getHullSpec().getHullId());
         Settings.log.info(" ships fleet starting as: "+(ship.getFleetMember() != null && ship.getFleetMember().getFleetData() != null && ship.getFleetMember().getFleetData().getFleet() != null ? ship.getFleetMember().getFleetData().getFleet().getId() : "N/A"));
         Settings.log.info(" target fleet as: "+(fleet != null ? fleet.getId() : "N/A"));

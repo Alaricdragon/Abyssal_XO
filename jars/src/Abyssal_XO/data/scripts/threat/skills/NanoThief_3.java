@@ -74,7 +74,7 @@ public class NanoThief_3 extends Nano_Thief_Skill_Base {
         if (Global.getSector() == null || Global.getSector().getPlayerFleet() == null || SCUtils.getFleetData(Global.getSector().getPlayerFleet()) == null) return false;
         SCData data = SCUtils.getFleetData(Global.getSector().getPlayerFleet());
         for (SCOfficer a : data.getActiveOfficers()) if (a.getAptitudeId().equals("Abyssal_NanoThief")){
-            Nano_Thief_Stats b = new Nano_Thief_Stats(Global.getSector().getPlayerPerson(),Global.getSector().getPlayerFleet(),Global.getSector().getPlayerFleet().getFleetData(),"",true,0,Global.getSector().getPlayerFaction());
+            Nano_Thief_Stats b = new Nano_Thief_Stats(Global.getSector().getPlayerPerson(),Global.getSector().getPlayerFleet(),Global.getSector().getPlayerFleet().getFleetData(),"",true,0,Global.getSector().getPlayerFaction(),null);
             data.getFleet().getStats().getDynamic().getStat(Stats.SALVAGE_VALUE_MULT_FLEET_NOT_RARE).modifyFlat("AbyssalXO_NanoThief_Salvage", (float) salvageMod*b.skillMulti[3]);
             data.getFleet().getStats().getDynamic().getStat(Stats.BATTLE_SALVAGE_MULT_FLEET).modifyFlat("AbyssalXO_NanoThief_Salvage", (float) battleSalvageMod*b.skillMulti[3]);
             return true;

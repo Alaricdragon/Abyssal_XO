@@ -1,6 +1,7 @@
 package Abyssal_XO.data.scripts.threat.listiners;
 
 import Abyssal_XO.data.scripts.Settings;
+import Abyssal_XO.data.scripts.Utils;
 import Abyssal_XO.data.scripts.hullmods.SICSkillControllerBackup;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
@@ -13,7 +14,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-    import static com.fs.starfarer.api.impl.combat.threat.ThreatShipConstructionScript.SHIP_UNDER_CONSTRUCTION;
+import static Abyssal_XO.data.scripts.Settings.NANO_THIEF_SIC_HULLMOD_FLEET_KEY;
+import static com.fs.starfarer.api.impl.combat.threat.ThreatShipConstructionScript.SHIP_UNDER_CONSTRUCTION;
 
 public class NanoThief_Threat_SIC_Adder extends BaseEveryFrameCombatPlugin {
     public NanoThief_Threat_SIC_Adder(){
@@ -24,6 +26,7 @@ public class NanoThief_Threat_SIC_Adder extends BaseEveryFrameCombatPlugin {
     public void advance(float amount, List<InputEventAPI> events) {
         time -= amount;
         if (time > 0) return;
+        Settings.log.info("RUNNING SC ADDER. "+ Utils.isCurrectSiCVersion()+" for 'is currect sic version'");
         time = cooldown;
         //for ()
         //events.get(0).getEventType().equals(CombatEvent);
@@ -51,12 +54,19 @@ public class NanoThief_Threat_SIC_Adder extends BaseEveryFrameCombatPlugin {
         ArrayList<ShipAPI> childs = new ArrayList<>();
         childs.addAll(shipAPI.getChildModulesCopy());
         while (!childs.isEmpty()){
+            if (childs.get(0).getCustomData().containsKey(NANO_THIEF_SIC_HULLMOD_FLEET_KEY)){
+                childs.remove(0);
+                continue;
+            }
             //child ships can have child ships. destroy them
             if (childs.get(0).getChildModulesCopy() != null && !childs.get(0).getChildModulesCopy().isEmpty()) childs.addAll(childs.get(0).getChildModulesCopy());
             //NanoThief_BattleListener.reclaimOverride.put(childs.get(0), (int) (0));
-            refitShip(childs.get(0),fleet);
+            refitShipWithoutKids(childs.get(0),fleet);
             childs.remove(0);
         }
+    }
+    private void refitShipWithoutKids(ShipAPI shipAPI, CampaignFleetAPI fleet){
+        SICSkillControllerBackup.addShipAfterShipSpawns(shipAPI, fleet);
     }
     private void refitShip(ShipAPI shipAPI, CampaignFleetAPI fleet){
         SICSkillControllerBackup.addShipAfterShipSpawns(shipAPI, fleet);

@@ -1,3 +1,6 @@
+V0.1.21:
+    fixes:
+        fixed a feedback loop crash in combat
 V0.1.20:
     fixes:
         fixed multisectional ships in mastery sometimes being linked somehow to the original sometimes???
