@@ -19,16 +19,21 @@ public class Utils {
         VersionInfoAPI a = Global.getSettings().getModManager().getModSpec("second_in_command").getVersionInfo();
         Settings.log.info("GETTING VERSIONS AS: "+a.getMajor()+", "+a.getMinor()+", "+a.getPatch());
         try {
-            if (Integer.parseInt(a.getMajor()) > 2) return true;
-            if (Integer.parseInt(a.getMajor()) < 2) return false;
-            if (Integer.parseInt(a.getMinor()) > 0) return true;
-            String p = a.getPatch().toLowerCase();
-            if (p.contains("beta") || p.contains("alpha")) return false;// no alpha or beta should exsist 2.0.?
-            if (Integer.parseInt(a.getPatch()) > 0) return true;
+            if (getVersionFromString(a.getMajor()) > 2) return true;
+            if (getVersionFromString(a.getMajor()) < 2) return false;
+            if (getVersionFromString(a.getMinor()) > 0) return true;
+            if (getVersionFromString(a.getPatch()) > 0) return true;
         }catch (Exception e){
             return true;
         }
         return false;
+    }
+    private static int getVersionFromString(String a){
+        String b = a.toLowerCase();
+        b = b.replaceAll("-","");
+        b = b.replaceAll("beta","");
+        b = b.replaceAll("alpha","");
+        return Integer.parseInt(b);
     }
     public static float getDistance(float x, float y, Vector2f loc2){
         return Misc.getDistance(new Vector2f(x,y),loc2);
