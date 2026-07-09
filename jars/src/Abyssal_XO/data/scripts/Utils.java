@@ -28,7 +28,7 @@ public class Utils {
         }
         return false;
     }
-    private static int getVersionFromString(String a){
+    private static double getVersionFromString(String a){
         String b = a.toLowerCase();
         //-beta, alpha.
         Settings.log.info("String change start as: ");
@@ -50,8 +50,8 @@ public class Utils {
         b = b.replaceAll("h","");
         Settings.log.info(" "+b);
         Settings.log.info(" done! got final value as:");
-        Settings.log.info(" "+Integer.parseInt(b));
-        return Integer.parseInt(b);
+        Settings.log.info(" "+Double.parseDouble(b));
+        return Double.parseDouble(b);
     }
     public static float getDistance(float x, float y, Vector2f loc2){
         return Misc.getDistance(new Vector2f(x,y),loc2);
