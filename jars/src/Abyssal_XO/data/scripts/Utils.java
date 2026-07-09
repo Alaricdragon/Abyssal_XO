@@ -17,6 +17,7 @@ import java.util.HashMap;
 public class Utils {
     public static boolean isCurrectSiCVersion(){
         VersionInfoAPI a = Global.getSettings().getModManager().getModSpec("second_in_command").getVersionInfo();
+        Settings.log.info("GETTING VERSIONS AS: "+a.getMajor()+", "+a.getMinor()+", "+a.getPatch());
         try {
             if (Integer.parseInt(a.getMajor()) > 2) return true;
             if (Integer.parseInt(a.getMajor()) < 2) return false;
