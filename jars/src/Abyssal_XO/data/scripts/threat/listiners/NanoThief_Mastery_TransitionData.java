@@ -1,6 +1,7 @@
 package Abyssal_XO.data.scripts.threat.listiners;
 
 import Abyssal_XO.data.scripts.Settings;
+import Abyssal_XO.data.scripts.Utils;
 import Abyssal_XO.data.scripts.hullmods.SICSkillControllerBackup;
 import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_Construction;
 import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_MasteryConstructionScript;
@@ -72,8 +73,10 @@ public class NanoThief_Mastery_TransitionData extends BaseEveryFrameCombatPlugin
             //stats.fleet.removeFleetMember(memberCopy);
             ShipVariantAPI OVERWRITER = memberCopy.getVariant();//Global.getSettings().getVariant("Abyssal_XO_ReclaimCore_Blank").clone();
             OVERWRITER.setSource(VariantSource.REFIT);
-            OVERWRITER.addMod("Abyssal_XO_DC");
-            OVERWRITER.addMod(Settings.SIC_CONTROL_HULLMOD);
+            if (!Utils.isCurrectSiCVersion()) {
+                OVERWRITER.addMod("Abyssal_XO_DC");
+                OVERWRITER.addMod(Settings.SIC_CONTROL_HULLMOD);
+            }
             memberCopy.setOwner(ship.getOwner());
 
             cloneModules(OVERWRITER);
@@ -136,7 +139,7 @@ public class NanoThief_Mastery_TransitionData extends BaseEveryFrameCombatPlugin
             //b.addMod("");
             //b.removeMod("");
             OVERWRITER.setModuleVariant(a,d);
-            cloneModules(d);
+            cloneModules(d);//recursion used. sub optimal.
         }
 
         /*

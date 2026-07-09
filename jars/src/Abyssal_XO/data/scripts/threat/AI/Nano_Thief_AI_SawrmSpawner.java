@@ -11,6 +11,7 @@ import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.util.Misc;
 import org.apache.log4j.Logger;
 import org.lwjgl.util.vector.Vector2f;
+import second_in_command.hullmods.SCControllerHullmod;
 
 import java.util.ArrayList;
 
@@ -69,6 +70,7 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
         //log.info("got return reclaim as: "+returnReclaim);
         engine = Global.getCombatEngine();
         ship.setCustomData(IDOfData2,this);
+        if (Utils.isCurrectSiCVersion()) SCControllerHullmod.Companion.addHullmodAfterShipCreation(ship,stats.scData);
         //stage0();
         //ship.getMutableStats().fighter
         /*/

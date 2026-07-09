@@ -1,6 +1,7 @@
 package Abyssal_XO.data.scripts.threat.skills;
 
 import Abyssal_XO.data.scripts.Settings;
+import Abyssal_XO.data.scripts.Utils;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipSkillsAdder;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_BattleListener;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_Threat_SIC_Adder;
@@ -66,7 +67,7 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
     public void applyEffectsAfterShipCreation(SCData data, ShipAPI ship, ShipVariantAPI variant, String id) {
         if (!Global.getCombatEngine().hasPluginOfClass(NanoThief_BattleListener.class)) {
             Global.getCombatEngine().addPlugin(new NanoThief_BattleListener());
-            Global.getCombatEngine().addPlugin(new NanoThief_Threat_SIC_Adder());
+            if (!Utils.isCurrectSiCVersion()) Global.getCombatEngine().addPlugin(new NanoThief_Threat_SIC_Adder());
         }
         if (ship.getParentStation() != null || ship.getParentPieceId() != null || (ship.getHullSpec() != null && ship.getHullSpec().getHullSize() == ShipAPI.HullSize.FIGHTER)){
             //log.info("NOT ADDING LISTENER FOR A SINGLE SHIP, BECAUSE IT IS A MODULE");
@@ -87,7 +88,7 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
         for (ShipAPI a : ship.getChildModulesCopy()){
             Settings.log.info("got module as: "+a.getName()+", "+a.getId());
         }
-        Settings.log.info("adding to nano-thief internal data a ship of name: "+ship.getName()+" id: "+(ship.getFleetMember() != null ? ship.getFleetMember().getId() : "N/A"));
+        Settings.log.info("adding to nano-thief internal data a ship of name: "+ship.getName()+" id: "+ship.getId()+" fleet id: "+(ship.getFleetMember() != null ? ship.getFleetMember().getId() : "N/A"));
         NanoThief_ShipSkillsAdder a = new NanoThief_ShipSkillsAdder(ship,data);
         ship.addListener(a);
         Settings.log.info("successfully added listiner...");

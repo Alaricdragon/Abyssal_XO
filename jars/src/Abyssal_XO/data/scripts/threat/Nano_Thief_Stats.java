@@ -30,6 +30,7 @@ import lombok.Getter;
 import org.apache.log4j.Logger;
 import org.lwjgl.util.vector.Vector2f;
 import org.magiclib.subsystems.MagicSubsystemsManager;
+import second_in_command.SCData;
 import second_in_command.SCUtils;
 import second_in_command.specs.SCBaseSkillPlugin;
 import second_in_command.specs.SCOfficer;
@@ -146,7 +147,8 @@ public class Nano_Thief_Stats {
     }
     public int[] skillMulti = new int[11];
     public int reclaimMulti = 0;
-    public Nano_Thief_Stats(PersonAPI commander, CampaignFleetAPI fleetAPI, FleetDataAPI fleet, String commanderID, boolean isAlly, int owner, FactionAPI faction){
+    public SCData scData;
+    public Nano_Thief_Stats(PersonAPI commander, CampaignFleetAPI fleetAPI, FleetDataAPI fleet, String commanderID, boolean isAlly, int owner, FactionAPI faction,SCData scData){
         this.commander = commander;
         this.fleet = fleet;
         this.commanderID = commanderID;
@@ -154,6 +156,7 @@ public class Nano_Thief_Stats {
         this.isAlly = isAlly;
         this.owner = owner;
         this.faction = faction;
+        this.scData = scData;
         for (SCOfficer c : SCUtils.getFleetData(fleetAPI).getActiveOfficers()) {
             if (c.getAptitudeId().equals("Abyssal_NanoThief")){
                 log.info("creating commander data for a new commander with "+c.getActiveSkillPlugins().size()+" skills"+" and a fighter to build of "+this.OF_fighterToBuild);

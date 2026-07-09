@@ -1,5 +1,7 @@
 package Abyssal_XO.data.scripts;
 
+import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.VersionInfoAPI;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.FleetDataAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
@@ -13,7 +15,18 @@ import second_in_command.specs.SCOfficer;
 import java.util.HashMap;
 
 public class Utils {
-
+    public static boolean isCurrectSiCVersion(){
+        VersionInfoAPI a = Global.getSettings().getModManager().getModSpec("second_in_command").getVersionInfo();
+        try {
+            if (Integer.parseInt(a.getMajor()) > 2) return true;
+            if (Integer.parseInt(a.getMajor()) < 2) return false;
+            if (Integer.parseInt(a.getMinor()) > 0) return true;
+            if (Integer.parseInt(a.getPatch()) > 0) return true;
+        }catch (Exception e){
+            return true;
+        }
+        return false;
+    }
     public static float getDistance(float x, float y, Vector2f loc2){
         return Misc.getDistance(new Vector2f(x,y),loc2);
     }

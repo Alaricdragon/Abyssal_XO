@@ -147,7 +147,7 @@ public class NanoThief_BattleListener extends BaseEveryFrameCombatPlugin {
                 log.info("      checking SiC officer of attributeID: "+b.getAptitudeId());
                 if (!b.getAptitudeId().equals("Abyssal_NanoThief")) continue;
                 log.info("      added Sic officer from fleet "+a.getId()+" to list of commanders....");
-                output.put(a.getId(),new Nano_Thief_Stats(a,fleet,fleet.getFleetData(),a.getId(),isPlayerAllied,owner,fleet.getFaction()));//a.getFleet() is required.
+                output.put(a.getId(),new Nano_Thief_Stats(a,fleet,fleet.getFleetData(),a.getId(),isPlayerAllied,owner,fleet.getFaction(),SCUtils.getFleetData(fleet)));//a.getFleet() is required.
                 break;
             }
             log.info("  finished check for commander");

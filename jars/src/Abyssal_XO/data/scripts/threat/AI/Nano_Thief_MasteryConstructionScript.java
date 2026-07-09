@@ -96,8 +96,7 @@ public class Nano_Thief_MasteryConstructionScript extends ThreatShipConstruction
         }
         hasCreated = true;
         for (ShipAPI a : ship.getChildModulesCopy()){
-            //todo: make it so this section adds on the required hullmods. Also, make it so its linked child ships are like, not the same ships? how the fuck do child ships fucking work? are they like, weapons? like WTF does this fucking work!!
-            addShipAfterShipSpawns(a,stats.fleet.getFleet());
+            addShipAfterShipSpawns(a,stats.fleet.getFleet());//this is prevented elsewere.
             NanoThief_A_MasteryModules temp = new NanoThief_A_MasteryModules(a,toConstruct,source,delay,fadeInTime,crAtCreation,reclaim,stats);
             Global.getCombatEngine().addPlugin(temp);
         }
