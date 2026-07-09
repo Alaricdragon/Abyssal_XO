@@ -31,14 +31,26 @@ public class Utils {
     private static int getVersionFromString(String a){
         String b = a.toLowerCase();
         //-beta, alpha.
+        Settings.log.info("String change start as: ");
+        Settings.log.info(" "+b);
         b = b.replaceAll("-","");
+        Settings.log.info(" "+b);
         b = b.replaceAll("b","");
+        Settings.log.info(" "+b);
         b = b.replaceAll("e","");
+        Settings.log.info(" "+b);
         b = b.replaceAll("t","");
+        Settings.log.info(" "+b);
         b = b.replaceAll("a","");
+        Settings.log.info(" "+b);
         b = b.replaceAll("l","");
+        Settings.log.info(" "+b);
         b = b.replaceAll("p","");
+        Settings.log.info(" "+b);
         b = b.replaceAll("h","");
+        Settings.log.info(" "+b);
+        Settings.log.info(" done! got final value as:");
+        Settings.log.info(" "+Integer.parseInt(b));
         return Integer.parseInt(b);
     }
     public static float getDistance(float x, float y, Vector2f loc2){
