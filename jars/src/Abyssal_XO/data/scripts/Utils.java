@@ -30,9 +30,15 @@ public class Utils {
     }
     private static int getVersionFromString(String a){
         String b = a.toLowerCase();
+        //-beta, alpha.
         b = b.replaceAll("-","");
-        b = b.replaceAll("beta","");
-        b = b.replaceAll("alpha","");
+        b = b.replaceAll("b","");
+        b = b.replaceAll("e","");
+        b = b.replaceAll("t","");
+        b = b.replaceAll("a","");
+        b = b.replaceAll("l","");
+        b = b.replaceAll("p","");
+        b = b.replaceAll("h","");
         return Integer.parseInt(b);
     }
     public static float getDistance(float x, float y, Vector2f loc2){
