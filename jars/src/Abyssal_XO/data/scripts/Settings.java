@@ -59,7 +59,7 @@ public class Settings {
    // public static String NANO_THIEF_CUSTOM_MASTERY_RECLAIM_MEMERY_KEY = "$Nano_Thief_ReclaimOverride";
     public static final String NANO_THIEF_SKILL_4_ACTIVE_KEY = "Abyssal_XO_Skill_4_Active";
     public static final String NANO_THIEF_RECLAIM_TARGET_KEY = "Abyssal_XO_Nanothief_ReclaimTarget_";
-    public static final String NANO_THIEF_SIC_HULLMOD_FLEET_KEY = "Abyssal_XO_FleetMemoryKey";
+    public static final String NANO_THIEF_SIC_HULLMOD_DATA_KEY = "Abyssal_XO_dataMemoryKey";
     public static final String NANO_THIEF_MASTERY_BASESHIP = "kite_pirates_Raider";
     public static final String NANO_THIEF_BASEWING = "attack_swarm_wing";//"attack_swarm_wing";
     public static final String NANO_THIEF_PALYER_BASEWING = "warthog_wing";//"broadsword_wing";
@@ -70,6 +70,7 @@ public class Settings {
     public static ArrayList<String> NanoThief_Users = new ArrayList<>();
     public static ArrayList<String> NanoThief_Banned = new ArrayList<>();
 
+    public static final String TAG_NO_RECLAIM_ON_BUILD = "Abyssal_XO_NoReclaimOnBuild";
 
     public static void init() throws JSONException {
         JSONArray array = Global.getSettings().getJSONArray("NanoThief_Users");

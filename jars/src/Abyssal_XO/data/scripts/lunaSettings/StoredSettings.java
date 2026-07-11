@@ -1,4 +1,5 @@
 package Abyssal_XO.data.scripts.lunaSettings;
+import Abyssal_XO.data.scripts.Utils;
 import Abyssal_XO.data.scripts.threat.NanoThief_Attribute;
 import Abyssal_XO.data.scripts.threat.skills.*;
 import com.fs.starfarer.api.Global;
@@ -6,6 +7,7 @@ import lunalib.lunaSettings.LunaSettings;
 
 public class StoredSettings {
     public static void getSettings(){
+        Utils.setCurrentSiCVersion();
         if (Global.getSettings().getModManager().isModEnabled("lunalib")){
             getLunaSettings();
         }else {

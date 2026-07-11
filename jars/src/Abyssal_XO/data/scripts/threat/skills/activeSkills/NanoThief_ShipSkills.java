@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import static Abyssal_XO.data.scripts.Settings.TAG_NO_RECLAIM_ON_BUILD;
 import static com.fs.starfarer.api.impl.combat.threat.ThreatShipConstructionScript.SHIP_UNDER_CONSTRUCTION;
 
 public class NanoThief_ShipSkills implements AdvanceableListener {
@@ -49,7 +50,7 @@ public class NanoThief_ShipSkills implements AdvanceableListener {
         //set skills here.
         //add in a switch statment to determin data about this ship.
         stats.getAvailableShips().add(ship);
-        if (stats.isValidReclaimTarget(ship)){
+        if (!ship.hasTag(TAG_NO_RECLAIM_ON_BUILD)){
             int op = (int) (ship.getHullSpec() != null && ship.getHullSpec().equals("fabricator_unit") ? NanoThief_Base.fabracatorDPForNanothiefCalculation : ship.getFleetMember() != null ? ship.getFleetMember().getDeploymentPointsCost() : ship.getDeployCost());
             op = NanoThief_Base.reclaimOnStartPerDP*stats.reclaimMulti*op;
             Global.getCombatEngine().addPlugin(new NanoThief_AddReclaimAtStartListiner(ship,op,stats,this));

@@ -67,8 +67,10 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
     public void applyEffectsAfterShipCreation(SCData data, ShipAPI ship, ShipVariantAPI variant, String id) {
         if (!Global.getCombatEngine().hasPluginOfClass(NanoThief_BattleListener.class)) {
             Global.getCombatEngine().addPlugin(new NanoThief_BattleListener());
+           // Global.getCombatEngine().getListenerManager().addListener(new NanoThief_TempTestThing());
             if (!Utils.isCurrectSiCVersion()) Global.getCombatEngine().addPlugin(new NanoThief_Threat_SIC_Adder());
         }
+        log.info("attempting to add listiner to ship of id,name: "+ship.getId()+", "+ship.getName()+", "+ship.getHullSpec().getHullId()+", "+ship.getHullSize());
         if (ship.getParentStation() != null || ship.getParentPieceId() != null){
             log.info("NOT ADDING LISTENER FOR A SINGLE SHIP, BECAUSE IT IS A MODULE: "+ship.getId()+", "+ship.getName());
             return;

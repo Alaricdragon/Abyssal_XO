@@ -71,7 +71,7 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
         engine = Global.getCombatEngine();
         ship.setCustomData(IDOfData2,this);
         if (Utils.isCurrectSiCVersion()){
-            log.info("IS THIS RUNNING OR NOT?!?!?: "+Utils.isCurrectSiCVersion());
+            //log.info("IS THIS RUNNING OR NOT?!?!?: "+Utils.isCurrectSiCVersion());
             CombatabilityUtility.addSiC_MidFight(ship,stats.scData);
             //SCControllerHullmod.Companion.addHullmodAfterShipCreation(ship,stats.scData);
         }

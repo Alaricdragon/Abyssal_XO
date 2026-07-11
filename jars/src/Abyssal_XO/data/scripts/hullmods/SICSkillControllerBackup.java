@@ -14,10 +14,8 @@ import second_in_command.SCUtils;
 import second_in_command.specs.SCBaseSkillPlugin;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
 
-import static Abyssal_XO.data.scripts.Settings.NANO_THIEF_SIC_HULLMOD_FLEET_KEY;
+import static Abyssal_XO.data.scripts.Settings.NANO_THIEF_SIC_HULLMOD_DATA_KEY;
 
 public class SICSkillControllerBackup extends BaseHullMod {
     //todo: NOTICE: there is effectively only one instance of this mod. so HWAT THE FUCK WHY??
@@ -36,12 +34,11 @@ public class SICSkillControllerBackup extends BaseHullMod {
         ship.setVariant(OVERWRITER,false,true);
     }
     /// adds the ship to this hullmod after the ship is added to the combat engine
-    public static void addShipAfterShipSpawns(ShipAPI ship, CampaignFleetAPI fleet){
+    public static void addShipAfterShipSpawns(ShipAPI ship, SCData data){
         if (Utils.isCurrectSiCVersion()) return;
         Settings.log.info("attempting to add hullmods to a single ship of name: "+ship.getName()+", id: "+ship.getFleetMember().getId()+", hull id: "+ship.getHullSpec().getHullId());
         Settings.log.info(" ships fleet starting as: "+(ship.getFleetMember() != null && ship.getFleetMember().getFleetData() != null && ship.getFleetMember().getFleetData().getFleet() != null ? ship.getFleetMember().getFleetData().getFleet().getId() : "N/A"));
-        Settings.log.info(" target fleet as: "+(fleet != null ? fleet.getId() : "N/A"));
-        SICSkillControllerBackup.member_map.put(ship.getFleetMember(),fleet);
+        //SICSkillControllerBackup.member_map.put(ship.getFleetMember(),fleet);
         //ship.getFleetMember().setCustomData(NANO_THIEF_SIC_HULLMOD_FLEET_KEY,fleet);
         ShipVariantAPI OVERWRITER = ship.getVariant();//Global.getSettings().getVariant("Abyssal_XO_ReclaimCore_Blank").clone();
         OVERWRITER.setSource(VariantSource.REFIT);
@@ -53,8 +50,8 @@ public class SICSkillControllerBackup extends BaseHullMod {
 
         ship.applyEffectsAfterShipAddedToCombatEngine();
 
-        ship.setCustomData(NANO_THIEF_SIC_HULLMOD_FLEET_KEY,SCUtils.getFleetData(fleet));
-        SCData data = getData(ship.getFleetMember());
+        ship.setCustomData(NANO_THIEF_SIC_HULLMOD_DATA_KEY,data);
+        //SCData data = getData(ship.getFleetMember());
         if (data == null) return;
 
         for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()) {
@@ -160,9 +157,9 @@ public class SICSkillControllerBackup extends BaseHullMod {
         return this.fleet;
     }*/
     private static SCData getData(ShipAPI shipAPI){
-        if (shipAPI.getCustomData().containsKey(NANO_THIEF_SIC_HULLMOD_FLEET_KEY)){
+        if (shipAPI.getCustomData().containsKey(NANO_THIEF_SIC_HULLMOD_DATA_KEY)){
             //Settings.log.info("got saved data for ship of: "+shipAPI.getId());
-            return (SCData) shipAPI.getCustomData().get(NANO_THIEF_SIC_HULLMOD_FLEET_KEY);
+            return (SCData) shipAPI.getCustomData().get(NANO_THIEF_SIC_HULLMOD_DATA_KEY);
         }
         ShipAPI looking = shipAPI;
         while (shipAPI.getParentStation() != null) {
@@ -171,7 +168,7 @@ public class SICSkillControllerBackup extends BaseHullMod {
         }
         Settings.log.info("failed to get saved data for ship of: "+looking.getId()+", Attempting to set data...");
         SCData data = getData(shipAPI.getFleetMember() != null ? shipAPI.getFleetMember() : shipAPI.getMutableStats().getFleetMember());//SCUtils.getFleetData(ship_map.get(shipAPI));
-        looking.setCustomData(NANO_THIEF_SIC_HULLMOD_FLEET_KEY,data);
+        looking.setCustomData(NANO_THIEF_SIC_HULLMOD_DATA_KEY,data);
         return data;
     }
     private static SCData getData(FleetMemberAPI fleetMemberAPI){
