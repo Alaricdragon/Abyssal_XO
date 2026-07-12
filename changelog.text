@@ -1,3 +1,6 @@
+V0.1.24:
+    fixes:
+        forgot some very basic crash protection. Sorry about that = (
 V0.1.23:
     fixes:
         fixed ships built by mastery losing 100% of there cr the moment you dared move your mouse over them in the deployment screen.
