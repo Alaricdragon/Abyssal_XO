@@ -43,6 +43,7 @@ public class SICSkillControllerBackup extends BaseHullMod {
     /// adds the ship to this hullmod after the ship is added to the combat engine
     public static void addShipAfterShipSpawns(ShipAPI ship, SCData data){
         if (Utils.isCurrectSiCVersion()) return;
+        if (ship == null || ship.getFleetMember() == null || ship.getFleetMember().getVariant() == null) return;//for command shuttle
         Settings.log.info("attempting to add hullmods to a single ship of name: "+ship.getName()+", id: "+ship.getFleetMember().getId()+", hull id: "+ship.getHullSpec().getHullId());
         Settings.log.info(" ships fleet starting as: "+(ship.getFleetMember() != null && ship.getFleetMember().getFleetData() != null && ship.getFleetMember().getFleetData().getFleet() != null ? ship.getFleetMember().getFleetData().getFleet().getId() : "N/A"));
         //SICSkillControllerBackup.member_map.put(ship.getFleetMember(),fleet);
