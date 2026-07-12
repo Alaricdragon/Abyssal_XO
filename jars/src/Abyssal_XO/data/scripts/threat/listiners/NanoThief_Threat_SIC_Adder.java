@@ -17,9 +17,10 @@ import java.util.List;
 import static Abyssal_XO.data.scripts.Settings.NANO_THIEF_SIC_HULLMOD_DATA_KEY;
 import static com.fs.starfarer.api.impl.combat.threat.ThreatShipConstructionScript.SHIP_UNDER_CONSTRUCTION;
 
+@Deprecated
 public class NanoThief_Threat_SIC_Adder extends BaseEveryFrameCombatPlugin {
     public NanoThief_Threat_SIC_Adder(){
-        SICSkillControllerBackup.member_map = new HashMap<>();
+        //SICSkillControllerBackup.member_map = new HashMap<>();
     }
     float cooldown = 2;
     float time = cooldown;

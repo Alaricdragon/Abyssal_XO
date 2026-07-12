@@ -88,8 +88,7 @@ public class NanoThief_A_MasteryModules extends Nano_Thief_MasteryConstructionSc
         }
         hasCreated = true;
         for (ShipAPI a : ship.getChildModulesCopy()){
-            //todo: make it so this section adds on the required hullmods.
-            addShipAfterShipSpawns(a,stats.scData);
+            //addShipAfterShipSpawns(a,stats.scData);
             NanoThief_A_MasteryModules temp = new NanoThief_A_MasteryModules(a,toConstruct,source,delay,fadeInTime,crAtCreation,reclaim,stats);
             Global.getCombatEngine().addPlugin(temp);
         }

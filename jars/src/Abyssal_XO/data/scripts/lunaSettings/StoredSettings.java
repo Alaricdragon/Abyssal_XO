@@ -1,18 +1,24 @@
 package Abyssal_XO.data.scripts.lunaSettings;
 import Abyssal_XO.data.scripts.Utils;
 import Abyssal_XO.data.scripts.threat.NanoThief_Attribute;
+import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipSpawnedListener;
 import Abyssal_XO.data.scripts.threat.skills.*;
 import com.fs.starfarer.api.Global;
 import lunalib.lunaSettings.LunaSettings;
 
 public class StoredSettings {
     public static void getSettings(){
-        Utils.setCurrentSiCVersion();
+        getBaseSettings();
         if (Global.getSettings().getModManager().isModEnabled("lunalib")){
             getLunaSettings();
         }else {
             getConfigSettings();
         }
+    }
+    public static void getBaseSettings(){
+        Utils.setCurrentSiCVersion();
+        NanoThief_ShipSpawnedListener.forceAllowAllShipsToConvert = Global.getSettings().getBoolean("NanoThief_AllowSICToAnyShip");
+        NanoThief_ShipSpawnedListener.allowShipModulesToHaveSiC_Backup = Global.getSettings().getBoolean("NanoThief_AllowSICToShipModules");
     }
     public static void attemptEnableLunalib(){
         if (!Global.getSettings().getModManager().isModEnabled("lunalib")) return;
@@ -176,6 +182,13 @@ public class StoredSettings {
         NanoThief_10.sModCost = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_sModCost");
         NanoThief_10.dModDiscount = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_dModDiscount");
         NanoThief_10.dModmin = LunaSettings.getDouble("Abyssal_XO","NA_Mastery_dModmin");
+
+        NanoThief_10.rechargeSpeedMulti = new double[]{
+            LunaSettings.getDouble("Abyssal_XO","NA_Mastery_rechargesizeMulti_f"),
+            LunaSettings.getDouble("Abyssal_XO","NA_Mastery_rechargesizeMulti_d"),
+            LunaSettings.getDouble("Abyssal_XO","NA_Mastery_rechargesizeMulti_cr"),
+            LunaSettings.getDouble("Abyssal_XO","NA_Mastery_rechargesizeMulti_ca")
+        };
 
         NanoThief_10.costPerDPs = new double[]{
             LunaSettings.getInt("Abyssal_XO","NA_Mastery_costPerDP_f"),

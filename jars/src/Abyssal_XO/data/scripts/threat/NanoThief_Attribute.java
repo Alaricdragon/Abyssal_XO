@@ -16,8 +16,7 @@ public class NanoThief_Attribute extends SCBaseAptitudePlugin {
         0) add a skill 1 animation. some type of small jitter when repairing.
             -partly done. needs settings
         2) WORK ON SKILL 3
-            -see skill for notes.
-            -requires a response on the form to get active
+            -cannot do mush about the 'order your second to handle it' mush sadnesss.
         4) add in the new icons for the skills.
             NOTE: I have contacted the Quaken about this issue
             -12? icons required.
@@ -31,7 +30,6 @@ public class NanoThief_Attribute extends SCBaseAptitudePlugin {
                 -include a system to automaticly remove myself when the fleet is killed.
             -3: make the special item that I click on to get nano-thief.
                 -it should open a dialog. But for now I can avoid that by just having a right click to acquire nano-thief.
-
         6) improve the display for the nano-thief stats. something like, a bar that fills as I build fighters, and a bar that fills as I max deployment (and fills more (with a different color) as I max storge)
         -) reenable disabled skills (disabled do to not actualy doing anything yet.
         -

@@ -44,12 +44,22 @@ public class Nano_Thief_MasteryConstructionScript extends ThreatShipConstruction
         fleetManager.setSuppressDeploymentMessages(true);
 
         toConstruct.setOwner(source.getOriginalOwner());
+        toConstruct.getRepairTracker().setCR(crAtCreation);
+        toConstruct.getRepairTracker().setMothballed(false);
+        //toConstruct.getStats().getMinCrewMod().;
+        toConstruct.getCrewComposition().addCrew(toConstruct.getHullSpec().getMinCrew());
+        toConstruct.getStats().getMinCrewMod().modifyMult("fuck you",0);
+        //toConstruct.updateStats();
+        //toConstruct.getCrewComposition().addToCargo();//<-- HERE. THIS IS FOR CREW REPLACER OMG
         //ship = engine.getFleetManager(source.getOriginalOwner()).spawnShipOrWing(variantId, loc, facing, 0f, null);
         //engine.getFleetManager(source.getOriginalOwner()).soawn
         ship = engine.getFleetManager(source.getOriginalOwner()).spawnFleetMember(toConstruct,loc,facing,0f);//spawnShipOrWing(variantId, loc, facing, 0f, null);
         //if (true) return;//temp code
         //Settings.log.info("GOT MEMBER ID AS (c): "+ship.getFleetMember().getId());
-
+        //ship.getFleetMember().getStatus().repairFully();
+        //ship.getFleetMember().getStats().getMinCrewMod().modifyMult("fuck you",0);
+        //ship.getFleetMember().getStatus().updateNumStatusesFromMember();
+        //ship.getFleetMember().getStatus().
         ship.setCurrentCR(crAtCreation);
         ship.resetDefaultAI();
         ship.setOwner(source.getOriginalOwner());
@@ -98,7 +108,7 @@ public class Nano_Thief_MasteryConstructionScript extends ThreatShipConstruction
         }
         hasCreated = true;
         for (ShipAPI a : ship.getChildModulesCopy()){
-            addShipAfterShipSpawns(a,stats.scData);//this is prevented elsewere.
+            //addShipAfterShipSpawns(a,stats.scData);//this is prevented elsewere.
             NanoThief_A_MasteryModules temp = new NanoThief_A_MasteryModules(a,toConstruct,source,delay,fadeInTime,crAtCreation,reclaim,stats);
             Global.getCombatEngine().addPlugin(temp);
         }
