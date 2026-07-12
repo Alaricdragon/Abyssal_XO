@@ -58,10 +58,9 @@ public class NanoThief_Mastery_TransitionData extends BaseEveryFrameCombatPlugin
             //if (true) return;
             //SICSkillControllerBackup.fleet_global = stats.fleet.getFleet();
             FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(FleetMemberType.SHIP, constructionDatas.ship.getVariant().clone());
-
             //FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(FleetMemberType.SHIP,constructionDatas.ship.getVariant().clone());
             //FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(FleetMemberType.SHIP,Global.getSettings().getVariant("onslaught_mk1_Ancient") );//constructionDatas.ship.getVariant().clone());
-            SICSkillControllerBackup.member_map.put(memberCopy,stats.fleet.getFleet());
+            //SICSkillControllerBackup.member_map.put(memberCopy,stats.fleet.getFleet());
             //Settings.log.info("GOT MEMBER ID AS (a): "+memberCopy.getId());
             //FleetMemberAPI memberCopy = Global.getSettings().createFleetMember(FleetMemberType.SHIP, Global.getSettings().getVariant(Settings.NANO_THIEF_MASTERY_BASESHIP));
             //memberCopy.setOwner(ship.getOwner());
@@ -73,10 +72,10 @@ public class NanoThief_Mastery_TransitionData extends BaseEveryFrameCombatPlugin
             //stats.fleet.removeFleetMember(memberCopy);
             ShipVariantAPI OVERWRITER = memberCopy.getVariant();//Global.getSettings().getVariant("Abyssal_XO_ReclaimCore_Blank").clone();
             OVERWRITER.setSource(VariantSource.REFIT);
-            if (!Utils.isCurrectSiCVersion()) {
+            /*if (!Utils.isCurrectSiCVersion()) {
                 OVERWRITER.addMod("Abyssal_XO_DC");
                 OVERWRITER.addMod(Settings.SIC_CONTROL_HULLMOD);
-            }
+            }*/
             memberCopy.setOwner(ship.getOwner());
 
             cloneModules(OVERWRITER);

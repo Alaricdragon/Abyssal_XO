@@ -66,7 +66,7 @@ public class NanoThief_Interface_10 extends NanoThief_InterfaceBase {
             }
         }else{
             //50 - 40 = 10. 10 / 50 = 0.2 = 20%
-            int percentDone = (int)(((single.nextShip.reloadTime-single.cooldown) / single.nextShip.reloadTime)*100);
+            int percentDone = (int)(((single.maxCooldown-single.cooldown) / single.maxCooldown)*100);
             //Settings.log.info("done eq: (int)((("+nextShip.reloadTime+" - "+cooldown+") / "+nextShip.reloadTime+") * "+100+") = "+percentDone);
 
             if (single.hasEnouthReclaim()){
@@ -106,7 +106,7 @@ public class NanoThief_Interface_10 extends NanoThief_InterfaceBase {
             }
         }else{
             //50 - 40 = 10. 10 / 50 = 0.2 = 20%
-            int percentDone = single.onCooldown ? (int)(((single.nextShip.reloadTime-single.cooldown) / single.nextShip.reloadTime)*100) : 100;
+            int percentDone = single.onCooldown ? (int)(((single.maxCooldown-single.cooldown) / single.maxCooldown)*100) : 100;
             //Settings.log.info("done eq: (int)((("+nextShip.reloadTime+" - "+cooldown+") / "+nextShip.reloadTime+") * "+100+") = "+percentDone);
             if (single.hasEnouthReclaim()){
                 Global.getCombatEngine().maintainStatusForPlayerShip(Settings.DISPLAYID_NANOTHIEF + "_skill_10", "graphics/icons/hullsys/temporal_shell.png",

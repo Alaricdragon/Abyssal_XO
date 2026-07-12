@@ -10,6 +10,7 @@ import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.combat.threat.RoilingSwarmEffect;
 import org.lwjgl.util.vector.Vector2f;
 
+import static Abyssal_XO.data.scripts.Settings.TAG_NO_RECLAIM_ON_BUILD;
 import static Abyssal_XO.data.scripts.hullmods.SICSkillControllerBackup.addShipAfterShipSpawns;
 
 public class NanoThief_A_MasteryModules extends Nano_Thief_MasteryConstructionScript {
@@ -76,6 +77,7 @@ public class NanoThief_A_MasteryModules extends Nano_Thief_MasteryConstructionSc
         //ship.getCustomData().put(NANO_THIEF_CUSTOM_MASTERY_RECLAIM_MEMERY_KEY,(int)reclaim*NanoThief_10.maxReclaimPercent);
         ship.setAlphaMult(0);
         ship.addTag(SHIP_UNDER_CONSTRUCTION);
+        ship.addTag(TAG_NO_RECLAIM_ON_BUILD);
         source.addTag(SWARM_CONSTRUCTING_SHIP);
         source.setCollisionClass(CollisionClass.NONE);
         source.getMutableStats().getHullDamageTakenMult().modifyMult("ThreatShipConstructionScript", 0f);
@@ -86,8 +88,7 @@ public class NanoThief_A_MasteryModules extends Nano_Thief_MasteryConstructionSc
         }
         hasCreated = true;
         for (ShipAPI a : ship.getChildModulesCopy()){
-            //todo: make it so this section adds on the required hullmods.
-            addShipAfterShipSpawns(a,stats.fleet.getFleet());
+            //addShipAfterShipSpawns(a,stats.scData);
             NanoThief_A_MasteryModules temp = new NanoThief_A_MasteryModules(a,toConstruct,source,delay,fadeInTime,crAtCreation,reclaim,stats);
             Global.getCombatEngine().addPlugin(temp);
         }

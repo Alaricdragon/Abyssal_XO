@@ -15,9 +15,16 @@ import com.fs.starfarer.api.util.Misc;
 import org.lwjgl.util.vector.Vector2f;
 
 public class NanoThief_Skill_10 extends NanoThief_SkillBase{
+    public double speedMulti = 0;
     public NanoThief_Skill_10(NanoThief_ShipSkills skills, ShipAPI ship) {
         super(skills, ship);
         selectNextShip();
+        switch (ship.getHullSize()){
+            case DEFAULT, FIGHTER, FRIGATE -> speedMulti = NanoThief_10.rechargeSpeedMulti[0];
+            case DESTROYER -> speedMulti = NanoThief_10.rechargeSpeedMulti[1];
+            case CRUISER -> speedMulti = NanoThief_10.rechargeSpeedMulti[2];
+            case CAPITAL_SHIP -> speedMulti = NanoThief_10.rechargeSpeedMulti[3];
+        }
     }
 
     @Override
@@ -27,6 +34,7 @@ public class NanoThief_Skill_10 extends NanoThief_SkillBase{
         return maxCost;
     }
     public float cooldown = 0;
+    public float maxCooldown = 0;
     public float waiting = 0;
     //private boolean onCooldown = false;
     //private boolean waiting = false;
@@ -38,7 +46,7 @@ public class NanoThief_Skill_10 extends NanoThief_SkillBase{
     public void advance(float amount) {
         waiting+=amount;
         if (waiting < waitTime) return;//only runs calculations x times.
-        cooldown -= waiting;
+        cooldown -= (float) (waiting * speedMulti);
         waiting = 0;
         //cooldown -= amount;
         /*if (!hasEnouthReclaim() || !hasEnouthCR()){
@@ -159,11 +167,13 @@ public class NanoThief_Skill_10 extends NanoThief_SkillBase{
             random-=a.weight;
             if (random <= 0){
                 nextShip = a;
-                cooldown = (float) nextShip.reloadTime;
+                cooldown = (float) ((float) nextShip.reloadTime);
+                maxCooldown = cooldown;
                 return;
             }
         }
-        cooldown = (float) nextShip.reloadTime;
+        cooldown = (float) ((float) nextShip.reloadTime);
+        maxCooldown = cooldown;
         Settings.log.warn("(mastery skill) failed to get ship from mastery. crying about it...");
         //nextShip;
     }

@@ -10,14 +10,20 @@ import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.util.Misc;
 import org.lwjgl.util.vector.Vector2f;
 import second_in_command.SCUtils;
+import second_in_command.hullmods.SCControllerHullmod;
 import second_in_command.specs.SCOfficer;
 
 import java.util.HashMap;
 
 public class Utils {
-    public static boolean isCurrectSiCVersion(){
+    public static void setCurrentSiCVersion(){
+        isRightSCVersion = findCurrentSiCVersion();
+    }
+    public static boolean isRightSCVersion = false;
+    private static boolean findCurrentSiCVersion(){
+        //if (true) return false;//todo: be sad about failed projects.
         VersionInfoAPI a = Global.getSettings().getModManager().getModSpec("second_in_command").getVersionInfo();
-        Settings.log.info("GETTING VERSIONS AS: "+a.getMajor()+", "+a.getMinor()+", "+a.getPatch());
+        //Settings.log.info("GETTING VERSIONS AS: "+a.getMajor()+", "+a.getMinor()+", "+a.getPatch());
         try {
             if (getVersionFromString(a.getMajor()) > 2) return true;
             if (getVersionFromString(a.getMajor()) < 2) return false;
@@ -29,6 +35,9 @@ public class Utils {
             return true;
         }
         return false;
+    }
+    public static boolean isCurrectSiCVersion(){
+        return isRightSCVersion;
     }
     private static double getVersionFromString(String a){
         double out = 0;

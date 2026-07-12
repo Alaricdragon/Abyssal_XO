@@ -14,12 +14,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static Abyssal_XO.data.scripts.Settings.NANO_THIEF_SIC_HULLMOD_FLEET_KEY;
+import static Abyssal_XO.data.scripts.Settings.NANO_THIEF_SIC_HULLMOD_DATA_KEY;
 import static com.fs.starfarer.api.impl.combat.threat.ThreatShipConstructionScript.SHIP_UNDER_CONSTRUCTION;
 
+@Deprecated
 public class NanoThief_Threat_SIC_Adder extends BaseEveryFrameCombatPlugin {
     public NanoThief_Threat_SIC_Adder(){
-        SICSkillControllerBackup.member_map = new HashMap<>();
+        //SICSkillControllerBackup.member_map = new HashMap<>();
     }
     float cooldown = 2;
     float time = cooldown;
@@ -54,7 +55,7 @@ public class NanoThief_Threat_SIC_Adder extends BaseEveryFrameCombatPlugin {
         ArrayList<ShipAPI> childs = new ArrayList<>();
         childs.addAll(shipAPI.getChildModulesCopy());
         while (!childs.isEmpty()){
-            if (childs.get(0).getCustomData().containsKey(NANO_THIEF_SIC_HULLMOD_FLEET_KEY)){
+            if (childs.get(0).getCustomData().containsKey(NANO_THIEF_SIC_HULLMOD_DATA_KEY)){
                 childs.remove(0);
                 continue;
             }
@@ -66,10 +67,10 @@ public class NanoThief_Threat_SIC_Adder extends BaseEveryFrameCombatPlugin {
         }
     }
     private void refitShipWithoutKids(ShipAPI shipAPI, CampaignFleetAPI fleet){
-        SICSkillControllerBackup.addShipAfterShipSpawns(shipAPI, fleet);
+        //SICSkillControllerBackup.addShipAfterShipSpawns(shipAPI, fleet);
     }
     private void refitShip(ShipAPI shipAPI, CampaignFleetAPI fleet){
-        SICSkillControllerBackup.addShipAfterShipSpawns(shipAPI, fleet);
-        addAllIncludingKids(shipAPI, fleet);
+        //SICSkillControllerBackup.addShipAfterShipSpawns(shipAPI, fleet);
+        //addAllIncludingKids(shipAPI, fleet);
     }
 }

@@ -55,8 +55,8 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
     //public static double rechargeTimeBase = 20;
     //public static double buildTimePerDP = 2.5;//2.5 seconds per dp cost of ship.
     //public static double builtTimeBase = 5;
-    public static double[] rechargeTimePerDPs = {10,10,10,10};
-    public static double[] rechargeTimeBases = {20,30,40,50};
+    public static double[] rechargeTimePerDPs = {15,15,15,15};
+    public static double[] rechargeTimeBases = {30,40,50,60};
     public static double[] buildTimePerDPs = {2.5,2.5,2.5,2.5};
     public static double[] builtTimeBases = {5,10,15,20};
 
@@ -67,6 +67,8 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
     public static double maxReclaimPercent = 0.2;//max amount of reclaim a simulacrum ship is worth when destroyed.
 
     public static double swarmSizeMulti = 2;
+
+    public static double[] rechargeSpeedMulti = {0.5,0.75,1,1.25};
     public static ArrayList<String> allowedSizeStrings(String frig, String dest, String cru, String cap){
         ArrayList<String> allowedSizes = new ArrayList<>();
         if (canFrigate) allowedSizes.add(frig);
@@ -150,11 +152,12 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
         sizeClass+=sizeStringSingle(allowedSizes,", ","and ");
         String line4_0_0 = sizeStringSingleAsInts(rechargeTimeBases,"/","");//""+(int)rechargeTimeBase;
         String line4_0 = sizeStringSingleAsInts(rechargeTimePerDPs,"/","");//""+(int)rechargeTimePerDP;
+        String line4_1 = sizeStringSingleAsDoubles(rechargeSpeedMulti,"/","");
         String line7_0 = ""+maxShips;
         String line8_0 = (int)(minCR*100)+"%";
         tooltip.addPara("When reclaim is available and this ability is ready, select a random ship from a list of possible ships",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         tooltip.addPara("A nanobot swarm will be deployed to construct this ship as a simulacrum ship in a empty area nearby",0,Misc.getHighlightColor(),Misc.getHighlightColor());
-        tooltip.addPara("The nanobot swarm will take %s + %s seconds to prepare per deployment point of the simulacrum ship"+addDOHSIfRequired(rechargeTimeBases,rechargeTimePerDPs),0,Misc.getHighlightColor(),Misc.getHighlightColor(),line4_0_0,line4_0);
+        tooltip.addPara("The nanobot swarm will take %s + %s seconds to prepare per deployment point of the simulacrum ship"+addDOHSIfRequired(rechargeTimeBases,rechargeTimePerDPs)+" multiple by %s depending on the ship preparing the construction swarm",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line4_0_0,line4_0,line4_1);
         tooltip.addPara("The simulacrum ships this skill can build can be selected, up to a maximum of %s ships.",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line7_0);
         tooltip.addPara("Ships with less then %s cr cannot use this ability",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line8_0);
         if (allowedSizes.size() != 4)tooltip.addPara("%s are allowed to be added to this ability",0,Misc.getHighlightColor(),Misc.getHighlightColor(),sizeClass);

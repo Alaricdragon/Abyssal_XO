@@ -4,7 +4,7 @@ import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.Utils;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipSkillsAdder;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_BattleListener;
-import Abyssal_XO.data.scripts.threat.listiners.NanoThief_Threat_SIC_Adder;
+import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipSpawnedListener;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
@@ -67,8 +67,9 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
     public void applyEffectsAfterShipCreation(SCData data, ShipAPI ship, ShipVariantAPI variant, String id) {
         if (!Global.getCombatEngine().hasPluginOfClass(NanoThief_BattleListener.class)) {
             Global.getCombatEngine().addPlugin(new NanoThief_BattleListener());
-            if (!Utils.isCurrectSiCVersion()) Global.getCombatEngine().addPlugin(new NanoThief_Threat_SIC_Adder());
+            if (!Utils.isCurrectSiCVersion()) Global.getCombatEngine().getListenerManager().addListener(new NanoThief_ShipSpawnedListener());
         }
+        log.info("attempting to add listiner to ship of id,name: "+ship.getId()+", "+ship.getName()+", "+ship.getHullSpec().getHullId()+", "+ship.getHullSize());
         if (ship.getParentStation() != null || ship.getParentPieceId() != null){
             log.info("NOT ADDING LISTENER FOR A SINGLE SHIP, BECAUSE IT IS A MODULE: "+ship.getId()+", "+ship.getName());
             return;

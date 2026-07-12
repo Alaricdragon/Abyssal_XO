@@ -1,3 +1,24 @@
+V0.1.23:
+    fixes:
+        fixed ships built by mastery losing 100% of there cr the moment you dared move your mouse over them in the deployment screen.
+    improvements:
+        improved custom threat SiC adder. (should cost less resources.)
+            -there is a bug it can fail to find the SiC data for the player in the simulator if you never deploy any additional ships. but that is the only bug.
+    balance:
+        made it so ships spawned by threat fabricators start with reclaim (represents better building tech)
+        mastery:
+            recharge time per dp: 10 -> 15.
+            recharge time base:
+                frigate     20 -> 30
+                destroyer   30 -> 40
+                cruiser     40 -> 50
+                capital     50 -> 60
+            recharge time multi (from ship the construction swarm is deployed from:)
+                frigate     1 -> 0.5
+                destroyer   1 -> 0.75
+                cruiser     1 -> 1
+                capital     1 -> 1.25
+
 V0.1.22:
     fixed simulacrum wing crash hopefully please please
 V0.1.21:

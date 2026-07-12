@@ -4,6 +4,8 @@
   ],
   "NanoThief_BanndedHullmodsFromAcceptingReclaim": [
     #"strikeCraft"
-  ]
+  ],
+  "NanoThief_AllowSICToAnyShip": false,
+  "NanoThief_AllowSICToShipModules": false
 }
 
