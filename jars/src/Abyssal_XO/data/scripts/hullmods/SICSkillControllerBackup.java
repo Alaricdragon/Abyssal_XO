@@ -26,6 +26,9 @@ public class SICSkillControllerBackup extends BaseHullMod {
     //public static HashMap<ShipAPI,CampaignFleetAPI> ship_map = new HashMap<>();
 
     public static void addHullmodAndData_Chose(ShipAPI ship, SCData data){
+        /*for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()){
+            //Settings.log.info("HERE: got active skills as: "+skill.getId()+", "+skill.getName());
+        }*/
         if (Utils.isCurrectSiCVersion()) CombatabilityUtility.addSiC_MidFight(ship,data);
         addShipAfterShipSpawns(ship,data);
     }

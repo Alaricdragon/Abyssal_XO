@@ -1,3 +1,6 @@
+V0.1.25:
+    fixes:
+        fixed fighter wing size bonuses not working correctly.
 V0.1.24:
     fixes:
         forgot some very basic crash protection. Sorry about that = (

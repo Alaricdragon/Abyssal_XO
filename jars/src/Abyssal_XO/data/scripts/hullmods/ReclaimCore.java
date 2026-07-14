@@ -1,8 +1,8 @@
 package Abyssal_XO.data.scripts.hullmods;
 
+import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_SawrmSpawner;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
-import Abyssal_XO.data.scripts.threat.animation.NanoThief_A_FighterSpawn;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.BaseHullMod;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
@@ -17,8 +17,8 @@ public class ReclaimCore extends BaseHullMod {
     public void applyEffectsBeforeShipCreation(ShipAPI.HullSize hullSize, MutableShipStatsAPI stats, String id) {
         super.applyEffectsBeforeShipCreation(hullSize, stats, id);
         stats.getFighterRefitTimeMult().modifyFlat("Abyssal_XO",10000);
-        stats.getDynamic().getStat(Stats.REPLACEMENT_RATE_INCREASE_MULT).modifyMult(id, 0);
-        stats.getDynamic().getMod(Stats.FIGHTER_REARM_TIME_EXTRA_FLAT_MOD).modifyFlat(id, 1000);
+        //stats.getDynamic().getStat(Stats.REPLACEMENT_RATE_INCREASE_MULT).modifyMult(id, 0);
+        //stats.getDynamic().getMod(Stats.FIGHTER_REARM_TIME_EXTRA_FLAT_MOD).modifyFlat(id, 1000);
     }
 
     @Override
@@ -33,10 +33,12 @@ public class ReclaimCore extends BaseHullMod {
     @Override
     public void applyEffectsToFighterSpawnedByShip(ShipAPI fighter, ShipAPI ship, String id) {
         if (ship.getCustomData().containsKey(IDOfData1) && (boolean)ship.getCustomData().get(IDOfData1)) {
+            ship.getMutableStats().getDynamic().getStat(Stats.REPLACEMENT_RATE_INCREASE_MULT).modifyMult(id, 0);
+            ship.getMutableStats().getDynamic().getMod(Stats.FIGHTER_REARM_TIME_EXTRA_FLAT_MOD).modifyFlat(id, 1000);
             Global.getCombatEngine().removeEntity(fighter);
             ship.getLaunchBaysCopy().get(0).getWing().removeMember(fighter);
             //Logger log = Global.getLogger(Nano_Thief_Stats.class);
-            //log.info("removed a fighter that would have been spawned in");
+            Settings.log.info("removed a fighter that would have been spawned in");
             return;
         }
 
