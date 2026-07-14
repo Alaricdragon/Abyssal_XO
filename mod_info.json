@@ -2,7 +2,7 @@
 	"id":"Abyssal_XO", # internal id
 	"name":"Second In Command: Fragments Of Stolen Power", # displayed to the player
 	"author":"Alricdragon",
-	"version":"0.1.24",
+	"version":"0.1.25",
 	"description":"Gain a fragment of forbidden power",
 	"gameVersion":"0.98a-RC5",
 	"dependencies": [

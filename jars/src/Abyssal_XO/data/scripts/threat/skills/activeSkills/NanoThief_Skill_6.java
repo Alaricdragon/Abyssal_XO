@@ -19,6 +19,7 @@ import com.fs.starfarer.api.loading.VariantSource;
 import com.fs.starfarer.api.loading.WingRole;
 import com.fs.starfarer.api.util.Misc;
 import org.lwjgl.util.vector.Vector2f;
+import second_in_command.specs.SCBaseSkillPlugin;
 
 public class NanoThief_Skill_6 extends NanoThief_SkillBase{
     public NanoThief_Skill_6(NanoThief_ShipSkills skills, ShipAPI ship) {
@@ -44,9 +45,21 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         recharge = skills.stats.OF_productionTime*buildTimeMulti;
         cooldown = recharge;
     }
+    public static int getFighterWingSize(Nano_Thief_Stats spec, FighterWingSpecAPI a){
+        int size = a.getNumFighters();
+        Settings.log.info("not looking for the skill..");
+        if (a.getNumFighters() > 3 && spec.scData != null){
+            Settings.log.info("looking for the skill...");
+            for (SCBaseSkillPlugin b : spec.scData.getAllActiveSkillsPlugins()) if (b.getId().equals("sc_strikecraft_swarm_deployment")){
+                Settings.log.info("got the skill lol.");
+                size++;
+            }
+        }
+        return size;
+    }
     public static void getStats(Nano_Thief_Stats spec, FighterWingSpecAPI a){
         spec.OF_fighterHullSpec = a.getVariant().getHullSpec();
-        spec.OF_wingSize = a.getNumFighters();
+        spec.OF_wingSize = getFighterWingSize(spec, a);
         spec.OF_fighterToBuild = a.getId();
         if (a.getId().equals(Settings.NANO_THIEF_BASEWING)){
             spec.OF_swarmCost = NanoThief_6.BASESWARM_COST;

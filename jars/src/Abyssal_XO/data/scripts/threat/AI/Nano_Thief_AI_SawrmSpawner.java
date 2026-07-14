@@ -1,5 +1,6 @@
 package Abyssal_XO.data.scripts.threat.AI;
 
+import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.Utils;
 import Abyssal_XO.data.scripts.combatability.CombatabilityUtility;
 import Abyssal_XO.data.scripts.hullmods.SICSkillControllerBackup;
@@ -187,8 +188,21 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
         if (bay == null || bay.getWing() == null) return;
         int count = bay.getNumLost();
         count+=bay.getWing().getWingMembers().size();
-
-        if (count >= wingSize){
+        //int maxTotal = bay.getExtraDeploymentLimit();
+        //Settings.log.info("got wingsize as: "+wingSize);
+        //Settings.log.info("got wing size as per data: "+bay.getWing().getSpec().getNumFighters());
+        //Settings.log.info("Got deploy limit as: "+bay.getExtraDeploymentLimit());
+        //Settings.log.info("Got exstra deployments as: "+bay.getExtraDeployments());
+        //Settings.log.info("Got fast as: "+bay.getFastReplacements());
+        //Settings.log.info("Extra time: "+bay.getExtraDuration());
+        /*if (bay.getFastReplacements() <= wingSize){
+            bay.setFastReplacements(wingSize+10);//go go go!
+            bay.setExtraDeployments(wingSize+10);
+            bay.setExtraDeploymentLimit(wingSize+10);
+            bay.setExtraDuration(99999999);
+        }*/
+        //todo: what the fuck is going on here anyways????? I am very confused... am I removing the fast deployments?
+        if (count >= bay.getExtraDeploymentLimit()){//to allow for synergy between this and fighter increase skills.
             stage = 1;
             ship.setCustomData(IDOfData1,true);
             ship.setPullBackFighters(false);
@@ -221,6 +235,7 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
         for (int a = 0; a < fighters.size(); a++){
             ShipAPI b = fighters.get(a);
             if (!b.isAlive() || b.isHulk() || b.isFinishedLanding()){
+                //log.info("  removed fighter as it is gone in some fashion.");
                 if (b.isFinishedLanding()) {
                     //log.info("  returned fighter as reclaim. yay!");
                     returnFighterAsReclaim();

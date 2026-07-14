@@ -23,6 +23,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.util.vector.Vector2f;
 
+import static Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_6.getFighterWingSize;
+
 public class NanoThief_Skill_7 extends NanoThief_SkillBase{
     public float cooldown = 0;
     //public boolean onCooldown = false;
@@ -80,7 +82,7 @@ public class NanoThief_Skill_7 extends NanoThief_SkillBase{
     }
     public static void getStats(Nano_Thief_Stats spec, FighterWingSpecAPI a){
         spec.DF_fighterHullSpec = a.getVariant().getHullSpec();
-        spec.DF_wingSize = a.getNumFighters();
+        spec.DF_wingSize = getFighterWingSize(spec, a);
         spec.DF_fighterToBuild = a.getId();
         if (a.getId().equals(Settings.NANO_THIEF_BASEWING)){
             spec.DF_swarmCost = NanoThief_6.BASESWARM_COST;
