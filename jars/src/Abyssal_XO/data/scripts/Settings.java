@@ -10,7 +10,8 @@ import java.util.ArrayList;
 public class Settings {
     public static final String SIC_CONTROL_HULLMOD = "Abussal_XO_SIC_controler";//"sc_skill_controller";
     public static final String MEMKEY_NANOTHIEF_STATUS = "$Abyssal_XO_GOT_NANOTHIEF";
-
+    public static final String MEMKEY_NANOTHIEF_BOSSFLEET = "$Abyssal_XO_NF_BOSS";
+    public static final String MEMKEY_NANOTHIEF_BOSSSCRIPT = "$Abyssal_XO_NF_BOSS_SCRIPT";
 
     public static Logger log = Global.getLogger(Settings.class);
     public static final int[] NANO_THIEF_RECLAIM_GAIN = {
