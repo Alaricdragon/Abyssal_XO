@@ -9,13 +9,17 @@ import com.fs.starfarer.api.impl.campaign.ids.Tags;
 import com.fs.starfarer.api.impl.combat.threat.DisposableThreatFleetManager;
 import com.fs.starfarer.api.impl.combat.threat.ThreatFleetBehaviorScript;
 import com.fs.starfarer.api.util.Misc;
+import com.fs.starfarer.api.util.WeightedRandomPicker;
 import org.lwjgl.util.vector.Vector2f;
 import second_in_command.SCData;
 import second_in_command.SCUtils;
+import second_in_command.misc.PotentialPick;
 import second_in_command.misc.SCSettings;
-import second_in_command.specs.SCOfficer;
+import second_in_command.specs.*;
 
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static Abyssal_XO.data.scripts.Settings.MEMKEY_NANOTHIEF_BOSSFLEET;
 import static Abyssal_XO.data.scripts.Settings.MEMKEY_NANOTHIEF_BOSSSCRIPT;
@@ -26,7 +30,11 @@ public class ThreatBossCreater extends BaseCampaignEventListener {
         2: make sure the boss is not removed on same system enter.
         3: make sure the AI switches back to patroling on system leave.
         4: make a 'boss difficulty' slider for options.
-
+        -
+        dev:
+        1: copy the eq for the skills into starlords. The old eq suckss.
+        2: copy the eq for skills into second in command. (modified to be 'add this number of skills').
+        3: in SiC, add a boolean setting for the 'multi sectional ship data adding' code.
      */
 
     private CampaignFleetAPI fleet;
@@ -118,18 +126,31 @@ public class ThreatBossCreater extends BaseCampaignEventListener {
         fleetTemp.addScript(script);
 
         SCData scData = SCUtils.getFleetData(fleetTemp);
-        for (SCOfficer a : scData.getActiveOfficers()) scData.removeOfficerFromFleet(a);
+        //for (SCOfficer a : scData.getActiveOfficers()) scData.removeOfficerFromFleet(a);
         //SCSettings.Companion.getAdditionalSlotForNPCFleets();
         //SCSettings.Companion.getAdditionalLevel();
+        ArrayList<SCOfficer> officers = new ArrayList<>();
         for (int a = 0; a < (SCSettings.Companion.getAdditionalSlotForNPCFleets() ? 4 : 3); a++){
+            //ArrayList<String> picked = new ArrayList<>();
             //triple threat = )
             SCOfficer officer = new SCOfficer(Global.getSector().getFaction("threat").createRandomPerson(), "Abyssal_NanoThief");
-            officer.setSkillPoints(SCSettings.Companion.getAdditionalLevel() ? 6 : 5);
-            officer.levelUpIfNeeded();
-            scData.addOfficerToFleet(officer);
-            scData.setOfficerInSlot(a,officer);
+            //officer.setSkillPoints(SCSettings.Companion.getAdditionalLevel() ? 6 : 5);
+            //officer.levelUpIfNeeded();
+            /*officer.getActiveSkillPlugins();
+            for (int b = 0; b < (officer.getMaxLevel()); b++){
+                officer.getAptitudePlugin().guaranteePick(fleetTemp);
+                //String newSkill = pickRandomSkill(officer, picked);
+                //if (newSkill != null) {
+                //    officer.addSkill(newSkill);
+                //    picked.add(newSkill);
+                //}
+            }
+            //scData.addOfficerToFleet(officer);
+            scData.setOfficerInSlot(a,officer);*/
             //todo: level up officers.
+            officers.add(officer);
         }
+        pickOfficerSkills(officers,SCSettings.Companion.getAdditionalLevel() ? 6 : 5,fleetTemp,scData);
         Settings.log.info("NF_BOSS_CREATE. added SiC officers. now has: "+scData.getActiveOfficers().size()+" Officers.");
         return fleetTemp;
     }
@@ -147,5 +168,117 @@ public class ThreatBossCreater extends BaseCampaignEventListener {
         //script = null;
         saveFleet();//save fleet if required. a just in case for when I destroy the fleet.
         return true;
+    }
+
+    private void pickOfficerSkills(ArrayList<SCOfficer> officers, int skillCount, CampaignFleetAPI fleetTemp,SCData scData){
+
+        for (SCOfficer officer : officers) {
+
+
+
+            ArrayList<SCBaseSkillPlugin> unlocked = new ArrayList<>();
+            for (int i = 0; i < skillCount; i++) {
+                WeightedRandomPicker<PotentialPick> unlockable = new WeightedRandomPicker<>();
+                unlockable.setRandom(Misc.random);
+
+                SCBaseAptitudePlugin aptitude = officer.getAptitudePlugin();
+
+                /*aptitude.clearSections()
+                aptitude.createSections()*/
+                List<SCAptitudeSection> sections = aptitude.getSections();
+
+                //int skillsInAptitude = sections.flatMap { it.getSkills() }
+                //int unlockedSkillsCount = unlocked.count { skillsInAptitude.contains(it.getId()) }
+
+                //if (unlockedSkillsCount >= 5) continue //Dont let it get more than 5 skills
+
+                int unlockedSkillsCount = unlocked.size();
+                for (SCAptitudeSection section : sections) {
+                    if (unlockedSkillsCount >= section.getRequiredPreviousSkills()) {
+                        ArrayList<String> skills = section.getSkills();
+                        //Settings.log.info("-adding possable skills as: "+skills);
+
+                        //Skip Section if one of its skills is unlocked and the section doesnt allow for more
+                        boolean canChooseMultiple = section.getCanChooseMultiple();
+                        boolean forceContinue = false;
+                        if (!canChooseMultiple) for (String a: officer.getActiveSkillIDs()) for (String b : section.getSkills()) if (a.equals(b) || forceContinue){
+                            forceContinue = true;
+                            break;
+                        }
+                        if (forceContinue) continue;
+                        /*if (!canChooseMultiple && unlocked.map { it.getId() }.any { skills.contains(it) }) {
+                            continue;
+                        }*/
+
+                        for (String skill : skills) {
+                            if (officer.getActiveSkillIDs().contains(skill)) continue;
+                            SCBaseSkillPlugin plugin = SCSpecStore.getSkillSpec(skill).getPlugin();
+                            unlockable.add(new PotentialPick(officer, plugin), plugin.getNPCSpawnWeight(fleetTemp));
+                        }
+                    }
+                }
+                PotentialPick pick = unlockable.pick();
+                if (pick != null) {
+                    pick.getOfficer().addSkill(pick.getSkill().getId());
+                    unlocked.add(pick.getSkill());
+                }
+
+            }
+
+
+
+
+        }
+
+
+        var slotId = 0;
+        for (SCOfficer officer : officers) {
+            //todo: this is compleatly fucking broken. please fix.
+            //  note: the ordering eq works, but somewere along the line it just fails. unknown reasons
+
+            //Settings.log.info("got skills as: "+officer.getActiveSkillIDs().toString());
+            Stream<String> list = officer.getActiveSkillIDs().stream().sorted(new Comparator<String>() {
+                @Override
+                public int compare(String o1, String o2) {
+                    SCSkillSpec a = SCSpecStore.getSkillSpec(o1);
+                    SCSkillSpec b = SCSpecStore.getSkillSpec(o2);
+                    int out = 1;
+                    assert a != null;
+                    assert b != null;
+                    if (a.getOrder() > b.getOrder()) out = -1;
+                    if (a.getOrder() == b.getOrder()) out = 0;
+                    //Settings.log.info("got "+a.getId()+", "+b.getId()+" as order: "+out);
+                    return out;
+                }
+            });
+            //Settings.log.info("got second list as: "+list);
+            Set<String> blaa = new HashSet<>(list.toList());
+            officer.setActiveSkillIDs(blaa);
+            scData.addOfficerToFleet(officer);
+            scData.setOfficerInSlot(slotId, officer);
+            slotId += 1;
+        }
+
+    }
+
+    private static String pickRandomSkill(SCOfficer officer, List<String> unlockedSkills) {
+        WeightedRandomPicker<String> unlockableSkills = new WeightedRandomPicker<>();
+        SCBaseAptitudePlugin aptitude = officer.getAptitudePlugin();
+        //aptitude.clearSections();
+        aptitude.createSections();
+        List<SCAptitudeSection> sections = aptitude.getSections();
+        for (SCAptitudeSection section : sections) {
+            for (String skillId : section.getSkills()) {
+                if (!unlockedSkills.contains(skillId)) {
+                    SCSkillSpec skillSpec = SCSpecStore.getSkillSpec(skillId);
+                    if (skillSpec != null) {
+                        unlockableSkills.add(skillId, skillSpec.getNpcSpawnWeight());
+                    } else {
+                        unlockableSkills.add(skillId);
+                    }
+                }
+            }
+        }
+        return unlockableSkills.pick();
     }
 }
