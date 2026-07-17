@@ -36,9 +36,10 @@ public class SiC_NanoThief_Plugin extends BaseModPlugin {
         //todo: add checks to make sure this is still required.
         if (!Global.getSector().getListenerManager().hasListenerOfClass(EndBattleListiner.class))Global.getSector().addListener(new EndBattleListiner(false));
     }
-    private void addThreatBossCreater(){
+    public static void addThreatBossCreater(){
         //todo: add checks to add this only if required.
         //      note: for now its always active, just to see how its wokring in log.
+        if (!StoredSettings.tempEnableBoss) return;//prevent boss activation its not ready yet.
         if (!Global.getSector().getListenerManager().hasListenerOfClass(ThreatBossCreater.class))Global.getSector().addListener(new ThreatBossCreater(false));
     }
 

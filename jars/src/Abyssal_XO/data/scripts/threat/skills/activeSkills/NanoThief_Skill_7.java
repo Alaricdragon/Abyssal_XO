@@ -26,6 +26,10 @@ import org.lwjgl.util.vector.Vector2f;
 import static Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_6.getFighterWingSize;
 
 public class NanoThief_Skill_7 extends NanoThief_SkillBase{
+    public void addRechargeTime(double percent){
+        cooldown -= recharge;
+        if (cooldown < 0) cooldown = 0;
+    }
     public float cooldown = 0;
     //public boolean onCooldown = false;
     public boolean waiting = false;

@@ -3,6 +3,8 @@ CORE_Header,,Header,Enabled attrubites and odds of spawning,,,,,Features
 CORE_alwaysGiveThreat,Force Threat to have the Nano Thief attribute,Boolean,true,,,,,Features
 CORE_oddsForThreat,Odds Threat have the Nano Thief attribute,Int,1,,Only used if force Threat to have the Nano Thief attribute is false,0,10,Features
 CORE_oddsForOther,Odds random fleets have the Nano Thief attribute,Int,0,,,0,10,Features
+CORE_Header_2,,Header,Boss fight settings,,,,,Features
+CORE_enableBossFight,Enable the Threat Boss. Exspermental,Boolean,false,,"Will hunt you down in threat systems. Is just a large fleet for now, and might crash your game. Not connected to any other systems and presently being worked on.",,,Features
 ,,,,,,,,
 NA_BASE_Header,,Header,Base Skill,,,,,Nano Thief: Base Skill
 NA_BASE_reclaimOnStartPerDP,Reclaim ships start with per deployment point per skill,Int,10,,,1,1000,Nano Thief: Base Skill
@@ -140,9 +142,9 @@ NA_Mastery_rechargesizeMulti_cr,Recharge time multi (cruiser),Double,1,,,0.1,10,
 NA_Mastery_rechargesizeMulti_ca,Recharge time multi (capital),Double,1.25,,,0.1,10,Nano Thief: Mastery
 NA_Mastery_Header_costPerDP,,Header,cost per dp,,,,,Nano Thief: Mastery
 NA_Mastery_costPerDP_f,Reclaim cost per deployment point (frigate),Int,250,,,1,10000,Nano Thief: Mastery
-NA_Mastery_costPerDP_d,Reclaim cost per deployment point (destroyer),Int,500,,,1,10000,Nano Thief: Mastery
-NA_Mastery_costPerDP_cr,Reclaim cost per deployment point (cruiser),Int,750,,,1,10000,Nano Thief: Mastery
-NA_Mastery_costPerDP_ca,Reclaim cost per deployment point (capital),Int,1000,,,1,10000,Nano Thief: Mastery
+NA_Mastery_costPerDP_d,Reclaim cost per deployment point (destroyer),Int,375,,,1,10000,Nano Thief: Mastery
+NA_Mastery_costPerDP_cr,Reclaim cost per deployment point (cruiser),Int,500,,,1,10000,Nano Thief: Mastery
+NA_Mastery_costPerDP_ca,Reclaim cost per deployment point (capital),Int,625,,,1,10000,Nano Thief: Mastery
 NA_Mastery_Header_costBase,,Header,base cost,,,,,Nano Thief: Mastery
 NA_Mastery_costBase_f,Base reclaim cost (frigate),Int,500,,,1,10000,Nano Thief: Mastery
 NA_Mastery_costBase_d,Base reclaim cost (destroyer),Int,1000,,,1,10000,Nano Thief: Mastery

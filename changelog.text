@@ -1,4 +1,17 @@
 V0.1.26:
+    fixes:
+        fixes simulacrum fighter wings only deploying one fighter when 'swarm deployment' skill is not active.
+        added protection to prevent issues with simulacrum fighter wings triggering centen SiC effects.
+    balance:
+        mastery:
+            cost per op:
+                destroyer: 500  -> 375
+                cruiser:   750  -> 500
+                capital:   1000 -> 625
+        reasons:
+            for mastery, I think I made the reclaim cost to mush for larger ships. so I changed it from 2/4/6/8 dp worth of reclaim to 2/3/4/5 dp worth of reclaim.
+    new:
+        added a setting to enable the experimental threat boss fleet. It might crash your game, completely untested, and the quest for it is not implemented in any way. have fun.
 V0.1.25:
     fixes:
         fixed fighter wing size bonuses not working correctly.

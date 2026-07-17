@@ -45,6 +45,10 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         recharge = skills.stats.OF_productionTime*buildTimeMulti;
         cooldown = recharge;
     }
+    public void addRechargeTime(double percent){
+        cooldown -= recharge;
+        if (cooldown < 0) cooldown = 0;
+    }
     public static int getFighterWingSize(Nano_Thief_Stats spec, FighterWingSpecAPI a){
         int size = a.getNumFighters();
         Settings.log.info("not looking for the skill..");

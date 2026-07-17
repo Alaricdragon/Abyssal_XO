@@ -5,9 +5,11 @@ import Abyssal_XO.data.scripts.Utils;
 import Abyssal_XO.data.scripts.combatability.CombatabilityUtility;
 import Abyssal_XO.data.scripts.hullmods.SICSkillControllerBackup;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
+import Abyssal_XO.data.scripts.threat.skills.NanoThief_6;
 import Abyssal_XO.data.scripts.threat.skills.Nano_Thief_Skill_Base;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_SkillBase;
+import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_6;
 import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_7;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
@@ -36,11 +38,14 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
     private double returnReclaim;
     private int wingSize;
     public float cost_per_fighter;
+    private double recharge_per_fighter;
 
     private ArrayList<ShipAPI> arrayOfCores;
+    private NanoThief_SkillBase skill;
     public Nano_Thief_AI_SawrmSpawner(ShipAPI ship, ShipAPI motherShip, String wing, Nano_Thief_Stats stats, boolean isOffensive, NanoThief_SkillBase skill){
         //todo: please note that removing a fighter from a wing forces it to return to its carrier. possability of useing a holder instead of this mess is present again, but needs testing
         //      example: for (ShipAPI a : fighters) ship.getLaunchBaysCopy().get(0).getWing().removeMember(a); will return a wing to the carrier
+        this.skill = skill;
         this.ship = ship;
         this.motherShip = motherShip;
         this.stats = stats;
@@ -52,12 +57,14 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
             arrayOfCores = stats.getOffinciveFighterCores();
             wingSize = stats.OF_wingSize;
             cost_per_fighter = stats.OF_swarmCost / wingSize;
+            recharge_per_fighter = stats.OF_recharge / wingSize;
         }else{
             timeToReturn = stats.DF_ttl;
             returnReclaim = stats.DF_recyclePerFighter;
             arrayOfCores = ((NanoThief_Skill_7)skill).getInterface7().defenders;;
             wingSize = stats.DF_wingSize;
             cost_per_fighter = stats.DF_swarmCost / wingSize;
+            recharge_per_fighter = stats.DF_recharge / wingSize;
             float speed = Global.getSettings().getFighterWingSpec(wing).getVariant().getHullSpec().getEngineSpec().getMaxSpeed();
             float acceleration = Global.getSettings().getFighterWingSpec(wing).getVariant().getHullSpec().getEngineSpec().getAcceleration();
             float deceleration = Global.getSettings().getFighterWingSpec(wing).getVariant().getHullSpec().getEngineSpec().getDeceleration();
@@ -72,6 +79,7 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
         //log.info("got return reclaim as: "+returnReclaim);
         engine = Global.getCombatEngine();
         ship.setCustomData(IDOfData2,this);
+        ship.addTag(Settings.NANO_THIEF_ONLY_FIGHTER_TAG);
         SICSkillControllerBackup.addHullmodAndData_Chose(ship,stats.scData);
         /*if (Utils.isCurrectSiCVersion()){
             //log.info("IS THIS RUNNING OR NOT?!?!?: "+Utils.isCurrectSiCVersion());
@@ -104,6 +112,14 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
             return;
         }
         skills.addReclaim(returnReclaim);
+        if (isOffensive){
+            NanoThief_Skill_6 skillt = (NanoThief_Skill_6) skill;
+            skillt.addRechargeTime(recharge_per_fighter);
+        }else{
+            NanoThief_Skill_7 skillt = (NanoThief_Skill_7) skill;
+            skillt.addRechargeTime(recharge_per_fighter);
+        }
+        //note: add additonal 'cooldown' time to the thing
     }
     private void displayStats(String startString,String indents,MutableStat stats){
         log.info(indents+startString+"getting multi mods");
@@ -201,8 +217,8 @@ public class Nano_Thief_AI_SawrmSpawner implements ShipAIPlugin {
             bay.setExtraDeploymentLimit(wingSize+10);
             bay.setExtraDuration(99999999);
         }*/
-        //todo: what the fuck is going on here anyways????? I am very confused... am I removing the fast deployments?
-        if (count >= bay.getExtraDeploymentLimit()){//to allow for synergy between this and fighter increase skills.
+        int size = Math.max(bay.getExtraDeploymentLimit(),wingSize);
+        if (count >= size){//to allow for synergy between this and fighter increase skills.
             stage = 1;
             ship.setCustomData(IDOfData1,true);
             ship.setPullBackFighters(false);

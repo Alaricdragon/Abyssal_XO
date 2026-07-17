@@ -35,6 +35,9 @@ public class ThreatBossCreater extends BaseCampaignEventListener {
         1: copy the eq for the skills into starlords. The old eq suckss.
         2: copy the eq for skills into second in command. (modified to be 'add this number of skills').
         3: in SiC, add a boolean setting for the 'multi sectional ship data adding' code.
+        -
+        4: make it so simulacrum fighter spawners only run code for the 'on fighter creation'. To avoid strange effects.
+        5: make sure the adder is working on the first ship spawned. It might not be for some strange reason? I will have to look into this.
      */
 
     private CampaignFleetAPI fleet;
