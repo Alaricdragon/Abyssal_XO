@@ -65,10 +65,6 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
     }
     @Override
     public void applyEffectsAfterShipCreation(SCData data, ShipAPI ship, ShipVariantAPI variant, String id) {
-        if (!Global.getCombatEngine().hasPluginOfClass(NanoThief_BattleListener.class)) {
-            Global.getCombatEngine().addPlugin(new NanoThief_BattleListener());
-            if (!Utils.isCurrectSiCVersion()) Global.getCombatEngine().getListenerManager().addListener(new NanoThief_ShipSpawnedListener());
-        }
         log.info("attempting to add listiner to ship of id,name: "+ship.getId()+", "+ship.getName()+", "+ship.getHullSpec().getHullId()+", "+ship.getHullSize());
         if (ship.getParentStation() != null || ship.getParentPieceId() != null){
             log.info("NOT ADDING LISTENER FOR A SINGLE SHIP, BECAUSE IT IS A MODULE: "+ship.getId()+", "+ship.getName());
@@ -120,6 +116,10 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
 
     @Override
     public void applyEffectsBeforeShipCreation(SCData data, MutableShipStatsAPI stats, ShipVariantAPI variant, ShipAPI.HullSize hullSize, String id) {
+        if (!Global.getCombatEngine().hasPluginOfClass(NanoThief_BattleListener.class)) {
+            Global.getCombatEngine().addPlugin(new NanoThief_BattleListener());
+            if (!Utils.isCurrectSiCVersion()) Global.getCombatEngine().getListenerManager().addListener(new NanoThief_ShipSpawnedListener());
+        }
         //if (!Global.getCurrentState().equals(GameState.COMBAT)) return;
         //log.info("THIS IS AFTER SHIP CREATION");
     }

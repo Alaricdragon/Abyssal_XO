@@ -51,6 +51,7 @@ public class Nano_Thief_Stats {
     public float DF_productionTime = 1;
     public float DF_swarmCost = 100;
     public float DF_recyclePerFighter = 0;
+    public double DF_rechargePerFighter = 0;
     public float DF_ttl = 60;
     public String DF_fighterToBuild = Settings.NANO_THIEF_BASEWING;//Settings.NANO_THIEF_PALYER_BASEWING;
     public ShipHullSpecAPI DF_fighterHullSpec;
@@ -60,6 +61,7 @@ public class Nano_Thief_Stats {
     public float OF_productionTime = 1;
     public float OF_swarmCost = 100;
     public float OF_recyclePerFighter = 0;
+    public double OF_rechargePerFighter = 0;
     public float OF_ttl = 60;
     public float OF_DpPerFighter = 10;
     @Deprecated

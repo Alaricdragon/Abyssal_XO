@@ -58,6 +58,7 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
     public static double CustomSwarm_BUILDTIME_BASE = 10;
     public static double CustomSwarm_RefundPercent = 0.5f;
     public static double CustomSwarm_RefundPercent_Bomber = CustomSwarm_RefundPercent;
+    public static double CustomSwarm_RechargePercent = 0.5f;
     public static int CustomSwarm_TTL = 60;//swrams get exstea base TTL because they already die from shoting wepons.
     public static final int BASESWARM_COST = 100;
     public static final int BASESWARM_BUILDTIME = 10;
@@ -159,6 +160,7 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
     public void addSimWinFactorsToTooltip(SCData scData, TooltipMakerAPI tooltip,boolean offincive){
         String line3a = ""+(int)CustomSwarm_TTL;
         String line4a = ((int)(CustomSwarm_RefundPercent*100))+"%";
+        String line4b = ((int)(CustomSwarm_RechargePercent*100))+"%";
         //String line4b = ((int)(CustomSwarm_RefundPercent_Bomber*100))+"%";
         String line7a = ((int)(CustomSwarm_COST_BASE))+"";
         String line7b = ((int)(CustomSwarm_COST_PEROP))+"";
@@ -167,7 +169,7 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
         String line8b = ((int)(CustomSwarm_BUILDTIME_PREREFIT*100)/100)+"";
         tooltip.addPara("Simulacrum Fighter Wings act as normal fighter wings with the following modifications:",0,Misc.getGrayColor(),Misc.getHighlightColor());
         tooltip.addPara("   -can only be active for %s seconds before reutrning to the nearest fiendly ship",0,Misc.getGrayColor(),Misc.getHighlightColor(),line3a);
-        tooltip.addPara("   -will refund %s of there reclaim cost when returning to a firendly ship",0,Misc.getGrayColor(),Misc.getHighlightColor(),line4a);
+        tooltip.addPara("   -will refund %s reclaim cost and charge ability by %s when returning to a firendly ship",0,Misc.getGrayColor(),Misc.getHighlightColor(),line4a,line4b);
         tooltip.addPara("   -do not replace lost fighters in a wing.",0,Misc.getGrayColor(),Misc.getHighlightColor());
         tooltip.addPara("   -cost %s + %s per op of the fighter wing",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line7a,line7b);
         tooltip.addPara("   -buildtime is %s + %s multiplied by combined replacement rate of every fighter in the wing",0,Misc.getGrayColor(),Misc.getNegativeHighlightColor(),line8a,line8b);

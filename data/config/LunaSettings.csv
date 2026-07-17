@@ -62,7 +62,8 @@ NA_DSP_CustomSwarm_COST_PEROP,Simulacrum fighter reclaim cost per ordnace ponit,
 NA_DSP_CustomSwarm_BUILDTIME_PREREFIT,Simulacrum fighter build time multi,Double,1,,base build time is refit time multiplyed by wing size,0.1,5,Nano Thief: Decentralized Swarms
 NA_DSP_CustomSwarm_BUILDTIME_BASE,Simulacrum fighter base build time,Int,10,,,0,100,Nano Thief: Decentralized Swarms
 NA_DSP_CustomSwarm_RefundPercent,Simulacrum fighter refund when landing,Double,0.5,,,0,1,Nano Thief: Decentralized Swarms
-NA_DSP_CustomSwarm_RefundPercent_Bomber,Simulacrum fighter refune when landing for bombers,Double,0.5,,,0,1,Nano Thief: Decentralized Swarms
+NA_DSP_CustomSwarm_RefundPercent_Bomber,Simulacrum fighter refund when landing for bombers,Double,0.5,,,0,1,Nano Thief: Decentralized Swarms
+NA_DSP_CustomSwarm_RechargePercent,Simulacrum fighter recharge when landing,Double,0.5,,,0,1,Nano Thief: Decentralized Swarms
 #NA_DSP_,Simulacrum fighter base swarm stuff please ignore,Int,2,,,0,10,Nano Thief: Decentralized Swarms
 #NA_DSP_,Simulacrum fighter base swarm stuff please ignore,Int,3,,,0,10,Nano Thief: Decentralized Swarms
 NA_DS_Header_1,,Header,Decentralized Swarm Production,,please note: simulacrum fighter settings are stored in Decentralized Swarm Production,,,Nano Thief: Decentralized Swarms

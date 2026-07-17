@@ -2,16 +2,22 @@ V0.1.26:
     fixes:
         fixes simulacrum fighter wings only deploying one fighter when 'swarm deployment' skill is not active.
         added protection to prevent issues with simulacrum fighter wings triggering centen SiC effects.
+        fixed a issue were a wing would never be marked as defeated if a fighter docked before all its wingmates were deployed.
+        fixed SiC skills not being applied to simulacrum ships and fighters if only one ship is deployed from a giving side.
     balance:
-        mastery:
+        Simulacrum fighters:
+            now recharge the skill by 50% when a wing docks
+        Mastery:
             cost per op:
                 destroyer: 500  -> 375
                 cruiser:   750  -> 500
                 capital:   1000 -> 625
         reasons:
             for mastery, I think I made the reclaim cost to mush for larger ships. so I changed it from 2/4/6/8 dp worth of reclaim to 2/3/4/5 dp worth of reclaim.
-    new:
+            for offencive and defensive swarms, high build time bombers felt worthless. This should also help with high build time not bombers, if they can survive the required time.
+    settings:
         added a setting to enable the experimental threat boss fleet. It might crash your game, completely untested, and the quest for it is not implemented in any way. have fun.
+
 V0.1.25:
     fixes:
         fixed fighter wing size bonuses not working correctly.
