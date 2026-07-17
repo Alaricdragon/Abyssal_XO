@@ -14,6 +14,7 @@ import second_in_command.SCData;
 import second_in_command.SCUtils;
 import second_in_command.specs.SCBaseSkillPlugin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static Abyssal_XO.data.scripts.Settings.NANO_THIEF_SIC_HULLMOD_DATA_KEY;
@@ -29,10 +30,18 @@ public class SICSkillControllerBackup extends BaseHullMod {
         /*for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()){
             //Settings.log.info("HERE: got active skills as: "+skill.getId()+", "+skill.getName());
         }*/
-        if (Utils.isCurrectSiCVersion()) CombatabilityUtility.addSiC_MidFight(ship,data);
-        addShipAfterShipSpawns(ship,data);
-    }
+        if (!Utils.isCurrectSiCVersion() || ship.hasTag(Settings.NANO_THIEF_ONLY_FIGHTER_TAG)) addShipAfterShipSpawns(ship,data);
+        else CombatabilityUtility.addSiC_MidFight(ship,data);
 
+    }
+    public static String[] fighter_allowed_beforeShipCreation = {
+    };
+    public static String[] fighter_allowedAfterShipCreation = {
+
+    };
+    public static String[] fighter_allowed_everyFrame = {
+            "sc_strikecraft_swarm_deployment"
+    };
     /*
     /// adds the fleet to this hullmod -before- the ship gets is added to the combat engin.
     public static void addShipBeforeShipSpawns(FleetMemberAPI ship, CampaignFleetAPI fleet){
@@ -45,7 +54,7 @@ public class SICSkillControllerBackup extends BaseHullMod {
     }*/
     /// adds the ship to this hullmod after the ship is added to the combat engine
     public static void addShipAfterShipSpawns(ShipAPI ship, SCData data){
-        if (Utils.isCurrectSiCVersion()) return;
+        if (Utils.isCurrectSiCVersion() && !ship.hasTag(Settings.NANO_THIEF_ONLY_FIGHTER_TAG)) return;
         if (ship == null || ship.getFleetMember() == null || ship.getFleetMember().getVariant() == null) return;//for command shuttle
         Settings.log.info("attempting to add hullmods to a single ship of name: "+ship.getName()+", id: "+ship.getFleetMember().getId()+", hull id: "+ship.getHullSpec().getHullId());
         Settings.log.info(" ships fleet starting as: "+(ship.getFleetMember() != null && ship.getFleetMember().getFleetData() != null && ship.getFleetMember().getFleetData().getFleet() != null ? ship.getFleetMember().getFleetData().getFleet().getId() : "N/A"));
@@ -64,12 +73,22 @@ public class SICSkillControllerBackup extends BaseHullMod {
         ship.setCustomData(NANO_THIEF_SIC_HULLMOD_DATA_KEY,data);
         //SCData data = getData(ship.getFleetMember());
         if (data == null) return;
-
-        for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()) {
-            skill.applyEffectsBeforeShipCreation(data, ship.getFleetMember().getStats(), ship.getVariant(), ship.getHullSize(), Settings.SIC_CONTROL_HULLMOD+"_"+skill.getId());
+        if (ship.hasTag(Settings.NANO_THIEF_ONLY_FIGHTER_TAG)) {
+            //this is for fighter cores, because some skills do require this data to be applyed to fighters, but some skills can 100% not be added in this capacity to fighters.
+            //its a combatability thing. only effects my fighter cores.
+            for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()) {
+                for (String a : fighter_allowed_beforeShipCreation) if (a.equals(skill.getId())) skill.applyEffectsBeforeShipCreation(data, ship.getFleetMember().getStats(), ship.getVariant(), ship.getHullSize(), Settings.SIC_CONTROL_HULLMOD + "_" + skill.getId());
+            }
+            for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()) {
+                for (String a : fighter_allowedAfterShipCreation) if (a.equals(skill.getId())) skill.applyEffectsAfterShipCreation(data, ship, ship.getVariant(), Settings.SIC_CONTROL_HULLMOD + "_" + skill.getId());
+            }
+            return;
         }
         for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()) {
-            skill.applyEffectsAfterShipCreation(data, ship, ship.getVariant(), Settings.SIC_CONTROL_HULLMOD+"_"+skill.getId());
+            skill.applyEffectsBeforeShipCreation(data, ship.getFleetMember().getStats(), ship.getVariant(), ship.getHullSize(), Settings.SIC_CONTROL_HULLMOD + "_" + skill.getId());
+        }
+        for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()) {
+            skill.applyEffectsAfterShipCreation(data, ship, ship.getVariant(), Settings.SIC_CONTROL_HULLMOD + "_" + skill.getId());
         }
     }
     /*public void setFleet(FleetMemberAPI memberAPI){//might need some more things here???
@@ -122,6 +141,15 @@ public class SICSkillControllerBackup extends BaseHullMod {
             //if (ship.getMutableStats().getFleetMember() != null)Settings.log.info(" -"+ship.getMutableStats().getFleetMember().getId());
             return;
         }
+        if (ship.hasTag(Settings.NANO_THIEF_ONLY_FIGHTER_TAG)){
+            //this is for fighter cores, because some skills do require this data to be applyed to fighters, but some skills can 100% not be added in this capacity to fighters.
+            //its a combatability thing. only effects my fighter cores.
+            for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()) {
+                for (String a : fighter_allowedAfterShipCreation) if (a.equals(skill.getId())) skill.applyEffectsAfterShipCreation(data, ship, ship.getVariant(), id+"_"+skill.getId());
+                //skill.applyEffectsBeforeShipCreation(data, stats, stats.getVariant(), hullSize, "${id}_${skill.getId()}")
+            }
+            return;
+        }
         for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()) {
             skill.applyEffectsAfterShipCreation(data, ship, ship.getVariant(), id+"_"+skill.getId());
             //skill.applyEffectsBeforeShipCreation(data, stats, stats.getVariant(), hullSize, "${id}_${skill.getId()}")
@@ -152,6 +180,15 @@ public class SICSkillControllerBackup extends BaseHullMod {
         if (data == null){
             Settings.log.info("failed to get data (d)"+(ship.getFleetMember() != null ? ship.getFleetMember().getId() : "N/A"));
             Settings.log.info("-name, size, hull id:"+ship.getName()+", "+ship.getHullSpec().getHullSize()+", "+ship.getHullSpec().getHullId());
+            return;
+        }
+        if (ship.hasTag(Settings.NANO_THIEF_ONLY_FIGHTER_TAG)){
+            //this is for fighter cores, because some skills do require this data to be applyed to fighters, but some skills can 100% not be added in this capacity to fighters.
+            //its a combatability thing. only effects my fighter cores.
+            for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()) {
+                for (String a : fighter_allowed_everyFrame) if (a.equals(skill.getId())) skill.advanceInCombat(data, ship, amount);
+                //skill.applyEffectsBeforeShipCreation(data, stats, stats.getVariant(), hullSize, "${id}_${skill.getId()}")
+            }
             return;
         }
         for (SCBaseSkillPlugin skill : data.getAllActiveSkillsPlugins()) {

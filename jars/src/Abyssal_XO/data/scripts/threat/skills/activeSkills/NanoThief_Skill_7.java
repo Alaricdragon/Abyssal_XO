@@ -1,8 +1,6 @@
 package Abyssal_XO.data.scripts.threat.skills.activeSkills;
 
 import Abyssal_XO.data.scripts.Settings;
-import Abyssal_XO.data.scripts.Utils;
-import Abyssal_XO.data.scripts.hullmods.SICSkillControllerBackup;
 import Abyssal_XO.data.scripts.threat.AI.Nano_Thief_AI_SawrmSpawner;
 import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
 import Abyssal_XO.data.scripts.threat.skills.NanoThief_6;
@@ -23,9 +21,14 @@ import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.util.vector.Vector2f;
 
+import static Abyssal_XO.data.scripts.threat.skills.NanoThief_6.CustomSwarm_RechargePercent;
 import static Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_Skill_6.getFighterWingSize;
 
 public class NanoThief_Skill_7 extends NanoThief_SkillBase{
+    public void addRechargeTime(double percent){
+        cooldown -= (float) (recharge*percent);
+        if (cooldown < 0) cooldown = 0;
+    }
     public float cooldown = 0;
     //public boolean onCooldown = false;
     public boolean waiting = false;
@@ -95,6 +98,7 @@ public class NanoThief_Skill_7 extends NanoThief_SkillBase{
         spec.DF_swarmCost = (a.getOpCost(a.getVariant().getStatsForOpCosts())*NanoThief_6.CustomSwarm_COST_PEROP)+NanoThief_6.CustomSwarm_COST_BASE;
         spec.DF_productionTime = (float) ((a.getNumFighters() * a.getRefitTime() * NanoThief_6.CustomSwarm_BUILDTIME_PREREFIT) + NanoThief_6.CustomSwarm_BUILDTIME_BASE);
         spec.DF_recyclePerFighter = (spec.DF_swarmCost / Math.max(spec.DF_wingSize,1));
+        spec.DF_rechargePerFighter = (CustomSwarm_RechargePercent / Math.max(spec.OF_wingSize,1));
         spec.DF_ttl = NanoThief_6.CustomSwarm_TTL;
         if (a.getRole().equals(WingRole.BOMBER)){
             //spec.DF_ttl = NanoThief_6.CustomSwarm_Bomber_TTL;

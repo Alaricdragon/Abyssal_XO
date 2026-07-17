@@ -1,4 +1,5 @@
 package Abyssal_XO.data.scripts.lunaSettings;
+import Abyssal_XO.data.scripts.SiC_NanoThief_Plugin;
 import Abyssal_XO.data.scripts.Utils;
 import Abyssal_XO.data.scripts.threat.NanoThief_Attribute;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipSpawnedListener;
@@ -7,6 +8,8 @@ import com.fs.starfarer.api.Global;
 import lunalib.lunaSettings.LunaSettings;
 
 public class StoredSettings {
+    public static boolean tempEnableBoss = false;
+
     public static void getSettings(){
         getBaseSettings();
         if (Global.getSettings().getModManager().isModEnabled("lunalib")){
@@ -32,6 +35,9 @@ public class StoredSettings {
         NanoThief_Attribute.alwaysGiveThreat = LunaSettings.getBoolean("Abyssal_XO","CORE_alwaysGiveThreat");
         NanoThief_Attribute.oddsForThreat = LunaSettings.getDouble("Abyssal_XO","CORE_oddsForThreat");
         NanoThief_Attribute.oddsForOther = LunaSettings.getDouble("Abyssal_XO","CORE_oddsForOther");
+
+        tempEnableBoss = LunaSettings.getBoolean("Abyssal_XO","CORE_enableBossFight");
+        SiC_NanoThief_Plugin.addThreatBossCreater();
     }
     private static void addNanothief(){
         luna_NA_Base();
@@ -111,6 +117,9 @@ public class StoredSettings {
         NanoThief_6.CustomSwarm_BUILDTIME_BASE = LunaSettings.getInt("Abyssal_XO","NA_DSP_CustomSwarm_BUILDTIME_BASE");
         NanoThief_6.CustomSwarm_RefundPercent = LunaSettings.getDouble("Abyssal_XO","NA_DSP_CustomSwarm_RefundPercent");
         NanoThief_6.CustomSwarm_RefundPercent_Bomber = LunaSettings.getDouble("Abyssal_XO","NA_DSP_CustomSwarm_RefundPercent_Bomber");
+        NanoThief_6.CustomSwarm_RechargePercent = LunaSettings.getDouble("Abyssal_XO","NA_DSP_CustomSwarm_RechargePercent");
+
+
         NanoThief_6.baseDpPerFighter = LunaSettings.getInt("Abyssal_XO","NA_DSP_dpPerFightersBase");
         NanoThief_6.dpPerOpPerFighter = LunaSettings.getDouble("Abyssal_XO","NA_DSP_opPerDpPerFighters");
         //NanoThief_6.dpPerFighters = LunaSettings.getInt("Abyssal_XO","NA_DSP_dpPerFighters");

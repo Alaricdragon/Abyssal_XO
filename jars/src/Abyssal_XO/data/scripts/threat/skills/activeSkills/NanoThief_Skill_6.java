@@ -21,6 +21,8 @@ import com.fs.starfarer.api.util.Misc;
 import org.lwjgl.util.vector.Vector2f;
 import second_in_command.specs.SCBaseSkillPlugin;
 
+import static Abyssal_XO.data.scripts.threat.skills.NanoThief_6.CustomSwarm_RechargePercent;
+
 public class NanoThief_Skill_6 extends NanoThief_SkillBase{
     public NanoThief_Skill_6(NanoThief_ShipSkills skills, ShipAPI ship) {
         super(skills, ship);
@@ -44,6 +46,10 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         }
         recharge = skills.stats.OF_productionTime*buildTimeMulti;
         cooldown = recharge;
+    }
+    public void addRechargeTime(double percent){
+        cooldown -= (float) (recharge*percent);
+        if (cooldown < 0) cooldown = 0;
     }
     public static int getFighterWingSize(Nano_Thief_Stats spec, FighterWingSpecAPI a){
         int size = a.getNumFighters();
@@ -72,6 +78,7 @@ public class NanoThief_Skill_6 extends NanoThief_SkillBase{
         spec.OF_swarmCost = (a.getOpCost(a.getVariant().getStatsForOpCosts())*NanoThief_6.CustomSwarm_COST_PEROP)+NanoThief_6.CustomSwarm_COST_BASE;
         spec.OF_productionTime = (float) ((a.getNumFighters() * a.getRefitTime() * NanoThief_6.CustomSwarm_BUILDTIME_PREREFIT) + NanoThief_6.CustomSwarm_BUILDTIME_BASE);
         spec.OF_recyclePerFighter = (spec.OF_swarmCost / Math.max(spec.OF_wingSize,1));
+        spec.OF_rechargePerFighter = (CustomSwarm_RechargePercent / Math.max(spec.OF_wingSize,1));
         spec.OF_ttl = NanoThief_6.CustomSwarm_TTL;
         spec.OF_DpPerFighter = (float) (NanoThief_6.baseDpPerFighter+(NanoThief_6.dpPerOpPerFighter*a.getOpCost(a.getVariant().getStatsForOpCosts())));
         if (a.getRole().equals(WingRole.BOMBER)){
