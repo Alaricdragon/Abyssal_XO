@@ -4,7 +4,8 @@ CORE_alwaysGiveThreat,Force Threat to have the Nano Thief attribute,Boolean,true
 CORE_oddsForThreat,Odds Threat have the Nano Thief attribute,Int,1,,Only used if force Threat to have the Nano Thief attribute is false,0,10,Features
 CORE_oddsForOther,Odds random fleets have the Nano Thief attribute,Int,0,,,0,10,Features
 CORE_Header_2,,Header,Boss fight settings,,,,,Features
-CORE_enableBossFight,Enable the Threat Boss. Exspermental,Boolean,false,,"Will hunt you down in threat systems. Is just a large fleet for now, and might crash your game. Not connected to any other systems and presently being worked on.",,,Features
+CORE_Threat_enableBossFight,Enable the Threat Boss. Exspermental,Boolean,false,,"Will hunt you down in threat systems. Is just a large fleet for now, and might crash your game. Not connected to any other systems and presently being worked on.",,,Features
+CORE_Threat_BossFightPower,Strangth of the boss fight.,Double,3,,3 is slightly stronger then a Third Strike. 10 is just a lot of ships,1,10,Features
 ,,,,,,,,
 NA_BASE_Header,,Header,Base Skill,,,,,Nano Thief: Base Skill
 NA_BASE_reclaimOnStartPerDP,Reclaim ships start with per deployment point per skill,Int,10,,,1,1000,Nano Thief: Base Skill
@@ -76,7 +77,8 @@ NA_DSP_speedPerSize_1,Build speed for destroyers,Double,0.75,,,0,5,Nano Thief: D
 NA_DSP_speedPerSize_2,Build speed for cruisers,Double,1,,,0,5,Nano Thief: Decentralized Swarms
 NA_DSP_speedPerSize_3,Build speed for capitals,Double,1.25,,,0,5,Nano Thief: Decentralized Swarms
 ,,,,,,,,
-NA_DS_Header,,Header,Defensive Swarms,,please note: simulacrum fighter settings are stored in Decentralized Swarm Production,,,Nano Thief: Defensive Swarms
+NA_DS_Header,,Header,Defensive Swarms,,,,,Nano Thief: Defensive Swarms
+NA_CR_Text,,Text,Simulacrum fighter settings are stored in Decentralized Swarm Production,,,,,Nano Thief: Defensive Swarms
 NA_DS_NPC_Weight,Odds of this skill for NPCs,Double,1,,,0,10,Nano Thief: Defensive Swarms
 NA_DS_numPerSize_0,Fighters for frigates,Int,1,,,0,10,Nano Thief: Defensive Swarms
 NA_DS_numPerSize_1,Fighters for destroyers,Int,1,,,0,10,Nano Thief: Defensive Swarms
@@ -98,6 +100,10 @@ NA_CR_speedMod,Refined reclaim speed multi,Double,2,,,0.1,5,Nano Thief: Centrali
 NA_CR_keeptReclaim,Refined reclaim keept on Central Fabracator at minimum,Int,2000,,,1,10000,Nano Thief: Centralized Production
 NA_CR_keeptReclaimAbility,Refined reclaim keept on Central Fabracator multiplyed by the highest cost skill,Double,2,,,0.1,5,Nano Thief: Centralized Production
 NA_CR_baseReclaimEfficiencyMod,How efficant normal reclaim is if the Central Fabracator is destroyed,Double,0.8,,,0,1,Nano Thief: Centralized Production
+NA_CR_Header_2,,Header,Reclaim target weights,,,,,Nano Thief: Centralized Production
+NA_CR_Text_2,,Text,The central fabracator will only target ships with less reclaim them itself,,,,,Nano Thief: Centralized Production
+NA_CR_distanceTargetMulti,Distance from central fabracator weight,Double,0.5,,,0.01,1,Nano Thief: Centralized Production
+NA_CR_reclaimTargetMulti,Less reclaim then central fabracator weight,Double,0.25,,,0.01,1,Nano Thief: Centralized Production
 ,,,,,,,,
 NA_DM_Header,,Header,Desperate Measures,,,,,Nano Thief: Desperate Measures
 NA_DM_NPC_Weight,Odds of this skill for NPCs,Double,1,,,0,10,Nano Thief: Desperate Measures

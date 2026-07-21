@@ -1,3 +1,18 @@
+V0.1.27:
+    balance:
+        central fabricator:
+            reclaim send out check time 10 -> 3
+            now refill reclaim from closer targets before farther ones.
+            refined reclaim packages are created for as many ships as possible, instead of just ships with around the same amount of reclaim.
+            will now only send out reclaim packages in sizes of at least 1000.
+    fixes:
+        fixed central fabricators refined reclaim AI giving into pear pressure.
+    new:
+        added a hull mod that prevents a ship from getting reclaim packages.
+    unfinished boss fight:
+        added a little '!' next to the boss.
+        added boss fight difficulty settings.
+        boss fight default difficulty 4 -> 3
 V0.1.26:
     fixes:
         fixes simulacrum fighter wings only deploying one fighter when 'swarm deployment' skill is not active.
@@ -17,7 +32,6 @@ V0.1.26:
             for offencive and defensive swarms, high build time bombers felt worthless. This should also help with high build time not bombers, if they can survive the required time.
     settings:
         added a setting to enable the experimental threat boss fleet. It might crash your game, completely untested, and the quest for it is not implemented in any way. have fun.
-
 V0.1.25:
     fixes:
         fixed fighter wing size bonuses not working correctly.

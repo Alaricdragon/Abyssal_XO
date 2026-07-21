@@ -94,20 +94,21 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 	private static Logger log = Global.getLogger(Nano_Thief_AI_Reclaim.class);
 	@Getter
 	private boolean isRefined;
-
+	private ShipAPI targetOverride = null;
 	public Nano_Thief_AI_Reclaim(ShipAPI ship, Nano_Thief_Stats stats,int reclam,boolean isRefined,ShipAPI targetOverride) {
 		this.ship = ship;
 		this.stats = stats;
 		this.reclaimValue = reclam;
 		this.isRefined = isRefined;
 		if (targetOverride != null && stats.getSkills(targetOverride) != null){
-			updateSwarmTarget(targetOverride);
+			this.targetOverride = targetOverride;
+			//updateSwarmTarget(targetOverride);
 			//ship
 		}
 
-		isReclamationSwarm(ship);
+		//isReclamationSwarm(ship);
 
-		doInitialSetup();
+		//doInitialSetup();
 
 		updateInterval.forceIntervalElapsed();
 		headingInterval.forceIntervalElapsed();
@@ -276,7 +277,8 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 				if (reclamationReturnInterval.intervalElapsed()) {
 					CombatEngineAPI engine = Global.getCombatEngine();
 					Settings.log.info("got target for reclaims as (ship commander): "+(fabricator == null ? "N/A" : fabricator.getName())+","+stats.commander);
-					updateSwarmTarget(stats.getTargetForReclaim(ship,engine));
+					if (targetOverride == null) updateSwarmTarget(stats.getTargetForReclaim(ship,engine));
+					else updateSwarmTarget(targetOverride);
 					//fabricator = stats.getTargetForReclaim(ship,engine);
 					NanoThief_ShipSkills skills = stats.getSkills(fabricator);
 					if (skills != null) skills.addIncomingReclaim(ship,reclaimValue,isRefined);
@@ -556,7 +558,6 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 			//NOTE: here is were I can filter what possible targets I want.
 			if (fabricator.getOwner() != owner)break;//{log.info("	  fabracator owner mismatch"); break;}
 			if (!stats.canAcceptReclaim(fabricator))break;//{log.info("	  fabracator invalid target"); break;}
-			if (!fabricator.equals(fabricator))break;//{log.info("	fabracator not fabracator"); break;}
 			float fabricatorRadius = fabricator.getCollisionRadius() * 0.5f;
 			FlockingData data = new FlockingData();
 			data.facing = fabricator.getFacing();
@@ -592,10 +593,11 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 			data.repelAtAngleDist = 1000f;//todo: this might be causing issues with small craft. this line is placed in multible locations.
 			flockingData.add(data);
 		}
-
+		if (fabricator == null) return;//ESCAPE!
 		if (swarm != null && swarm.getParams().flockingClass != null && swarm.getAttachedTo() != null) {
+			//Settings.log.info("(PART A:)getting flocking class as: ship, class: "+fabricator.getId()+", "+swarm.getParams().flockingClass);
 			for (RoilingSwarmEffect curr : RoilingSwarmEffect.getFlockingMap().getList(swarm.getParams().flockingClass)) {
-
+				//Settings.log.info("		looking at a swarm of class: "+curr.getParams().flockingClass);
 				if (curr == swarm) continue;
 				if (curr.getAttachedTo() == ship || curr.getAttachedTo() == null ||
 						curr.getAttachedTo().getOwner() != owner) {
@@ -616,6 +618,7 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 					}
 
 
+					Settings.log.info("		adding swarm to group....");
 					float currRadius = curr.getAttachedTo().getCollisionRadius() * 0.5f;
 					FlockingData data = new FlockingData();
 					data.facing = curr.getAttachedTo().getFacing();

@@ -5,6 +5,7 @@ import Abyssal_XO.data.scripts.Settings;
 import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
+import com.fs.starfarer.api.impl.campaign.ids.FleetTypes;
 import com.fs.starfarer.api.impl.campaign.ids.Tags;
 import com.fs.starfarer.api.impl.combat.threat.DisposableThreatFleetManager;
 import com.fs.starfarer.api.impl.combat.threat.ThreatFleetBehaviorScript;
@@ -25,19 +26,17 @@ import static Abyssal_XO.data.scripts.Settings.MEMKEY_NANOTHIEF_BOSSFLEET;
 import static Abyssal_XO.data.scripts.Settings.MEMKEY_NANOTHIEF_BOSSSCRIPT;
 
 public class ThreatBossCreater extends BaseCampaignEventListener {
+    public static double bossPower = 3;
     /*todo:
-        1: test and make sure the hostile is removed on new system enter
-        2: make sure the boss is not removed on same system enter.
-        3: make sure the AI switches back to patroling on system leave.
+        1: (WORKING)test and make sure the hostile is removed on new system enter
+        2: (WORKING)make sure the boss is not removed on same system enter.
+        3: (WORKING)make sure the AI switches back to patroling on system leave.
         4: make a 'boss difficulty' slider for options.
         -
         dev:
         1: copy the eq for the skills into starlords. The old eq suckss.
         2: copy the eq for skills into second in command. (modified to be 'add this number of skills').
         3: in SiC, add a boolean setting for the 'multi sectional ship data adding' code.
-        -
-        4: make it so simulacrum fighter spawners only run code for the 'on fighter creation'. To avoid strange effects.
-        5: make sure the adder is working on the first ship spawned. It might not be for some strange reason? I will have to look into this.
      */
 
     private CampaignFleetAPI fleet;
@@ -118,7 +117,7 @@ public class ThreatBossCreater extends BaseCampaignEventListener {
     }
     public CampaignFleetAPI spawnFleet(StarSystemAPI systemAPI){
         Settings.log.info("NF_BOSS_CREATE: SPAWNED FLEET IN SYSTEM NAMED: "+systemAPI.getName());
-        CampaignFleetAPI fleetTemp = DisposableThreatFleetManager.createThreatFleet(3,0,0, DisposableThreatFleetManager.FabricatorEscortStrength.MAXIMUM,null);
+        CampaignFleetAPI fleetTemp = createThreatFleet(bossPower,null);//DisposableThreatFleetManager.createThreatFleet(3,0,0, DisposableThreatFleetManager.FabricatorEscortStrength.MAXIMUM,null);
 
         systemAPI.addEntity(fleetTemp);
 
@@ -155,6 +154,7 @@ public class ThreatBossCreater extends BaseCampaignEventListener {
         }
         pickOfficerSkills(officers,SCSettings.Companion.getAdditionalLevel() ? 6 : 5,fleetTemp,scData);
         Settings.log.info("NF_BOSS_CREATE. added SiC officers. now has: "+scData.getActiveOfficers().size()+" Officers.");
+        Misc.makeImportant(fleetTemp,"bossFight");
         return fleetTemp;
     }
     private boolean despawnFleet(StarSystemAPI to){
@@ -165,6 +165,7 @@ public class ThreatBossCreater extends BaseCampaignEventListener {
         Settings.log.info("NF_BOSS_CREATE: -to not null");
         if (fleet.getStarSystem().equals(to)) return false;
         Settings.log.info("NF_BOSS_CREATE: -fleet is not in same system. despawning.");
+        Misc.makeUnimportant(fleet,"bossFight");
         fleet.despawn();
         //if (script != null) fleet.removeScript(script); //script is bound to the fleet. fleet is despawned. does this script need to be removed?!?!
         fleet = null;
@@ -283,5 +284,118 @@ public class ThreatBossCreater extends BaseCampaignEventListener {
             }
         }
         return unlockableSkills.pick();
+    }
+
+
+
+    public static CampaignFleetAPI createThreatFleet(double power, Random random) {
+        if (random == null) random = Misc.random;
+        int numFabricators = (int) ((1*power));//1,2,3,4 (default 3.)
+        int minOtherCapitals=0;
+        int maxOtherCapitals=0;
+        DisposableThreatFleetManager.FabricatorEscortStrength escorts;
+        if (power <= 1){
+            escorts = DisposableThreatFleetManager.FabricatorEscortStrength.LOW;
+        }
+        else if (power <= 2){
+            escorts = DisposableThreatFleetManager.FabricatorEscortStrength.MEDIUM;
+            power -= 1;
+        }
+        else if (power <= 3){
+            escorts = DisposableThreatFleetManager.FabricatorEscortStrength.HIGH;
+            power -= 2;
+        }
+        else {
+            escorts = DisposableThreatFleetManager.FabricatorEscortStrength.MAXIMUM;
+            power -=3; //if power is 4, this value is 1.
+        }
+
+
+        int minHives = 0;
+        int maxHives = 0;
+        int minOverseers = 0;
+        int maxOverseers = 0;
+        int minCruisers = 0;
+        int maxCruisers = 0;
+        int minDestroyers = 0;
+        int maxDestroyers = 0;
+        int minFrigates = 0;
+        int maxFrigates = 0;
+
+        switch (escorts) {
+            case NONE:
+                break;
+            case LOW:
+                minOverseers = (int) (1*power);
+                maxOverseers = (int) (2*power);
+                minDestroyers = (int) (0*power);
+                maxDestroyers = (int) (1*power);
+                minFrigates = (int) (2*power);
+                maxFrigates = (int) (4*power);
+                if (numFabricators <= 0) {
+                    minOverseers = 1;
+                }
+                break;
+            case MEDIUM:
+                minHives = (int) (0*power);
+                maxHives = (int) (1*power);
+                minOverseers = (int) (2*power);
+                maxOverseers = (int) (3*power);
+                minCruisers = (int) (0*power);
+                maxCruisers = (int) (1*power);
+                minDestroyers = (int) (1*power);
+                maxDestroyers = (int) (2*power);
+                minFrigates = (int) (2*power);
+                maxFrigates = (int) (4*power);
+                if (numFabricators <= 0) {
+                    minHives = 1;
+                }
+                break;
+            case HIGH:
+                minHives = (int) (2*power);
+                maxHives = (int) (3*power);
+                minOverseers = (int) (3*power);
+                maxOverseers = (int) (4*power);
+                minCruisers = (int) (2*power);
+                maxCruisers = (int) (3*power);
+                minDestroyers = (int) (3*power);
+                maxDestroyers = (int) (6*power);
+                minFrigates = (int) (7*power);
+                maxFrigates = (int) (11*power);
+
+                break;
+            case MAXIMUM:
+                minHives = (int) (3*power);
+                maxHives = (int) (4*power);
+                minOverseers = (int) (4*power);
+                maxOverseers = (int) (5*power);
+                minCruisers = (int) (4*power);
+                maxCruisers = (int) (5*power);
+                minDestroyers = (int) (5*power);
+                maxDestroyers = (int) (6*power);
+                minFrigates = (int) (5*power);
+                maxFrigates = (int) (6*power);
+                break;
+        }
+
+        DisposableThreatFleetManager.ThreatFleetCreationParams params = new DisposableThreatFleetManager.ThreatFleetCreationParams();
+        params.numFabricators = numFabricators;
+        params.numHives = minHives + random.nextInt(maxHives - minHives + 1);
+        params.numOverseers = minOverseers + random.nextInt(maxOverseers - minOverseers + 1);
+        params.numCapitals = minOtherCapitals + random.nextInt(maxOtherCapitals - minOtherCapitals + 1);
+        params.numCruisers = minCruisers + random.nextInt(maxCruisers - minCruisers + 1);
+        params.numDestroyers = minDestroyers + random.nextInt(maxDestroyers - minDestroyers + 1);
+        params.numFrigates = minFrigates + random.nextInt(maxFrigates - minFrigates + 1);
+
+        params.fleetType = FleetTypes.PATROL_SMALL;
+        if (numFabricators >= 3 ||
+                (numFabricators >= 2 && escorts.ordinal() >= DisposableThreatFleetManager.FabricatorEscortStrength.HIGH.ordinal())) {
+            params.fleetType = FleetTypes.PATROL_LARGE;
+        } else if (numFabricators >= 2 ||
+                (numFabricators >= 1 && escorts.ordinal() >= DisposableThreatFleetManager.FabricatorEscortStrength.HIGH.ordinal())) {
+            params.fleetType = FleetTypes.PATROL_MEDIUM;
+        }
+
+        return DisposableThreatFleetManager.createThreatFleet(params, random);
     }
 }

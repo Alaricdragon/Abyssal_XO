@@ -32,10 +32,10 @@ public class ThreatBossController implements EveryFrameScript {
     }
     private void displayThings(){
         CampaignFleetAPI player = Global.getSector().getPlayerFleet();
-        if (player != null) {
+        /*if (player != null) {
             float distFromPlayer = Misc.getDistance(fleet, player);
             Settings.log.info("(THREAT_BOSS_LOG) got distance from player as: "+distFromPlayer+". assignment is: "+fleet.getCurrentAssignment().getActionText());
-        }
+        }*/
     }
     private void pickNext(){
         if (Global.getSector().getPlayerFleet() == null) return;
@@ -46,11 +46,11 @@ public class ThreatBossController implements EveryFrameScript {
            // SectorEntityToken target = system.createToken(0, 0);
             if (distFromPlayer < fleet.getSensorProfile() + 300) {
                 Settings.log.info("(THREAT_BOSS_AI) attacking player.");
-                fleet.addAssignment(FleetAssignment.INTERCEPT, Global.getSector().getPlayerFleet(), 999, "(A): Investigating");
+                fleet.addAssignment(FleetAssignment.INTERCEPT, Global.getSector().getPlayerFleet(), 999, "Investigating");
                 return;
             }
             Settings.log.info("(THREAT_BOSS_AI) seeking out player.");
-            fleet.addAssignment(FleetAssignment.GO_TO_LOCATION, Global.getSector().getPlayerFleet(), 1, "(B): Investigating");
+            fleet.addAssignment(FleetAssignment.GO_TO_LOCATION, Global.getSector().getPlayerFleet(), 1, "Investigating");
             return;
         }
         float days = 1f + (float) Math.random();
@@ -65,6 +65,6 @@ public class ThreatBossController implements EveryFrameScript {
         }
 
         Settings.log.info("(THREAT_BOSS_AI) patrolling system");
-        fleet.addAssignment(FleetAssignment.PATROL_SYSTEM, target, days, "(C): cruising");
+        fleet.addAssignment(FleetAssignment.PATROL_SYSTEM, target, days, "Cruising");
     }
 }
