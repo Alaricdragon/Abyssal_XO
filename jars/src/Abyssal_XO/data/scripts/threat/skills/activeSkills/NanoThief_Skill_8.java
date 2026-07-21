@@ -65,53 +65,10 @@ public class NanoThief_Skill_8 extends NanoThief_SkillBase{
             int total = (int) b.getTotalReclaimIncludingIncomeing();
             if (total > available - 1000) continue;//only send packages in groups of 1k at least.
             //Settings.log.info("CENTRAL FABRACATOR:  found a ship of id: "+b.ship.getId()+". adding to array..." );
-            //int groupID = total / 1000;
-            //ArrayList<NanoThief_ShipSkills> group = ships.getOrDefault(groupID,new ArrayList<>());
-            //organize by distance. not by reclaim.
-            //todo: change this to be a 'value' based on missing reclaim, and distance. with some multiplyers.
             addItemToOrganizedList(b,ships,available);
-            /*String logs = "     PROGRESS: got list order as:";
-            for (NanoThief_ShipSkills E : ships){
-                logs+=(int)getOrder(E,available)+",";
-            }
-            Settings.log.info(logs);*/
-            //ships.put(groupID,group);
             totalSize++;
 
         }
-        //at this ponit, ships contains all possable targets.
-        //processing target rules:
-        /*
-            1: I must send to the lowest reclaim group first.
-            2: I must send reclaim in groups of 1k.
-            3: I must send reclaim to the closest ships second.
-
-            organizeation:
-            ships are organized first by 'reclaim group'
-            second by 'distance.'
-         */
-        /*
-            how this will work:
-            1: for each 1k reclaim required, add one 'share'.
-            200 (so 100 to give)
-            25
-            10
-            2
-
-            25 = 75
-            10 = 90
-            2 = 98
-            total = 188 + 75 = 262 shares.
-            100 / 262 = 0.4 (give or take)
-            75 = 25*0.4 = 6.25
-            90 = 10*0.4 = 4
-            2  = 98*0.4 = 39.2
-         */
-        /*String logs = "FINAL: got list order as:";
-        for (NanoThief_ShipSkills b : ships){
-            logs+=(int)getOrder(b,available)+",";
-        }
-        Settings.log.info(logs);*/
         ArrayList<ShipAPI> adding = new ArrayList<>();
         ArrayList<Integer> shares = new ArrayList<>();
         int totalShares = 0;
@@ -131,7 +88,6 @@ public class NanoThief_Skill_8 extends NanoThief_SkillBase{
         createReclaimPackages(available,totalShares,adding,shares);
     }
     private void addItemToOrganizedList(NanoThief_ShipSkills b, ArrayList<NanoThief_ShipSkills> list,int available){
-        //todo: fix this fucking list organization. please. Its terrable.
         /*double valueA = getOrder(b,available);
         boolean added = false;
         for (int c = 0; c < list.size(); c++){
@@ -226,7 +182,7 @@ public class NanoThief_Skill_8 extends NanoThief_SkillBase{
             createReclaimPackage(used,adding.get(a));
             skills.useReclaim(used);
             gone+=used;
-            if (gone >= availableReclaim-500) return;//return when all reclaim used up. a backup.
+            if (gone >= availableReclaim) return;//return when all reclaim used up. a backup.
         }
     }
     private double getOrder(NanoThief_ShipSkills b,int available){
@@ -234,77 +190,6 @@ public class NanoThief_Skill_8 extends NanoThief_SkillBase{
         double reclaim = ((available-b.getTotalReclaimIncludingIncomeing())*NanoThief_8.reclaimTargetMulti);
         double valueA = reclaim - distance;
         return valueA;
-    }
-    public void createReclaimIfRequired_OLD(){
-        /*
-        so here is were the magic happens.
-        so, what I want:
-        1) I want to beable to send reclaim to multiple ships all at once, if it is necessary.
-
-        so: I divide the amount of reclaim I can send out into groups of 1K.
-            so if I have 10K reclaim, and need to hold 4, I havev 6K reclaim to send.
-            but, my ship should always hold more reclaim then it is going to send.
-            run though all ships, and divide them into 'send category'.
-        */
-        //log.info("attempting to create reclaim packages");
-        if (skills.getTotalReclaim() < skills.getModifiedCost(getAmountToHold+1000)) return;
-        ArrayList<ShipAPI> targets = new ArrayList<>();
-        int muti = ((int) (skills.getTotalReclaim() / 1000f)) - 1;//cannot give more reclaim them I have.  //Integer.MAX_VALUE;
-        int maxSpend = (int) ((skills.getTotalReclaim() - skills.getModifiedCost(getAmountToHold))/1000f);
-        skills.stats.makeSureSavedShipsAreAlive();
-        for (ShipAPI a : skills.stats.getAvailableShips()){
-            if (!skills.stats.canAcceptReclaim(a)) continue;
-            if (a.equals(skills.stats.getCentralFab())) continue;
-            NanoThief_ShipSkills b = skills.stats.getSkills(a);
-            if (b == null) continue;
-            int spendType = (int) (b.getTotalReclaimIncludingIncomeing() / 1000f);
-            //Settings.log.info(b.ship.getName()+" spend type as: "+spendType);
-            spendType = Math.max(1,spendType);
-            if (spendType < muti){
-                muti = spendType;
-                targets = new ArrayList<>();
-                targets.add(a);
-                continue;
-            }
-            if (spendType == muti) targets.add(a);
-        }
-        //log.info("  got "+targets.size()+" targets of multi: "+muti+" and max spend: "+maxSpend);
-        if (muti > maxSpend) return;
-        /*
-        so, spend per target:
-            at the end of the calculation, The central fabracator should hold just as mush reclaim as targets.
-
-            say I have 10 targets with 1k reclaim, and I hold 110k reclaim.
-            110k / (10+1) = 11k (per unit). (but I have 10k total. so....)
-            110k-(1k*10) / (10+1) = 9k (per unit)
-            give = (totalReclaim-totalHeldTargetReclaim) / targets + 1
-
-            say I have 1 targets with 0k reclaim, and I hold 50k reclaim
-            50k-0k*1 / (1+1) = 25k.
-            this EQ hold.
-        */
-
-        double hardMin = skills.getModifiedCost(getAmountToHold);
-        double availbleReclaim = skills.getTotalReclaim();
-        int toSpendPerTarget = (int) ((availbleReclaim - (muti*1000*targets.size())) / (targets.size()+1));
-        toSpendPerTarget = Math.max(1000,toSpendPerTarget);
-        int spent = 0;
-        //log.info("available: "+availbleReclaim+", spendPerTarget: "+toSpendPerTarget+", targets: "+targets.size()+", "+hardMin);
-        for (int a = 0; spent+toSpendPerTarget <= availbleReclaim-spent-toSpendPerTarget && a < targets.size(); a++){
-            if (availbleReclaim-spent-toSpendPerTarget < hardMin){
-                toSpendPerTarget = (int) (availbleReclaim-spent-hardMin);
-                if (toSpendPerTarget < 1000) return;
-                //log.info("  creating reclaim package with "+toSpendPerTarget+" reclaim in it (backup)");
-                createReclaimPackage(toSpendPerTarget,targets.get(a));
-                //spent+=toSpendPerTarget;
-                skills.useReclaim(toSpendPerTarget);
-                return;
-            }
-            //log.info("  creating reclaim package with "+toSpendPerTarget+" reclaim in it");
-            createReclaimPackage(toSpendPerTarget,targets.get(a));
-            spent+=toSpendPerTarget;
-            skills.useReclaim(toSpendPerTarget);
-        }
     }
     public void createReclaimPackage(int spendPerTarget, ShipAPI target){
         Pair<Nano_Thief_Stats,Integer> data = new Pair<>();

@@ -30,8 +30,8 @@ public class NanoThief_8 extends Nano_Thief_Skill_Base {
     public static double minReclaimToTarget = 0.5;
     public static double baseReclaimEfficiencyMod = 0.8;
 
-    public static double distanceTargetMulti = 1;
-    public static double reclaimTargetMulti = 0.5;
+    public static double distanceTargetMulti = 0.5;
+    public static double reclaimTargetMulti = 0.25;
 
     //public static double reclaimRaito = reclaimRefined / reclaimCost;
 

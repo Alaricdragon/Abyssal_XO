@@ -1,6 +1,18 @@
 V0.1.27:
     balance:
-        central fabricator reclaim check time 10 -> 3
+        central fabricator:
+            reclaim send out check time 10 -> 3
+            now refill reclaim from closer targets before farther ones.
+            refined reclaim packages are created for as many ships as possible, instead of just ships with around the same amount of reclaim.
+            will now only send out reclaim packages in sizes of at least 1000.
+    fixes:
+        fixed central fabricators refined reclaim AI giving into pear pressure.
+    new:
+        added a hull mod that prevents a ship from getting reclaim packages.
+    unfinished boss fight:
+        added a little '!' next to the boss.
+        added boss fight difficulty settings.
+        boss fight default difficulty 4 -> 3
 V0.1.26:
     fixes:
         fixes simulacrum fighter wings only deploying one fighter when 'swarm deployment' skill is not active.

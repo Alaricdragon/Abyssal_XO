@@ -6,6 +6,7 @@ import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipSkillsAdder;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_BattleListener;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipSpawnedListener;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
@@ -55,6 +56,9 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
         tooltip.addPara("When any ship holding any amount of Reclaim is destroyed, add %s of the held Reclaim to the Reclaim Package",0f,Misc.getHighlightColor(), Misc.getHighlightColor(),percent);
         String reclaimPerOp = "" + reclaimOnStartPerDP;
         tooltip.addPara("Ships in this fleet enter combat with %s reclaim per deployment point multiplied by the number of skills in this attribute other then this one.",0f,Misc.getHighlightColor(),Misc.getHighlightColor(),reclaimPerOp);
+        tooltip.addPara("",0);
+        tooltip.addPara("Gain the %s hullmod, allowing you to prevent ships from gathering reclaim",0,Misc.getHighlightColor(),Misc.getHighlightColor(),"Disable Reclaim");
+
         tooltip.addSpacer(10f);
         LabelAPI label = tooltip.addPara("\"Its an art you know. Salvaging ships on the battlefield, well under fire. There are legends of rebels harvesting whole fleets on the battlefields, sending the patchwork wreckage to attack there oppressors. Its an wonderful thing to watch. \n Makes me want to cry tears of joy. And envy.\"", Misc.getTextColor(), 0f);
         tooltip.addPara(" - unknown", Misc.getTextColor(), 0f);
@@ -132,5 +136,11 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
 
     @Override
     public void onActivation(SCData data) {
+        if (data.getCommander().equals(Global.getSector().getPlayerPerson())) {
+            FactionAPI faction = Global.getSector().getPlayerFaction();
+            if (!faction.getKnownHullMods().contains("Abyssal_XO_DR")) {
+                faction.addKnownHullMod("Abyssal_XO_DR");
+            }
+        }
     }
 }

@@ -249,6 +249,7 @@ public class Nano_Thief_Stats {
                 if (ship.getVariant().getHullMods().contains(a)) return false;
             }
         }
+        if (ship.getVariant().hasHullMod("Abyssal_XO_DR")) return false;
         return true;
     }
     public boolean isValidReclaimTarget(ShipAPI ship){

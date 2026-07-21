@@ -30,7 +30,7 @@ public class SiC_NanoThief_Plugin extends BaseModPlugin {
     }
     private void addListinersAsRequired(){
          addKillLisinter();
-         addThreatBossCreater();
+         //addThreatBossCreater();
     }
     private void addKillLisinter(){
         //todo: add checks to make sure this is still required.

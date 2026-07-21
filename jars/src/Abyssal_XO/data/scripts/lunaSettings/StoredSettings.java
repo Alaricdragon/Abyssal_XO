@@ -1,6 +1,7 @@
 package Abyssal_XO.data.scripts.lunaSettings;
 import Abyssal_XO.data.scripts.SiC_NanoThief_Plugin;
 import Abyssal_XO.data.scripts.Utils;
+import Abyssal_XO.data.scripts.listiners.ThreatBossCreater;
 import Abyssal_XO.data.scripts.threat.NanoThief_Attribute;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipSpawnedListener;
 import Abyssal_XO.data.scripts.threat.skills.*;
@@ -22,6 +23,7 @@ public class StoredSettings {
         Utils.setCurrentSiCVersion();
         NanoThief_ShipSpawnedListener.forceAllowAllShipsToConvert = Global.getSettings().getBoolean("NanoThief_AllowSICToAnyShip");
         NanoThief_ShipSpawnedListener.allowShipModulesToHaveSiC_Backup = Global.getSettings().getBoolean("NanoThief_AllowSICToShipModules");
+
     }
     public static void attemptEnableLunalib(){
         if (!Global.getSettings().getModManager().isModEnabled("lunalib")) return;
@@ -38,6 +40,8 @@ public class StoredSettings {
 
         tempEnableBoss = LunaSettings.getBoolean("Abyssal_XO","CORE_enableBossFight");
         SiC_NanoThief_Plugin.addThreatBossCreater();
+
+        ThreatBossCreater.bossPower = LunaSettings.getDouble("Abyssal_XO","CORE_Threat_BossFightPower");
     }
     private static void addNanothief(){
         luna_NA_Base();
@@ -152,6 +156,8 @@ public class StoredSettings {
         NanoThief_8.keeptReclaim = LunaSettings.getInt("Abyssal_XO","NA_CR_keeptReclaim");
         NanoThief_8.keeptReclaimAbility = LunaSettings.getDouble("Abyssal_XO","NA_CR_keeptReclaimAbility");
         NanoThief_8.baseReclaimEfficiencyMod = LunaSettings.getDouble("Abyssal_XO","NA_CR_baseReclaimEfficiencyMod");
+        NanoThief_8.distanceTargetMulti = LunaSettings.getDouble("Abyssal_XO","NA_CR_distanceTargetMulti");
+        NanoThief_8.reclaimTargetMulti = LunaSettings.getDouble("Abyssal_XO","NA_CR_reclaimTargetMulti");
     }
     private static void luna_NA_Desprate(){
         NanoThief_9.weight = LunaSettings.getInt("Abyssal_XO","NA_DM_NPC_Weight");
