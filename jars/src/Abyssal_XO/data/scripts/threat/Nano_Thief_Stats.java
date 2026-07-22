@@ -250,6 +250,7 @@ public class Nano_Thief_Stats {
             }
         }
         if (ship.getVariant().hasHullMod("Abyssal_XO_DR")) return false;
+        if(getSkills(ship) == null) return false;
         return true;
     }
     public boolean isValidReclaimTarget(ShipAPI ship){

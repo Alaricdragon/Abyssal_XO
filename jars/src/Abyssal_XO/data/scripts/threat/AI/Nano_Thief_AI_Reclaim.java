@@ -118,8 +118,14 @@ public class Nano_Thief_AI_Reclaim implements ShipAIPlugin {
 	//private String getTargetTa
 	private void updateSwarmTarget(ShipAPI target){
 		this.fabricator = target;
+		targetOverride = null;
 		if (target == null) return;
-		stats.getSkills(target).addIncomingReclaim(ship,reclaimValue,isRefined);
+		NanoThief_ShipSkills skills = stats.getSkills(fabricator);
+		if (skills == null){
+			this.fabricator = null;
+			return;
+		}
+		skills.addIncomingReclaim(ship,reclaimValue,isRefined);
 		RoilingSwarmEffect swarm = RoilingSwarmEffect.getSwarmFor(ship);
 
 
