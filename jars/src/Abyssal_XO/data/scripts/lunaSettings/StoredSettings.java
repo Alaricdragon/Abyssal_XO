@@ -38,7 +38,7 @@ public class StoredSettings {
         NanoThief_Attribute.oddsForThreat = LunaSettings.getDouble("Abyssal_XO","CORE_oddsForThreat");
         NanoThief_Attribute.oddsForOther = LunaSettings.getDouble("Abyssal_XO","CORE_oddsForOther");
 
-        tempEnableBoss = LunaSettings.getBoolean("Abyssal_XO","CORE_enableBossFight");
+        tempEnableBoss = LunaSettings.getBoolean("Abyssal_XO","CORE_Threat_enableBossFight");
         SiC_NanoThief_Plugin.addThreatBossCreater();
 
         ThreatBossCreater.bossPower = LunaSettings.getDouble("Abyssal_XO","CORE_Threat_BossFightPower");
@@ -64,7 +64,7 @@ public class StoredSettings {
         NanoThief_Base.fabracatorDPForNanothiefCalculation = LunaSettings.getInt("Abyssal_XO","NA_BASE_fabracatorDPForCalulations");
         NanoThief_Base.reclaimMembersPerReclaim = LunaSettings.getDouble("Abyssal_XO","NA_BASE_swarmSizePerReclaim");
         NanoThief_Base.reclaimMembersBase = LunaSettings.getInt("Abyssal_XO","NA_BASE_swarmSizeBase");
-
+        NanoThief_Base.recliamSpeed = LunaSettings.getInt("Abyssal_XO","NA_BASE_reclaimSpeedMulti");
     }
     public static void luna_NA_ConstantRepaires(){
         NanoThief_1.weight = LunaSettings.getInt("Abyssal_XO","NA_CR1_NPC_Weight");
