@@ -15,6 +15,7 @@ NA_BASE_reclaimRecyclePercent,Percent of reclaim adding to reclaim packages when
 NA_BASE_fabracatorDPForCalulations,Fabracator DP cost for nano thief calulations,Int,80,,This effects reclaim gains and mastery costs from threat fabracators,0,200,Nano Thief: Base Skill
 NA_BASE_swarmSizePerReclaim,Reclaim swarm size per reclaim,Double,0.01,,,0,1,Nano Thief: Base Skill
 NA_BASE_swarmSizeBase,Reclaim swarm size base,Int,5,,,0,100,Nano Thief: Base Skill
+NA_BASE_reclaimSpeedMulti,Reclaim movespeed multi,Double,1,,,0.01,5,Nano Thief: Base Skill
 ,,,,,,,,
 NA_CR1_Header,,Header,Constant Repairs,,,,,Nano Thief: Constant Repairs
 NA_CR1_NPC_Weight,Odds of this skill for NPCs,Double,1,,,0,10,Nano Thief: Constant Repairs

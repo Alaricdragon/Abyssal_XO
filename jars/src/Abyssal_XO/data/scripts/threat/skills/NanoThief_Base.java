@@ -27,6 +27,7 @@ public class NanoThief_Base extends Nano_Thief_Skill_Base {
     public static double reclaimMembersPerReclaim = 0.01;
     public static int reclaimMembersBase = 5;
 
+    public static double recliamSpeed = 1;
     // 5*5*40 = 25 * 4 = 1000
     @Override
     public String getAffectsString() {

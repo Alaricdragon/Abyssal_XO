@@ -1,3 +1,8 @@
+V0.1.29:
+    fixes:
+        fixed crash on loading a game with the mod installed, provided you didn't already have it installed in earlier versions
+    settings:
+        added a 'reclaim speed multi' setting.
 V0.1.28:
     fixes:
         fixed reclaim sometimes not knowing what is truly reclaim or not.

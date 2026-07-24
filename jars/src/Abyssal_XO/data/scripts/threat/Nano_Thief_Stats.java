@@ -573,6 +573,7 @@ public class Nano_Thief_Stats {
         swarm.getParams().baseMembersToMaintain = maxSwarmSize;
 
         fighter.getMutableStats().getSightRadiusMod().modifyMult("Abyssal_XO",0.1f);
+        fighter.getMutableStats().getMaxSpeed().modifyMult("Abussal_XO_2", (float) NanoThief_Base.recliamSpeed);
         if (isRefined) fighter.getMutableStats().getMaxSpeed().modifyMult("Abyssal_XO", (float) NanoThief_8.speedMod);
         return fighter;
     }
