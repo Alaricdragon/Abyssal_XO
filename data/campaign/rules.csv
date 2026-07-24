@@ -1,14 +1,34 @@
 id,trigger,conditions,script,text,options,notes
-abyssal_XO_BlackBox_0,abyssal_XO_BlackBoxStart,,FireAll abyssal_XO_BlackBoxQuestionSet_a,Starting text A,"abyssal_XO_BlackBoxStart_1:""Is there any risk?""
+abyssal_XO_BlackBox_0,abyssal_XO_BlackBoxStart,,FireAll abyssal_XO_BlackBoxOptions2,Starting text A,,
+#abyssal_XO_BlackBox_options,abyssal_XO_BlackBoxOptions,,FireAll abyssal_XO_BlackBoxOptions2,Options running text,"abyssal_XO_BlackBox_0_2:""Why were we able to salvage this?""
+abyssal_XO_BlackBox_0_3:""Can we replecate it?""
+abyssal_XO_BlackBox_0_4:""How can we use this?""
+abyssal_XO_BlackBox_0_5:""Can we destroy it?""",
+abyssal_XO_BlackBox_0_1_can,abyssal_XO_BlackBoxOptions2,$abyssal_XO_BlackBox_op1 == false,,,"abyssal_XO_BlackBox_0_1:""Is there any risk?""",
+abyssal_XO_BlackBox_0_2_can,abyssal_XO_BlackBoxOptions2,$abyssal_XO_BlackBox_op2 == false,,,"abyssal_XO_BlackBox_0_2:""Why were we able to salvage this?""",
+abyssal_XO_BlackBox_0_3_can,abyssal_XO_BlackBoxOptions2,$abyssal_XO_BlackBox_op3 == false,,,"abyssal_XO_BlackBox_0_3:""Can we replecate it?""",
+abyssal_XO_BlackBox_0_4_can,abyssal_XO_BlackBoxOptions2,$abyssal_XO_BlackBox_op4 == false,,,"abyssal_XO_BlackBox_0_4:""How can we use this?""",
+abyssal_XO_BlackBox_0_5_can,abyssal_XO_BlackBoxOptions2,$abyssal_XO_BlackBox_op5 == false,,,"abyssal_XO_BlackBox_0_5:""Can we destroy it?""",
+abyssal_XO_BlackBox_0_1,DialogOptionSelected,$option == abyssal_XO_BlackBox_0_1,"$abyssal_XO_BlackBox_op1 = true
+FireAll abyssal_XO_BlackBoxOptions2",Question A,,
+abyssal_XO_BlackBox_0_2,DialogOptionSelected,$option == abyssal_XO_BlackBox_0_2,"$abyssal_XO_BlackBox_op2 = true
+FireAll abyssal_XO_BlackBoxOptions2",Question B,,
+abyssal_XO_BlackBox_0_3,DialogOptionSelected,$option == abyssal_XO_BlackBox_0_3,"$abyssal_XO_BlackBox_op3 = true
+FireAll abyssal_XO_BlackBoxOptions2",Question C,,
+abyssal_XO_BlackBox_0_4,DialogOptionSelected,$option == abyssal_XO_BlackBox_0_4,DismissDialog,Question D,,
+abyssal_XO_BlackBox_0_5,DialogOptionSelected,$option == abyssal_XO_BlackBox_0_5,DismissDialog,Question E,,
+,,,,,,
+#abyssal_XO_BlackBox_0,abyssal_XO_BlackBoxStart,,FireAll abyssal_XO_BlackBoxQuestionSet_a,Starting text A,"abyssal_XO_BlackBoxStart_1:""Is there any risk?""
 abyssal_XO_BlackBoxStart_2:""Why were we able to salvage this?""
 abyssal_XO_BlackBoxStart_3:""Can we replecate it?""
 abyssal_XO_BlackBoxStart_4:""How can we use this?""
 abyssal_XO_BlackBoxStart_5:""Can we destroy it?""",
-abyssal_XO_BlackBox_1,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_1,,Question A,,
-abyssal_XO_BlackBox_2,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_2,,Question B,,
-abyssal_XO_BlackBox_3,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_3,,Question C,,
-abyssal_XO_BlackBox_4,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_4,DismissDialog,Question D,,
-abyssal_XO_BlackBox_5,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_5,DismissDialog,Question E,,
+#abyssal_XO_BlackBox_1,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_1,,Question A,,
+#abyssal_XO_BlackBox_2,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_2,,Question B,,
+#abyssal_XO_BlackBox_3,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_3,,Question C,,
+#abyssal_XO_BlackBox_4,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_4,DismissDialog,Question D,,
+#abyssal_XO_BlackBox_5,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_5,DismissDialog,Question E,,
+,,,,,,
 #abyssal_XO_BlackBox_6,abyssal_XO_BlackBoxStart,$option == abyssal_XO_BlackBox_1,,,,
 #abyssal_XO_BlackBox_0,abyssal_XO_BlackBoxStart,$option == abyssal_XO_BlackBox_1,,,,
 #abyssal_XO_BlackBox_0,abyssal_XO_BlackBoxStart,$option == abyssal_XO_BlackBox_1,,,,
