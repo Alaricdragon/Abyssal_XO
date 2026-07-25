@@ -1,6 +1,60 @@
 package Abyssal_XO.data.scripts.shroudDweller;
 
 public class ShruoudDrweeler_Attribute {
+    /*NOTICE: changes to entropy. Also requires ANOTHER REDESIGN:
+        1: entropy as cooldonws:
+            1) entropy will go from a 'skill power and speed multi' to a 'gather x entropy for 1 charge of y skill'
+            2) haveing more charges of a skill will reduce skill 'cooldown' by some percent.
+            3) some skills will apply 'buffs' to existing skills if the same skill hits more then once.
+            4): skills created from this XO create 0.2X as mush entropy.
+        theams:
+            I think I will theam this after some luddic things.
+            maninly, the god of entropy. molach? I dont remember there names.
+
+        skill philosophy:
+            the idea is, and always was, some eldritch nightmare attacking you. An assistant to your fleet.
+            HOWEVER: skills doing damage themselves is iffy. At that point its just damage bonuses, and I cant stack to many such skills.
+            some skills, low level and high level, should do damage. becuase its cool. But its mostly buffs for my fleet, and debuffs for hostiles.
+        so skills:
+            1: claw:
+                for x entropy, summon 1 claw. its is summoned around a target, and slashes them. can be counted by PD.
+            2: refresh:
+                increases flux recharge for a bit on a ship
+            3: Chains:
+                projectile. if it hits, it slows donw the target
+                after max slowdown, starts to do damage.
+            4: hunters guidance:
+                increase max speed / manuvability for a bit.
+            5: Protection Of Monalath:
+                gain a shield.
+                increase charges increases the size of the shield, and provides some refresh (not as efficients as a full shield), creating a bubble shield
+            6: thread:
+                summon a 'thread' fighter wing for 15 secodns?
+                OR
+                summon a rift arc that does EMP damage, or kinetic damage to shields.
+            7: Avatar:
+                ship and all fighters gain an increase in damage.
+                past a limit, increase time dilation instead.
+            require 3
+            8: manifestation:
+                gain 1 abyssal substrate for every ? entropy.
+                gain 30 shrouded ship points
+                gain the ability to create shrouded ships.
+            AND / OR
+            9: Pathways
+                gives 1 ship 1 charge of phase teleporter.
+                carriers give 1 charge of this ability to all fighters as well.
+                a ship can hold 3 charges.
+            require 4
+            10: demonic intervention:
+                (very high entropy cost)
+                prevents the ship from dieing a single time. fully restoring hull, armor, PPT, and CR while massively increasing time flow for the duration of repairs.
+                The ships personality is changed to be reclease to an insane degree
+                after 20 seconds the ship starts to degenerate. well desaturating, it rapidly loes hp, flux, and armor, dieing in 30 seconds.
+                if this ability targets a ship already under this effect, it increases the time a ship can survive before degenerating by 10 seconds, up to a maximum of 60 seconds.
+                after that point this ability no longer has any effect on such a ship.
+
+    */
     /*addition hints:
      1) ship.isSelectableInWarroom(). maybe this is if I can give this ship comamnds?*/
     /*I am redoing this again.
