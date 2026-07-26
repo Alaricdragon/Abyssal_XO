@@ -1,6 +1,9 @@
 V0.1.30:
-    -NOT UPLOADED-
-    -worked on the quests dialog maps.
+    balance:
+        mastery:
+            cost per dp of ships changed from 250,375,500,625 -> 250,250,250,250
+    reasons:
+        I cant even spawn in 8 dp fighters more then a few times in a battle. The long cooldowns of capitals should be enough of a determent.
 V0.1.29:
     fixes:
         fixed crash on loading a game with the mod installed, provided you didn't already have it installed in earlier versions

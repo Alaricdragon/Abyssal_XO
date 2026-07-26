@@ -17,42 +17,79 @@ public class ShruoudDrweeler_Attribute {
             some skills, low level and high level, should do damage. becuase its cool. But its mostly buffs for my fleet, and debuffs for hostiles.
         so skills:
             1: claw:
-                for x entropy, summon 1 claw. its is summoned around a target, and slashes them. can be counted by PD.
+                summon 1 claw. its is summoned around a target, and slashes them. can be counted by PD.
             2: refresh:
                 increases flux recharge for a bit on a ship
             3: Chains:
-                projectile. if it hits, it slows donw the target
+                projectile. if it hits, it slows donw the target (time dilation or movement speed? I think movement speed.)
                 after max slowdown, starts to do damage.
             4: hunters guidance:
-                increase max speed / manuvability for a bit.
-            5: Protection Of Monalath:
-                gain a shield.
-                increase charges increases the size of the shield, and provides some refresh (not as efficients as a full shield), creating a bubble shield
-            6: thread:
+                increase max speed / manoeuvrability for a bit.
+            5: thread:
                 summon a 'thread' fighter wing for 15 secodns?
                 OR
                 summon a rift arc that does EMP damage, or kinetic damage to shields.
-            7: Avatar:
+                [cant decide. I think I did fighters / summoning to death in nano-thief.]
+            6: Avatar:
                 ship and all fighters gain an increase in damage.
-                past a limit, increase time dilation instead.
-            require 3
-            8: manifestation:
+                past a limit, reduces damage taken instead.
+            7: Protection Of Monalath:
+                gain a shield.
+                increase charges increases the size of the shield, and provides some refresh (not as efficients as a full shield), creating a bubble shield
+            require 3.
+            8: Manifestation:
                 gain 1 abyssal substrate for every ? entropy.
                 gain 30 shrouded ship points
-                gain the ability to create shrouded ships.
+                gain the ability to create shrouded ships from abyssal substrate.
+                [for AI, they will gain 10% of there dp in additional ships? or just a flat 45dp? (for the 75 cr.) (what is 70 cr though? somewhere around 50 right??? right!?!?!)]
+            require 4
             AND / OR
+            9: Sunder:
+                every ? entropy, mark a ship. instantly create the equivalent entropy of ? active skills. Said skills will target the marked ship.
+                if targeting a friendly ship, can only use skills that target friendly ships.
+                if targeting a enemy ship, can only use skills that target enemy ships.
+                Every skill that does not effect the target ship, increase the effective entropy by 25% for all other skills.
+            10: Void Lance:
+                fire 1 energy projectile from off the map. It goes over friendly ships. requires a 5-second charge up first.
+                If the lance hits, increases damage taken by 10% for 10 seconds.
+                does 8k damage, and hard flux to shields. (or make this a bit weaker to be equal to a dragon fire, but fires more often?)
+                [notes: when targeting, for the first 2 seconds it can aim. After, it's locked into the direction its targeting.]
+                [acts like a dragonfire maybe? so its a beam that does hard flux to shields.]
+            ??:
+                possibility: a final skill, so you can get both Sunder and Void Lance at the same time, at the cost of not getting the final skill.
+                that or make Sunder a require 3, but also make the last 2 require 3. so if you chose sunder you cant chose both?
+                ...
+                I like Sunder as a capstone. It sems good.
+                maybe move void lance down, move manifestation up, and buff manifestation?
+                sunnder + void lance would be so fucking OP. So lets avoid that combo.
+                maybe make manifestation the final upgrade, and move the others down 1 so they can be used as none capstones?
+        discarded skills:
+            basic skills:
+            8.b: lunge.
+                [I dont like the idea of this adding ability's. I want a big spooky thing attacking things.]
+                give a ship 1 charge of 'convulsive_lunge'. A high mobility skill.
+                ships can only hold up to 3 charges.
+            8.c: savvier:
+                [this skill sucks. Its terrible. I refuse. to hell with it.]
+                for every ? entropy, if a ship were to die, it instead teleports far away. can only activate once every 100 seconds per ship.
+
+            3+ skills:
             9: Pathways
+                [THIS SKILL IS BEING MOVED INTO THE OMEGA ATTRIBUTE. IT FITS MORE THERE.]
                 gives 1 ship 1 charge of phase teleporter.
                 carriers give 1 charge of this ability to all fighters as well.
                 a ship can hold 3 charges.
-            require 4
+
+            capstones:
             10: demonic intervention:
+                [This skill is boring as hell. changing to a diffrent capstone.]
                 (very high entropy cost)
                 prevents the ship from dieing a single time. fully restoring hull, armor, PPT, and CR while massively increasing time flow for the duration of repairs.
                 The ships personality is changed to be reclease to an insane degree
-                after 20 seconds the ship starts to degenerate. well desaturating, it rapidly loes hp, flux, and armor, dieing in 30 seconds.
+                after 10 seconds the ship starts to degenerate. well desaturating, it rapidly loes hp, flux, and armor, dieing in 15 seconds.
                 if this ability targets a ship already under this effect, it increases the time a ship can survive before degenerating by 10 seconds, up to a maximum of 60 seconds.
                 after that point this ability no longer has any effect on such a ship.
+
 
     */
     /*addition hints:

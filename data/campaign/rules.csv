@@ -1,48 +1,99 @@
 id,trigger,conditions,script,text,options,notes
-abyssal_XO_BlackBox_0,abyssal_XO_BlackBoxStart,,FireAll abyssal_XO_BlackBoxOptions2,Starting text A,,
-#abyssal_XO_BlackBox_options,abyssal_XO_BlackBoxOptions,,FireAll abyssal_XO_BlackBoxOptions2,Options running text,"abyssal_XO_BlackBox_0_2:""Why were we able to salvage this?""
+#something is tracking us...,,,,,,
+abyssal_XO_UnknownSenser_0,abyssal_XO_UnknownSenserStart,,FireAll abyssal_XO_UnknownSenserOptions,"A senser officer reports strange signals entering and leaving the ship. Like something is communicating with our fleet. Despite all attempts to locate what is being communicated with, nothing has come of it.",,
+abyssal_XO_UnknownSenser_1_can,abyssal_XO_UnknownSenserOptions,$abyssal_XO_US_op1 == false,,,"abyssal_XO_UnknownSenser_1:""Can the signal be tracked?""",
+abyssal_XO_UnknownSenser_2_can,abyssal_XO_UnknownSenserOptions,$abyssal_XO_US_op2 == false,,,"abyssal_XO_UnknownSenser_2:""Can we prevent any return signal from going out?""",
+abyssal_XO_UnknownSenser_3_can,abyssal_XO_UnknownSenserOptions,"$abyssal_XO_US_op1 == true
+$abyssal_XO_US_op2 == true",,,"abyssal_XO_UnknownSenser_3:""Ignore it. There is nothing we can do.""",
+abyssal_XO_UnknownSenser_4_can,abyssal_XO_UnknownSenserOptions,"$abyssal_XO_US_op1 == true
+$abyssal_XO_US_op2 == true",,,"abyssal_XO_UnknownSenser_4:""Continue to track it. Find the source.""",
+,,,,,,
+abyssal_XO_UnknownSenser_1,DialogOptionSelected,$option == abyssal_XO_UnknownSenser_1,"$abyssal_XO_US_op1 = true
+FireAll aabyssal_XO_UnknownSenserOptions","No. We cant find were its being broadcast from, We cant even locate were it is in our fleet. It seems to come from random ships, random suits, random places. There is no pattern to it.",,
+abyssal_XO_UnknownSenser_2,DialogOptionSelected,$option == abyssal_XO_UnknownSenser_2,"$abyssal_XO_US_op2 = true
+FireAll aabyssal_XO_UnknownSenserOptions","No. We have attempted a few different methods of EM scrambling, hyperwave tuning, anything we could think of. Besides interfacing with our own sensers, nothing works.",,
+abyssal_XO_UnknownSenser_3,DialogOptionSelected,$option == abyssal_XO_UnknownSenser_3,,"The officer nods stiffly. ""yes caption""","defaultLeave:""As you were.""",
+abyssal_XO_UnknownSenser_4,DialogOptionSelected,$option == abyssal_XO_UnknownSenser_4,,"The officer nods determinedly. ""yes caption""","defaultLeave:""As you were.""",
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+#Black Box Opening,,,,,,
+abyssal_XO_BlackBox_0,abyssal_XO_BlackBoxStart,,"$abyssal_XO_BlackBox_DType = 0
+FireAll abyssal_XO_BlackBoxOptions2","You enter a newly constructed lab. Withing, a massive black box, about 12 meters by 12 meters, sits in a heavily shielded room. The cube is constantly shifting configuration, changing shape. Strange marks appear on its surface and vanish just as fast. Sometimes, parts of it break off and float around it. Fragments, you recognize them as. They are quickly zapped by the containment's shielding and return to the cube.
+
+your science officer / engineer officer are there. arguing over something. They stop when they see you. Tech speaks first.
+
+""We have found something very very interesting in last salvage operation. A still functional part of a threat fabricator. A core part in fact.
+Its unstable, constantly shifting configuration. Normally, we would simply destroy something like this, but we have found that we can very easily interface with the device, and even control it, to limited effect.""
+
+Your engineer officer and tech share a look. The only indecation of a long standing arugment ""We think... This might have some potential""",,
+#abyssal_XO_BlackBox_options,abyssal_XO_BlackBoxOptions,,"FireAll abyssal_XO_BlackBoxOptions2
+FireAll abyssal_XO_BlackBox_final",Options running text,"abyssal_XO_BlackBox_0_2:""Why were we able to salvage this?""
 abyssal_XO_BlackBox_0_3:""Can we replecate it?""
 abyssal_XO_BlackBox_0_4:""How can we use this?""
 abyssal_XO_BlackBox_0_5:""Can we destroy it?""",
-abyssal_XO_BlackBox_0_1_can,abyssal_XO_BlackBoxOptions2,$abyssal_XO_BlackBox_op1 == false,,,"abyssal_XO_BlackBox_0_1:""Is there any risk?""",
-abyssal_XO_BlackBox_0_2_can,abyssal_XO_BlackBoxOptions2,$abyssal_XO_BlackBox_op2 == false,,,"abyssal_XO_BlackBox_0_2:""Why were we able to salvage this?""",
-abyssal_XO_BlackBox_0_3_can,abyssal_XO_BlackBoxOptions2,$abyssal_XO_BlackBox_op3 == false,,,"abyssal_XO_BlackBox_0_3:""Can we replecate it?""",
-abyssal_XO_BlackBox_0_4_can,abyssal_XO_BlackBoxOptions2,$abyssal_XO_BlackBox_op4 == false,,,"abyssal_XO_BlackBox_0_4:""How can we use this?""",
-abyssal_XO_BlackBox_0_5_can,abyssal_XO_BlackBoxOptions2,$abyssal_XO_BlackBox_op5 == false,,,"abyssal_XO_BlackBox_0_5:""Can we destroy it?""",
+abyssal_XO_BlackBox_0_1_can,abyssal_XO_BlackBoxOptions2,"$abyssal_XO_BlackBox_op1 == false
+$abyssal_XO_BlackBox_DType == 0",,,"abyssal_XO_BlackBox_0_1:""Is it valuble?""",
+abyssal_XO_BlackBox_0_2_can,abyssal_XO_BlackBoxOptions2,"$abyssal_XO_BlackBox_op2 == false
+$abyssal_XO_BlackBox_DType == 0",,,"abyssal_XO_BlackBox_0_2:""Why were we able to salvage this?""",
+abyssal_XO_BlackBox_0_3_can,abyssal_XO_BlackBoxOptions2,"$abyssal_XO_BlackBox_op3 == false
+$abyssal_XO_BlackBox_DType == 0",,,"abyssal_XO_BlackBox_0_3:""Can we replecate it?""",
+abyssal_XO_BlackBox_0_4_can,abyssal_XO_BlackBoxOptions2,"$abyssal_XO_BlackBox_op4 == false
+$abyssal_XO_BlackBox_DType == 0",,,"abyssal_XO_BlackBox_0_4:""How can we use this?""",
+abyssal_XO_BlackBox_0_5_can,abyssal_XO_BlackBoxOptions2,"$abyssal_XO_BlackBox_op5 == false
+$abyssal_XO_BlackBox_DType == 0",,,"abyssal_XO_BlackBox_0_5:""Is it dangerous?""",
+,,,,,,
+abyssal_XO_BlackBox_4_reset,abyssal_XO_BlackBoxOptions2,"$abyssal_XO_BlackBox_op4_0 == true
+$abyssal_XO_BlackBox_op4_1 == true
+$abyssal_XO_BlackBox_op4_2 == true
+$abyssal_XO_BlackBox_op4_3 == true
+$abyssal_XO_BlackBox_DType == 4","$abyssal_XO_BlackBox_DType = 0
+$abyssal_XO_BlackBox_finished_04 = true
+FireAll abyssal_XO_BlackBoxOptions2",,,
+abyssal_XO_BlackBox_4_0_can,abyssal_XO_BlackBoxOptions2,"$abyssal_XO_BlackBox_op4_0 == false
+$abyssal_XO_BlackBox_DType == 4",,,"abyssal_XO_BlackBox_4_0:""Can we produce threat equipment with this?""",
+abyssal_XO_BlackBox_4_1_can,abyssal_XO_BlackBoxOptions2,"$abyssal_XO_BlackBox_op4_1 == false
+$abyssal_XO_BlackBox_DType == 4",,,"abyssal_XO_BlackBox_4_1:""How fast could this produce 'small craft'?""",
+abyssal_XO_BlackBox_4_2_can,abyssal_XO_BlackBoxOptions2,"$abyssal_XO_BlackBox_op4_2 == false
+$abyssal_XO_BlackBox_DType == 4",,,"abyssal_XO_BlackBox_4_2:""What, in theory could this do?""",
+abyssal_XO_BlackBox_4_3_can,abyssal_XO_BlackBoxOptions2,"$abyssal_XO_BlackBox_op4_3 == false
+$abyssal_XO_BlackBox_op4_2 == true
+$abyssal_XO_BlackBox_DType == 4",,,"abyssal_XO_BlackBox_4_3:""would the device breaking ships into reclaim effect recovery operations?""",
+,,,,,,
+abyssal_XO_BlackBox_final_0_can,abyssal_XO_BlackBoxOptions2,"$abyssal_XO_BlackBox_op4_0 == true
+$abyssal_XO_BlackBox_op4_1 == true
+$abyssal_XO_BlackBox_op4_2 == true
+$abyssal_XO_BlackBox_op4_3 == true",,,"abyssal_XO_BlackBox_final_0:""Integrate it into our fleet.""",
+abyssal_XO_BlackBox_final_1_can,abyssal_XO_BlackBoxOptions2,$abyssal_XO_BlackBox_op5 == true,,,"abyssal_XO_BlackBox_final_1:""We cannot let this into the sector. Destroy it.""",
+abyssal_XO_BlackBox_final_2_can,abyssal_XO_BlackBoxOptions2,,"SetShortcut abyssal_XO_BlackBox_final_2 ""ESCAPE""",,"abyssal_XO_BlackBox_final_2:""I will leave this untill a farther date""",
+,,,,,,
 abyssal_XO_BlackBox_0_1,DialogOptionSelected,$option == abyssal_XO_BlackBox_0_1,"$abyssal_XO_BlackBox_op1 = true
-FireAll abyssal_XO_BlackBoxOptions2",Question A,,
+FireAll abyssal_XO_BlackBoxOptions2","To the right buyers? The value of a find like this would be millions, easyly. The issue comes from keeping it secreat. People would kill to possess something like this. People would kill if they knew we sold it",,
 abyssal_XO_BlackBox_0_2,DialogOptionSelected,$option == abyssal_XO_BlackBox_0_2,"$abyssal_XO_BlackBox_op2 = true
-FireAll abyssal_XO_BlackBoxOptions2",Question B,,
+FireAll abyssal_XO_BlackBoxOptions2","One of the fabricators seemed to be malformed in its construction. According to salvage reports, all threat ships are designed to self destruct as many internal components as possible in the case of... tampering. Be it salvaging or otherwise.
+for reasons we dont know, this one didn't do that.",,
 abyssal_XO_BlackBox_0_3,DialogOptionSelected,$option == abyssal_XO_BlackBox_0_3,"$abyssal_XO_BlackBox_op3 = true
-FireAll abyssal_XO_BlackBoxOptions2",Question C,,
-abyssal_XO_BlackBox_0_4,DialogOptionSelected,$option == abyssal_XO_BlackBox_0_4,DismissDialog,Question D,,
-abyssal_XO_BlackBox_0_5,DialogOptionSelected,$option == abyssal_XO_BlackBox_0_5,DismissDialog,Question E,,
+FireAll abyssal_XO_BlackBoxOptions2","The device is constantly rearranging itself. It seems able to detect when we scan it and switch configurations to conceal its internal functions whenever we attempt to understand the 'hows' and 'whys'. It would take specialized equipment and personal to even begin to understand the details in how this works. 
+Tri-Tech could do it. Or maybe the Galatic Academy. But there is no way we would ever see it again.",,
+abyssal_XO_BlackBox_0_4,DialogOptionSelected,$option == abyssal_XO_BlackBox_0_4,"$abyssal_XO_BlackBox_op4 = true
+$abyssal_XO_BlackBox_DType = 4
+FireAll abyssal_XO_BlackBoxOptions2","Tech looks hopeful at the question. ""In theory tes. In fact it seems to be designed for control by outside interfaces. We could programing it to do all sorts of things. Strip down difficult salvage easier, build missiles or replacement parts, or maybe even small craft! Its basically the core of a fabricator unit!""",,
+abyssal_XO_BlackBox_0_5,DialogOptionSelected,$option == abyssal_XO_BlackBox_0_5,"$abyssal_XO_BlackBox_op5 = true
+FireAll abyssal_XO_BlackBoxOptions2",Is it dangerous?,,
 ,,,,,,
-#abyssal_XO_BlackBox_0,abyssal_XO_BlackBoxStart,,FireAll abyssal_XO_BlackBoxQuestionSet_a,Starting text A,"abyssal_XO_BlackBoxStart_1:""Is there any risk?""
-abyssal_XO_BlackBoxStart_2:""Why were we able to salvage this?""
-abyssal_XO_BlackBoxStart_3:""Can we replecate it?""
-abyssal_XO_BlackBoxStart_4:""How can we use this?""
-abyssal_XO_BlackBoxStart_5:""Can we destroy it?""",
-#abyssal_XO_BlackBox_1,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_1,,Question A,,
-#abyssal_XO_BlackBox_2,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_2,,Question B,,
-#abyssal_XO_BlackBox_3,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_3,,Question C,,
-#abyssal_XO_BlackBox_4,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_4,DismissDialog,Question D,,
-#abyssal_XO_BlackBox_5,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_5,DismissDialog,Question E,,
+abyssal_XO_BlackBox_4_0,DialogOptionSelected,$option == abyssal_XO_BlackBox_4_0,"$abyssal_XO_BlackBox_op4_0 = true
+FireAll abyssal_XO_BlackBoxOptions2","No. In theory blueprints for all threat ships and weapons are in theory stored within the device. But so long as it continues to conceals its internal structure, its impossible to datamine.",,
+abyssal_XO_BlackBox_4_1,DialogOptionSelected,$option == abyssal_XO_BlackBox_4_1,"$abyssal_XO_BlackBox_op4_1 = true
+FireAll abyssal_XO_BlackBoxOptions2","tech pales. Oh no, nothing like what the fabricators could do! We could likely produce fighter, maybe we could configure it to produce very small frigates? It would be slow as well. Very slow. Mush faster then any other method we currently use of course.",,
+abyssal_XO_BlackBox_4_2,DialogOptionSelected,$option == abyssal_XO_BlackBox_4_2,"$abyssal_XO_BlackBox_op4_2 = true
+FireAll abyssal_XO_BlackBoxOptions2","Build fighter craft, repair hull, forge missiles. Maybe we could get it to do some other things as well.
+It would also remove hostile craft from the battlefield, breaking them down into reclaim, wish it would use to fuel itself",,
+abyssal_XO_BlackBox_4_3,DialogOptionSelected,$option == abyssal_XO_BlackBox_4_3,"$abyssal_XO_BlackBox_op4_3 = true
+FireAll abyssal_XO_BlackBoxOptions2","In theory, we should beable to force the device to 'remember' the last state of anything it salvages. This wont guarantee successful recovery operations, but it shouldn't negatively impact them ether.",,
 ,,,,,,
-#abyssal_XO_BlackBox_6,abyssal_XO_BlackBoxStart,$option == abyssal_XO_BlackBox_1,,,,
-#abyssal_XO_BlackBox_0,abyssal_XO_BlackBoxStart,$option == abyssal_XO_BlackBox_1,,,,
-#abyssal_XO_BlackBox_0,abyssal_XO_BlackBoxStart,$option == abyssal_XO_BlackBox_1,,,,
-#abyssal_XO_BlackBox_,abyssal_XO_BlackBoxStart,$option == abyssal_XO_BlackBox_1,,,,
+abyssal_XO_BlackBox_final_0,DialogOptionSelected,$option == abyssal_XO_BlackBox_final_0,,Yes sir.,"defaultLeave:""As you were.""",remember to add the XO vi script.
+abyssal_XO_BlackBox_final_1,DialogOptionSelected,$option == abyssal_XO_BlackBox_final_1,,"Tech seems sad for a moment. ""Of course caption""","defaultLeave:""As you were.""",note: add story ponits by scripts
+abyssal_XO_BlackBox_final_2,DialogOptionSelected,$option == abyssal_XO_BlackBox_final_2,FireAll abyssal_XO_BlackBoxOptionsResetData,We will keep it contained for now,"defaultLeave:""As you were.""",
 ,,,,,,
-#stored data from other tests,,,,,,
-#abyssal_XO_BlackBox_0,abyssal_XO_BlackBoxStart,,,Starting text A,"abyssal_XO_BlackBoxStart_1:""Is there any risk?""
-abyssal_XO_BlackBoxStart_2:""Why were we able to salvage this?""
-abyssal_XO_BlackBoxStart_3:""Can we replecate it?""
-abyssal_XO_BlackBoxStart_4:""How can we use this?""
-abyssal_XO_BlackBoxStart_5:""Can we destroy it?""
-FireAll abyssal_XO_BlackBoxQuestionSet_a",
-#abyssal_XO_BlackBox_1,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_1,,Question A,,
-#abyssal_XO_BlackBox_2,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_2,,Question B,,
-#abyssal_XO_BlackBox_3,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_3,,Question C,,
-#abyssal_XO_BlackBox_4,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_4,,Question D,"defaultLeave:""As you were.""",
-#abyssal_XO_BlackBox_5,abyssal_XO_BlackBoxQuestionSet_a,$option == abyssal_XO_BlackBox_5,,Question E,"defaultLeave:""As you were.""",
+abyssal_XO_BlackBox_final_end_notfinished,abyssal_XO_BlackBoxOptionsResetData,$abyssal_XO_BlackBox_finished_04 == false,$abyssal_XO_BlackBox_op4 = false,,,
