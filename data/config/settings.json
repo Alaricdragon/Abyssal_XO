@@ -6,6 +6,15 @@
     #"strikeCraft"
   ],
   "NanoThief_AllowSICToAnyShip": false,
-  "NanoThief_AllowSICToShipModules": false
+  "NanoThief_AllowSICToShipModules": false,
+
+
+
+  "graphics":{
+    "characters":{
+      "Abyssal_XO_BlackBox_Char":"graphics/icons/AbyssalXO_BlackBox.png"
+    }
+  },
+  "Abyssal_XO_BlackBox_Char":"graphics/icons/AbyssalXO_BlackBox.png"
 }
 

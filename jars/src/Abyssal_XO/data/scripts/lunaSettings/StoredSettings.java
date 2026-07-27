@@ -1,6 +1,7 @@
 package Abyssal_XO.data.scripts.lunaSettings;
 import Abyssal_XO.data.scripts.SiC_NanoThief_Plugin;
 import Abyssal_XO.data.scripts.Utils;
+import Abyssal_XO.data.scripts.listiners.EndBattleListiner;
 import Abyssal_XO.data.scripts.listiners.ThreatBossCreater;
 import Abyssal_XO.data.scripts.threat.NanoThief_Attribute;
 import Abyssal_XO.data.scripts.threat.listiners.NanoThief_ShipSpawnedListener;
@@ -38,8 +39,9 @@ public class StoredSettings {
         NanoThief_Attribute.oddsForThreat = LunaSettings.getDouble("Abyssal_XO","CORE_oddsForThreat");
         NanoThief_Attribute.oddsForOther = LunaSettings.getDouble("Abyssal_XO","CORE_oddsForOther");
 
-        tempEnableBoss = LunaSettings.getBoolean("Abyssal_XO","CORE_Threat_enableBossFight");
-        SiC_NanoThief_Plugin.addThreatBossCreater();
+        EndBattleListiner.requiredFabsForThreat = LunaSettings.getInt("Abyssal_XO","CORE_Threat_boss_fabsToFight");
+        tempEnableBoss = LunaSettings.getBoolean("Abyssal_XO","CORE_Threat_enableBossFight_2");
+        SiC_NanoThief_Plugin.addThreatBossCreate();//placed in two locations. hope it works....
 
         ThreatBossCreater.bossPower = LunaSettings.getDouble("Abyssal_XO","CORE_Threat_BossFightPower");
     }

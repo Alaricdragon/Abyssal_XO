@@ -4,7 +4,8 @@ CORE_alwaysGiveThreat,Force Threat to have the Nano Thief attribute,Boolean,true
 CORE_oddsForThreat,Odds Threat have the Nano Thief attribute,Int,1,,Only used if force Threat to have the Nano Thief attribute is false,0,10,Features
 CORE_oddsForOther,Odds random fleets have the Nano Thief attribute,Int,0,,,0,10,Features
 CORE_Header_2,,Header,Boss fight settings,,,,,Features
-CORE_Threat_enableBossFight,Enable the Threat Boss. Exspermental,Boolean,false,,"Will hunt you down in threat systems. Is just a large fleet for now, and might crash your game. Not connected to any other systems and presently being worked on.",,,Features
+CORE_Threat_enableBossFight_2,Enable the Threat Boss.,Boolean,true,,Will hunt you down in threat systems. Will drop something interesting,,,Features
+CORE_Threat_boss_fabsToFight,How many fabracators need to fight the boss,Int,6,,,1,100,Features
 CORE_Threat_BossFightPower,Strangth of the boss fight.,Double,3,,3 is slightly stronger then a Third Strike. 10 is just a lot of ships,1,10,Features
 ,,,,,,,,
 NA_BASE_Header,,Header,Base Skill,,,,,Nano Thief: Base Skill

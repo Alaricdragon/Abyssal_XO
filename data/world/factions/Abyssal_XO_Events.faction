@@ -1,0 +1,121 @@
+{
+	id:"Abyssal_XO_Events",
+	#"color":[255,235,225,255],
+	"color":[160,0,95,255],
+	"displayName":"",
+	"logo":"graphics/factions/sindrian_diktat.png",
+	"displayNameWithArticle":"",
+	"shipNamePrefix":"",
+	"showInIntelTab":false,
+	"shipNameSources":{
+		"SPACE":1,
+	},
+	"names":{
+		"myth":1,
+	},
+	# variantOverrides restricts hulls to listed variants and adjusts their probability
+	"variantOverrides":{
+	},
+	# multiplier for how often hulls show up in the faction's fleets
+	"hullFrequency":{
+		"tags":{
+		},
+		"hulls":{
+		},
+	},
+	# ships the faction gets access to when importing S&W out-of-faction
+	"shipsWhenImporting":{
+		"tags":[],
+		"hulls":[
+		],
+	},
+	"knownShips":{
+		"tags":[],
+		"hulls":[
+		],
+	},
+	# listing ships here will make the faction mostly use them even if other hulls become available
+	"priorityShips":{
+		"tags":[],
+		"hulls":[
+		],
+	},
+	"knownFighters":{
+		"tags":[],
+		"fighters":[
+		],
+	},
+	"priorityFighters":{
+		"tags":[],
+		"fighters":[
+		],
+	},
+	"knownWeapons":{
+		"tags":[],
+		"weapons":[
+		],
+	},
+	"priorityWeapons":{
+		"tags":[],
+		"weapons":[
+		],
+	},
+	"knownHullMods":{
+		"tags":[],
+		"hullMods":[
+		],
+	},
+	"weaponSellFrequency":{
+	},
+	"fighterSellFrequency":{
+	},
+	"hullmodSellFrequency":{
+	},	
+	"factionDoctrine":{
+		"warships":1,
+		"carriers":1,
+		"phaseShips":1,
+		
+		"officerQuality":1,
+		"shipQuality":1
+		"numShips":1,
+		
+		"shipSize":1,
+		
+		"aggression":1,
+		
+		"combatFreighterProbability":0,      				# instead of some portion of the freighters in a fleet
+		"combatFreighterCombatUseFraction":0,  				# as part of the normal combat lineup
+		"combatFreighterCombatUseFractionWhenPriority":0,   # as part of normal combat lineup, when marked as priority ship
+		"autofitRandomizeProbability":0,					# there is no room for chance in the Supreme Executor's Great Plan
+		
+		"commanderSkillsShuffleProbability":0,
+		"commanderSkills":[
+			"coordinated_maneuvers",
+		],
+	},
+	"illegalCommodities":[
+	],
+	"internalComms":"Abyssal_XO_internal",
+	"portraits":{
+		"standard_male":[
+			"graphics/icons/AbyssalXO_BlackBox.png",
+		],
+		"standard_female":[
+		],
+	},
+	"voices":{
+		"LOW":{
+		},
+		"MEDIUM":{
+		},
+		"HIGH":{
+		},
+	},
+	"fleetTypeNames":{
+		"patrolSmall":"Recon",
+		"patrolMedium":"Patrol",
+		"patrolLarge":"Detachment",
+	},
+
+},

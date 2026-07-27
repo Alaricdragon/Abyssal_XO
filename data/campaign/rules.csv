@@ -92,8 +92,8 @@ It would also remove hostile craft from the battlefield, breaking them down into
 abyssal_XO_BlackBox_4_3,DialogOptionSelected,$option == abyssal_XO_BlackBox_4_3,"$abyssal_XO_BlackBox_op4_3 = true
 FireAll abyssal_XO_BlackBoxOptions2","In theory, we should beable to force the device to 'remember' the last state of anything it salvages. This wont guarantee successful recovery operations, but it shouldn't negatively impact them ether.",,
 ,,,,,,
-abyssal_XO_BlackBox_final_0,DialogOptionSelected,$option == abyssal_XO_BlackBox_final_0,,Yes sir.,"defaultLeave:""As you were.""",remember to add the XO vi script.
-abyssal_XO_BlackBox_final_1,DialogOptionSelected,$option == abyssal_XO_BlackBox_final_1,,"Tech seems sad for a moment. ""Of course caption""","defaultLeave:""As you were.""",note: add story ponits by scripts
+abyssal_XO_BlackBox_final_0,DialogOptionSelected,$option == abyssal_XO_BlackBox_final_0,Abyssal_XO_BlackBox_Final accept,Yes sir.,"defaultLeave:""As you were.""",remember to add the XO vi script.
+abyssal_XO_BlackBox_final_1,DialogOptionSelected,$option == abyssal_XO_BlackBox_final_1,Abyssal_XO_BlackBox_Final refuse,"Tech seems sad for a moment. ""Of course caption""","defaultLeave:""As you were.""",note: add story ponits by scripts
 abyssal_XO_BlackBox_final_2,DialogOptionSelected,$option == abyssal_XO_BlackBox_final_2,FireAll abyssal_XO_BlackBoxOptionsResetData,We will keep it contained for now,"defaultLeave:""As you were.""",
 ,,,,,,
 abyssal_XO_BlackBox_final_end_notfinished,abyssal_XO_BlackBoxOptionsResetData,$abyssal_XO_BlackBox_finished_04 == false,$abyssal_XO_BlackBox_op4 = false,,,
