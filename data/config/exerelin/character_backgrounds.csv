@@ -1,0 +1,3 @@
+id,name,shortDescription,longDescription,order,iconPath,plugin
+AbyssalXO_NanoThief_Start,The Black Box,Start with the nano-thief attribute,"An old storge unit has held an artifact for years. Your great grandfather found it. A complicated ever moving black box. 
+You were the first in your family to take interest. You studied it, watched the ever moving paterns. And finaly learned how to use it.",56,graphics/icons/AbyssalXO_BlackBox.png,Abyssal_XO.data.scripts.backgrounds.BlackBox
