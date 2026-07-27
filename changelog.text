@@ -1,9 +1,25 @@
+V0.1.31:
+    fixes:
+        fixes V0.1.30 mastery balance not happing if you dont use lunalib
+    balance:
+        mastery:
+            dmod max discount:      50% -> 70%
+            discount per dmod:      10% -> 8%
+            cost increase per smod: 25% -> 10%
+        Constant repairs:
+            base repair speed: 0.002 -> 0.001
+        Scrapwork Fortification:
+            damager per reclaim: 50 -> 16
+    reasons for balance:
+        Smods in mastery felt less then worthless. Dmods felt like they were required. to get the skill to work. Hopefully this helps balance.
+        constant repairs was way way to fast sometimes.
+        Scrapwork Fortification was always suppose to be twice as cost effective as constant repairs. So now it is. Hopefully its still really good.
 V0.1.30:
     balance:
         mastery:
             cost per dp of ships changed from 250,375,500,625 -> 250,250,250,250
     reasons:
-        I cant even spawn in 8 dp fighters more then a few times in a battle. The long cooldowns of capitals should be enough of a determent.
+        I cant even spawn in 8 dp frigates more then a few times in a battle. The long cooldowns of capitals/cruisers/destroyers should be enough of a determent.
 V0.1.29:
     fixes:
         fixed crash on loading a game with the mod installed, provided you didn't already have it installed in earlier versions

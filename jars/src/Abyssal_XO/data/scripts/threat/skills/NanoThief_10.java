@@ -39,15 +39,15 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
     public static int maxOddsNPC = 20;
     public static int minOddsNPC = 1;
 
-    public static double sModCost = 0.25;//per s-mod, add a
-    public static double dModDiscount = 0.1;
-    public static double dModmin = 0.5;
+    public static double sModCost = 0.1;//per s-mod, add a
+    public static double dModDiscount = 0.08;
+    public static double dModmin = 0.7;
     //public static double costPerDP = 250;
     //public static double baseCost = 500;
     //30k reclaim per battle. 60k including friendly ships.
     //1000 / 125 = 8dp per dp. 2,4,6,8.
     //  2,3,4,5
-    public static double[] costPerDPs = {250,375,500,625};//(2k) = 40*2 = 80k. 125*240 = 30k per battle. (1k) = 40*1 = 40k
+    public static double[] costPerDPs = {250,250,250,250};//(2k) = 40*2 = 80k. 125*240 = 30k per battle. (1k) = 40*1 = 40k
     public static double[] baseCosts = {500,1000,2000,4000};
     //200 for 1 dp cost, 2000 for 10 dp. (0.5 capitals for 1 dp. 0.5 frigets for 1 dp.)
     //200,0:   1dp:200r, 3dp:600r,  10dp:2000r, 20dp:4000r
