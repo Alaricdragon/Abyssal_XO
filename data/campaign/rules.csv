@@ -7,11 +7,12 @@ abyssal_XO_UnknownSenser_3_can,abyssal_XO_UnknownSenserOptions,"$abyssal_XO_US_o
 $abyssal_XO_US_op2 == true",,,"abyssal_XO_UnknownSenser_3:""Ignore it. There is nothing we can do.""",
 abyssal_XO_UnknownSenser_4_can,abyssal_XO_UnknownSenserOptions,"$abyssal_XO_US_op1 == true
 $abyssal_XO_US_op2 == true",,,"abyssal_XO_UnknownSenser_4:""Continue to track it. Find the source.""",
+#abyssal_XO_UnknownSenser_TEMP,abyssal_XO_UnknownSenserOptions,,,,"defaultLeave:""As you were.""",
 ,,,,,,
 abyssal_XO_UnknownSenser_1,DialogOptionSelected,$option == abyssal_XO_UnknownSenser_1,"$abyssal_XO_US_op1 = true
-FireAll aabyssal_XO_UnknownSenserOptions","No. We cant find were its being broadcast from, We cant even locate were it is in our fleet. It seems to come from random ships, random suits, random places. There is no pattern to it.",,
+FireAll abyssal_XO_UnknownSenserOptions","No. We cant find were its being broadcast from, We cant even locate were it is in our fleet. It seems to come from random ships, random suits, random places. There is no pattern to it.",,
 abyssal_XO_UnknownSenser_2,DialogOptionSelected,$option == abyssal_XO_UnknownSenser_2,"$abyssal_XO_US_op2 = true
-FireAll aabyssal_XO_UnknownSenserOptions","No. We have attempted a few different methods of EM scrambling, hyperwave tuning, anything we could think of. Besides interfacing with our own sensers, nothing works.",,
+FireAll abyssal_XO_UnknownSenserOptions","No. We have attempted a few different methods of EM scrambling, hyperwave tuning, anything we could think of. Besides interfacing with our own sensers, nothing works.",,
 abyssal_XO_UnknownSenser_3,DialogOptionSelected,$option == abyssal_XO_UnknownSenser_3,,"The officer nods stiffly. ""yes caption""","defaultLeave:""As you were.""",
 abyssal_XO_UnknownSenser_4,DialogOptionSelected,$option == abyssal_XO_UnknownSenser_4,,"The officer nods determinedly. ""yes caption""","defaultLeave:""As you were.""",
 ,,,,,,

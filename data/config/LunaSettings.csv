@@ -6,7 +6,7 @@ CORE_oddsForOther,Odds random fleets have the Nano Thief attribute,Int,0,,,0,10,
 CORE_Header_2,,Header,Boss fight settings,,,,,Features
 CORE_Threat_enableBossFight_2,Enable the Threat Boss.,Boolean,true,,Will hunt you down in threat systems. Will drop something interesting,,,Features
 CORE_Threat_boss_fabsToFight,How many fabracators need to fight the boss,Int,6,,,1,100,Features
-CORE_Threat_BossFightPower,Strangth of the boss fight.,Double,3,,3 is slightly stronger then a Third Strike. 10 is just a lot of ships,1,10,Features
+CORE_Threat_BossFightPower,Strangth of the boss fight.,Double,3.9,,3 is slightly stronger then a Third Strike. 10 is just a lot of ships,1,10,Features
 ,,,,,,,,
 NA_BASE_Header,,Header,Base Skill,,,,,Nano Thief: Base Skill
 NA_BASE_reclaimOnStartPerDP,Reclaim ships start with per deployment point per skill,Int,10,,,1,1000,Nano Thief: Base Skill
@@ -57,7 +57,7 @@ NA_SF_resistance,Damage taken multi when skill is active,Double,0.05,,,0,1,Nano 
 NA_SF_time,Time this skill remains active,Double,5,,,0.1,10,Nano Thief: Scrapy Fortification
 NA_SF_cooldown,How many seconds this skill spends in cooldown after use,Double,30,,,0.1,300,Nano Thief: Scrapy Fortification
 NA_SF_activeCost,Reclaim cost per actavation,Int,10,,,0,1000,Nano Thief: Scrapy Fortification
-NA_SF_damagePerCost,Damage resisted per reclaim,Int,16,,,1,1000,Nano Thief: Scrapy Fortification
+NA_SF_damagePerCost,Damage resisted per reclaim,Int,24,,,1,1000,Nano Thief: Scrapy Fortification
 ,,,,,,,,
 NA_DSP_Header_0,,Header,Base stats for simulacrum fighters,,please note: This also effects Defensive Swarms simulacrum fighter wings,,,Nano Thief: Decentralized Swarms
 NA_DSP_CustomSwarm_COST_BASE,Simulacrum fighter base reclaim cost ,Int,40,,,0,200,Nano Thief: Decentralized Swarms

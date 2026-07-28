@@ -1,5 +1,6 @@
 package data.scripts.starfarer.api.impl.campaign.rulemd;
 
+import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.backgrounds.BlackBox;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CargoAPI;
@@ -55,9 +56,11 @@ public class Abyssal_XO_BlackBox_Final extends BaseCommandPlugin {
             String name = "Black Box";
             text.addPara("Unlocked the '"+name+"' background",Misc.getTextColor(),Misc.getHighlightColor(),name);
         }
+        Global.getSector().getMemory().set(Settings.MEMKEY_NANOTHIEF_BLACK_BOX_QUEST_STAGE,5);
     }
     public void refuse(InteractionDialogAPI dialog){
         TextPanelAPI text = dialog.getTextPanel();
         Global.getSector().getPlayerStats().addStoryPoints(8, text, false);
+        Global.getSector().getMemory().set(Settings.MEMKEY_NANOTHIEF_BLACK_BOX_QUEST_STAGE,6);
     }
 }

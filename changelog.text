@@ -1,7 +1,10 @@
 V0.1.31:
-    todo: for constant repairs, maybe change the exspenensal growth instead?
+    new:
+        added in the quest to get nano-thief. Kill threat to find it. (still being worked on, dialog sucks.)
+        also nano-thief is no longer a starting option.
     fixes:
         fixes V0.1.30 mastery balance not happing if you dont use lunalib
+        fixed a bunch of listiners being added that already exsisted (also this update cleans them from your save. yay.)
     balance:
         mastery:
             dmod max discount:      50% -> 70%
@@ -10,7 +13,8 @@ V0.1.31:
         Constant repairs:
             base repair speed: 0.002 -> 0.001
         Scrapwork Fortification:
-            damager per reclaim: 50 -> 16
+            damager per reclaim: 50 -> 24
+        nano-thief boss strength 3 -> 3.9
     reasons for balance:
         Smods in mastery felt less then worthless. Dmods felt like they were required. to get the skill to work. Hopefully this helps balance.
         constant repairs was way way to fast sometimes.

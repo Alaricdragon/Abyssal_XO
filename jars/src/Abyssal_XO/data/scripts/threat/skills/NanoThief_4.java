@@ -22,7 +22,7 @@ public class NanoThief_4 extends Nano_Thief_Skill_Base {
     public static double time = 5;
     public static double cooldown = 30;
     public static double activeCost = 10;
-    public static double damagePerCost = 16;
+    public static double damagePerCost = 24;
 
     //public static final int minReclaimToActavate = 25;
     //private static final float hullMod = 0.95f;
