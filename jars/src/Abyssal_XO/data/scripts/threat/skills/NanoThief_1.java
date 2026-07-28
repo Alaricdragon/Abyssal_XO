@@ -31,7 +31,7 @@ public class NanoThief_1 extends Nano_Thief_Skill_Base {
     //private static final double speedMin = 0.0025d;//0.25X combat indurance //1
 
     @Getter
-    public static double speed = 0.0020d;
+    public static double speed = 0.0010d;
 
     @Getter
     public static int hullPerReclaim = 12;//100 = 10? 1000 = 100. 10000 = 1000.

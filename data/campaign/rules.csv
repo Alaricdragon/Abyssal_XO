@@ -7,11 +7,12 @@ abyssal_XO_UnknownSenser_3_can,abyssal_XO_UnknownSenserOptions,"$abyssal_XO_US_o
 $abyssal_XO_US_op2 == true",,,"abyssal_XO_UnknownSenser_3:""Ignore it. There is nothing we can do.""",
 abyssal_XO_UnknownSenser_4_can,abyssal_XO_UnknownSenserOptions,"$abyssal_XO_US_op1 == true
 $abyssal_XO_US_op2 == true",,,"abyssal_XO_UnknownSenser_4:""Continue to track it. Find the source.""",
+#abyssal_XO_UnknownSenser_TEMP,abyssal_XO_UnknownSenserOptions,,,,"defaultLeave:""As you were.""",
 ,,,,,,
 abyssal_XO_UnknownSenser_1,DialogOptionSelected,$option == abyssal_XO_UnknownSenser_1,"$abyssal_XO_US_op1 = true
-FireAll aabyssal_XO_UnknownSenserOptions","No. We cant find were its being broadcast from, We cant even locate were it is in our fleet. It seems to come from random ships, random suits, random places. There is no pattern to it.",,
+FireAll abyssal_XO_UnknownSenserOptions","No. We cant find were its being broadcast from, We cant even locate were it is in our fleet. It seems to come from random ships, random suits, random places. There is no pattern to it.",,
 abyssal_XO_UnknownSenser_2,DialogOptionSelected,$option == abyssal_XO_UnknownSenser_2,"$abyssal_XO_US_op2 = true
-FireAll aabyssal_XO_UnknownSenserOptions","No. We have attempted a few different methods of EM scrambling, hyperwave tuning, anything we could think of. Besides interfacing with our own sensers, nothing works.",,
+FireAll abyssal_XO_UnknownSenserOptions","No. We have attempted a few different methods of EM scrambling, hyperwave tuning, anything we could think of. Besides interfacing with our own sensers, nothing works.",,
 abyssal_XO_UnknownSenser_3,DialogOptionSelected,$option == abyssal_XO_UnknownSenser_3,,"The officer nods stiffly. ""yes caption""","defaultLeave:""As you were.""",
 abyssal_XO_UnknownSenser_4,DialogOptionSelected,$option == abyssal_XO_UnknownSenser_4,,"The officer nods determinedly. ""yes caption""","defaultLeave:""As you were.""",
 ,,,,,,
@@ -92,8 +93,8 @@ It would also remove hostile craft from the battlefield, breaking them down into
 abyssal_XO_BlackBox_4_3,DialogOptionSelected,$option == abyssal_XO_BlackBox_4_3,"$abyssal_XO_BlackBox_op4_3 = true
 FireAll abyssal_XO_BlackBoxOptions2","In theory, we should beable to force the device to 'remember' the last state of anything it salvages. This wont guarantee successful recovery operations, but it shouldn't negatively impact them ether.",,
 ,,,,,,
-abyssal_XO_BlackBox_final_0,DialogOptionSelected,$option == abyssal_XO_BlackBox_final_0,,Yes sir.,"defaultLeave:""As you were.""",remember to add the XO vi script.
-abyssal_XO_BlackBox_final_1,DialogOptionSelected,$option == abyssal_XO_BlackBox_final_1,,"Tech seems sad for a moment. ""Of course caption""","defaultLeave:""As you were.""",note: add story ponits by scripts
+abyssal_XO_BlackBox_final_0,DialogOptionSelected,$option == abyssal_XO_BlackBox_final_0,Abyssal_XO_BlackBox_Final accept,Yes sir.,"defaultLeave:""As you were.""",remember to add the XO vi script.
+abyssal_XO_BlackBox_final_1,DialogOptionSelected,$option == abyssal_XO_BlackBox_final_1,Abyssal_XO_BlackBox_Final refuse,"Tech seems sad for a moment. ""Of course caption""","defaultLeave:""As you were.""",note: add story ponits by scripts
 abyssal_XO_BlackBox_final_2,DialogOptionSelected,$option == abyssal_XO_BlackBox_final_2,FireAll abyssal_XO_BlackBoxOptionsResetData,We will keep it contained for now,"defaultLeave:""As you were.""",
 ,,,,,,
 abyssal_XO_BlackBox_final_end_notfinished,abyssal_XO_BlackBoxOptionsResetData,$abyssal_XO_BlackBox_finished_04 == false,$abyssal_XO_BlackBox_op4 = false,,,

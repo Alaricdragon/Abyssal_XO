@@ -9,9 +9,12 @@ import java.util.ArrayList;
 
 public class Settings {
     public static final String SIC_CONTROL_HULLMOD = "Abussal_XO_SIC_controler";//"sc_skill_controller";
-    public static final String MEMKEY_NANOTHIEF_STATUS = "$Abyssal_XO_GOT_NANOTHIEF";
+    public static final String MEMKEY_NANOTHIEF_KILLED_FABS = "$Abyssal_XO_KILLED_FABS";
+    public static final String MEMKEY_NANOTHIEF_BLACK_BOX_QUEST_STAGE = "$Abyssal_XO_BLACK_BOX_QUEST_STAGE";
     public static final String MEMKEY_NANOTHIEF_BOSSFLEET = "$Abyssal_XO_NF_BOSS";
     public static final String MEMKEY_NANOTHIEF_BOSSSCRIPT = "$Abyssal_XO_NF_BOSS_SCRIPT";
+    public static final String MEMKEY_NANOTHIEF_BACKGROUND = "$Abyssal_XO_Nanothief_Background";
+    public static final String TAG_NANOTHIEF_BOSS = "Abyssal_XO_NanoThief_Boss";
 
     public static Logger log = Global.getLogger(Settings.class);
     public static final int[] NANO_THIEF_RECLAIM_GAIN = {

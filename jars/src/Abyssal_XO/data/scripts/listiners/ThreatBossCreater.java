@@ -22,11 +22,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static Abyssal_XO.data.scripts.Settings.MEMKEY_NANOTHIEF_BOSSFLEET;
-import static Abyssal_XO.data.scripts.Settings.MEMKEY_NANOTHIEF_BOSSSCRIPT;
+import static Abyssal_XO.data.scripts.Settings.*;
 
 public class ThreatBossCreater extends BaseCampaignEventListener {
-    public static double bossPower = 3;
+    public static double bossPower = 3.9;
     /*todo:
         1: (WORKING)test and make sure the hostile is removed on new system enter
         2: (WORKING)make sure the boss is not removed on same system enter.
@@ -108,6 +107,7 @@ public class ThreatBossCreater extends BaseCampaignEventListener {
         if (to.hasTag(Tags.SYSTEM_CAN_SPAWN_THREAT)){
             Settings.log.info("NF_BOSS_CREATE: -destination is threat. spawning fleet.");
             fleet = spawnFleet(to);
+            fleet.addTag(TAG_NANOTHIEF_BOSS);
         }else{
             Settings.log.info("NF_BOSS_CREATE: -destination not threat. refused to spawn.");
             fleet = null;
@@ -322,6 +322,7 @@ public class ThreatBossCreater extends BaseCampaignEventListener {
         int minFrigates = 0;
         int maxFrigates = 0;
 
+        log.info("HERE: Getting nano-thief boss creater settings power and escorts as: "+power+", "+escorts.name());
         switch (escorts) {
             case NONE:
                 break;
