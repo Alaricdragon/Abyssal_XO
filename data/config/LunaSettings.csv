@@ -138,8 +138,8 @@ NA_Mastery_canCapital,Allow capitals,Boolean,true,,,,,Nano Thief: Mastery
 NA_Mastery_canFabricator,Allow NPCs to use fabricators class ships (requires 'Allow capitals' to be true),Boolean,false,,fabracator ships are threats 'big capital' ship. the option to exsclude exsists because they are a bit mush.,,,Nano Thief: Mastery
 NA_Mastery_oddsVariance,How mush the weight to spawn each ship differs for npc fleets,Int,19,,,1,100,Nano Thief: Mastery
 NA_Mastery_sModCost,Cost incress per smod,Double,0.1,,,0,10,Nano Thief: Mastery
-NA_Mastery_dModDiscount,Cost decress per dmod,Double,0.8,,,0,10,Nano Thief: Mastery
-NA_Mastery_dModmin,Min cost from dmod decrease,Double,0.7,,,0,10,Nano Thief: Mastery
+NA_Mastery_dModDiscount,Cost decress per dmod,Double,0.08,,,0,10,Nano Thief: Mastery
+NA_Mastery_dModmin,Min cost from dmod decrease,Double,0.3,,,0,10,Nano Thief: Mastery
 NA_Mastery_minCR,Min cr to build simulacrum ship,Double,0.4,,,0,1,Nano Thief: Mastery
 NA_Mastery_peakCRDuration,peak performance multiplyer,Double,0.6,,,0,1,Nano Thief: Mastery
 NA_Mastery_maxReclaimPercent,recoved reclaim multiplyer,Double,0.2,,,0,1,Nano Thief: Mastery

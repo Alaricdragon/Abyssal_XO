@@ -1,4 +1,4 @@
-package data.scripts.starfarer.api.impl.campaign.rulemd;
+package data.campaign.rulecmd;
 
 import Abyssal_XO.data.scripts.Settings;
 import Abyssal_XO.data.scripts.backgrounds.BlackBox;
