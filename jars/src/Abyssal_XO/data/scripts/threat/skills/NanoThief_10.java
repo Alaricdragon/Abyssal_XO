@@ -41,7 +41,7 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
 
     public static double sModCost = 0.1;//per s-mod, add a
     public static double dModDiscount = 0.08;
-    public static double dModmin = 0.7;
+    public static double dModmin = 0.3;
     //public static double costPerDP = 250;
     //public static double baseCost = 500;
     //30k reclaim per battle. 60k including friendly ships.
