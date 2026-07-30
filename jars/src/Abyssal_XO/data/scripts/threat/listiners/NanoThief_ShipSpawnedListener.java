@@ -22,6 +22,7 @@ public class NanoThief_ShipSpawnedListener implements FleetMemberDeploymentListe
     public static boolean allowShipModulesToHaveSiC_Backup = false;
     public NanoThief_ShipSpawnedListener(){
         HashMap<Integer,SCData> map = new HashMap<>();
+        HashMap<String,SCData> map2 = new HashMap<>();
         CombatEngineAPI engine = Global.getCombatEngine();
         //this loop is here because this plugin is added after the first ship is created. basicly gets all 'on spawned' ships and adds them to relevant listeners.
         for (ShipAPI a : engine.getShips()) {
@@ -31,11 +32,13 @@ public class NanoThief_ShipSpawnedListener implements FleetMemberDeploymentListe
                 SCData data = getSCData(a);
                 if (data == null) continue;
                 map.put(a.getOriginalOwner(),data);
+                if (a.getFleetCommander() != null) map2.put(a.getFleetCommander().getId(),data);
                 addModules(a,data);
                 //log?.info("     HERE: finished already has hullmod")
             }
         }
         Global.getCombatEngine().getCustomData().put("SiC_SCDataMap",map);
+        Global.getCombatEngine().getCustomData().put("SiC_SCDataMap_2",map2);
     }
     //todo: THIS IS NOT TESTED. PLEASE RUN TESTS TO MAKE SURE FULL FUNCTIONALITY.
     @Override

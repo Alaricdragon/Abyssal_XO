@@ -17,7 +17,8 @@ import java.util.HashMap;
 
 public class Utils {
     public static void setCurrentSiCVersion(){
-        isRightSCVersion = findCurrentSiCVersion();
+        //disabled because autodetection if SIC version is not working because fuck you dasjhjasdVBNM CVBC
+        //isRightSCVersion = findCurrentSiCVersion();
     }
     public static boolean isRightSCVersion = false;
     private static boolean findCurrentSiCVersion(){

@@ -44,8 +44,9 @@ public class Nano_Thief_dialog implements InteractionDialogPlugin {
             if (!b.getAptitudeId().equals("Abyssal_NanoThief")) continue;
             for (SCBaseSkillPlugin a : b.getActiveSkillPlugins()){
                 if (a.getId().equals("SiC_NanoThief_skill_3")){
-                    size++;
-                    hasCustomProduction = true;
+                    //this was removed because I am not adding this interface here.
+                    //size++;
+                    //hasCustomProduction = true;
                 }
                 if (a.getId().equals("SiC_NanoThief_skill_6")){
                     size++;
@@ -86,9 +87,9 @@ public class Nano_Thief_dialog implements InteractionDialogPlugin {
     public void attemptShowCustomProduction(InteractionDialogAPI dialog){
         new NF_dialog_CustomProduction(dialog);
     }
-    public void attemptShowCustomProduction2(InteractionDialogAPI dialog){
+    /*public void attemptShowCustomProduction2(InteractionDialogAPI dialog){
         new NF_dialog_CustomProduction(dialog);
-    }
+    }*/
     public void attemptShowCargoAttack(InteractionDialogAPI dialog){
         dialog.showCargoPickerDialog("cargo","Conferm", "Cancal",true,400, Nano_Thief_Selection_Sfw_Attack_CargoListiner.prepareForSelection(true),new Nano_Thief_Selection_Sfw_Attack_CargoListiner());
     }
@@ -119,8 +120,6 @@ public class Nano_Thief_dialog implements InteractionDialogPlugin {
                 break;
             case "Custom Production":
                 attemptShowCustomProduction(dialog);
-            case "Custom Production2":
-                attemptShowCustomProduction2(dialog);
             case "attack":
                 attemptShowCargoAttack(dialog);
                 break;

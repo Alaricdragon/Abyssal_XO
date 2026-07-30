@@ -1,4 +1,6 @@
 V0.1.33:
+    NOTE: right now, the SiC adder is only looking at the forces 'primary' person, and not force. This is a test. If it works, please be happy yay.
+    fixed a possible bug with the 'NanoThief_AllowSICToAnyShip' in the settings.json were the wrong SiC data could be added to a fleet. maybe.
 V0.1.32:
     fixes:
         fixed broken mastery settings from the last update

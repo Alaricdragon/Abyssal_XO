@@ -1,0 +1,30 @@
+so artafacts: basically, you can only have one. They are boring.
+they come from the RAT mod.
+
+also note: I have writen some 'skills as artifacts' here. I think this is a bad idea. Use the artifacts for new ideas. Basicly, skills that didnt make the cut.
+
+I want to add some based on the 3 factions this mod looks at. so in order:
+
+Threat:
+    threat is were I have put the most thought into. I have a few:
+
+    Fabricator Core:
+        this would do the following:
+        1: you can input items into the Core. Said items would be translated into reclaim.
+            -supplys 1x cost. metal, rare metal 0.5X cost. everything else 0.25X cost.
+        2: Then you can create things:
+            ships 2x cost. weapons / fighter 1/1.25/1.5x cost. supplys 2x cost. metal / rare metal 1x cost
+            -note: In order to forge resorses from the same panel, I need to make 'dummy weapons' that are not actually weapons, but instead items.
+            -for a custom start, I could allow limited threat forging.
+
+    Mastery as artifact:
+        gain 'ship build ponits' as you kill hostiles. at 10X ship cost, spawn a ship. so 40 dp for a omen, 800 for an onslaught.
+        Will need to work on sawrm AI before then though.
+
+    Simulacrum fighters as artifact:
+        -same as mastery as artifact.
+Shrouded Dweller:
+    Deep dive:
+        gain the 'deep dive' ability, allowing you to teleport anywhere within ? light years / whatever the unit is in normal space.
+        Takes a bit to charge, and costs twice as mush fuel at it would take to travel there.
+Omega:

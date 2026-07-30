@@ -139,6 +139,32 @@ OR
             regenerate 1% CR a second. costs 50 reclaim per CR regenerated
     can only trigger once every 10 seconds
 
+unused skills:
+    1: arc emiter:
+        every ship gains an 'arc' gun. 360 degree coverage, ?? range (500 maybe)?
+        fires arc (like threat pd) 1/2/3/4 times a second depending on hullsize.
+        costs 0.25 reclaim every shot (15/30/45/60 reclaim a minute depending on hullsize)?
+
+    2: Emergency Command:
+        When a friendly ship dies, convert 50% of stored reclaim into a 'effect swarm'
+        the effect swarm will be mostly immobile, and will fire its weapons constantly without regards if hostiles are nearby.
+        once its out of charges, it will instantly die
+        you can chose the following weapons to place on the 'effect swarm':
+        note: ballistic weapons are to mush. I dont like them. Consider them disabled for now on.
+        //3 ballistic weapons:
+        //    the balisic weapons get 1 volley of shots per ? * weapon op / reclaim
+        2 missile weapons:
+            the missile weapons get 1 volly of shots per ? * weapon op / reclaim
+            fire 5 times as fast, or 2 seconds per volley. whatever is lower.
+        1 fighter:
+            spawn a copy of this fighter wing Math.min(? * fighter op / reclaim,5) times
+            (no maximum number of total fighters for this group, but a max number of spawned fighters as )
+        The fighter will act as a offensive simulacrum wing, and will last 30 seconds before being forced to return to a carrier.
+        It will give no reclaim or fighter build progress when it lands
+
+
+
+
 
 
 skills:
