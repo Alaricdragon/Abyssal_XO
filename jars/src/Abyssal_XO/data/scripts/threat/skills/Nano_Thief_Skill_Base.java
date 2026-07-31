@@ -7,9 +7,11 @@ import Abyssal_XO.data.scripts.threat.skills.interfaces.NanoThief_InterfaceBase;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
+import com.fs.starfarer.api.util.Misc;
 import org.apache.log4j.Logger;
 import second_in_command.SCData;
 import second_in_command.specs.SCBaseSkillPlugin;
+import second_in_command.specs.SCOfficer;
 
 public abstract class Nano_Thief_Skill_Base extends SCBaseSkillPlugin {
     protected static Logger log = Global.getLogger(Nano_Thief_Skill_Base.class);
@@ -39,4 +41,24 @@ public abstract class Nano_Thief_Skill_Base extends SCBaseSkillPlugin {
     public void addTooltip(SCData scData, TooltipMakerAPI tooltipMakerAPI) {
 
     }
+    public void addMultiSkillText(SCData scData, TooltipMakerAPI tooltipMakerAPI){
+        int a = getNumberThisSkills(scData);
+        if (a <= 1) return;
+        applyMultiSkillString(scData,tooltipMakerAPI, getMultiString(scData,a));
+    }
+    public void applyMultiSkillString(SCData scData, TooltipMakerAPI tooltipMakerAPI,String input){
+        tooltipMakerAPI.addPara("",0);
+        tooltipMakerAPI.addPara(input,0, Misc.getStoryOptionColor());
+    }
+    private int getNumberThisSkills(SCData scData){
+        int number = 0;
+        for (SCOfficer a : scData.getActiveOfficers()) for (String b : a.getActiveSkillIDs()){
+            if (a.equals(getId())){
+                number++;
+                break;//no more then one skill in skill.
+            }
+        }
+        return number;
+    }
+    public String getMultiString(SCData scData, int number){return "";}
 }
