@@ -1,5 +1,4 @@
 V0.1.33:
-    NOTE: right now, the SiC adder is only looking at the forces 'primary' person, and not force. This is a test. If it works, please be happy yay.
     fixes:
         fixed spawn weight of individual skills being forced to be a integer.
         fixed a possible bug with the 'NanoThief_AllowSICToAnyShip' in the settings.json were the wrong SiC data could be added to a fleet. hopefully.
