@@ -1,21 +1,15 @@
-package Abyssal_XO.data.scripts.threat.skills;
+package Abyssal_XO.data.scripts.shroudDweller.skills;
 
-import Abyssal_XO.data.scripts.threat.Nano_Thief_Stats;
-import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_ShipSkills;
-import Abyssal_XO.data.scripts.threat.skills.activeSkills.NanoThief_SkillBase;
-import Abyssal_XO.data.scripts.threat.skills.interfaces.NanoThief_InterfaceBase;
-import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.combat.ShipAPI;
+import Abyssal_XO.data.scripts.shroudDweller.activeSkills.ShroudDweller_ActiveSkillBase;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import org.apache.log4j.Logger;
 import second_in_command.SCData;
 import second_in_command.specs.SCBaseSkillPlugin;
 import second_in_command.specs.SCOfficer;
 
-public abstract class Nano_Thief_Skill_Base extends SCBaseSkillPlugin {
-    protected static Logger log = Global.getLogger(Nano_Thief_Skill_Base.class);
-    public void initStats(Nano_Thief_Stats stats){
+public abstract class ShroudDweller_SkillBase extends SCBaseSkillPlugin {
+    //note: this is a lot easier then nano-thief. Because everything is going to be controled by a 'central thing' that will handle all skill updates and useage.
+    /*public void initStats(Nano_Thief_Stats stats){
 
     }
     public NanoThief_SkillBase createListiner(NanoThief_ShipSkills skills, ShipAPI ship){
@@ -30,13 +24,14 @@ public abstract class Nano_Thief_Skill_Base extends SCBaseSkillPlugin {
     /// This is used for creating an interface when multiple of the same listeners are active.
     public NanoThief_InterfaceBase createInterface(){
         return null;
-    }
+    }*/
+    public abstract boolean addListiner();
+    public abstract boolean addMultiListeners();
+    public abstract ShroudDweller_ActiveSkillBase getSkillCode();
     @Override
     public String getAffectsString() {
-        return "All Ships In Fleet";//"Simulacrum Fighter Wings produced by your fleet";
+        return "The Battlefield";//"Simulacrum Fighter Wings produced by your fleet";
     }
-    /// for some internal bits of data.
-    public abstract int getNanoThiefID();
     @Override
     public void addTooltip(SCData scData, TooltipMakerAPI tooltipMakerAPI) {
 

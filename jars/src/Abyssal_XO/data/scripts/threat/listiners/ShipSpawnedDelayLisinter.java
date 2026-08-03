@@ -47,20 +47,20 @@ public class ShipSpawnedDelayLisinter extends BaseEveryFrameCombatPlugin {
         //log?.info("     HERE: got valid ship")
         if (alreadyReady(a)){
             //log?.info("     HERE: got already has hullmod")
-            HashMap<Integer, SCData> map = (HashMap<Integer, SCData>) Global.getCombatEngine().getCustomData().get("SiC_SCDataMap");
-            HashMap<String, SCData> map2 = (HashMap<String, SCData>) Global.getCombatEngine().getCustomData().get("SiC_SCDataMap_2");
+            HashMap<Integer, SCData> map = (HashMap<Integer, SCData>) Global.getCombatEngine().getCustomData().get("SiC_OriginalOwner_StoredDataMap");
+            HashMap<String, SCData> map2 = (HashMap<String, SCData>) Global.getCombatEngine().getCustomData().get("SiC_FleetCommander_StoredDataMap");
             SCData data = getSCData(a);
             if (data == null) return;
             map.put(a.getOriginalOwner(),data);
             if (a.getFleetCommander() != null) map2.put(a.getFleetCommander().getId(),data);
-            Global.getCombatEngine().getCustomData().put("SiC_SCDataMap",map);
-            Global.getCombatEngine().getCustomData().put("SiC_SCDataMap_2",map2);
+            Global.getCombatEngine().getCustomData().put("SiC_OriginalOwner_StoredDataMap",map);
+            Global.getCombatEngine().getCustomData().put("SiC_FleetCommander_StoredDataMap",map2);
             addModules(a,data);
             //log?.info("     HERE: finished already has hullmod")
         }else if (isValidShipToConvert(a)){
             //log?.info("     HERE: got need to add hullmod")
-            HashMap<Integer,SCData> map = (HashMap<Integer, SCData>) Global.getCombatEngine().getCustomData().get("SiC_SCDataMap");
-            HashMap<String,SCData> map2 = (HashMap<String, SCData>) Global.getCombatEngine().getCustomData().get("SiC_SCDataMap_2");
+            HashMap<Integer,SCData> map = (HashMap<Integer, SCData>) Global.getCombatEngine().getCustomData().get("SiC_OriginalOwner_StoredDataMap");
+            HashMap<String,SCData> map2 = (HashMap<String, SCData>) Global.getCombatEngine().getCustomData().get("SiC_FleetCommander_StoredDataMap");
             int force = a.getOriginalOwner();
             SCData data = null;
             if (convertWithFleetCommander(a)){

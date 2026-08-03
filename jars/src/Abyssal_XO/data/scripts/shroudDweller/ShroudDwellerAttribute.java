@@ -1,6 +1,6 @@
 package Abyssal_XO.data.scripts.shroudDweller;
 
-public class ShruoudDrweeler_Attribute {
+public class ShroudDwellerAttribute {
     /*NOTICE: changes to entropy. Also requires ANOTHER REDESIGN:
         1: entropy as cooldonws:
             1) entropy will go from a 'skill power and speed multi' to a 'gather x entropy for 1 charge of y skill'

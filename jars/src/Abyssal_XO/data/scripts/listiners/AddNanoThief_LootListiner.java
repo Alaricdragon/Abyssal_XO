@@ -20,6 +20,7 @@ public class AddNanoThief_LootListiner implements ShowLootListener {
         Global.getSector().getMemory().set(MEMKEY_NANOTHIEF_BLACK_BOX_QUEST_STAGE,4);//sets this quest to finally be over.
         Global.getSector().getListenerManager().removeListener(this);
         Global.getSector().getListenerManager().removeListenerOfClass(ThreatBossCreater.class);
+        //WHY THIS NO WORKS!?!!!?!
         //the remove listiners can be checked just by going in game and entering / exiting the system over and over.
     }
 }

@@ -37,8 +37,8 @@ public class NanoThief_ShipSpawnedListener implements FleetMemberDeploymentListe
                 //log?.info("     HERE: finished already has hullmod")
             }
         }
-        Global.getCombatEngine().getCustomData().put("SiC_SCDataMap",map);
-        Global.getCombatEngine().getCustomData().put("SiC_SCDataMap_2",map2);
+        Global.getCombatEngine().getCustomData().put("SiC_OriginalOwner_StoredDataMap",map);
+        Global.getCombatEngine().getCustomData().put("SiC_FleetCommander_StoredDataMap",map2);
     }
     //todo: THIS IS NOT TESTED. PLEASE RUN TESTS TO MAKE SURE FULL FUNCTIONALITY.
     @Override

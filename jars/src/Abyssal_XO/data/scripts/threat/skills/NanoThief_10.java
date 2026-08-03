@@ -184,7 +184,7 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
 
     @Override
     public String getMultiString(SCData scData, int number) {
-        return "Synergy bonus between "+number+" copys of same skill: \n -This skill is being multithreaded "+number+"times";
+        return " -production of simulacrum ships is being multithreaded "+number+" times";
     }
 
     private void displayBaseStats(SCData scData, TooltipMakerAPI tooltip){

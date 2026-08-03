@@ -60,6 +60,7 @@ public class NanoThief_2 extends Nano_Thief_Skill_Base {
         tooltip.addPara("Effects that increase max ammo increase cost proportionally",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor());
         tooltip.addPara("When a weapon reloads, the reclaim cost and cooldown is proportional to the amount of ammo reloaded compaired to the maximum amount of ammo that weapon can hold",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         tooltip.addPara("Does not work on built in weapons",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        this.addMultiSkillText(scData, tooltip);
         tooltip.addSpacer(10f);
 
         //LabelAPI label = tooltip.addPara("\"I don't care what it takes, I don't even care if the craft explodes the moment we set foot on it. If we cant meet quotas, some safety concerns will be the least of our worry's!.\"", Misc.getTextColor(), 0f);
@@ -86,5 +87,9 @@ public class NanoThief_2 extends Nano_Thief_Skill_Base {
     public static double weight = 1;
     public Float getNPCSpawnWeight(CampaignFleetAPI fleet) {
         return (float) weight;
+    }
+    @Override
+    public String getMultiString(SCData scData, int number) {
+        return " -production is being multithreaded "+number+" times";
     }
 }

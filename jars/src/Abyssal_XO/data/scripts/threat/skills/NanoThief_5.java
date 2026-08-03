@@ -69,6 +69,7 @@ public class NanoThief_5 extends Nano_Thief_Skill_Base {
         String buildmod = (int)((buildTimeMod*100))-100+"%";
         tooltip.addPara("Increase reclaim cost by %s",0f,Misc.getNegativeHighlightColor(), Misc.getNegativeHighlightColor(),reclaim);
         tooltip.addPara("Take %s more time to build",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor(),buildmod);
+        this.addMultiSkillText(scData, tooltip);
 
         tooltip.addSpacer(10f);
 
@@ -81,5 +82,9 @@ public class NanoThief_5 extends Nano_Thief_Skill_Base {
     public static double weight = 1;
     public Float getNPCSpawnWeight(CampaignFleetAPI fleet) {
         return (float) weight;
+    }
+    @Override
+    public String getMultiString(SCData scData, int number) {
+        return " -all cost and speed effects are being multiplied by "+number+"";
     }
 }

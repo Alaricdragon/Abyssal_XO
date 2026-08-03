@@ -88,6 +88,7 @@ public class NanoThief_1 extends Nano_Thief_Skill_Base {
         tooltip.addPara("Every second recover a small percentage of hull. This effect becomes faster the more missing hull a ship has, restoring %s hull per second at %s hull, restoring %s hull per second at %s hull, and restoring %s hull per second at %s hull",0, Misc.getHighlightColor(), Misc.getHighlightColor(),speedV0,hullV0,speedV1,hullV1,speedV2,hullV2);
         //tooltip.addPara("Every second recover a small percentage of hull. This effect becomes faster the more missing hull a ship has, restoring %s hull per second at %s hull, restoring %s hull per second at %s hull, and restoring %s hull per second at %s hull",0, Misc.getHighlightColor(), Misc.getHighlightColor(),speedMaxS,hullMaxS,speedMinS,hullMinS);
         tooltip.addPara("Costs %s reclaim per %s hull repaired",0, Misc.getNegativeHighlightColor(), Misc.getNegativeHighlightColor(),one,reclaimPerHullS);
+        this.addMultiSkillText(scData, tooltip);
 
         tooltip.addSpacer(10f);
 
@@ -106,5 +107,9 @@ public class NanoThief_1 extends Nano_Thief_Skill_Base {
     public static double weight = 1;
     public Float getNPCSpawnWeight(CampaignFleetAPI fleet) {
         return (float) weight;
+    }
+    @Override
+    public String getMultiString(SCData scData, int number) {
+        return " -repair speed multiplied by "+number+"";
     }
 }
