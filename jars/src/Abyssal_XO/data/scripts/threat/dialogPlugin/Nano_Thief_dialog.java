@@ -38,11 +38,16 @@ public class Nano_Thief_dialog implements InteractionDialogPlugin {
         this.dialog = dialog;
         me = this;
         //attemptShowCargoAttack(dialog);
-        boolean hasSimAtk=false, hasSimDef=false, hasMastery=false;
+        boolean hasCustomProduction=false, hasSimAtk=false, hasSimDef=false, hasMastery=false;
         int size = 0;
         for (SCOfficer b : SCUtils.getFleetData(Global.getSector().getPlayerFleet()).getActiveOfficers()){
             if (!b.getAptitudeId().equals("Abyssal_NanoThief")) continue;
             for (SCBaseSkillPlugin a : b.getActiveSkillPlugins()){
+                if (a.getId().equals("SiC_NanoThief_skill_3")){
+                    //this was removed because I am not adding this interface here.
+                    //size++;
+                    //hasCustomProduction = true;
+                }
                 if (a.getId().equals("SiC_NanoThief_skill_6")){
                     size++;
                     hasSimAtk=true;
@@ -59,6 +64,7 @@ public class Nano_Thief_dialog implements InteractionDialogPlugin {
             break;
         }
         if (size == 1){
+            if (hasCustomProduction) attemptShowCustomProduction(dialog);
             if (hasSimAtk) attemptShowCargoAttack(dialog);
             if (hasSimDef) attemptShowCargoDef(dialog);
             if (hasMastery) attemptShowMastery(dialog);
@@ -66,6 +72,10 @@ public class Nano_Thief_dialog implements InteractionDialogPlugin {
             return;
         }
         exitOnReset = false;
+        if (hasCustomProduction){
+            dialog.getOptionPanel().addOption("create ships and weapons","Custom Production");
+            dialog.getOptionPanel().addOption("create basic resorses","Custom Production2");
+        }
         if (hasSimAtk) dialog.getOptionPanel().addOption("attack","attack");
         if (hasSimDef) dialog.getOptionPanel().addOption("defense","defense");
         if (hasMastery) dialog.getOptionPanel().addOption("mastery","mastery");
@@ -74,6 +84,12 @@ public class Nano_Thief_dialog implements InteractionDialogPlugin {
 
         //dialog.get
     }
+    public void attemptShowCustomProduction(InteractionDialogAPI dialog){
+        new NF_dialog_CustomProduction(dialog);
+    }
+    /*public void attemptShowCustomProduction2(InteractionDialogAPI dialog){
+        new NF_dialog_CustomProduction(dialog);
+    }*/
     public void attemptShowCargoAttack(InteractionDialogAPI dialog){
         dialog.showCargoPickerDialog("cargo","Conferm", "Cancal",true,400, Nano_Thief_Selection_Sfw_Attack_CargoListiner.prepareForSelection(true),new Nano_Thief_Selection_Sfw_Attack_CargoListiner());
     }
@@ -102,6 +118,8 @@ public class Nano_Thief_dialog implements InteractionDialogPlugin {
             case "Cancal":
                 dialog.dismiss();
                 break;
+            case "Custom Production":
+                attemptShowCustomProduction(dialog);
             case "attack":
                 attemptShowCargoAttack(dialog);
                 break;

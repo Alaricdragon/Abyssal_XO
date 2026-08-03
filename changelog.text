@@ -1,3 +1,10 @@
+V0.1.33:
+    fixes:
+        fixed spawn weight of individual skills being forced to be a integer.
+        fixed a possible bug with the 'NanoThief_AllowSICToAnyShip' in the settings.json were the wrong SiC data could be added to a fleet. hopefully.
+        maybe fixed a issue were nano-thief was never being added to threat. Maybe I created this issue in testing and just reverted it. But it works now I think...?
+    safety overrides (mod):
+        added descriptions to each skill to show what having more then one actually does. is only active when more then one of the same skill is selected.
 V0.1.32:
     fixes:
         fixed broken mastery settings from the last update

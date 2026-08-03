@@ -59,6 +59,7 @@ public class NanoThief_3 extends Nano_Thief_Skill_Base {
         tooltip.addPara("+%s post battle salvage", 0f, Misc.getHighlightColor(), Misc.getHighlightColor(),sBMod);
         tooltip.addPara("At the end of combat, for every %s reclaim your ships hold:",0, Misc.getHighlightColor(), Misc.getHighlightColor(),reclaim);
         tooltip.addPara("-gain %s supplies",0, Misc.getHighlightColor(), Misc.getHighlightColor(),supplies);
+        this.addMultiSkillText(scData, tooltip);
 
         tooltip.addSpacer(10f);
 
@@ -146,5 +147,9 @@ public class NanoThief_3 extends Nano_Thief_Skill_Base {
             //alreadyLooted = false;
         }
         return null;
+    }
+    @Override
+    public String getMultiString(SCData scData, int number) {
+        return " -supply gain is multiplied by "+number+"\n -salvage and post battle salvage bonus multiplied by "+number;
     }
 }

@@ -74,6 +74,7 @@ public class NanoThief_8 extends Nano_Thief_Skill_Base {
         //tooltip.addPara("",0);
         tooltip.addPara("Refined Reclaim Packages move %s faster then normal reclaim packages, but otherwise act the same as normal Reclaim Packages",0,Misc.getHighlightColor(),Misc.getHighlightColor(),line4a);
         tooltip.addPara("Ships other then the central fabricator receive %s less reclaim from normal reclaim packages",0,Misc.getNegativeHighlightColor(),Misc.getNegativeHighlightColor(),line5a);
+        this.addMultiSkillText(scData, tooltip);
         tooltip.addPara("",0);
         tooltip.addPara("Gain the %s hullmod, allowing you to chose your Central Fabricator",0,Misc.getHighlightColor(),Misc.getHighlightColor(),"Central Fabricator");
 
@@ -98,5 +99,9 @@ public class NanoThief_8 extends Nano_Thief_Skill_Base {
     public static double weight = 1;
     public Float getNPCSpawnWeight(CampaignFleetAPI fleet) {
         return (float) weight;
+    }
+    @Override
+    public String getMultiString(SCData scData, int number) {
+        return " -reclaim refined efficiency multiplied by  "+number;
     }
 }

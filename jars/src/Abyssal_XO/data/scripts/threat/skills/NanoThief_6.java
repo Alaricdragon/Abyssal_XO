@@ -202,6 +202,7 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
         displayBuildingFighter(scData, tooltip,true);
         tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         this.addNewAbilityText(scData, tooltip);
+        this.addMultiSkillText(scData, tooltip);
 
         tooltip.addSpacer(10f);
 
@@ -243,5 +244,9 @@ public class NanoThief_6 extends Nano_Thief_Skill_Base {
     public static double weight = 1;
     public Float getNPCSpawnWeight(CampaignFleetAPI fleet) {
         return (float) weight;
+    }
+    @Override
+    public String getMultiString(SCData scData, int number) {
+        return " -production is being multithreaded "+number+" times\n -max wings multiplied by "+number;
     }
 }

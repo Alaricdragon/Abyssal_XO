@@ -46,6 +46,7 @@ public class NanoThief_4 extends Nano_Thief_Skill_Base {
         tooltip.addPara("-has %s second cooldown",0, Misc.getHighlightColor(), Misc.getHighlightColor(),cooldown);
         tooltip.addPara("-for every %s damage resisted this way, loess %s reclaim",0, Misc.getNegativeHighlightColor(), Misc.getNegativeHighlightColor(),damagePerCost,"1");
         tooltip.addPara("-costs %s reclaim per activation",0, Misc.getNegativeHighlightColor(), Misc.getNegativeHighlightColor(),activeCost);
+        this.addMultiSkillText(scData, tooltip);
 
         tooltip.addSpacer(10f);
 
@@ -74,5 +75,9 @@ public class NanoThief_4 extends Nano_Thief_Skill_Base {
     public static double weight = 1;
     public Float getNPCSpawnWeight(CampaignFleetAPI fleet) {
         return (float) weight;
+    }
+    @Override
+    public String getMultiString(SCData scData, int number) {
+        return " -skill holds "+number+" charges";
     }
 }

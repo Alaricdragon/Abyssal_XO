@@ -1,6 +1,6 @@
 package Abyssal_XO.data.scripts.shroudDweller;
 
-public class ShruoudDrweeler_Attribute {
+public class ShroudDwellerAttribute {
     /*NOTICE: changes to entropy. Also requires ANOTHER REDESIGN:
         1: entropy as cooldonws:
             1) entropy will go from a 'skill power and speed multi' to a 'gather x entropy for 1 charge of y skill'
@@ -25,11 +25,9 @@ public class ShruoudDrweeler_Attribute {
                 after max slowdown, starts to do damage.
             4: hunters guidance:
                 increase max speed / manoeuvrability for a bit.
-            5: thread:
-                summon a 'thread' fighter wing for 15 secodns?
-                OR
-                summon a rift arc that does EMP damage, or kinetic damage to shields.
-                [cant decide. I think I did fighters / summoning to death in nano-thief.]
+            5: Storm:
+                summon a rift arc that does EMP damage, or kinetic damage to shields, after a delay (and some light sparks to warn the ships to get shields / defences up)
+                low cost, low power. Make it storm indeed = )
             6: Avatar:
                 ship and all fighters gain an increase in damage.
                 past a limit, reduces damage taken instead.

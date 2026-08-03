@@ -196,6 +196,7 @@ public class NanoThief_9 extends Nano_Thief_Skill_Base {
         tooltip.addPara("   -increase the speed of all Nano Thief skills by %s",0,Misc.getTextColor(),Misc.getHighlightColor(),line14a);
         tooltip.addPara("   -increase the cost of all Nano Thief skills by %s",0,Misc.getTextColor(),Misc.getNegativeHighlightColor(),line15a);
         tooltip.addPara("All Nano Thief skill now work well overloading and venting",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+        this.addMultiSkillText(scData, tooltip);
 
         tooltip.addSpacer(10f);
         LabelAPI label = tooltip.addPara("\"Our armor is striped to nothing, our weapons damaged past repair, and our hull is in a critical state. Our ship is at its limits, and I know we not the only ones in this situation. Caption, we cannot continue like this. If we don't do something desperate, none of us will return to command.\"", Misc.getTextColor(), 0f);
@@ -222,5 +223,9 @@ public class NanoThief_9 extends Nano_Thief_Skill_Base {
     public static double weight = 1;
     public Float getNPCSpawnWeight(CampaignFleetAPI fleet) {
         return (float) weight;
+    }
+    @Override
+    public String getMultiString(SCData scData, int number) {
+        return " -all cost and speed effects are being multiplied by "+number+"";
     }
 }

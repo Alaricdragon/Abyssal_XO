@@ -13,10 +13,20 @@ public class NanoThief_Attribute extends SCBaseAptitudePlugin {
     public static double oddsForOther = 0;
     /*so relevent data:
     todo list:
-        0) add a skill 1 animation. some type of small jitter when repairing.
-            -partly done. needs settings
         2) WORK ON SKILL 3
             -cannot do mush about the 'order your second to handle it' mush sadnesss.
+            -theory: add a 'after battle listiner' that can be used for 'order your second to handle it'
+                -might work... I hope.
+            1: make the gained reclaim be caped to the amount of reclaim gained from the hostile fleet
+                -this is to avoid things like skills that spam ships.
+            2: change out the 'gained supplies' thing for a new 'memory' thing. Basicly just a memory.
+            3: add a dialog option for forging supplies or heavy matchenery. (Maybe reuse this new system? Can I change the way it works? Or the number of tabs maybe?)
+                -notes: there is a way to override the resorse tab. Maybe allow for the forging of supplies, heavy matchenery, and metal / rare metal there?
+            4: add in settings to modify cost based on the following:
+                weapons size    [1,1.2,1.4]
+                ship size       [1,1.2,1.4,1.6]
+                ship, weapon, fighter, and resource [10,3,3,2]
+            5: change the reclaim forge text to different things. also change the image for credits to something like reclaim.
         4) add in the new icons for the skills.
             NOTE: I have contacted the Quaken about this issue
             -12? icons required.
@@ -24,12 +34,7 @@ public class NanoThief_Attribute extends SCBaseAptitudePlugin {
                 [64x64 sized images]. in 'threat' colors.
             1 'special item' image.
         5) add in the quest to allow someone to acquire this skill
-            -1: make the listener and memory to see if the player has killed enouth threat yet.
-            -2: create the listiner that waits for the player to enter a 'threat' system then spawns 'the fleet'.
-                -include a system that removes and remakes the fleet whenever I change threat systems.
-                -include a system to automaticly remove myself when the fleet is killed.
-            -3: make the special item that I click on to get nano-thief.
-                -it should open a dialog. But for now I can avoid that by just having a right click to acquire nano-thief.
+            -improve the text and dialog for the quest.
         6) improve the display for the nano-thief stats. something like, a bar that fills as I build fighters, and a bar that fills as I max deployment (and fills more (with a different color) as I max storge)
         -) reenable disabled skills (disabled do to not actualy doing anything yet.
         -
@@ -133,6 +138,32 @@ OR
         for 10 seconds, well your CR is below 20%:
             regenerate 1% CR a second. costs 50 reclaim per CR regenerated
     can only trigger once every 10 seconds
+
+unused skills:
+    1: arc emiter:
+        every ship gains an 'arc' gun. 360 degree coverage, ?? range (500 maybe)?
+        fires arc (like threat pd) 1/2/3/4 times a second depending on hullsize.
+        costs 0.25 reclaim every shot (15/30/45/60 reclaim a minute depending on hullsize)?
+
+    2: Emergency Command:
+        When a friendly ship dies, convert 50% of stored reclaim into a 'effect swarm'
+        the effect swarm will be mostly immobile, and will fire its weapons constantly without regards if hostiles are nearby.
+        once its out of charges, it will instantly die
+        you can chose the following weapons to place on the 'effect swarm':
+        note: ballistic weapons are to mush. I dont like them. Consider them disabled for now on.
+        //3 ballistic weapons:
+        //    the balisic weapons get 1 volley of shots per ? * weapon op / reclaim
+        2 missile weapons:
+            the missile weapons get 1 volly of shots per ? * weapon op / reclaim
+            fire 5 times as fast, or 2 seconds per volley. whatever is lower.
+        1 fighter:
+            spawn a copy of this fighter wing Math.min(? * fighter op / reclaim,5) times
+            (no maximum number of total fighters for this group, but a max number of spawned fighters as )
+        The fighter will act as a offensive simulacrum wing, and will last 30 seconds before being forced to return to a carrier.
+        It will give no reclaim or fighter build progress when it lands
+
+
+
 
 
 

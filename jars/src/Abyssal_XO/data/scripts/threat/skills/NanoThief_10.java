@@ -166,7 +166,10 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
         tooltip.addPara("This ability always starts on cooldown",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         tooltip.addPara("Available simulacrum ships in this fleet:",0,Misc.getHighlightColor(),Misc.getHighlightColor());
         displayShipStats(tooltip,getShips(scData.getCommander(),scData.getFleet().getFaction()),true);
+        this.addMultiSkillText(scData, tooltip);
         tooltip.addPara("",0,Misc.getHighlightColor(),Misc.getHighlightColor());
+
+
         this.addNewAbilityText(scData, tooltip);
 
         tooltip.addSpacer(10f);
@@ -178,6 +181,12 @@ public class NanoThief_10 extends Nano_Thief_Skill_Base {
         label.italicize();
 
     }
+
+    @Override
+    public String getMultiString(SCData scData, int number) {
+        return " -production of simulacrum ships is being multithreaded "+number+" times";
+    }
+
     private void displayBaseStats(SCData scData, TooltipMakerAPI tooltip){
         //String line3_0 = ""+(int)forceRechargePerDP;
 
