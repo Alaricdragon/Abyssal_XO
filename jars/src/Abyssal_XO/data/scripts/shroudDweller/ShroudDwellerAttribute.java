@@ -1,58 +1,59 @@
 package Abyssal_XO.data.scripts.shroudDweller;
 
 public class ShroudDwellerAttribute {
-    /*NOTICE: changes to entropy. Also requires ANOTHER REDESIGN:
-        1: entropy as cooldonws:
-            1) entropy will go from a 'skill power and speed multi' to a 'gather x entropy for 1 charge of y skill'
-            2) haveing more charges of a skill will reduce skill 'cooldown' by some percent.
-            3) some skills will apply 'buffs' to existing skills if the same skill hits more then once.
-            4): skills created from this XO create 0.2X as mush entropy.
-        theams:
-            I think I will theam this after some luddic things.
-            maninly, the god of entropy. molach? I dont remember there names.
+    /*
+NOTICE: changes to entropy. Also requires ANOTHER REDESIGN:
+1: entropy as cooldonws:
+    1) entropy will go from a 'skill power and speed multi' to a 'gather x entropy for 1 charge of y skill'
+    2) haveing more charges of a skill will reduce skill 'cooldown' by some percent.
+    3) some skills will apply 'buffs' to existing skills if the same skill hits more then once.
+    4): skills created from this XO create 0.2X as mush entropy.
+theams:
+    I think I will theam this after some luddic things.
+    mainly, the god of entropy. molach? I dont remember there names.
 
-        skill philosophy:
-            the idea is, and always was, some eldritch nightmare attacking you. An assistant to your fleet.
-            HOWEVER: skills doing damage themselves is iffy. At that point its just damage bonuses, and I cant stack to many such skills.
-            some skills, low level and high level, should do damage. becuase its cool. But its mostly buffs for my fleet, and debuffs for hostiles.
-        so skills:
-            1: claw:
-                summon 1 claw. its is summoned around a target, and slashes them. can be counted by PD.
-            2: refresh:
-                increases flux recharge for a bit on a ship
-            3: Chains:
-                projectile. if it hits, it slows donw the target (time dilation or movement speed? I think movement speed.)
-                after max slowdown, starts to do damage.
-            4: hunters guidance:
-                increase max speed / manoeuvrability for a bit.
-            5: Storm:
-                summon a rift arc that does EMP damage, or kinetic damage to shields, after a delay (and some light sparks to warn the ships to get shields / defences up)
-                low cost, low power. Make it storm indeed = )
-            6: Avatar:
-                ship and all fighters gain an increase in damage.
-                past a limit, reduces damage taken instead.
-            7: Protection Of Monalath:
-                gain a shield.
-                increase charges increases the size of the shield, and provides some refresh (not as efficients as a full shield), creating a bubble shield
-            require 3.
-            8: Manifestation:
-                gain 1 abyssal substrate for every ? entropy.
-                gain 30 shrouded ship points
-                gain the ability to create shrouded ships from abyssal substrate.
-                [for AI, they will gain 10% of there dp in additional ships? or just a flat 45dp? (for the 75 cr.) (what is 70 cr though? somewhere around 50 right??? right!?!?!)]
-            require 4
-            AND / OR
-            9: Sunder:
-                every ? entropy, mark a ship. instantly create the equivalent entropy of ? active skills. Said skills will target the marked ship.
-                if targeting a friendly ship, can only use skills that target friendly ships.
-                if targeting a enemy ship, can only use skills that target enemy ships.
-                Every skill that does not effect the target ship, increase the effective entropy by 25% for all other skills.
-            10: Void Lance:
-                fire 1 energy projectile from off the map. It goes over friendly ships. requires a 5-second charge up first.
-                If the lance hits, increases damage taken by 10% for 10 seconds.
-                does 8k damage, and hard flux to shields. (or make this a bit weaker to be equal to a dragon fire, but fires more often?)
-                [notes: when targeting, for the first 2 seconds it can aim. After, it's locked into the direction its targeting.]
-                [acts like a dragonfire maybe? so its a beam that does hard flux to shields.]
+skill philosophy:
+    the idea is, and always was, some eldritch nightmare attacking you. An assistant to your fleet.
+    HOWEVER: skills doing damage themselves is iffy. At that point its just damage bonuses, and I cant stack to many such skills.
+    some skills, low level and high level, should do damage. becuase its cool. But its mostly buffs for my fleet, and debuffs for hostiles.
+so skills:
+    1: claw:
+        summon 1 claw. its is summoned around a target, and slashes them. can be counted by PD.
+    2: refresh:
+        increases flux recharge for a bit on a ship
+    3: Chains:
+        projectile. if it hits, it slows donw the target (time dilation or movement speed? I think movement speed.)
+        after max slowdown, starts to do damage.
+    4: hunters guidance:
+        increase max speed / manoeuvrability for a bit.
+    5: Storm:
+        summon a rift arc that does EMP damage, or kinetic damage to shields, after a delay (and some light sparks to warn the ships to get shields / defences up)
+        low cost, low power. Make it storm indeed = )
+    6: Avatar:
+        ship and all fighters gain an increase in damage.
+        past a limit, reduces damage taken instead.
+    7: Protection Of Monalath:
+        gain a shield.
+        increase charges increases the size of the shield, and provides some refresh (not as efficients as a full shield), creating a bubble shield
+    require 3.
+    8: Manifestation:
+        gain 1 abyssal substrate for every ? entropy.
+        gain 30 shrouded ship points
+        gain the ability to create shrouded ships from abyssal substrate.
+        [for AI, they will gain 10% of there dp in additional ships? or just a flat 45dp? (for the 75 cr.) (what is 70 cr though? somewhere around 50 right??? right!?!?!)]
+    require 4
+    AND / OR
+    9: Sunder:
+        every ? entropy, mark a ship. instantly create the equivalent entropy of ? active skills. Said skills will target the marked ship.
+        if targeting a friendly ship, can only use skills that target friendly ships.
+        if targeting a enemy ship, can only use skills that target enemy ships.
+        Every skill that does not effect the target ship, increase the effective entropy by 25% for all other skills.
+    10: Void Lance:
+        fire 1 energy projectile from off the map. It goes over friendly ships. requires a 5-second charge up first.
+        If the lance hits, increases damage taken by 10% for 10 seconds.
+        does 8k damage, and hard flux to shields. (or make this a bit weaker to be equal to a dragon fire, but fires more often?)
+        [notes: when targeting, for the first 2 seconds it can aim. After, it's locked into the direction its targeting.]
+        [acts like a dragonfire maybe? so its a beam that does hard flux to shields.]
             ??:
                 possibility: a final skill, so you can get both Sunder and Void Lance at the same time, at the cost of not getting the final skill.
                 that or make Sunder a require 3, but also make the last 2 require 3. so if you chose sunder you cant chose both?
