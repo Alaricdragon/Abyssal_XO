@@ -1,3 +1,6 @@
+V0.1.34:
+    balance:
+        Scrapwork Fortification damage per reclaim 24 -> 12
 V0.1.33:
     fixes:
         fixed spawn weight of individual skills being forced to be a integer.
