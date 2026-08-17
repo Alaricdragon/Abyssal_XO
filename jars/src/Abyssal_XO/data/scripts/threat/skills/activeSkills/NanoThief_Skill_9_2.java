@@ -15,19 +15,20 @@ public class NanoThief_Skill_9_2 extends NanoThief_SkillBase{
     @Override
     public void advance(float amount) {
         //log.info("running advance for overload changes.");
-        if (isBuffed && buffTimeLeft <= 0){
-            isBuffed = false;
-            skills.removeSpeedMod("9_2");
-            skills.removeCostMod("9_2");
+        if (isBuffed){
+            buffTimeLeft-=amount;
+            if (buffTimeLeft <= 0){
+                isBuffed = false;
+                skills.removeSpeedMod("9_2");
+                skills.removeCostMod("9_2");
+            }
         }
-        if (recharging){
-            rechargeTime-=amount;
-            if (rechargeTime <= 0) recharging = false;
-            return;
+        if (recharging){//will end the overload buff...
+            if (ship.getFluxTracker().isOverloaded()) return;
+            recharging = false;
         }
         if (ship.getFluxTracker().isOverloaded()) activate();
     }
-    float rechargeTime = 0;
     boolean isBuffed = false;
     boolean recharging = false;
     //two states:
@@ -39,8 +40,12 @@ public class NanoThief_Skill_9_2 extends NanoThief_SkillBase{
     //when timer is out, remove buffs.
     float buffTimeLeft = 0;
     public void activate(){
-        isBuffed = true;
-        buffTimeLeft = (float) NanoThief_9.overloadEffectTime;
+        changeOverload();
+        applyBuffs();
+        //log.info("set overload time to "+(ct-removedTime)+" with "+cost+" reclaim");
+    }
+    private void changeOverload(){
+
         double ct = ship.getFluxTracker().getOverloadTimeRemaining();
         //log.info("running overload data with a time of: "+ct);
         if (ct <= 1) return;
@@ -50,18 +55,21 @@ public class NanoThief_Skill_9_2 extends NanoThief_SkillBase{
             removedTime = (float) (ct - 1);//ct - removeTime = ?. make this = 1. ct is static. ct - removedTime = 1: removedTime must be removedTime + 1 = ct.
         }
         //log.info("got base removed time as: "+removedTime);
-
         double cost = skills.getModifiedCost((removedTime)*NanoThief_9.overloadCostPerSecond);
         cost = Math.min(cost,skills.getTotalReclaim());
         removedTime = (float) (cost / skills.getModifiedCost(NanoThief_9.overloadCostPerSecond));
 
         //log.info("got cost modified remove time as: "+removedTime);
         if (ct - removedTime <= 1) return;
-        rechargeTime = (float) (ct-removedTime);
+        //rechargeTime = (float) (ct-removedTime);
         recharging = true;
         ship.getFluxTracker().setOverloadDuration((float) (ct-removedTime));
+        skills.useReclaim(cost);
+    }
+    private void applyBuffs(){
+        isBuffed = true;
+        buffTimeLeft = (float) NanoThief_9.overloadEffectTime;
         skills.addCostMod("9_2",NanoThief_9.overloadSkillCost* skills.stats.skillMulti[9]);
         skills.addSpeedMod("9_2", (float) (NanoThief_9.overloadSkillSpeed* skills.stats.skillMulti[9]));
-        //log.info("set overload time to "+(ct-removedTime)+" with "+cost+" reclaim");
     }
 }
